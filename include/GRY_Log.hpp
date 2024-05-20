@@ -26,5 +26,5 @@
  * @param ... Parameters to match % formatting tokens from `fmt`.
  * 
  */
-#define GRY_Log(fmt, ...) printf(fmt, __VA_ARGS__)
+#define GRY_Log(fmt, ...) printf(fmt __VA_OPT__(,) __VA_ARGS__)
 #endif
