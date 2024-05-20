@@ -2,14 +2,16 @@ cmake_minimum_required(VERSION 3.24.2)
 
 project(game VERSION 0.1)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 option(USE_SHARED_LIBS "Whether to use shared or static libraries." ON)
 set(HIDE_TERMINAL True)
 
+
 include(ExternalProject)
 include("${CMAKE_SOURCE_DIR}/external/rapidjson.cmake")
+include_directories(SYSTEM "${CMAKE_BINARY_DIR}/external/rapidjson/src/rapidjson/include")
 
 set(SOURCES src/main.cpp
     src/InputHandler.cpp
