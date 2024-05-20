@@ -5,7 +5,7 @@
  * @copyright Copyright (c) 2024
  */
 #pragma once
-#include "ComponentSet.hpp"
+#include "ECS.hpp"
 #include <tuple>
 
 /**
@@ -83,7 +83,7 @@ public:
 	 */
     const entity createEntity() {
 		entity e;
-		if (back < ECS::SIZE) { e = back++; }
+		if (back < ECS::MAX_ENTITIES) { e = back++; }
 		else if (deadEntities.size() > 0) {
 			e = deadEntities.back();
 			deadEntities.pop_back();

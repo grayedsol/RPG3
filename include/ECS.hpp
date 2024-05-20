@@ -6,6 +6,7 @@
  */
 #pragma once
 #include <stdint.h>
+#include "SparseSet.hpp"
 
 namespace ECS {
     /**
@@ -14,7 +15,7 @@ namespace ECS {
      * @details
      * Must be an unsigned integral type.
      */
-    typedef uint8_t entity;
+    using entity = uint8_t;
 
     /**
      * @brief Maximum number of entities the ECS will manage.
@@ -30,3 +31,6 @@ namespace ECS {
      */
     const entity NONE = MAX_ENTITIES;
 }
+
+template<typename T>
+using ComponentSet = SparseSet<T, ECS::entity, ECS::MAX_ENTITIES>;

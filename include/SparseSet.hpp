@@ -1,38 +1,30 @@
 /**
- * @file ComponentSet.hpp
+ * @file SparseSet.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @brief @copybrief ComponentSet
+ * @brief @copybrief SparseSet
  * @copyright Copyright (c) 2024
  */
 #pragma once
 #include <vector>
 #include <assert.h>
 #include "GRY_Log.hpp"
-#include "ECS.hpp"
 
 /**
  * @brief Class template data structure used for storing component data.
  * 
  * @details
- * The structure is that of a sparse set, and is limited
- * to a size of `ECS::SIZE`.
+ * The structure is limited to a size of `SIZE`.
  * 
  * @tparam T Type of the component data.
  */
-template <typename T>
-class ComponentSet {
+template <typename T, typename entity, size_t SIZE>
+class SparseSet {
 private:
-    /**
-     * @brief @copybrief ECS::entity
-     * 
-     */
-    using entity = ECS::entity;
-
     /**
      * @brief Sparse array in the sparse set.
      * 
      */
-    entity sparse[ECS::MAX_ENTITIES+1]{};
+    entity sparse[SIZE+1]{};
 
     /**
      * @brief Dense array in the sparse set.
@@ -50,28 +42,28 @@ public:
      * @brief Constructor.
      * 
      * @details
-     * All elements in the sparse array are initialized to `ECS::NONE`.
+     * All elements in the sparse array are initialized to `SIZE`.
      */
-    ComponentSet() {
-        for (int i = 0; i <= ECS::MAX_ENTITIES; i++) {
-            this->sparse[i] = ECS::NONE;
+    SparseSet() {
+        for (int i = 0; i <= SIZE; i++) {
+            this->sparse[i] = SIZE;
         }
     };
 
-    ComponentSet(const ComponentSet&) = delete;
-    ComponentSet& operator=(const ComponentSet&) = delete;
+    SparseSet(const SparseSet&) = delete;
+    SparseSet& operator=(const SparseSet&) = delete;
 
     /**
-     * @brief Check if `e` has data in this ComponentSet.
+     * @brief Check if `e` has data in this SparseSet.
      * 
      * @param e Entity to check.
      * @return `true` if there is component data for the entity.
      * @return `false` otherwise.
      */
-    const bool contains(entity e) const { return sparse[e] != ECS::NONE; }
+    const bool contains(entity e) const { return sparse[e] != SIZE; }
 
     /**
-     * @brief Number of entities with data in this ComponentSet.
+     * @brief Number of entities with data in this SparseSet.
      * 
      * @return The size.
      */
@@ -81,15 +73,15 @@ public:
      * @brief Add `data` and associate it with `e`.
      * 
      * @details
-     * Logs an error if `e` already has data in the ComponentSet, or if
+     * Logs an error if `e` already has data in the SparseSet, or if
      * `e` is `ECS::NONE`.
      * 
      * @param e Entity to add.
      * @param data Data to add.
      */
     void add(entity e, T data) {
-        if (e == ECS::NONE) {
-            GRY_Log("[ComponentSet] Tried to add the ECS::NONE entity.\n");
+        if (e == SIZE) {
+            GRY_Log("[SparseSet] Tried to add the NONE entity.\n");
         }
         else if (!contains(e)) {
             sparse[e] = (uint8_t)dense.size();
@@ -97,7 +89,7 @@ public:
             value.push_back(data);
         }
         else {
-            GRY_Log("[ComponentSet] Tried to add an entity that already existed.\n");
+            GRY_Log("[SparseSet] Tried to add an entity that already existed.\n");
         }
     }
 
@@ -120,10 +112,10 @@ public:
             std::swap(sparse[last], sparse[e]);
             dense.pop_back();
             value.pop_back();
-            sparse[e] = ECS::NONE;
+            sparse[e] = SIZE;
         }
         else {
-            GRY_Log("[ComponentSet] Tried to remove an entity that didn't exist.\n");
+            GRY_Log("[SparseSet] Tried to remove an entity that didn't exist.\n");
         }
     }
 
@@ -131,7 +123,7 @@ public:
      * @brief Remove all component data.
      * 
      * @details
-     * Effectively resets the ComponentSet by calling `remove()`
+     * Effectively resets the SparseSet by calling `remove()`
      * with any entities with data.
      * 
      * @sa remove
@@ -158,7 +150,7 @@ public:
     T& get(entity e) {
         if (contains(e)) { return value[sparse[e]]; }
         else {
-            GRY_Log("[ComponentSet] Tried to access data for an entity that didn't exist. (%d)\n", e);
+            GRY_Log("[SparseSet] Tried to access data for an entity that didn't exist. (%d)\n", e);
             assert(!value.empty());
             return value[0];
         }
@@ -178,7 +170,7 @@ public:
     const T& get(entity e) const {
         if (contains(e)) { return value[sparse[e]]; }
         else {
-            GRY_Log("[ComponentSet] Tried to access data for an entity that didn't exist. (%d)\n", e);
+            GRY_Log("[SparseSet] Tried to access data for an entity that didn't exist. (%d)\n", e);
             assert(!value.empty());
             return value[0];
         }
@@ -195,21 +187,21 @@ public:
      * greater than or equal to `size()`.
      * 
      * @param i Index of an entity to retrieve. Must be less than `size()`.
-     * @return An entity with data in the ComponentSet.
+     * @return An entity with data in the SparseSet.
      */
     const entity getEntity(uint8_t i) const { return dense.at(i); }
 
     /**
      * @brief Pointer to the first entity. Useful in range based for loops.
      * 
-     * @return Pointer to the first entity in the ComponentSet. 
+     * @return Pointer to the first entity in the SparseSet. 
      */
     entity* begin() { return dense.data(); }
 
     /**
      * @brief Pointer to one past the last entity. Useful in range based for loops.
      * 
-     * @return Pointer to one past the last entity in the ComponentSet. 
+     * @return Pointer to one past the last entity in the SparseSet. 
      */
     entity* end() { return dense.data() + dense.size(); }
 
