@@ -15,14 +15,21 @@
  * @details
  * The structure is limited to a size of `SIZE`.
  * 
+ * Conceptually, there is a "NONE" entity, which is represented
+ * by an entity with the value `SIZE`.
+ * 
  * @tparam T Type of the component data.
+ * @tparam entity Type of the identifier to use. Must be unsigned integral type.
+ * @tparam SIZE Maximum number of elements to contain.
  */
-template <typename T, typename entity, size_t SIZE>
+template <typename T, typename entity, entity SIZE>
 class SparseSet {
 private:
     /**
      * @brief Sparse array in the sparse set.
      * 
+     * @details
+     * The size is `SIZE + 1` to accomodate the "NONE" entity.
      */
     entity sparse[SIZE+1]{};
 
