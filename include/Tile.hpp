@@ -42,6 +42,10 @@ struct Tile {
 struct TileAnimation {
 	using TileId = Tile::TileId;
 
+    /**
+     * @brief Single image in the animation.
+     * 
+     */
 	struct Frame {
         /**
          * @brief Length of the frame in seconds.
