@@ -5,14 +5,14 @@
  */
 #include <stdio.h>
 #include "GRY_Game.hpp"
-#include "scenes/ExampleScene.hpp"
+#include "scenes/TilesetScene.hpp"
 
 int WINDOW_WIDTH = 960;
 int WINDOW_HEIGHT = 540;
 int TARGET_FPS = 120;
 bool USE_VSYNC = true;
 
-const char* imagePath = "assets/basicscene/scene.json";
+const char* imagePath = "assets/tilesetscene/scene.json";
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -27,7 +27,7 @@ _Use_decl_annotations_ int WINAPI WinMain(
     GRY_Game* grayGame = new GRY_Game(WINDOW_WIDTH, WINDOW_HEIGHT, TARGET_FPS, USE_VSYNC);
 	
 	/* Add a scene */
-	grayGame->stackScene(new ExampleScene(grayGame, imagePath));
+	grayGame->stackScene(new TilesetScene(grayGame, imagePath));
 
 	grayGame->runGame();
 
@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
 	GRY_Game* grayGame = new GRY_Game(WINDOW_WIDTH, WINDOW_HEIGHT, TARGET_FPS, USE_VSYNC);
 	
 	/* Add a scene */
-	grayGame->stackScene(new ExampleScene(grayGame, imagePath));
+	grayGame->stackScene(new TilesetScene(grayGame, imagePath));
 
 	grayGame->runGame();
 

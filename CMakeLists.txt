@@ -23,7 +23,9 @@ set(SOURCES src/main.cpp
     src/transitions/FadeToBlack.cpp
     src/GRY_JSON.cpp
     src/GRY_Texture.cpp
+    src/Tileset.cpp
     src/scenes/ExampleScene.cpp
+    src/scenes/TilesetScene.cpp
     )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
