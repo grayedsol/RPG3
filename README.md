@@ -1,2 +1,2 @@
-# Gray Game
-Template for a game using SDL.
+# RPG Game
+RPG game using SDL.
