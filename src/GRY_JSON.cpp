@@ -34,3 +34,14 @@ void GRY_JSON::loadDoc(Document& doc, const char* path) {
     /* Delete the buffer */
     delete[] readBuffer;
 }
+
+const GRY_JSON::Value& GRY_JSON::getProperty(const GRY_JSON::Value& value, const char* name) {
+    assert(value.HasMember("properties"));
+    for (auto& elem : value["properties"].GetArray()) {
+        if (strcmp(name, elem["name"].GetString()) == 0) {
+            return elem["value"];
+        }
+    }
+    GRY_Log("GRY_JSON::getProperty: Could not find property \"%s\".", name);
+    return value["properties"].GetArray()[0];
+}
