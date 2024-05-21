@@ -1,3 +1,8 @@
+/**
+ * @file Tileset.cpp
+ * @author Grayedsol (grayedsol@gmail.com)
+ * @copyright Copyright (c) 2024
+ */
 #include "Tileset.hpp"
 #include "GRY_Game.hpp"
 #include "GRY_JSON.hpp"
@@ -10,7 +15,8 @@ bool Tileset::load(GRY_Game* game) {
 
     /* Load texture */
     if (!gtexture) {
-        gtexture = new GRY_Texture(file["image"].GetString());
+		const char* imagePath = GRY_JSON::getProperty(file, "imagePath").GetString();
+        gtexture = new GRY_Texture(imagePath);
         return gtexture->load(game);
     }
 
@@ -25,10 +31,11 @@ bool Tileset::load(GRY_Game* game) {
 	int tilesetWidth = texture_width / (int)tileWidth;
 
     /* Get total number of tiles in the tileset */
-	Id tileCount = file["tilecount"].GetUint();
+	TileId tileCount = file["tilecount"].GetUint();
 
 	/* Create texture idx */
-	for (Id i = 0; i < tileCount; i++) {
+	/* Use <= because we need one more at the beginning for 0 index (no tile) */
+	for (TileId i = 0; i <= tileCount; i++) {
 		textureIdx.push_back(i);
 	}
 
@@ -42,20 +49,32 @@ bool Tileset::load(GRY_Game* game) {
 	}
 
     for (auto& tile : file["tiles"].GetArray()) {
-        Id id = tile["id"].GetUint();
+        TileId id = tile["id"].GetUint() + 1; /* Add 1 because it's 1-based indexing */
         /* Load animations */
         if (tile.HasMember("animation")) {
-			std::vector<AnimatedTile::Frame> frames;
+			std::vector<TileAnimation::Frame> frames;
 			for (auto& frame : tile["animation"].GetArray()) {
-				frames.push_back(AnimatedTile::Frame {
-						frame["duration"].GetFloat(),
-						(Id)frame["tileid"].GetUint()
+				frames.push_back(TileAnimation::Frame {
+						frame["duration"].GetDouble() / 1000.0,
+						(TileId)(frame["tileid"].GetUint() + 1) /* Add 1 here too */
 					}
 				);
 			}
-			animatedTiles.push_back(AnimatedTile{frames, frames.at(0).duration, id});
+			tileAnimations.push_back(TileAnimation{frames, 0, frames.at(0).duration, id});
 		}
     }
 
     return false;
+}
+
+void Tileset::processAnimations(double delta) {
+	for (auto& anim : tileAnimations) {
+		anim.timer -= delta;
+		if (anim.timer <= 0.0) {
+			if (++anim.currentFrame >= anim.frames.size()) { anim.currentFrame = 0; }
+			const TileAnimation::Frame& newFrame = anim.frames.at(anim.currentFrame);
+			textureIdx.at(anim.tile) = newFrame.index;
+			anim.timer = newFrame.duration;
+		}
+	}
 }
