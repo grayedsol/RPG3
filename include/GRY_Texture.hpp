@@ -32,7 +32,7 @@ struct GRY_Texture : public FileResource {
 	 * 
 	 */
 
-	~GRY_Texture() { SDL_DestroyTexture(texture); }
+	~GRY_Texture() { SDL_DestroyTexture(texture); texture = nullptr; }
 
 	GRY_Texture(const GRY_Texture&) = delete;
 	GRY_Texture& operator=(const GRY_Texture&) = delete;
