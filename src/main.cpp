@@ -15,6 +15,7 @@ bool USE_VSYNC = true;
 const char* imagePath = "assets/tilesetscene/scene.json";
 
 #ifdef _WIN32
+#define NOMINMAX
 #include <Windows.h>
 #include <libloaderapi.h>
 _Use_decl_annotations_ int WINAPI WinMain(

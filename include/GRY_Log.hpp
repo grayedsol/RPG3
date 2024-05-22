@@ -8,6 +8,7 @@
 #include <cstdio>
 
 #ifdef _WIN32
+#define NOMINMAX
 #include "windows.h"
 /**
  * @brief Log a message to the console.
