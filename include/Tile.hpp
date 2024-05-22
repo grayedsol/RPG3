@@ -4,6 +4,7 @@
  * @brief Defines Tile and TileAnimation types
  * @copyright Copyright (c) 2024
  */
+#pragma once
 #include "SDL3/SDL.h"
 #include "ECS.hpp"
 #include <vector>

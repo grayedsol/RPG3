@@ -4,6 +4,7 @@
  * @brief @copybrief Tileset
  * @copyright Copyright (c) 2024
  */
+#pragma once
 #include "Tile.hpp"
 #include "GRY_Texture.hpp"
 
