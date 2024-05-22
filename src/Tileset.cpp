@@ -5,24 +5,25 @@
  */
 #include "Tileset.hpp"
 #include "GRY_Game.hpp"
-#include "GRY_JSON.hpp"
+#include "GRY_Tiled.hpp"
 
 bool Tileset::load(GRY_Game* game) {
     if (tileWidth != 0.0f) { return true; }
 
-    GRY_JSON::Document file;
-    GRY_JSON::loadDoc(file, path);
+	/* Open the tileset file */
+    GRY_JSON::Document tilesetDoc;
+    GRY_JSON::loadDoc(tilesetDoc, path);
 
     /* Load texture */
     if (!gtexture) {
-		const char* imagePath = GRY_JSON::getProperty(file, "imagePath").GetString();
+		const char* imagePath = GRY_Tiled::getProperty(tilesetDoc, "imagePath").GetString();
         gtexture = new GRY_Texture(imagePath);
         return gtexture->load(game);
     }
 
     /* Read width and height of a single tile */
-	tileWidth = file["tilewidth"].GetFloat();
-	tileHeight = file["tileheight"].GetFloat();
+	tileWidth = tilesetDoc["tilewidth"].GetFloat();
+	tileHeight = tilesetDoc["tileheight"].GetFloat();
 	assert(tileWidth && tileHeight);
 
     int texture_width;
@@ -31,7 +32,7 @@ bool Tileset::load(GRY_Game* game) {
 	int tilesetWidth = texture_width / (int)tileWidth;
 
     /* Get total number of tiles in the tileset */
-	TileId tileCount = file["tilecount"].GetUint();
+	TileId tileCount = tilesetDoc["tilecount"].GetUint();
 
 	/* Create texture idx */
 	/* Use <= because we need one more at the beginning for 0 index (no tile) */
@@ -48,7 +49,7 @@ bool Tileset::load(GRY_Game* game) {
 		);
 	}
 
-    for (auto& tile : file["tiles"].GetArray()) {
+    for (auto& tile : tilesetDoc["tiles"].GetArray()) {
         TileId id = tile["id"].GetUint() + 1; /* Add 1 because it's 1-based indexing */
         /* Load animations */
         if (tile.HasMember("animation")) {
