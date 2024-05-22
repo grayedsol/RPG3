@@ -23,8 +23,7 @@
  * @tparam SIZE Maximum number of elements to contain.
  */
 template <typename T, typename entity, entity SIZE>
-class SparseSet {
-private:
+struct SparseSet {
     /**
      * @brief Sparse array in the sparse set.
      * 
@@ -44,7 +43,7 @@ private:
      * 
      */
     std::vector<T> value;
-public:
+
     /**
      * @brief Constructor.
      * 
@@ -59,6 +58,15 @@ public:
 
     SparseSet(const SparseSet&) = delete;
     SparseSet& operator=(const SparseSet&) = delete;
+
+    friend void swap(SparseSet& lhs, SparseSet& rhs) {
+        using std::swap;
+        swap<entity, SIZE+1>(lhs.sparse, rhs.sparse);
+        swap(lhs.dense, rhs.dense);
+        swap(lhs.value, rhs.value);
+    }
+
+    SparseSet(SparseSet&& other) noexcept { swap(*this, other); }
 
     /**
      * @brief Check if `e` has data in this SparseSet.
