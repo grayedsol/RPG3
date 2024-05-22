@@ -49,6 +49,11 @@ CMakeFiles/
 [Dd]ocs/html/
 [Dd]ocs/latex/
 
+# Tile project files
+assets/tiled/
+*.tiled-project
+*.tiled-session
+
 # Visual Studio 2015/2017 cache/options directory
 .vs/
 # Visual Studio Code directory
