@@ -7,6 +7,7 @@
 #pragma once
 #include "Scene.hpp"
 #include "Tileset.hpp"
+#include "TileCollision.hpp"
 
 /**
  * @brief Loads and displays a tileset.
@@ -17,6 +18,7 @@
  * 
  * The player can press GAME_B to switch to a new instance
  * of this scene with a FadeToBlack transition, or GAME_A to exit.
+ * Pressing GAME_UP will highlight the collision boxes for the tiles.
  */
 class TilesetScene : public Scene {
 private:
@@ -25,6 +27,12 @@ private:
      * 
     */
     Tileset* tileset = nullptr;
+
+    /**
+     * @brief Collision data for each tile in the tileset.
+     * 
+     */
+    TileCollision* collisions = nullptr;
 
     /**
      * @brief Distance between each displayed tile, in pixels.
@@ -44,7 +52,10 @@ public:
      */
     TilesetScene(GRY_Game* game, const char* tilesetPath) : Scene(game, tilesetPath) {}
 
-    ~TilesetScene() { delete tileset; tileset = nullptr; }
+    ~TilesetScene() {
+        delete tileset; tileset = nullptr;
+        delete collisions; collisions = nullptr;
+    }
 
     /**
      * @brief Initializes the scene.
