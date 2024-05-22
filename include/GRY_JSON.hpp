@@ -33,6 +33,4 @@ namespace GRY_JSON {
      * @param path Path of the JSON file.
      */
     void loadDoc(Document& doc, const char* path);
-    
-    const Value& getProperty(const Value& value, const char* name);
 }
