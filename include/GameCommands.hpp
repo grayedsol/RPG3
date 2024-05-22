@@ -13,6 +13,10 @@
 enum GCmd {
 	GameMenu,
 	GameQuit,
+	GameUp,
+	GameDown,
+	GameLeft,
+	GameRight,
 
 	MapInteract,
 	MapMenu,
