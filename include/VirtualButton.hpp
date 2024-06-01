@@ -11,6 +11,8 @@
  * 
  */
 enum VirtualButton {
+	GAME_NONE,
+
 	GAME_A,
 	GAME_B,
 	GAME_X,
@@ -24,6 +26,5 @@ enum VirtualButton {
 	GAME_START,
 	GAME_SELECT,
 	
-	GAME_NONE,
 	VIRTUAL_BUTTON_SIZE
 };
