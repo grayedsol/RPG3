@@ -25,16 +25,17 @@ void TilesetScene::process() {
     /* Determines if collision will be highlighted */
     bool highlightCollisions = false;
 
-    /* Check for input */
-    switch (readInput()) {
+    /* Check for pressed inputs */
+    if (isPressing(GCmd::GameUp)) {
+        highlightCollisions = true;
+    }
+    /* Check for inputs from this frame only */
+    switch (readSingleInput()) {
         case GCmd::GameQuit:
             game->quit();
             break;
         case GCmd::GameMenu:
             game->switchScene(new TilesetScene(game, scenePath), new FadeToBlack(game));
-            break;
-        case GCmd::GameUp:
-            highlightCollisions = true;
             break;
         default:
             break;

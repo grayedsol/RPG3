@@ -20,8 +20,8 @@ void ExampleScene::setControls() {
 }
 
 void ExampleScene::process() {
-    /* Check for commands */
-    switch (readInput()) {
+    /* Check for inputs from this frame */
+    switch (readSingleInput()) {
         case GCmd::GameQuit:
             game->quit();
             break;
