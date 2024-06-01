@@ -11,8 +11,8 @@
  */
 InputHandler::InputHandler() : keyboardState(SDL_GetKeyboardState(NULL)) {
 	for (int i = 0; i < VirtualButton::VIRTUAL_BUTTON_SIZE; i++) {
-		VButtonState[i][0] = nullptr;
-		VButtonState[i][1] = nullptr;
+		buttonState[i][0] = nullptr;
+		buttonState[i][1] = nullptr;
 	}
 	for (int i = 0; i < GRY_NUM_MOUSECODES; i++) { mouseState[i] = SDL_RELEASED; }
 
@@ -41,8 +41,8 @@ InputHandler::InputHandler() : keyboardState(SDL_GetKeyboardState(NULL)) {
  * `code` evaluates to 0 (e.g., SDL_SCANCODE_UNKNOWN or GRY_MOUSECODE_UNKNOWN)
  * `button` evaluates to 0 (VirtualButton::GAME_NONE)
  * `code` already has a mapping to a VirtualButton
- * The primary input of `VButtonState` is already bound and `secondary` is false
- * The secondary input of `VButtonState` is already bound and `secondary` is true
+ * The primary input of `buttonState` is already bound and `secondary` is false
+ * The secondary input of `buttonState` is already bound and `secondary` is true
  */
 void InputHandler::mapInput(unsigned int code, VirtualButton button, bool mouse, bool secondary) {
 	if (!code || !button) {
@@ -55,26 +55,26 @@ void InputHandler::mapInput(unsigned int code, VirtualButton button, bool mouse,
 			GRY_Log("[InputHandler] Cannot map mouse input that has already been mapped.\n");
 			return;
 		}
-		if (VButtonState[button][index] != nullptr) {
+		if (buttonState[button][index] != nullptr) {
 			GRY_Log("[InputHandler] %s ", secondary ? "Secondary" : "Primary");
 			GRY_Log("binding for VirtualButton already mapped\n.");
 			return;
 		}
 		mouseButtons[code] = button;
-		VButtonState[button][index] = &mouseState[code];
+		buttonState[button][index] = &mouseState[code];
 	}
 	else {
 		if (keyButtons[code]) {
 			GRY_Log("[InputHandler] Cannot map keyboard input that has already been mapped.\n");
 			return;
 		}
-		if (VButtonState[button][index] != nullptr) {
+		if (buttonState[button][index] != nullptr) {
 			GRY_Log("[InputHandler] %s ", secondary ? "Secondary" : "Primary");
 			GRY_Log("binding for VirtualButton already mapped\n.");
 			return;
 		}
 		keyButtons[code] = button;
-		VButtonState[button][index] = &keyboardState[code];
+		buttonState[button][index] = &keyboardState[code];
 	}
 }
 

@@ -39,7 +39,7 @@ private:
      * 
      * @sa isPressing
      */
-    const Uint8* VButtonState[VirtualButton::VIRTUAL_BUTTON_SIZE][2];
+    const Uint8* buttonState[VirtualButton::VIRTUAL_BUTTON_SIZE][2];
 
     /**
      * @brief Array representing the state of each mouse button.
@@ -139,7 +139,7 @@ public:
 	 */
     const bool isPressing(VirtualButton b) const {
 	    return b &&
-		    ((VButtonState[b][0] && *VButtonState[b][0]) ||
-		    (VButtonState[b][1] && *VButtonState[b][1]));
+		    ((buttonState[b][0] && *buttonState[b][0]) ||
+		    (buttonState[b][1] && *buttonState[b][1]));
     }
 };
