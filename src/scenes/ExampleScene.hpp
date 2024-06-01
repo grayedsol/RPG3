@@ -14,8 +14,8 @@
  * @details
  * The scene displays an image from the assets folder on the screen.
  * 
- * The player can press GAME_B to switch to a new instance
- * of this scene with a FadeToBlack transition, or GAME_A to exit.
+ * The player can press GAME_A to switch to a new instance
+ * of this scene with a FadeToBlack transition, or GAME_B to exit.
  */
 class ExampleScene : public Scene {
 private:

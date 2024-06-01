@@ -16,8 +16,8 @@
  * The scene displays a tileset from the assets folder on the screen.
  * Useful for testing purposes.
  * 
- * The player can press GAME_B to switch to a new instance
- * of this scene with a FadeToBlack transition, or GAME_A to exit.
+ * The player can press GAME_A to switch to a new instance
+ * of this scene with a FadeToBlack transition, or GAME_B to exit.
  * Pressing GAME_UP will highlight the collision boxes for the tiles.
  */
 class TilesetScene : public Scene {

@@ -11,14 +11,14 @@
 /**
  * @details
  * Controls:
- * GAME_A: Quit
- * GAME_B: Switch to a new TilesetScene with transition
+ * GAME_A: Switch to a new TilesetScene with transition
+ * GAME_B: Quit
  * GAME_UP: Highlight tile collision boxes
 */
 void TilesetScene::setControls() {
-    controls.mapCmd(GCmd::GameQuit, VirtualButton::GAME_A);
-    controls.mapCmd(GCmd::GameMenu, VirtualButton::GAME_B);
+    controls.mapCmd(GCmd::GameMenu, VirtualButton::GAME_A);
     controls.mapCmd(GCmd::GameUp, VirtualButton::GAME_UP);
+    controls.mapCmd(GCmd::GameQuit, VirtualButton::GAME_B);
 }
 
 void TilesetScene::process() {
@@ -31,11 +31,11 @@ void TilesetScene::process() {
     }
     /* Check for inputs from this frame only */
     switch (readSingleInput()) {
-        case GCmd::GameQuit:
-            game->quit();
-            break;
         case GCmd::GameMenu:
             game->switchScene(new TilesetScene(game, scenePath), new FadeToBlack(game));
+            break;
+        case GCmd::GameQuit:
+            game->quit();
             break;
         default:
             break;

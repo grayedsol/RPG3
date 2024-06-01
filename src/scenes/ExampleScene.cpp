@@ -15,18 +15,18 @@
  * GAME_B: Switch to a new ExampleScene with transition
 */
 void ExampleScene::setControls() {
-    controls.mapCmd(GCmd::GameQuit, VirtualButton::GAME_A);
-    controls.mapCmd(GCmd::GameMenu, VirtualButton::GAME_B);
+    controls.mapCmd(GCmd::GameMenu, VirtualButton::GAME_A);
+    controls.mapCmd(GCmd::GameQuit, VirtualButton::GAME_B);
 }
 
 void ExampleScene::process() {
     /* Check for inputs from this frame */
     switch (readSingleInput()) {
-        case GCmd::GameQuit:
-            game->quit();
-            break;
         case GCmd::GameMenu:
             game->switchScene(new ExampleScene(game, scenePath), new FadeToBlack(game));
+            break;
+        case GCmd::GameQuit:
+            game->quit();
             break;
         default:
             break;
