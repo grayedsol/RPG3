@@ -11,6 +11,22 @@
 #include <vector>
 
 /**
+ * @brief Mouse button representation.
+ * 
+ * @details
+ * See SDL_mouse.h.
+ */
+enum GRY_Mousecode {
+    GRY_MOUSE_UNKNOWN = 0,
+    GRY_MOUSE_LEFT = 1,
+    GRY_MOUSE_MIDDLE = 2,
+    GRY_MOUSE_RIGHT = 3,
+    GRY_MOUSE_X1 = 4,
+    GRY_MOUSE_X2 = 5,
+    GRY_NUM_MOUSECODES = 6
+};
+
+/**
  * @brief Handles conversion and reading of input from SDL to VirtualButtons.
  * 
  */
@@ -20,13 +36,17 @@ private:
      * @brief Array that maps SDL_Scancodes to VirtualButtons.
      * 
      */
-    VirtualButton buttons[SDL_NUM_SCANCODES];
+    VirtualButton keyButtons[SDL_NUM_SCANCODES];
 
     /**
-     * @brief Array that maps VirtualButtons to SDL_Scancodes.
+     * @brief Array that maps GRY_Mousecodes to VirtualButtons.
      * 
      */
-	SDL_Scancode scancodes[VirtualButton::VIRTUAL_BUTTON_SIZE];
+    VirtualButton mouseButtons[GRY_NUM_MOUSECODES];
+
+    const Uint8* VButtonState[VirtualButton::VIRTUAL_BUTTON_SIZE][2];
+
+    Uint8 mouseState[GRY_NUM_MOUSECODES];
 
     /**
      * @brief Points to the keyboard state obtained from `SDL_GetKeyboardState()`.
@@ -35,31 +55,31 @@ private:
     const Uint8* keyboardState = NULL;
 
     /**
-     * @brief A list of inputs. Only `keyInputs.back()` is guaranteed to be currently pressed.
+     * @brief A list of inputs. Only `inputs.back()` is guaranteed to be currently pressed.
      * 
      * @details
-     * Any inputs other than `keyInputs.back()` may or may not be currently pressed, but
-     * are stored anyways to keep track of inputs to "fall back" to when `keyInputs.back()`
+     * Any inputs other than `inputs.back()` may or may not be currently pressed, but
+     * are stored anyways to keep track of inputs to "fall back" to when `inputs.back()`
      * is released.
      */
-	std::vector<SDL_Scancode> keyInputs;
+	std::vector<VirtualButton> inputs;
 
     /**
      * @brief Stores the latest input from the current frame only.
      * 
      * @details
-     * It is SDL_SCANCODE_UNKNOWN if there have been no inputs from the current frame.
+     * It is GAME_NONE if there have been no inputs from the current frame.
      * 
      */
-	SDL_Scancode singleKeyInput = SDL_SCANCODE_UNKNOWN;
+	VirtualButton singleInput = GAME_NONE;
 
     /**
-     * @brief Map a virtual button to a scancode, and vice-versa.
+     * @brief Map a virtual button to a code, and vice-versa.
      * 
-     * @param scancode Scancode to map `button` to.
-     * @param button VirtualButton to map `scancode` to.
+     * @param code Code to map `button` to.
+     * @param button VirtualButton to map `code` to.
      */
-    void mapButton(SDL_Scancode scancode, VirtualButton button);
+    void mapInput(unsigned int code, VirtualButton button, bool mouse, bool secondary = false);
 
     /**
      * @brief Reset the mapping of VirtualButtons and SDL_Scancodes.
@@ -68,11 +88,18 @@ private:
     void resetControls();
 
     /**
+     * @brief Process a mouse button down SDL_Event.
+     * 
+     * @param e 
+     */
+    void processMouseInput(const SDL_Event& e);
+
+    /**
      * @brief Process a key up or key down SDL_Event.
      * 
      * @param e Reference to the SDL_Event to process.
      */
-    void processInput(SDL_Event& e);
+    void processKeyInput(const SDL_Event& e);
 public:
     /**
      * @brief Constructor.
@@ -96,12 +123,10 @@ public:
      * @return A VirtualButton input.
      * 
      * @sa getSingleInput
-     * @sa getScancodeInput
-     * @sa getSingleScancodeInput
      * @sa isPressing
      */
     const VirtualButton getInput() const { 
-        return keyInputs.size() ? buttons[keyInputs.back()] : VirtualButton::GAME_NONE;
+        return inputs.size() ? inputs.back() : VirtualButton::GAME_NONE;
     }
 
     /**
@@ -113,46 +138,12 @@ public:
      * @return A VirtualButton input.
      * 
      * @sa getInput
-     * @sa getScancodeInput
-     * @sa getSingleScancodeInput
      * @sa isPressing
      */
-    const VirtualButton getSingleInput() const { return buttons[singleKeyInput]; }
+    const VirtualButton getSingleInput() const { return singleInput; }
 
     /**
-     * @brief Get the latest active SDL_Scancode input.
-     * 
-     * @details
-     * Returns SDL_SCANCODE_UNKNOWN if there are no active inputs.
-     * 
-     * @return An SDL_Scancode input.
-     * 
-     * @sa getInput
-     * @sa getSingleInput
-     * @sa getSingleScancodeInput
-     * @sa isPressing
-     */
-    const SDL_Scancode getScancodeInput() const {
-        return keyInputs.size() ? keyInputs.back() : SDL_SCANCODE_UNKNOWN;
-    }
-
-    /**
-     * @brief Get the latest active SDL_Scancode input from the current frame only.
-     * 
-     * @details
-     * Returns SDL_SCANCODE_UNKNOWN if there are no active inputs from this frame.
-     * 
-     * @return An SDL_Scancode input.
-     * 
-     * @sa getInput
-     * @sa getSingleInput
-     * @sa getScancodeInput
-     * @sa isPressing
-     */
-    const SDL_Scancode getSingleScancodeInput() const { return singleKeyInput; }
-
-    /**
-	 * @brief Determine if `b` is being pressed by checking its associated SDL_Scancode.
+	 * @brief Determine if `b` is being pressed..
 	 * 
 	 * @param b VirtualButton to check.
 	 * @return `true` if `b` is being pressed.
@@ -160,8 +151,6 @@ public:
      * 
      * @sa getInput
      * @sa getSingleInput
-     * @sa getScancodeInput
-     * @sa getSingleScancodeInput
 	 */
-    const bool isPressing(VirtualButton b) const { return (bool)keyboardState[scancodes[b]]; }
+    const bool isPressing(VirtualButton b) const;
 };
