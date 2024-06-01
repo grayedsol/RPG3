@@ -24,7 +24,7 @@ InputHandler::InputHandler() : keyboardState(SDL_GetKeyboardState(NULL)) {
 	*/
 	mapInput(SDL_SCANCODE_E, GAME_A, false);
 	mapInput(SDL_SCANCODE_W, GAME_UP, false);
-	mapInput(GRY_MOUSECODE_LEFT, GAME_UP, true, true);
+	mapInput(GRY_MOUSECODE_LEFT, GAME_UP, true);
 	mapInput(SDL_SCANCODE_S, GAME_DOWN, false);
 	mapInput(SDL_SCANCODE_A, GAME_LEFT, false);
 	mapInput(SDL_SCANCODE_D, GAME_RIGHT, false);
@@ -57,7 +57,7 @@ void InputHandler::mapInput(unsigned int code, VirtualButton button, bool mouse,
 		}
 		if (buttonState[button][index] != nullptr) {
 			GRY_Log("[InputHandler] %s ", secondary ? "Secondary" : "Primary");
-			GRY_Log("binding for VirtualButton already mapped\n.");
+			GRY_Log("binding for VirtualButton already mapped.\n");
 			return;
 		}
 		mouseButtons[code] = button;
@@ -70,7 +70,7 @@ void InputHandler::mapInput(unsigned int code, VirtualButton button, bool mouse,
 		}
 		if (buttonState[button][index] != nullptr) {
 			GRY_Log("[InputHandler] %s ", secondary ? "Secondary" : "Primary");
-			GRY_Log("binding for VirtualButton already mapped\n.");
+			GRY_Log("binding for VirtualButton already mapped.\n");
 			return;
 		}
 		keyButtons[code] = button;
