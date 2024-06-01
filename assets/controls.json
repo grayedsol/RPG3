@@ -1,0 +1,42 @@
+{ 
+    "GAME_A" : {
+        "Primary" : { "code" : 8 },
+        "Secondary" : { "code" : 1, "mouse" : true }
+    },
+
+    "GAME_B" : {
+        "Primary" : { "code" : 43 }
+    },
+
+    "GAME_X" : {
+        "Primary" : { "code": 20 }
+    },
+
+    "GAME_Y" : {
+        "Primary" : { "code": 21 }
+    },
+
+    "GAME_UP" : {
+        "Primary" : { "code": 26 }
+    },
+
+    "GAME_DOWN" : {
+        "Primary" : { "code": 22 }
+    },
+    
+    "GAME_LEFT" : {
+        "Primary" : { "code": 4 }
+    },
+
+    "GAME_RIGHT" : {
+        "Primary" : { "code": 7 }
+    },
+
+    "GAME_START" : {
+        "Primary" : { "code": 40 }
+    },
+
+    "GAME_SELECT" : {
+        "Primary" : { "code": 49 }
+    }
+}
