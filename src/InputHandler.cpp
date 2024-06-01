@@ -4,6 +4,8 @@
  * @copyright Copyright (c) 2024
  */
 #include "InputHandler.hpp"
+#include "GRY_Log.hpp"
+#include "GRY_JSON.hpp"
 
 /**
  * @details
@@ -18,21 +20,7 @@ InputHandler::InputHandler() : keyboardState(SDL_GetKeyboardState(NULL)) {
 
 	resetControls();
 
-	/**
-	 * Hardcoded default controls.
-	 * TODO: Change this.
-	*/
-	mapInput(SDL_SCANCODE_E, GAME_A, false);
-	mapInput(SDL_SCANCODE_W, GAME_UP, false);
-	mapInput(GRY_MOUSECODE_LEFT, GAME_UP, true);
-	mapInput(SDL_SCANCODE_S, GAME_DOWN, false);
-	mapInput(SDL_SCANCODE_A, GAME_LEFT, false);
-	mapInput(SDL_SCANCODE_D, GAME_RIGHT, false);
-	mapInput(SDL_SCANCODE_Q, GAME_B, false);
-	mapInput(SDL_SCANCODE_TAB, GAME_X, false);
-	mapInput(SDL_SCANCODE_R, GAME_Y, false);
-	mapInput(SDL_SCANCODE_RETURN, GAME_START, false);
-	mapInput(SDL_SCANCODE_BACKSLASH, GAME_SELECT, false);
+	loadControls(controlsPath);
 }
 
 /**
@@ -81,6 +69,39 @@ void InputHandler::mapInput(unsigned int code, VirtualButton button, bool mouse,
 void InputHandler::resetControls() {
 	for (int i = 0; i < SDL_NUM_SCANCODES; i++) { keyButtons[i] = VirtualButton::GAME_NONE; }
 	for (int i = 0; i < GRY_NUM_MOUSECODES; i++) { mouseButtons[i] = VirtualButton::GAME_NONE; }
+}
+
+void InputHandler::loadControls(const char *path) {
+	GRY_JSON::Document doc;
+	GRY_JSON::loadDoc(doc, path);
+
+	for (int i = 1; i < VirtualButton::VIRTUAL_BUTTON_SIZE; i++) {
+		if (!doc.HasMember(VirtualButtonStrings[i])) { continue; }
+
+		auto& button = doc[VirtualButtonStrings[i]];
+
+		if (!button.HasMember("Primary")) {
+			GRY_Log("[InputHandler] Button %s has no Primary binding.\n", VirtualButtonStrings[i]);
+			continue;
+		}
+		
+		auto& primary = button["Primary"];
+		mapInput(
+			primary["code"].GetUint(),
+			static_cast<VirtualButton>(i),
+			primary.HasMember("mouse") ? primary["mouse"].GetBool() : false
+		);
+
+		if (!button.HasMember("Secondary")) { continue; }
+
+		auto& secondary = button["Secondary"];
+		mapInput(
+			secondary["code"].GetUint(),
+			static_cast<VirtualButton>(i),
+			secondary.HasMember("mouse") ? secondary["mouse"].GetBool() : false,
+			true
+		);
+	}
 }
 
 void InputHandler::process(bool& gameRunning) {
