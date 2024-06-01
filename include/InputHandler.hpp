@@ -7,24 +7,9 @@
 #pragma once
 #include "SDL3/SDL.h"
 #include "VirtualButton.hpp"
+#include "GRY_Mousecode.hpp"
 #include "GRY_Log.hpp"
 #include <vector>
-
-/**
- * @brief Mouse button representation.
- * 
- * @details
- * See SDL_mouse.h.
- */
-enum GRY_Mousecode {
-    GRY_MOUSE_UNKNOWN = 0,
-    GRY_MOUSE_LEFT = 1,
-    GRY_MOUSE_MIDDLE = 2,
-    GRY_MOUSE_RIGHT = 3,
-    GRY_MOUSE_X1 = 4,
-    GRY_MOUSE_X2 = 5,
-    GRY_NUM_MOUSECODES = 6
-};
 
 /**
  * @brief Handles conversion and reading of input from SDL to VirtualButtons.
@@ -44,8 +29,22 @@ private:
      */
     VirtualButton mouseButtons[GRY_NUM_MOUSECODES];
 
+    /**
+     * @brief Array that can be used to check the pressing state of a VirtualButton.
+     * 
+     * @details
+     * The array can be indexed using a VirtualButton and 0 or 1 as the index to the
+     * primary or secondary binding, respectively.
+     * The bindings point to the state of a physical mouse or keyboard input.
+     * 
+     * @sa isPressing
+     */
     const Uint8* VButtonState[VirtualButton::VIRTUAL_BUTTON_SIZE][2];
 
+    /**
+     * @brief Array representing the state of each mouse button.
+     * 
+     */
     Uint8 mouseState[GRY_NUM_MOUSECODES];
 
     /**
@@ -74,9 +73,9 @@ private:
 	VirtualButton singleInput = GAME_NONE;
 
     /**
-     * @brief Map a virtual button to a code, and vice-versa.
+     * @brief Map a virtual button to a physical input, and vice-versa.
      * 
-     * @param code Code to map `button` to.
+     * @param code Code of the physical input to map `button` to.
      * @param button VirtualButton to map `code` to.
      */
     void mapInput(unsigned int code, VirtualButton button, bool mouse, bool secondary = false);
@@ -86,20 +85,6 @@ private:
      * 
      */
     void resetControls();
-
-    /**
-     * @brief Process a mouse button down SDL_Event.
-     * 
-     * @param e 
-     */
-    void processMouseInput(const SDL_Event& e);
-
-    /**
-     * @brief Process a key up or key down SDL_Event.
-     * 
-     * @param e Reference to the SDL_Event to process.
-     */
-    void processKeyInput(const SDL_Event& e);
 public:
     /**
      * @brief Constructor.
@@ -152,5 +137,9 @@ public:
      * @sa getInput
      * @sa getSingleInput
 	 */
-    const bool isPressing(VirtualButton b) const;
+    const bool isPressing(VirtualButton b) const {
+	    return b &&
+		    ((VButtonState[b][0] && *VButtonState[b][0]) ||
+		    (VButtonState[b][1] && *VButtonState[b][1]));
+    }
 };

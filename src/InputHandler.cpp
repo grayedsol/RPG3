@@ -24,7 +24,7 @@ InputHandler::InputHandler() : keyboardState(SDL_GetKeyboardState(NULL)) {
 	*/
 	mapInput(SDL_SCANCODE_E, GAME_A, false);
 	mapInput(SDL_SCANCODE_W, GAME_UP, false);
-	mapInput(GRY_MOUSE_LEFT, GAME_UP, true, true);
+	mapInput(GRY_MOUSECODE_LEFT, GAME_UP, true, true);
 	mapInput(SDL_SCANCODE_S, GAME_DOWN, false);
 	mapInput(SDL_SCANCODE_A, GAME_LEFT, false);
 	mapInput(SDL_SCANCODE_D, GAME_RIGHT, false);
@@ -37,8 +37,12 @@ InputHandler::InputHandler() : keyboardState(SDL_GetKeyboardState(NULL)) {
 
 /**
  * @details
- * Logs an error and does not update the mapping if `code` evaluates to 0 or if
- * `button` is VirtualButton::GAME_NONE.
+ * Logs an error and does not update the mapping under any of the following circumstances:
+ * `code` evaluates to 0 (e.g., SDL_SCANCODE_UNKNOWN or GRY_MOUSECODE_UNKNOWN)
+ * `button` evaluates to 0 (VirtualButton::GAME_NONE)
+ * `code` already has a mapping to a VirtualButton
+ * The primary input of `VButtonState` is already bound and `secondary` is false
+ * The secondary input of `VButtonState` is already bound and `secondary` is true
  */
 void InputHandler::mapInput(unsigned int code, VirtualButton button, bool mouse, bool secondary) {
 	if (!code || !button) {
@@ -46,14 +50,14 @@ void InputHandler::mapInput(unsigned int code, VirtualButton button, bool mouse,
 		return;
 	}
 	int index = secondary ? 1 : 0;
-	/* TODO: check for if controls are being overwritten here */
 	if (mouse) {
 		if (mouseButtons[code]) {
 			GRY_Log("[InputHandler] Cannot map mouse input that has already been mapped.\n");
 			return;
 		}
 		if (VButtonState[button][index] != nullptr) {
-			GRY_Log("[InputHandler] %s binding for VirtualButton already mapped\n.", secondary ? "Secondary" : "Primary");
+			GRY_Log("[InputHandler] %s ", secondary ? "Secondary" : "Primary");
+			GRY_Log("binding for VirtualButton already mapped\n.");
 			return;
 		}
 		mouseButtons[code] = button;
@@ -65,7 +69,8 @@ void InputHandler::mapInput(unsigned int code, VirtualButton button, bool mouse,
 			return;
 		}
 		if (VButtonState[button][index] != nullptr) {
-			GRY_Log("[InputHandler] %s binding for VirtualButton already mapped\n.", secondary ? "Secondary" : "Primary");
+			GRY_Log("[InputHandler] %s ", secondary ? "Secondary" : "Primary");
+			GRY_Log("binding for VirtualButton already mapped\n.");
 			return;
 		}
 		keyButtons[code] = button;
@@ -76,22 +81,6 @@ void InputHandler::mapInput(unsigned int code, VirtualButton button, bool mouse,
 void InputHandler::resetControls() {
 	for (int i = 0; i < SDL_NUM_SCANCODES; i++) { keyButtons[i] = VirtualButton::GAME_NONE; }
 	for (int i = 0; i < GRY_NUM_MOUSECODES; i++) { mouseButtons[i] = VirtualButton::GAME_NONE; }
-}
-
-void InputHandler::processMouseInput(const SDL_Event &e) {
-	if (e.button.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
-		inputs.push_back(mouseButtons[e.button.button]);
-		singleInput = mouseButtons[e.button.button];
-	}
-	mouseState[e.button.button] = e.button.state;
-}
-
-void InputHandler::processKeyInput(const SDL_Event& e) {
-	if (!e.key.repeat) {
-		/* Add the active input to `inputs` */
-		inputs.push_back(keyButtons[e.key.keysym.scancode]);
-		singleInput = keyButtons[e.key.keysym.scancode];
-	}
 }
 
 void InputHandler::process(bool& gameRunning) {
@@ -112,30 +101,29 @@ void InputHandler::process(bool& gameRunning) {
 		case SDL_EVENT_QUIT:
 			gameRunning = false;
 			break;
-		case SDL_EVENT_MOUSE_BUTTON_UP:
 		case SDL_EVENT_MOUSE_BUTTON_DOWN:
-			processMouseInput(event);
+			inputs.push_back(mouseButtons[event.button.button]); /**< Add active input to `inputs` */
+			singleInput = mouseButtons[event.button.button]; /**< Set as the latest current frame input */
+			/* No break here because we update the mouse state for both up and down mouse events */
+		case SDL_EVENT_MOUSE_BUTTON_UP:
+			mouseState[event.button.button] = event.button.state; /**< Update mouse state */
 			break;
 		case SDL_EVENT_MOUSE_MOTION:
 			break;
-		case SDL_EVENT_KEY_UP:
-			break;
 		case SDL_EVENT_KEY_DOWN:
-			processKeyInput(event);
+			if (event.key.repeat) { break; } /** Ensure it's not a key repeat */
+			inputs.push_back(keyButtons[event.key.keysym.scancode]); /**< Add active input to `inputs` */
+			singleInput = keyButtons[event.key.keysym.scancode]; /**< Set as the latest current frame input */
+			break;
+		case SDL_EVENT_KEY_UP:
 			break;
 		default:
 			break;
 		}
 	}
 
-	/* Remove from inputs until an active input is found */
+	/* Remove from `inputs` until an active input is found */
 	while (!inputs.empty() && !isPressing(inputs.back())) {
 		inputs.pop_back();
 	}
-}
-
-const bool InputHandler::isPressing(VirtualButton b) const {
-	return b &&
-		(VButtonState[b][0] && *VButtonState[b][0]) ||
-		(VButtonState[b][1] && *VButtonState[b][1]);
 }
