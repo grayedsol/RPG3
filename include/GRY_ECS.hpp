@@ -27,11 +27,13 @@ private:
 	 * 
 	 */
 	std::tuple<ComponentSet<Ts>...> components;
+
 	/**
 	 * @brief Container to keep track of entities that are no longer in use.
 	 * 
 	 */
     std::vector<entity> deadEntities;
+	
 	/**
 	 * @brief Next entity to be created.
 	 * 
