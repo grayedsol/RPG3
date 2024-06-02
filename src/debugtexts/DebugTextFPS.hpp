@@ -20,7 +20,7 @@ private:
      * @brief Fps of the last frame.
      * 
      */
-    double lastFps = 0.0;
+    double fps = 0.0;
 public:
     /**
      * @copydoc DebugText

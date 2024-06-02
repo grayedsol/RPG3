@@ -7,17 +7,17 @@
 #include "GRY_Game.hpp"
 
 void DebugTextFPS::process() {
-    double fps = game->getFPS();
+    double newFps = game->getFPS();
 
     /* Change texture only if fps has changed */
-    if (lastFps != fps) {
-        /* Format fps to C string */
+    if (fps != newFps) {
+        /* Format newFps to C string */
         char output[16];
-        snprintf(output, 16, "FPS: %.1f", fps);
+        snprintf(output, 16, "FPS: %.1f", newFps);
 
         /* Update texture */
         updateText(output);
 
-        lastFps = fps;
+        fps = newFps;
     }
 }
