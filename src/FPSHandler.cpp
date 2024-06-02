@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2024
  */
 #include "FPSHandler.hpp"
+#include "SDL3/SDL.h"
 
 FPSHandler::FPSHandler(const unsigned int TARGET_FPS) :
     TARGET_FPS(TARGET_FPS),

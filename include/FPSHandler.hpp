@@ -5,7 +5,7 @@
  * @copyright Copyright (c) 2024
  */
 #pragma once
-#include <SDL3/SDL.h>
+#include <stdint.h>
 
 /**
  * @brief Calculates and manages the game speed.
@@ -13,16 +13,20 @@
  */
 class FPSHandler {
 private:
+	typedef uint64_t Uint64;
+
 	/**
 	 * @brief Desired frames per second for the program.
 	 * 
 	 */
 	const unsigned int TARGET_FPS;
+
 	/**
 	 * @brief Desired length of a frame in milliseconds.
 	 * 
 	 */
 	const unsigned int frameLength;
+
 	/**
 	 * @brief Delta time for game processing, in seconds.
 	 * 
@@ -30,6 +34,7 @@ private:
 	 * Initialized to `1.0 / TARGET_FPS`.
 	 */
 	double deltaTime;
+
 	/**
 	 * @brief Minimum delta time.
 	 * 
@@ -37,6 +42,7 @@ private:
 	 * The game will run with at most `1.0 / minDelta` fps.
 	 */
 	double minDelta;
+
 	/**
 	 * @brief Maximum delta time.
 	 * 
@@ -45,6 +51,7 @@ private:
 	 * drops below `1.0 / maxDelta` fps.
 	 */
 	const double maxDelta = 0.05;
+
 	/**
 	 * @brief Start time of the current frame using SDL's counter.
 	 * 
@@ -52,6 +59,7 @@ private:
 	 * Retrieved using `SDL_GetPerformanceCounter()`.
 	 */
 	Uint64 start = 0;
+
 	/**
 	 * @brief Start time of the current frame in milliseconds.
 	 * 
