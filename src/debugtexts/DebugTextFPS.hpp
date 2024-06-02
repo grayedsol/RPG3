@@ -23,7 +23,7 @@ private:
     double lastFps = 0.0;
 public:
     /**
-     * @copydoc DebugText
+     * @copydoc DebugText::DebugText
      */
     DebugTextFPS(DebugScreen* debugScreen, SDL_Color color) :
         DebugText(debugScreen, color) {
