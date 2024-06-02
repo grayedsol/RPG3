@@ -9,6 +9,7 @@
 #include "SceneManager.hpp"
 #include "FPSHandler.hpp"
 #include "InputHandler.hpp"
+#include "DebugScreen.hpp"
 
 /**
  * @brief Runs the game loop and provides access to essential game functions.
@@ -23,21 +24,30 @@ protected:
 	 * 
 	 */
 	GRY_SDL gsdl;
+
 	/**
 	 * @brief @copybrief FPSHandler
 	 * 
 	 */
 	SceneManager scenes;
+
 	/**
 	 * @brief @copybrief SceneManager
 	 * 
 	 */
 	FPSHandler fps;
+
 	/**
 	 * @brief @copybrief InputHandler
 	 * 
 	 */
 	InputHandler input;
+
+	/**
+	 * @brief @copybrief DebugScreen
+	 * 
+	 */
+	DebugScreen debugScreen;
 
 	/**
 	 * @brief Game running status. When false, the game will exit at the end of the current frame.
@@ -74,10 +84,10 @@ public:
 	void quit() { gameRunning = false; }
 
 	/**
-	 * @brief Update function called every frame.
+	 * @brief Update function called every frame, regardless of the game's state.
 	 * 
 	 */
-	virtual void process() {}
+	virtual void process();
 
 	/**
 	 * @brief Get the internal GRY_SDL.
@@ -85,6 +95,18 @@ public:
 	 * @return Reference to the GRY_SDL.
 	 */
 	GRY_SDL& getSDL() { return gsdl; }
+
+	/**
+	 * @brief Get the debug screen.
+	 * 
+	 * @return Reference to the debug screen.
+	 */
+	DebugScreen& getDebugScreen() { return debugScreen; }
+
+	/**
+	 * @copydoc DebugScreen::toggle
+	 */
+	void toggleDebugScreen() { debugScreen.toggle(); }
 
 	/**
 	 * @copydoc SceneManager::stackScene
@@ -100,6 +122,11 @@ public:
 	 * @copydoc FPSHandler::getDelta
 	 */
 	double getDelta() { return fps.getDelta(); }
+
+	/**
+	 * @copydoc FPSHandler::getFPS
+	 */
+	double getFPS() { return fps.getFPS(); }
 
 	/**
 	 * @copydoc InputHandler::getInput
