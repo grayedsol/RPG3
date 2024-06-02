@@ -6,7 +6,9 @@
  */
 #pragma once
 #include "SDL3/SDL.h"
-#include "SDL3_image/SDL_image.h"
+
+struct _TTF_Font;
+typedef _TTF_Font TTF_Font;
 
 /**
  * @brief Initializes and provides an interface for SDL functionality.
@@ -93,8 +95,28 @@ public:
 	 * @brief Load a texture from an image file using SDL_image.
 	 * 
 	 * @param path Path to the image.
+	 * @return Pointer to the texture.
 	 */
 	SDL_Texture* loadTexture(const char* path);
+
+	/**
+	 * @brief Load a texture from text.
+	 * 
+	 * @param text Text that will be shown in the texture.
+	 * @param font Font of the text.
+	 * @param color Color of the text.
+	 * @return Pointer to the texture.
+	 */
+	SDL_Texture* loadTextTexture(const char* text, TTF_Font* font, SDL_Color color);
+
+	/**
+	 * @brief Load a font from a file.
+	 * 
+	 * @param fontPath File path to the ttf font.
+	 * @param ptSize Point size to use for the font.
+	 * @return Pointer to the font.
+	 */
+	TTF_Font* loadFont(const char* fontPath, int ptSize);
 
 	/**
 	 * @brief Set the window's fullscreen status.

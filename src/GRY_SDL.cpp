@@ -4,6 +4,8 @@
  * @copyright Copyright (c) 2024
  */
 #include "GRY_SDL.hpp"
+#include "SDL3_image/SDL_image.h"
+#include "SDL3_ttf/SDL_ttf.h"
 
 GRY_SDL::GRY_SDL(int WINDOW_WIDTH, int WINDOW_HEIGHT, bool USE_VSYNC) : 
 	WINDOW_WIDTH(WINDOW_WIDTH),
@@ -51,7 +53,13 @@ bool GRY_SDL::init() {
 	/* Initialize SDL_image */
 	int imgFlags = IMG_INIT_PNG;
 	if (!(IMG_Init(imgFlags) & imgFlags)) {
-		SDL_Log("Could not initialize SDL_Image. Error: %s", SDL_GetError());
+		SDL_Log("Could not initialize SDL_image. Error: %s", SDL_GetError());
+		return false;
+	}
+
+	/* Initialize SDL_ttf */
+	if (TTF_Init() == -1) {
+		SDL_Log("Could not initialize SDL_ttf. Error: %s", SDL_GetError());
 		return false;
 	}
 
@@ -66,24 +74,53 @@ void GRY_SDL::exit() {
 	gameWindow = NULL;
 
 	/* Close SDL subsystems */
+	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 }
 
 SDL_Texture* GRY_SDL::loadTexture(const char* path) {
-	SDL_Texture* texture = NULL;
+	SDL_Texture* texture = nullptr;
 	SDL_Surface* surface = IMG_Load(path);
 
-	if (surface == NULL) {
+	if (!surface) {
 		SDL_Log("Could not load texture from file. Error: %s", IMG_GetError());
 		return texture;
 	}
 
 	texture = SDL_CreateTextureFromSurface(gameRenderer, surface);
-	if (texture == NULL) {
-		SDL_Log("Could not render texture from surface. Error: %s", SDL_GetError());
+	if (!texture) {
+		SDL_Log("Could not create texture from surface. Error: %s", SDL_GetError());
 	}
 
 	SDL_DestroySurface(surface);
 	return texture;
+}
+
+SDL_Texture *GRY_SDL::loadTextTexture(const char *text, TTF_Font* font, SDL_Color color) {
+	SDL_Texture* texture = nullptr;
+	SDL_Surface* surface = TTF_RenderText_Solid(font, text, color);
+
+	if (!surface) {
+		SDL_Log("Could not create text surface. Error: %s", SDL_GetError());
+		return texture;
+	}
+
+	texture = SDL_CreateTextureFromSurface(gameRenderer, surface);
+	if (!texture) {
+		SDL_Log("Could not create texture from surface. Error: %s", SDL_GetError());
+	}
+
+	SDL_DestroySurface(surface);
+	return texture;
+}
+
+TTF_Font* GRY_SDL::loadFont(const char *fontPath, int ptSize) {
+    TTF_Font* font = TTF_OpenFont(fontPath, ptSize);
+
+	if (!font) {
+		SDL_Log("Could not load font. Error: %s", SDL_GetError());
+	}
+
+	return font;
 }
