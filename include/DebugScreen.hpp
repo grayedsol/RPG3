@@ -19,7 +19,7 @@ class DebugScreen {
     friend class DebugText;
 private:
     /**
-     * @brief Container for all DebugTexts.
+     * @brief Container for DebugTexts.
      * 
      */
     std::vector<std::unique_ptr<DebugText>> debugTexts;
