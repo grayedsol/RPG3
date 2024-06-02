@@ -21,6 +21,7 @@
  * Pressing GAME_UP will highlight the collision boxes for the tiles.
  */
 class TilesetScene : public Scene {
+    friend class DebugTextTilesetScene;
 private:
     /**
      * @brief Tileset that will be loaded and displayed.
@@ -60,10 +61,8 @@ public:
     /**
      * @brief Initializes the scene.
      * 
-     * @details
-     * This scene is simple, so nothing is done.
      */
-    void init() final override {}
+    void init() final override;
 
     /**
      * @copydoc Scene::process
