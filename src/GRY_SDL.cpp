@@ -97,9 +97,13 @@ SDL_Texture* GRY_SDL::loadTexture(const char* path) {
 	return texture;
 }
 
+/**
+ * @details 
+ * The text will wrap to a new line on newline characters in `text`.
+ */
 SDL_Texture *GRY_SDL::loadTextTexture(const char *text, TTF_Font* font, SDL_Color color) {
 	SDL_Texture* texture = nullptr;
-	SDL_Surface* surface = TTF_RenderText_Solid(font, text, color);
+	SDL_Surface* surface = TTF_RenderUTF8_Solid_Wrapped(font, text, color, 0);
 
 	if (!surface) {
 		SDL_Log("Could not create text surface. Error: %s", SDL_GetError());

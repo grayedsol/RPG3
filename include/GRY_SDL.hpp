@@ -102,7 +102,7 @@ public:
 	/**
 	 * @brief Load a texture from text.
 	 * 
-	 * @param text Text that will be shown in the texture.
+	 * @param text UTF8 encoded text that will be shown in the texture.
 	 * @param font Font of the text.
 	 * @param color Color of the text.
 	 * @return Pointer to the texture.
