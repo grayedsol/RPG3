@@ -5,14 +5,18 @@
  * @copyright Copyright (c) 2024
  */
 #pragma once
-#include "GRY_SDL.hpp"
+#include "SDL3/SDL.h"
 
+struct _TTF_Font;
+typedef _TTF_Font TTF_Font;
 class DebugScreen;
 class GRY_Game;
 
 /**
- * @brief Abstract object type that stores and updates a texture displaying debug information.
+ * @brief Stores and updates a texture displaying debug information.
  * 
+ * @details
+ * Meant to be inherited from. This default DebugText only displays "No debug info".
  */
 struct DebugText {
 protected:
@@ -62,10 +66,10 @@ public:
     /**
      * @brief Constructor.
      * 
-     * @param debugScreen Pointer to the DebugScreen that will own this DebugText.
-     * @param color Color of the text that will be displayed.
+     * @param debugScreen Pointer to the DebugScreen.
+     * @param color Color of the text that will be displayed. Defaults to white.
      */
-    DebugText(DebugScreen* debugScreen, SDL_Color color);
+    DebugText(DebugScreen* debugScreen, SDL_Color color = SDL_Color{255,255,255,255});
 
     /**
      * @brief Destructor.
@@ -98,5 +102,5 @@ public:
      * Implementations of this function should call `updateText`,
      * but only when the debug data has changed, or at timed intervals.
      */
-    virtual void process() = 0;
+    virtual void process();
 };
