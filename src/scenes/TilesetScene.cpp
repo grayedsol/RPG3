@@ -7,6 +7,7 @@
 #include "GRY_Game.hpp"
 #include "GRY_JSON.hpp"
 #include "../transitions/FadeToBlack.hpp"
+#include "../debugtexts/DebugTextTilesetScene.hpp"
 
 /**
  * @details
@@ -21,7 +22,16 @@ void TilesetScene::setControls() {
     controls.mapCmd(GCmd::GameQuit, VirtualButton::GAME_B);
 }
 
-void TilesetScene::process() {
+/**
+ * @details
+ * This scene is simple, so it only needs to set the debug text.
+ */
+void TilesetScene::init() {
+    debugText = new DebugTextTilesetScene(this);
+}
+
+void TilesetScene::process()
+{
     /* Determines if collision will be highlighted */
     bool highlightCollisions = false;
 

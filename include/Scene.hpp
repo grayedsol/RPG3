@@ -9,7 +9,7 @@
 #include "GRY_Lib.hpp"
 #include "CommandMap.hpp"
 class GRY_Game;
-
+class DebugText;
 /**
  * @brief Abstract game scene.
  * 
@@ -42,6 +42,12 @@ protected:
 	const char* scenePath;
 
 	/**
+	 * @brief Optional debug text for the debug screen.
+	 * 
+	 */
+	DebugText* debugText = nullptr;
+
+	/**
 	 * @brief Maps game commands to virtual buttons, and vice versa.
 	 * 
 	 * @details
@@ -57,7 +63,6 @@ protected:
 	 * @endcode
 	 */
 	virtual void setControls() = 0;
-
 public:
 	/**
 	 * @brief Constructor.
@@ -74,7 +79,7 @@ public:
 	 * @brief Virtual destructor.
 	 * 
 	 */
-	virtual ~Scene() { delete[] scenePath; }
+	virtual ~Scene();
 	
 	Scene(const Scene&) = delete;
 	Scene& operator=(const Scene&) = delete;
@@ -159,4 +164,11 @@ public:
 	 * @return `false` otherwise.
 	 */
 	const bool isPressing(GCmd cmd);
+
+	/**
+	 * @brief Get the debug text.
+	 * 
+	 * @return Pointer to the debug text, which may be nullptr.
+	 */
+	DebugText* getDebugText() { return debugText; }
 };

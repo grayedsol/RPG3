@@ -34,3 +34,9 @@ void DebugText::render(float x, float y) const {
     SDL_FRect dstRect{ x, y, width, height };
     SDL_RenderTexture(game->getSDL().getRenderer(), texture, NULL, &dstRect);
 }
+
+void DebugText::process() {
+    if (texture) { return; }
+
+    updateText("No debug info");
+}

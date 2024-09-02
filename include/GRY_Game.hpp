@@ -109,6 +109,13 @@ public:
 	void toggleDebugScreen() { debugScreen.toggle(); }
 
 	/**
+	 * @brief Get the debug text from the active scene.
+	 * 
+	 * @return Pointer to the active scene's debug text.
+	 */
+	DebugText* getSceneDebugText() { return scenes.allScenes.back()->getDebugText(); }
+
+	/**
 	 * @copydoc SceneManager::stackScene
 	*/
 	void stackScene(Scene* scene) { scenes.stackScene(scene); }

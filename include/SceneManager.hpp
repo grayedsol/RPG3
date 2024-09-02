@@ -17,6 +17,8 @@
  */
 class SceneManager {
 private:
+	friend class GRY_Game;
+
 	/**
 	 * @brief Stack-like containing all the game's scenes.
 	 * 
@@ -51,7 +53,7 @@ public:
 	SceneManager& operator=(const SceneManager&) = delete;
 
 	/**
-	 * @brief Updates all scenes.
+	 * @brief Update active scene and process any transitions.
 	 * 
 	 */
 	void process();

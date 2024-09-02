@@ -31,6 +31,7 @@ set(SOURCES src/main.cpp
     src/TileCollision.cpp
     src/scenes/ExampleScene.cpp
     src/scenes/TilesetScene.cpp
+    src/debugtexts/DebugTextTilesetScene.cpp
     )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

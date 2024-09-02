@@ -26,11 +26,14 @@ void DebugScreen::init() {
 void DebugScreen::process() {
     if (!active) { return; }
 
+    DebugText* sceneDebugText = game->getSceneDebugText();
     for (auto& text : debugTexts) { text.get()->process(); }
+    if (sceneDebugText) { sceneDebugText->process(); }
 
     float y = 0;
     for (auto& text : debugTexts) {
         text.get()->render(0, y);
         y += text->getHeight();
     }
+    if (sceneDebugText) { sceneDebugText->render(0, y); }
 }
