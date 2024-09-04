@@ -6,13 +6,14 @@
 #include <stdio.h>
 #include "GRY_Game.hpp"
 #include "scenes/TilesetScene.hpp"
+#include "scenes/TileMapScene.hpp"
 
 int WINDOW_WIDTH = 960;
 int WINDOW_HEIGHT = 540;
 int TARGET_FPS = 120;
 bool USE_VSYNC = true;
 
-const char* scenePath = "assets/tilesetscene/scene.json";
+const char* scenePath = "assets/tilemapscene/scene.json";
 
 #ifdef _WIN32
 #define NOMINMAX
@@ -28,7 +29,7 @@ _Use_decl_annotations_ int WINAPI WinMain(
     GRY_Game* grayGame = new GRY_Game(WINDOW_WIDTH, WINDOW_HEIGHT, TARGET_FPS, USE_VSYNC);
 	
 	/* Add a scene */
-	grayGame->stackScene(new TilesetScene(grayGame, scenePath));
+	grayGame->stackScene(new TileMapScene(grayGame, scenePath));
 
 	grayGame->runGame();
 
@@ -44,7 +45,7 @@ int main(int argc, char* argv[]) {
 	GRY_Game* grayGame = new GRY_Game(WINDOW_WIDTH, WINDOW_HEIGHT, TARGET_FPS, USE_VSYNC);
 	
 	/* Add a scene */
-	grayGame->stackScene(new TilesetScene(grayGame, scenePath));
+	grayGame->stackScene(new TileMapScene(grayGame, scenePath));
 
 	grayGame->runGame();
 

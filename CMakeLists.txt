@@ -29,8 +29,10 @@ set(SOURCES src/main.cpp
     src/GRY_Texture.cpp
     src/Tileset.cpp
     src/TileCollision.cpp
+	src/TileMap.cpp
     src/scenes/ExampleScene.cpp
     src/scenes/TilesetScene.cpp
+	src/scenes/TileMapScene.cpp
     src/debugtexts/DebugTextTilesetScene.cpp
     )
 
