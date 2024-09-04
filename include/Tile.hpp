@@ -33,7 +33,7 @@ struct Tile {
      * @brief Associated entity for more complex features.
      * 
      */
-    entity custom;
+    entity custom = ECS::NONE;
 };
 
 /**
