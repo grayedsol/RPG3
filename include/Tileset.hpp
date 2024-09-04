@@ -93,6 +93,8 @@ struct Tileset : public FileResource {
 
     void processAnimations(double delta);
 
+	std::size_t size() { return sourceRects.size() - 1; }
+
     /**
      * @brief Get the source rectangle for the given tile.
      * 
