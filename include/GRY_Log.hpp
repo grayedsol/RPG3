@@ -8,15 +8,29 @@
 #include <cstdio>
 
 #ifdef _WIN32
-#define NOMINMAX
-#include "windows.h"
-/**
- * @brief Log a message to the console.
- * 
- * @param fmt A C-style formatted string.
- * @param ... Parameters to match % formatting tokens from `fmt`.
- */
-#define GRY_Log(fmt, ...) {char cad[512]; snprintf(cad, 512, fmt, __VA_ARGS__);  OutputDebugStringA(cad);}
+	#ifdef __MINGW32__
+	#include "windows.h"
+	/**
+	 * @brief Log a message to the console.
+	 * 
+	 * @param fmt A C-style formatted string.
+	 * @param ... Parameters to match % formatting tokens from `fmt`.
+	 */
+	#define GRY_Log(fmt, ...) {char cad[512]; snprintf(cad, 512, fmt, ##__VA_ARGS__);  printf(cad);}
+
+	#else
+		#ifndef NOMINMAX
+		#define NOMINMAX
+		#endif
+	#include "windows.h"
+	/**
+	 * @brief Log a message to the console.
+	 * 
+	 * @param fmt A C-style formatted string.
+	 * @param ... Parameters to match % formatting tokens from `fmt`.
+	 */
+	#define GRY_Log(fmt, ...) {char cad[512]; snprintf(cad, 512, fmt, __VA_ARGS__);  OutputDebugStringA(cad);}
+	#endif
 #endif
 
 #ifndef _WIN32

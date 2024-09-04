@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 option(USE_SHARED_LIBS "Whether to use shared or static libraries." ON)
-set(HIDE_TERMINAL True)
+set(HIDE_TERMINAL False)
 
 
 include(ExternalProject)
@@ -56,13 +56,13 @@ if(WIN32)
 
     add_custom_command(TARGET game POST_BUILD
         COMMAND "${CMAKE_COMMAND}" -E make_directory
-        "${CMAKE_BINARY_DIR}/$<CONFIG>/assets"
+        "${CMAKE_BINARY_DIR}/assets"
         )
     
     add_custom_command(TARGET game POST_BUILD
         COMMAND "${CMAKE_COMMAND}" -E copy_directory_if_different
         ${PROJECT_SOURCE_DIR}/assets
-        "${CMAKE_BINARY_DIR}/$<CONFIG>/assets"
+        "${CMAKE_BINARY_DIR}/assets"
         )
     
 else()
