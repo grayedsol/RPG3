@@ -49,7 +49,7 @@ public:
      * @brief Constructor.
      * 
      * @param game Associated game class.
-     * @param path File path to the tileset.
+     * @param tilesetPath File path to the tileset scene.
      */
     TilesetScene(GRY_Game* game, const char* tilesetPath) : Scene(game, tilesetPath) {}
 
