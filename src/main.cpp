@@ -16,7 +16,9 @@ bool USE_VSYNC = true;
 const char* scenePath = "assets/tilemapscene/scene.json";
 
 #ifdef _WIN32
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 #include <Windows.h>
 #include <libloaderapi.h>
 _Use_decl_annotations_ int WINAPI WinMain(
