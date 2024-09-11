@@ -62,6 +62,10 @@ struct FileResource {
 	/**
 	 * @brief Load a part of the resource.
 	 * 
+	 * @details
+	 * If the resource is already loaded, this function should
+	 * return true without doing anything else.
+	 * 
 	 * @param game Associated game class.
 	 * 
 	 * @returns `true` if the resource was already loaded.

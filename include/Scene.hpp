@@ -113,6 +113,10 @@ public:
 	/**
 	 * Load a resource in the scene.
 	 * 
+	 * @details
+	 * If the scene is already loaded, this function should
+	 * return true without doing anything else.
+	 * 
 	 * @returns `true` if all resources are loaded.
 	 * @returns `false` otherwise.
 	 */
