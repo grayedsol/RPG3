@@ -17,12 +17,6 @@
 class InputHandler {
 private:
     /**
-     * @brief File path to data for control scheme.
-     * 
-     */
-    const char* controlsPath = "assets/controls.json";
-
-    /**
      * @brief Array that maps SDL_Scancodes to VirtualButtons.
      * 
      */
@@ -92,11 +86,10 @@ private:
     void resetControls();
 
     /**
-     * @brief Loads a control scheme from a file.
+     * @brief Loads the controls scheme.
      * 
-     * @param path File path to load controls from.
      */
-    void loadControls(const char* path);
+    void loadControls();
 public:
     /**
      * @brief Constructor.

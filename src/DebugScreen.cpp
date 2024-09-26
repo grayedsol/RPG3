@@ -8,6 +8,12 @@
 #include "GRY_JSON.hpp"
 #include "SDL3_ttf/SDL_ttf.h"
 
+/**
+ * @brief File path to DebugScreen settings.
+ * 
+ */
+static const char* DEBUG_SCREEN_SETTINGS_PATH = "assets/debugScreenSettings.json";
+
 DebugScreen::DebugScreen(GRY_Game *game) : game(game) {}
 
 DebugScreen::~DebugScreen() { TTF_CloseFont(font); }
@@ -18,7 +24,7 @@ DebugScreen::~DebugScreen() { TTF_CloseFont(font); }
  */
 void DebugScreen::init() {
     GRY_JSON::Document settings;
-    GRY_JSON::loadDoc(settings, "assets/debugScreenSettings.json");
+    GRY_JSON::loadDoc(settings, DEBUG_SCREEN_SETTINGS_PATH);
 
     font = game->getSDL().loadFont(settings["fontPath"].GetString(), settings["fontSize"].GetUint());
 }

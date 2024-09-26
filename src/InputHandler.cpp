@@ -8,6 +8,12 @@
 #include "GRY_JSON.hpp"
 
 /**
+ * @brief File path to data for control scheme.
+ * 
+ */
+static const char* CONTROLS_PATH = "assets/controls.json";
+
+/**
  * @details
  * The default controls are mapped here.
  */
@@ -20,7 +26,7 @@ InputHandler::InputHandler() : keyboardState(SDL_GetKeyboardState(NULL)) {
 
 	resetControls();
 
-	loadControls(controlsPath);
+	loadControls();
 }
 
 /**
@@ -71,9 +77,9 @@ void InputHandler::resetControls() {
 	for (int i = 0; i < GRY_NUM_MOUSECODES; i++) { mouseButtons[i] = VirtualButton::GAME_NONE; }
 }
 
-void InputHandler::loadControls(const char *path) {
+void InputHandler::loadControls() {
 	GRY_JSON::Document doc;
-	GRY_JSON::loadDoc(doc, path);
+	GRY_JSON::loadDoc(doc, CONTROLS_PATH);
 
 	for (int i = 1; i < VirtualButton::VIRTUAL_BUTTON_SIZE; i++) {
 		if (!doc.HasMember(VirtualButtonStrings[i])) { continue; }
