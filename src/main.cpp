@@ -4,7 +4,7 @@
  * @copyright Copyright (c) 2024
  */
 #include <stdio.h>
-#include "GRY_Game.hpp"
+#include "GRY_PixelGame.hpp"
 #include "scenes/TilesetScene.hpp"
 #include "scenes/TileMapScene.hpp"
 
@@ -28,14 +28,15 @@ _Use_decl_annotations_ int WINAPI WinMain(
 	int nCmdShow) {
 
 	/* Initialize game */
-    GRY_Game* grayGame = new GRY_Game(WINDOW_WIDTH, WINDOW_HEIGHT, TARGET_FPS, USE_VSYNC);
+    //GRY_Game* game = new GRY_Game(WINDOW_WIDTH, WINDOW_HEIGHT, TARGET_FPS, USE_VSYNC);
+	GRY_PixelGame* game = new GRY_PixelGame(WINDOW_WIDTH, WINDOW_HEIGHT, TARGET_FPS, USE_VSYNC);
 	
 	/* Add a scene */
-	grayGame->stackScene(new TileMapScene(grayGame, scenePath));
+	game->stackScene(new TileMapScene(game, scenePath));
 
-	grayGame->runGame();
+	game->runGame();
 
-	delete grayGame;
+	delete game;
 
 	return 0;
 }
@@ -44,14 +45,15 @@ _Use_decl_annotations_ int WINAPI WinMain(
 int main(int argc, char* argv[]) {
 
 	/* Initialize game */
-	GRY_Game* grayGame = new GRY_Game(WINDOW_WIDTH, WINDOW_HEIGHT, TARGET_FPS, USE_VSYNC);
+    //GRY_Game* game = new GRY_Game(WINDOW_WIDTH, WINDOW_HEIGHT, TARGET_FPS, USE_VSYNC);
+	GRY_PixelGame* game = new GRY_PixelGame(WINDOW_WIDTH, WINDOW_HEIGHT, TARGET_FPS, USE_VSYNC);
 	
 	/* Add a scene */
-	grayGame->stackScene(new TileMapScene(grayGame, scenePath));
+	game->stackScene(new TileMapScene(game, scenePath));
 
-	grayGame->runGame();
+	game->runGame();
 
-	delete grayGame;
+	delete game;
 
 	return 0;
 }

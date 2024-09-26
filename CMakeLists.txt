@@ -25,6 +25,7 @@ set(SOURCES src/main.cpp
     src/DebugScreen.cpp
     src/DebugText.cpp
     src/debugtexts/DebugTextFPS.cpp
+	src/GRY_PixelGame.cpp
     src/GRY_Tiled.cpp
     src/GRY_Texture.cpp
     src/Tileset.cpp
@@ -34,6 +35,7 @@ set(SOURCES src/main.cpp
     src/scenes/TilesetScene.cpp
 	src/scenes/TileMapScene.cpp
     src/debugtexts/DebugTextTilesetScene.cpp
+	src/tile/TileMapRenderer.cpp
     )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

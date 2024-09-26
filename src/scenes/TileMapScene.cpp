@@ -19,6 +19,8 @@ void TileMapScene::process() {
 		default:
 			break;
 	}
+
+	tileMapRenderer.process(*tileMap);
 }
 
 bool TileMapScene::load() {
@@ -30,6 +32,8 @@ bool TileMapScene::load() {
 
 	/* Initialize the tile map */
 	tileMap = new TileMap(sceneDoc["tileMapPath"].GetString());
+	/* Read the normal tile size */
+	normalTileSize = sceneDoc["normalTileSize"].GetUint();
 
 	return false;
 }
