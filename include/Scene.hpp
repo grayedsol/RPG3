@@ -85,18 +85,18 @@ public:
 	Scene& operator=(const Scene&) = delete;
 
 	/**
-	 * @brief Get the game object.
+	 * @brief Get the game instance.
 	 * 
-	 * @return Pointer to game object.
+	 * @return Pointer to game instance.
 	 */
-	GRY_Game* getGame() { return game; }
+	GRY_Game* getGame() const { return game; }
 
 	/**
 	 * @brief Get the file path of the scene data.
 	 * 
 	 * @return C-String of the scene path. 
 	 */
-	const char* getScenePath() { return scenePath; }
+	const char* getScenePath() const { return scenePath; }
 
 	/**
 	 * @brief Initialize the scene to a usable state, but without activating player controls.
@@ -111,7 +111,7 @@ public:
 	virtual void process() = 0;
 
 	/**
-	 * Load a resource in the scene.
+	 * @brief Load a resource in the scene.
 	 * 
 	 * @details
 	 * If the scene is already loaded, this function should
