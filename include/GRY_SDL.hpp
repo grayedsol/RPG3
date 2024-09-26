@@ -139,18 +139,18 @@ public:
 	/**
 	 * @brief Fill the pointers with the dimensions of the window.
 	 * 
-	 * @param x Pointer to fill with width of the window. Can be NULL.
-	 * @param y Pointer to fill with the height of the window. Can be NULL.
+	 * @param w Pointer to fill with width of the window. Can be NULL.
+	 * @param h Pointer to fill with the height of the window. Can be NULL.
 	 */
-	void getWindowSize(int* x, int* y) { SDL_GetWindowSize(gameWindow, x, y); }
+	void getWindowSize(int* w, int* h) { SDL_GetWindowSize(gameWindow, w, h); }
 
 	/**
 	 * @brief Set the size of the window.
 	 * 
-	 * @param x Width of the window in pixels.
-	 * @param y Height of the window in pixels.
+	 * @param w Width of the window in pixels.
+	 * @param h Height of the window in pixels.
 	 */
-	void setWindowSize(int x, int y) { SDL_SetWindowSize(gameWindow, x, y); }
+	void setWindowSize(int w, int h) { SDL_SetWindowSize(gameWindow, w, h); }
 
 	/**
 	 * @brief Get the SDL_Window* being used.
