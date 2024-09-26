@@ -35,6 +35,12 @@ struct TileMap : public FileResource {
 	std::vector<TileCollision> tileCollisions;
 	
 	/**
+	 * @brief Width of the map, in tiles.
+	 * 
+	 */
+	uint32_t width;
+	
+	/**
 	 * @brief Constructor.
 	 * 
 	 * @param path File path to Tiled tilemap JSON data.

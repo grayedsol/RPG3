@@ -12,6 +12,9 @@ bool TileMap::load(GRY_Game *game) {
 	GRY_JSON::Document mapDoc;
 	GRY_JSON::loadDoc(mapDoc, path);
 
+	/* Read map width */
+	width = mapDoc["width"].GetUint();
+
 	/* Create tilesets and tile collision sets */
 	if (tilesets.empty() && tileCollisions.empty()) {
 		for (auto& tileset : mapDoc["tilesets"].GetArray()) {
