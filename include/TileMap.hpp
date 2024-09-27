@@ -51,7 +51,7 @@ struct TileMap : public FileResource {
 	 * @brief Destructor.
 	 * 
 	 */
-	~TileMap() {}
+	~TileMap() = default;
 
 	TileMap(const TileMap&) = delete;
 	TileMap& operator=(const TileMap&) = delete;
