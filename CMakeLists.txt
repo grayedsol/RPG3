@@ -31,6 +31,7 @@ set(SOURCES src/main.cpp
     src/Tileset.cpp
     src/TileCollision.cpp
 	src/TileMap.cpp
+	src/TileEntityMap.cpp
     src/scenes/ExampleScene.cpp
     src/scenes/TilesetScene.cpp
 	src/scenes/TileMapScene.cpp
