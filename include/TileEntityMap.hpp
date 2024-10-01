@@ -6,7 +6,7 @@
  */
 #pragma once
 #include "Tileset.hpp"
-#include "GRY_ECS.hpp"
+#include "TileComponents.hpp"
 
 /**
  * @brief Represents the entities of a tile map.
@@ -19,8 +19,6 @@ struct TileEntityMap : public FileResource {
 	std::vector<EntityLayer> entityLayers;
 
 	std::vector<Tileset> tilesets;
-
-	GRY_ECS<int> ecs;
 
 	TileEntityMap(const char* path) : FileResource(path) {}
 
@@ -39,4 +37,8 @@ struct TileEntityMap : public FileResource {
 	TileEntityMap(TileEntityMap&& other) noexcept { swap(*this, other); }
 
 	bool load(GRY_Game* game) final override;
+
+	bool load(ComponentSet<Actor>& actors);
+
+	bool load(ComponentSet<ActorTexture>& actorTextures);
 };
