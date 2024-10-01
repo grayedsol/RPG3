@@ -6,6 +6,7 @@
  */
 #pragma once
 #include "TileMap.hpp"
+#include "TileEntityMap.hpp"
 #include "GRY_PixelGame.hpp"
 
 class TileMapScene;
