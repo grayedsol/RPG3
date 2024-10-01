@@ -24,6 +24,12 @@ private:
 	TileMap* tileMap = nullptr;
 
 	/**
+	 * @brief TileEntityMap that will be loaded.
+	 * 
+	 */
+	TileEntityMap* entityMap = nullptr;
+
+	/**
 	 * @brief Width and height of a normal square tile, in pixels.
 	 * 
 	 * @details
@@ -65,7 +71,7 @@ public:
     /**
      * @copydoc Scene::process
      */
-    void process();
+    void process() final override;
 
     /**
      * @copydoc Scene::load
