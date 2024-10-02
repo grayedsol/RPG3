@@ -62,6 +62,7 @@ struct TileMap : public FileResource {
 		swap(lhs.tileLayers, rhs.tileLayers);
 		swap(lhs.tilesets, rhs.tilesets);
 		swap(lhs.tileCollisions, rhs.tileCollisions);
+		swap(lhs.width, rhs.width);
 	}
 
 	TileMap(TileMap&& other) noexcept { swap(*this, other); }
