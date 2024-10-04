@@ -18,6 +18,17 @@
 	 */
 	#define GRY_Log(fmt, ...) {char cad[512]; snprintf(cad, 512, fmt, ##__VA_ARGS__);  printf(cad);}
 
+	#ifdef NDEBUG
+		#define GRY_Assert(expression, fmt, ...) ((void)0)
+		#else
+			#define GRY_Assert(expression, fmt, ...) {\
+				if (!(expression)) {\
+					GRY_Log(fmt, ##__VA_ARGS__);\
+					assert(false);\
+				}\
+			}
+	#endif
+
 	#else
 		#ifndef NOMINMAX
 		#define NOMINMAX
@@ -30,6 +41,18 @@
 	 * @param ... Parameters to match % formatting tokens from `fmt`.
 	 */
 	#define GRY_Log(fmt, ...) {char cad[512]; snprintf(cad, 512, fmt, __VA_ARGS__);  OutputDebugStringA(cad);}
+
+	#ifdef NDEBUG
+		#define GRY_Assert(expression, fmt, ...) ((void)0)
+	#else
+		#define GRY_Assert(expression, fmt, ...) {\
+			if (!(expression)) {\
+				GRY_Log(fmt, __VA_ARGS__);\
+				assert(false);\
+			}\
+		}
+	#endif
+
 	#endif
 #endif
 
@@ -42,4 +65,15 @@
  * 
  */
 #define GRY_Log(fmt, ...) printf(fmt __VA_OPT__(,) __VA_ARGS__)
+
+	#ifdef NDEBUG
+		#define GRY_Assert(expression, fmt, ...) ((void)0)
+	#else
+		#define GRY_Assert(expression, fmt, ...) {\
+			if (!(expression)) {\
+				GRY_Log(fmt  __VA_OPT__(,) __VA_ARGS__);\
+				assert(false);\
+			}\
+		}
+	#endif
 #endif
