@@ -73,8 +73,8 @@ void Tileset::processAnimations(double delta) {
 		anim.timer -= delta;
 		if (anim.timer <= 0.0) {
 			if (++anim.currentFrame >= anim.frames.size()) { anim.currentFrame = 0; }
-			const TileAnimation::Frame& newFrame = anim.frames.at(anim.currentFrame);
-			textureIdx.at(anim.tile) = newFrame.index;
+			const TileAnimation::Frame& newFrame = anim.frames[anim.currentFrame];
+			textureIdx[anim.tile] = newFrame.index;
 			anim.timer = newFrame.duration;
 		}
 	}
