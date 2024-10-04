@@ -6,6 +6,7 @@
  */
 #pragma once
 #include "Scene.hpp"
+#include "TileMapECS.hpp"
 #include "../tile/TileMapRenderer.hpp"
 
 class GRY_PixelGame;
@@ -17,6 +18,12 @@ class GRY_PixelGame;
 class TileMapScene : public Scene {
 	/* friend class DebugTextTileMapScene */
 private:
+	/**
+	 * @brief TileMap ECS structure.
+	 * 
+	 */
+	TileMapECS ecs;
+
 	/**
 	 * @brief TileMap that will be loaded.
 	 * 

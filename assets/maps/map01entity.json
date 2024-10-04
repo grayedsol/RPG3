@@ -8,5 +8,8 @@
 				}
 			}
 		]
+	],
+	"tilesets" : [
+		"assets\/textures\/image\/chronosprites.json"
 	]
 }
