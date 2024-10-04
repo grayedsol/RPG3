@@ -95,17 +95,15 @@ struct SparseSet {
      * @param data Data to add.
      */
     void add(entity e, T data) {
-        if (e == SIZE) {
-            GRY_Log("[SparseSet] Tried to add the NONE entity.\n");
-        }
-        else if (!contains(e)) {
-            sparse[e] = (uint8_t)dense.size();
-            dense.push_back(e);
-            value.push_back(data);
-        }
-        else {
-            GRY_Log("[SparseSet] Tried to add an entity that already existed.\n");
-        }
+		GRY_Assert(e != SIZE,
+			"[SparseSet] Tried to add the NONE entity. (%d)\n", e
+		);
+		GRY_Assert(!contains(e),
+			"[SparseSet] Tried to add an entity that already existed. (%d)\n", e
+		);
+		sparse[e] = (uint8_t)dense.size();
+		dense.push_back(e);
+		value.push_back(data);
     }
 
     /**
@@ -120,18 +118,16 @@ struct SparseSet {
      * @param e Entity for which data is to be removed.
      */
     void remove(entity e) {
-        if (contains(e)) {
-            const auto last = dense.back();
-            std::swap(dense.back(), dense[sparse[e]]);
-            std::swap(value.back(), value[sparse[e]]);
-            std::swap(sparse[last], sparse[e]);
-            dense.pop_back();
-            value.pop_back();
-            sparse[e] = SIZE;
-        }
-        else {
-            GRY_Log("[SparseSet] Tried to remove an entity that didn't exist.\n");
-        }
+		GRY_Assert(contains(e),
+			"[SparseSet] Tried to remove an entity that didn't exist. (%d)\n", e
+		);
+		const auto last = dense.back();
+		std::swap(dense.back(), dense[sparse[e]]);
+		std::swap(value.back(), value[sparse[e]]);
+		std::swap(sparse[last], sparse[e]);
+		dense.pop_back();
+		value.pop_back();
+		sparse[e] = SIZE;
     }
 
     /**
@@ -163,12 +159,10 @@ struct SparseSet {
      * @sa get(entity) const
      */
     T& get(entity e) {
-        if (contains(e)) { return value[sparse[e]]; }
-        else {
-            GRY_Log("[SparseSet] Tried to access data for an entity that didn't exist. (%d)\n", e);
-            assert(!value.empty());
-            return value[0];
-        }
+		GRY_Assert(contains(e),
+			"[SparseSet] Tried to access data for an entity that didn't exist. (%d)\n", e
+		);
+		return value[sparse[e]];
     }
 
     /**
@@ -183,12 +177,10 @@ struct SparseSet {
      * @sa get
      */
     const T& get(entity e) const {
-        if (contains(e)) { return value[sparse[e]]; }
-        else {
-            GRY_Log("[SparseSet] Tried to access data for an entity that didn't exist. (%d)\n", e);
-            assert(!value.empty());
-            return value[0];
-        }
+		GRY_Assert(contains(e),
+			"[SparseSet] Tried to access data for an entity that didn't exist. (%d)\n", e
+		);
+		return value[sparse[e]];
     }
 
     /**
@@ -204,7 +196,12 @@ struct SparseSet {
      * @param i Index of an entity to retrieve. Must be less than `size()`.
      * @return An entity with data in the SparseSet.
      */
-    const entity getEntity(uint8_t i) const { return dense.at(i); }
+    const entity getEntity(uint8_t i) const {
+		GRY_Assert(i < dense.size(),
+			"[SparseSet] getEntity index out of bounds. (%d)\n", i
+		);
+		return dense[i];
+	}
 
     /**
      * @brief Pointer to the first entity. Useful in range based for loops.
