@@ -28,13 +28,13 @@ private:
 	 * @brief TileMap that will be loaded.
 	 * 
 	 */
-	TileMap* tileMap = nullptr;
+	TileMap tileMap = TileMap(nullptr);
 
 	/**
 	 * @brief TileEntityMap that will be loaded.
 	 * 
 	 */
-	TileEntityMap* entityMap = nullptr;
+	TileEntityMap entityMap = TileEntityMap(nullptr, &ecs);
 
 	/**
 	 * @brief Width and height of a normal square tile, in pixels.
@@ -66,8 +66,6 @@ public:
      * @param tileMapPath File path to the tilemap scene.
      */
 	TileMapScene(GRY_PixelGame* pGame, const char* tileMapPath) : Scene((GRY_Game*)pGame, tileMapPath), tileMapRenderer(this) {}
-
-	~TileMapScene() { delete tileMap; tileMap = nullptr; }
 
     /**
      * @brief Initializes the scene.

@@ -30,7 +30,7 @@ struct FileResource {
 	 * 
 	 * @param path Path to the file to be loaded.
 	 */
-	FileResource(const char* path) : path(GRY_copyString(path)) { assert(path != nullptr); }
+	FileResource(const char* path) { setPath(path); }
 
 	/**
 	 * @brief Virtual destructor.
@@ -42,7 +42,7 @@ struct FileResource {
 	FileResource& operator=(const FileResource&) = delete;
 
 	/**
-	 * @brief Swaps the data of two FileResources.
+	 * @brief Swap the data of two FileResources.
 	 * 
 	 * @param lhs A FileResource.
 	 * @param rhs Another FileResource.
@@ -58,6 +58,15 @@ struct FileResource {
 	 * @param other FileResource to take data from.
 	 */
 	FileResource(FileResource&& other) noexcept { swap(*this, other); }
+
+	/**
+	 * @brief Set the path of the file resource.
+	 * 
+	 * @param path Path to the file to load.
+	 */
+	void setPath(const char* path) {
+		if (path) { this->path = GRY_copyString(path); }
+	}
 
 	/**
 	 * @brief Load a part of the resource.

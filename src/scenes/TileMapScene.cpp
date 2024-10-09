@@ -20,12 +20,12 @@ void TileMapScene::process() {
 			break;
 	}
 
-	tileMapRenderer.process(*tileMap);
+	tileMapRenderer.process(tileMap);
 }
 
 bool TileMapScene::load() {
-	if (tileMap && entityMap) {
-		return tileMap->load(game) && entityMap->load(game);
+	if (tileMap.path && entityMap.path) {
+		return tileMap.load(game) && entityMap.load(game);
 	}
 
     /* Open scene document */
@@ -33,9 +33,9 @@ bool TileMapScene::load() {
     GRY_JSON::loadDoc(sceneDoc, scenePath);
 
 	/* Initialize the tile map */
-	tileMap = new TileMap(sceneDoc["tileMapPath"].GetString());
+	tileMap.setPath(sceneDoc["tileMapPath"].GetString());
 	/* Initialize the tile entity map */
-	entityMap = new TileEntityMap(sceneDoc["tileEntityMapPath"].GetString(), &ecs);
+	entityMap.setPath(sceneDoc["tileEntityMapPath"].GetString());
 	/* Read the normal tile size */
 	normalTileSize = sceneDoc["normalTileSize"].GetUint();
 
