@@ -49,21 +49,23 @@ bool Tileset::load(GRY_Game* game) {
 		);
 	}
 
-    for (auto& tile : tilesetDoc["tiles"].GetArray()) {
-        TileId id = tile["id"].GetUint() + 1; /* Add 1 because it's 1-based indexing */
-        /* Load animations */
-        if (tile.HasMember("animation")) {
-			std::vector<TileAnimation::Frame> frames;
-			for (auto& frame : tile["animation"].GetArray()) {
-				frames.push_back(TileAnimation::Frame {
-						frame["duration"].GetDouble() / 1000.0,
-						(TileId)(frame["tileid"].GetUint() + 1) /* Add 1 here too */
-					}
-				);
+	if (tilesetDoc.HasMember("tiles")) {
+		for (auto& tile : tilesetDoc["tiles"].GetArray()) {
+			TileId id = tile["id"].GetUint() + 1; /* Add 1 because it's 1-based indexing */
+			/* Load animations */
+			if (tile.HasMember("animation")) {
+				std::vector<TileAnimation::Frame> frames;
+				for (auto& frame : tile["animation"].GetArray()) {
+					frames.push_back(TileAnimation::Frame {
+							frame["duration"].GetDouble() / 1000.0,
+							(TileId)(frame["tileid"].GetUint() + 1) /* Add 1 here too */
+						}
+					);
+				}
+				tileAnimations.push_back(TileAnimation{frames, 0, frames.at(0).duration, id});
 			}
-			tileAnimations.push_back(TileAnimation{frames, 0, frames.at(0).duration, id});
 		}
-    }
+	}
 
     return false;
 }

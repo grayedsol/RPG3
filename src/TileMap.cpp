@@ -16,7 +16,7 @@ bool TileMap::load(GRY_Game *game) {
 	width = mapDoc["width"].GetUint();
 
 	/* Create tilesets and tile collision sets */
-	if (tilesets.empty() && tileCollisions.empty()) {
+	if (tilesets.empty() && tileCollisions.empty() && mapDoc["tilesets"].GetArray().Size() > 0) {
 		for (auto& tileset : mapDoc["tilesets"].GetArray()) {
 			tilesets.push_back(Tileset(tileset["source"].GetString()));
 			tileCollisions.push_back(TileCollision(tileset["source"].GetString()));
@@ -48,5 +48,7 @@ bool TileMap::load(GRY_Game *game) {
 		}
 		tileLayers.push_back(tiles);
 	}
-	return false;
+	
+	/* Return false normally, but if there were no layers we can return true. */
+	return mapDoc["layers"].GetArray().Size() == 0;
 }
