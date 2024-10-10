@@ -15,6 +15,7 @@
  */
 struct Tile {
     using TileId = uint16_t;
+	using TilesetId = uint8_t;
     using entity = ECS::entity;
 
     /**
@@ -27,7 +28,7 @@ struct Tile {
      * @brief Index of the tileset to use.
      * 
      */
-    uint8_t tileset;
+    TilesetId tileset;
 
     /**
      * @brief Associated entity for more complex features.
