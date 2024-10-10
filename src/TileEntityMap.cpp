@@ -7,19 +7,27 @@
 #include "GRY_JSON.hpp"
 #include "TileComponents.hpp"
 
-static ECS::entity registerEntity(TileMapECS& ecs, const GRY_JSON::Value& entityData);
+using TileId = Tile::TileId;
+using TilesetId = Tile::TilesetId;
+using entity = ECS::entity;
 
-static void registerPosition(TileMapECS& ecs, ECS::entity e, const GRY_JSON::Value& pos);
-static void registerActor(TileMapECS& ecs, ECS::entity e, const GRY_JSON::Value& actor);
-static void registerActorTextures(TileMapECS& ecs, ECS::entity e, const GRY_JSON::Value& actorTextures);
-static void registerPlayer(TileMapECS& ecs, ECS::entity e);
+static entity registerEntity(TileMapECS& ecs, const GRY_JSON::Value& entityData, float normalTileSize);
 
-static void sortEntityLayer(ComponentSet<Position2>& positions, std::vector<ECS::entity>& layer);
+static void registerPosition(TileMapECS& ecs, entity e, const GRY_JSON::Value& pos, float normalTileSize);
+static void registerActor(TileMapECS& ecs, entity e, const GRY_JSON::Value& actor);
+static void registerActorSprite(TileMapECS& ecs, entity e, const GRY_JSON::Value& actorSprite);
+static void registerActorTextureList(TileMapECS& ecs, entity e, const GRY_JSON::Value& actorTextureList);
+static void registerPlayer(TileMapECS& ecs, entity e);
+
+static void sortEntityLayer(ComponentSet<Position2>& positions, std::vector<entity>& layer);
 
 bool TileEntityMap::load(GRY_Game *game) {
 	if (!entityLayers.empty()) { return true; }
 	GRY_JSON::Document doc;
 	GRY_JSON::loadDoc(doc, path);
+
+	/* Get the normal tile size */
+	float normalTileSize = doc["normalTileSize"].GetFloat();
 
 	/* Create tilesets */
 	if (tilesets.empty() && doc["tilesets"].GetArray().Size() > 0) {
@@ -38,7 +46,7 @@ bool TileEntityMap::load(GRY_Game *game) {
 		EntityLayer entityLayer;
 		/* Load entity data */
 		for (auto& entityData : layer.GetArray()) {
-			entity e = registerEntity(*ecs, entityData);
+			entity e = registerEntity(*ecs, entityData, normalTileSize);
 			entityLayer.push_back(e);
 		}
 		sortEntityLayer(this->ecs->getComponent<Position2>(), entityLayer);
@@ -49,52 +57,72 @@ bool TileEntityMap::load(GRY_Game *game) {
 	return doc["layers"].GetArray().Size() == 0;
 }
 
-static ECS::entity registerEntity(TileMapECS& ecs, const GRY_JSON::Value& entityData) {
-	ECS::entity e = ecs.createEntity();
+static entity registerEntity(TileMapECS& ecs, const GRY_JSON::Value& entityData, float normalTileSize) {
+	entity e = ecs.createEntity();
 
 	GRY_Assert(entityData.HasMember("position"),
 		"[TileEntityMap] An entity did not have a position component.\n"
 	);
-	registerPosition(ecs, e, entityData["position"]);
+	registerPosition(ecs, e, entityData["position"], normalTileSize);
 	if (entityData.HasMember("actor")) { registerActor(ecs, e, entityData["actor"]); }
-	if (entityData.HasMember("actorTextures")) { registerActorTextures(ecs, e, entityData["actorTextures"]); }
+	if (entityData.HasMember("actorSprite")) { registerActorSprite(ecs, e, entityData["actorSprite"]); }
+	if (entityData.HasMember("actorTextureList")) { registerActorTextureList(ecs, e, entityData["actorTextureList"]); }
 	if (entityData.HasMember("player")) { registerPlayer(ecs, e); }
 
 	return e;
 }
 
-static void registerPosition(TileMapECS& ecs, ECS::entity e, const GRY_JSON::Value& pos) {
+static void registerPosition(TileMapECS& ecs, entity e, const GRY_JSON::Value& pos, float normalTileSize) {
 	Position2 position;
-	position[0] = pos.GetArray()[0].GetFloat();
-	position[1] = pos.GetArray()[1].GetFloat();
+
+	position[0] = pos.GetArray()[0].GetFloat() * normalTileSize;
+	position[1] = pos.GetArray()[1].GetFloat() * normalTileSize;
+
 	ecs.getComponent<Position2>().add(e, position);
 }
 
-static void registerActor(TileMapECS& ecs, ECS::entity e, const GRY_JSON::Value& actor) {
-	Actor::Direction direction = static_cast<Actor::Direction>(actor["direction"].GetUint());
-	uint8_t tileset = actor["tileset"].GetUint();
-	float speed = actor["speed"].GetFloat();
-	Actor data{ speed, direction, tileset };
+static void registerActor(TileMapECS& ecs, entity e, const GRY_JSON::Value& actor) {
+	Actor data;
+
+	data.direction = static_cast<Actor::Direction>(actor["direction"].GetUint());
+	data.speed = actor["speed"].GetFloat();
+
 	ecs.getComponent<Actor>().add(e, data);
 }
 
-static void registerActorTextures(TileMapECS& ecs, ECS::entity e, const GRY_JSON::Value& actorTextures) {
-	GRY_Assert(actorTextures.GetArray().Size() >= Actor::Direction::SIZE,
-		"[TileEntityMap] Actor textures array must be at least Actor::Direction::SIZE. Was %d.\n",
-		actorTextures.GetArray().Size()
-	);
-	ActorTexture textures;
-	for (int i = 0; i < Actor::Direction::SIZE; i++) {
-		textures.data[i] = (uint16_t)actorTextures.GetArray()[i].GetUint();
-	}
-	ecs.getComponent<ActorTexture>().add(e, textures);
+static void registerActorSprite(TileMapECS& ecs, entity e, const GRY_JSON::Value& actorSprite) {
+	ActorSprite sprite;
+
+	sprite.offsetX = 0;
+	sprite.offsetY = 0;
+	sprite.index = actorSprite["index"].GetUint();
+	sprite.tileset = actorSprite["tileset"].GetUint();
+
+	if (actorSprite.HasMember("offsetX")) { sprite.offsetX = actorSprite["offsetX"].GetFloat(); }
+	if (actorSprite.HasMember("offsetY")) { sprite.offsetY = actorSprite["offsetY"].GetFloat(); }
+
+	ecs.getComponent<ActorSprite>().add(e, sprite);
 }
 
-static void registerPlayer(TileMapECS& ecs, ECS::entity e) {
+static void registerActorTextureList(TileMapECS& ecs, entity e, const GRY_JSON::Value& actorTextureList) {
+	GRY_Assert(actorTextureList.GetArray().Size() >= Actor::Direction::SIZE,
+		"[TileEntityMap] Actor texture list array must be at least Actor::Direction::SIZE. Was %d.\n",
+		actorTextureList.GetArray().Size()
+	);
+	ActorTextureList textureList;
+
+	for (int i = 0; i < Actor::Direction::SIZE; i++) {
+		textureList.data[i] = (TileId)actorTextureList.GetArray()[i].GetUint();
+	}
+
+	ecs.getComponent<ActorTextureList>().add(e, textureList);
+}
+
+static void registerPlayer(TileMapECS& ecs, entity e) {
 	ecs.getComponent<Player>().add(e, Player{});
 }
 
-static void sortEntityLayer(ComponentSet<Position2>& positions, std::vector<ECS::entity>& layer) {
+static void sortEntityLayer(ComponentSet<Position2>& positions, std::vector<entity>& layer) {
 	auto lessThan = [&](Position2 p1, Position2 p2) {
 		if (p1[1] == p2[1]) { return p1[0] < p2[0]; }
 		else { return p1[1] < p2[1]; }

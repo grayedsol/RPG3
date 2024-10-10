@@ -19,6 +19,8 @@ class TileMapScene;
  */
 class TileMapRenderer {
 	using TileId = Tile::TileId;
+	using TileLayer = TileMap::TileLayer;
+	using EntityLayer = TileEntityMap::EntityLayer;
 private:
 	/**
 	 * @brief Associated TileMapScene class.
@@ -32,11 +34,18 @@ private:
 	 */
 	SDL_Renderer*& renderer;
 
+	const TileMap& tileMap;
+
+	const TileEntityMap& entityMap;
+
 	/**
 	 * @brief Scaling factor for textures. Ideally a whole number.
 	 * 
 	 */
 	const float& pixelScaling;
+
+	const ComponentSet<Position2>& positions;
+	const ComponentSet<ActorSprite>& sprites;
 
 	/**
 	 * @brief Render a tile on the screen.
@@ -46,6 +55,13 @@ private:
 	 * @param dstRect Rendering position and size information.
 	 */
 	void renderTile(const Tileset& tileset, const TileId textureIndex, const SDL_FRect* dstRect);
+
+	/**
+	 * @brief Render an entity's sprite on the screen.
+	 * 
+	 * @param e Id of the entity to render
+	 */
+	void renderSprite(ECS::entity e);
 public:
 	/**
 	 * @brief Constructor.
@@ -55,9 +71,8 @@ public:
 	TileMapRenderer(const TileMapScene* scene);
 
 	/**
-	 * @brief Render the TileMap.
+	 * @brief Render the TileMap and TileEntityMap.
 	 * 
-	 * @param map TileMap to render.
 	 */
-	void process(const TileMap& map);
+	void process();
 };

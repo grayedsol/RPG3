@@ -20,7 +20,7 @@ void TileMapScene::process() {
 			break;
 	}
 
-	tileMapRenderer.process(tileMap);
+	tileMapRenderer.process();
 }
 
 bool TileMapScene::load() {
