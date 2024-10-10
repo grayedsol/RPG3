@@ -53,15 +53,15 @@ void TileMapRenderer::process() {
 		uint32_t numRows = (uint32_t)layer.size() / tileMap.width;
 
 		unsigned entityIndex = 0;
-		uint32_t entityRow = entityLayer.empty() ? 0 : (uint32_t)(positions.get(entityLayer[entityIndex])[1] * (1.f / tileMap.width));
+		uint32_t entityRow = entityLayer.empty() ? 0 : (uint32_t)(positions.get(entityLayer[entityIndex])[1] / tileset.tileHeight);
 
 		for (uint32_t y = 0; y < numRows; y++) {
 			/* Render any entities in the row */
-			while (entityRow != y && entityIndex < entityLayer.size()) {
+			while (entityRow == y && entityIndex < entityLayer.size()) {
 				renderSprite(entityLayer[entityIndex]);
 				entityIndex++;
 				if (entityIndex < entityLayer.size()) {
-					entityRow = (uint32_t)(positions.get(entityLayer[entityIndex])[1] * (1.f / tileMap.width));
+					entityRow = (uint32_t)(positions.get(entityLayer[entityIndex])[1] / tileset.tileHeight);
 				}
 			}
 			/* Render row of tiles */
