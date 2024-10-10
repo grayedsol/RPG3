@@ -16,11 +16,11 @@ struct TileEntityMap : public FileResource {
 	using entity = ECS::entity;
 	using EntityLayer = std::vector<entity>;
 
-	TileMapECS* ecs = nullptr;
-
 	std::vector<EntityLayer> entityLayers;
 
 	std::vector<Tileset> tilesets;
+
+	TileMapECS* ecs = nullptr;
 
 	TileEntityMap(const char* path, TileMapECS* ecs) : FileResource(path), ecs(ecs) {}
 
