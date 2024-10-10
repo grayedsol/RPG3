@@ -2,14 +2,18 @@
 	"layers":[
 		[
 			{
+				"position" : [1,1],
+				"player" : true,
 				"actor" : {
+					"speed" : 120,
 					"direction" : 0,
 					"tileset" : 0
-				}
+				},
+				"actorTextures" : [24,25,26,27,26,27,26,27]
 			}
 		]
 	],
 	"tilesets" : [
-		"assets\/textures\/image\/chronosprites.json"
+		"assets\/textures\/data\/chronosprites.json"
 	]
 }

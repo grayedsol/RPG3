@@ -17,10 +17,16 @@ struct Actor {
 	};
 
 	/**
+	 * @brief Movement speed.
+	 * 
+	 */
+	float speed = 1;
+
+	/**
 	 * @brief Direction the actor is facing.
 	 *
 	 */
-	Direction direction;
+	Direction direction = Direction::Down;
 	
 	/**
 	 * @brief Index of the tileset to use
@@ -32,3 +38,5 @@ struct Actor {
 struct ActorTexture {
 	uint16_t data[Actor::Direction::SIZE];
 };
+
+struct Player {};
