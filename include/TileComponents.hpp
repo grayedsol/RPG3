@@ -1,6 +1,7 @@
 #pragma once
 #include "SDL3/SDL.h"
 #include <stdint.h>
+#include "Tile.hpp"
 
 struct Actor {
 	enum Direction {
@@ -20,23 +21,47 @@ struct Actor {
 	 * @brief Movement speed.
 	 * 
 	 */
-	float speed = 1;
+	float speed = 1.f;
 
 	/**
 	 * @brief Direction the actor is facing.
 	 *
 	 */
 	Direction direction = Direction::Down;
-	
+};
+
+struct ActorSprite {
+	using TileId = Tile::TileId;
+	using TilesetId = Tile::TilesetId;
+
+	/**
+	 * @brief X coordinate rendering offset, in game pixels
+	 * 
+	 */
+	float offsetX;
+
+	/**
+	 * @brief Y coordinate rendering offset, in game pixels
+	 * 
+	 */
+	float offsetY;
+
+	/**
+	 * @brief Index of the tile to render
+	 * 
+	 */
+	TileId index;
+
 	/**
 	 * @brief Index of the tileset to use
 	 *
 	 */
-	uint8_t tileset = 0;
+	TilesetId tileset;
 };
 
-struct ActorTexture {
-	uint16_t data[Actor::Direction::SIZE];
+struct ActorTextureList {
+	using TileId = Tile::TileId;
+	TileId data[Actor::Direction::SIZE];
 };
 
 struct Player {};
