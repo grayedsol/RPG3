@@ -72,7 +72,7 @@ public:
 	 * @sa getComponent
 	 */
 	template<typename T>
-	const ComponentSet<T>& getComponentReadOnly() { return std::get<ComponentSet<T>>(components); }
+	const ComponentSet<T>& getComponentReadOnly() const { return std::get<ComponentSet<T>>(components); }
 
 	/**
 	 * @brief Create an entity that is not in use.
