@@ -16,7 +16,9 @@
 using TileMapECS = GRY_ECS<
 	Position2,
 	Velocity2,
+	Hitbox,
 	Actor,
-	ActorTexture,
+	ActorSprite,
+	ActorTextureList,
 	Player
 >;
