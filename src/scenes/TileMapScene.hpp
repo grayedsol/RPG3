@@ -91,6 +91,34 @@ public:
 	GRY_PixelGame* getPixelGame() const { return (GRY_PixelGame*)game; }
 
 	/**
+	 * @brief Get a reference to the TileMapECS.
+	 * 
+	 * @return Reference to the TileMapECS.
+	 */
+	TileMapECS& getECS() { return ecs; }
+
+	/**
+	 * @copybrief getECS
+	 * 
+	 * @return `const` reference to the TileMapECS.
+	 */
+	const TileMapECS& getECSReadOnly() const { return ecs; }
+
+	/**
+	 * @brief Get a reference to the TileMap.
+	 * 
+	 * @return `const` reference to the TileMap.
+	 */
+	const TileMap& getTileMap() const { return tileMap; }
+
+	/**
+	 * @brief Get a reference to the TileEntityMap.
+	 * 
+	 * @return `const` reference to the TileEntityMap.
+	 */
+	const TileEntityMap& getTileEntityMap() const { return entityMap; }
+
+	/**
 	 * @brief Get the width / height of a normal square tile.
 	 * 
 	 * @copydetails TileMapScene::normalTileSize
