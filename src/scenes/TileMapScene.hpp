@@ -8,6 +8,7 @@
 #include "Scene.hpp"
 #include "TileMapECS.hpp"
 #include "../tile/TileMapRenderer.hpp"
+#include "../tile/TileMapMovement.hpp"
 
 class GRY_PixelGame;
 
@@ -54,6 +55,12 @@ private:
 	TileMapRenderer tileMapRenderer;
 
 	/**
+	 * @brief Movement for the tile map entities.
+	 * 
+	 */
+	TileMapMovement tileMapMovement;
+
+	/**
 	 * @copybrief Scene::setControls
 	 * 
 	 */
@@ -65,7 +72,11 @@ public:
      * @param game Associated game class.
      * @param tileMapPath File path to the tilemap scene.
      */
-	TileMapScene(GRY_PixelGame* pGame, const char* tileMapPath) : Scene((GRY_Game*)pGame, tileMapPath), tileMapRenderer(this) {}
+	TileMapScene(GRY_PixelGame* pGame, const char* tileMapPath) :
+		Scene((GRY_Game*)pGame, tileMapPath),
+		tileMapRenderer(this),
+		tileMapMovement(this) {
+	}
 
     /**
      * @brief Initializes the scene.

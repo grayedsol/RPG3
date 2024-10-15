@@ -37,14 +37,15 @@ set(SOURCES src/main.cpp
 	src/scenes/TileMapScene.cpp
     src/debugtexts/DebugTextTilesetScene.cpp
 	src/tile/TileMapRenderer.cpp
-    )
+	src/tile/TileMapMovement.cpp
+)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_include_directories(${PROJECT_NAME}
     PRIVATE include
     PUBLIC ${RAPIDJSON_INCLUDE_DIR}
-    )
+)
 
 configure_file(gameconfig.h.in gameconfig.h)
 
@@ -60,13 +61,13 @@ if(WIN32)
     add_custom_command(TARGET game POST_BUILD
         COMMAND "${CMAKE_COMMAND}" -E make_directory
         "${CMAKE_BINARY_DIR}/assets"
-        )
+    )
     
     add_custom_command(TARGET game POST_BUILD
         COMMAND "${CMAKE_COMMAND}" -E copy_directory_if_different
         ${PROJECT_SOURCE_DIR}/assets
         "${CMAKE_BINARY_DIR}/assets"
-        )
+    )
     
 else()
     #TODO check if this can be better linux

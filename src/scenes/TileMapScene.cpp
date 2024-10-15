@@ -3,8 +3,12 @@
 
 void TileMapScene::setControls() {
     controls.mapCmd(GCmd::GameMenu, VirtualButton::GAME_A);
-    controls.mapCmd(GCmd::GameUp, VirtualButton::GAME_UP);
     controls.mapCmd(GCmd::GameQuit, VirtualButton::GAME_B);
+	
+	controls.mapCmd(GCmd::MapDown, VirtualButton::GAME_DOWN);
+	controls.mapCmd(GCmd::MapUp, VirtualButton::GAME_UP);
+	controls.mapCmd(GCmd::MapLeft, VirtualButton::GAME_LEFT);
+	controls.mapCmd(GCmd::MapRight, VirtualButton::GAME_RIGHT);
 }
 
 void TileMapScene::init() {
@@ -19,7 +23,9 @@ void TileMapScene::process() {
 		default:
 			break;
 	}
+	if (isPressing(GCmd::GameUp)) {}
 
+	tileMapMovement.process();
 	tileMapRenderer.process();
 }
 
