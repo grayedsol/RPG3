@@ -158,7 +158,7 @@ public:
      * 
      * @return A GCmd input.
 	 */
-	GCmd readSingleInput();
+	GCmd readSingleInput() const;
 
 	/**
 	 * @brief Determine if `cmd` is active by checking its associated VirtualButton.
@@ -167,7 +167,7 @@ public:
 	 * @return `true` if `cmd` is active.
 	 * @return `false` otherwise.
 	 */
-	const bool isPressing(GCmd cmd);
+	const bool isPressing(GCmd cmd) const;
 
 	/**
 	 * @brief Get the debug text.

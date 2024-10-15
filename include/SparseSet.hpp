@@ -208,13 +208,13 @@ struct SparseSet {
      * 
      * @return Pointer to the first entity in the SparseSet. 
      */
-    entity* begin() { return dense.data(); }
+    const entity* begin() const { return dense.data(); }
 
     /**
      * @brief Pointer to one past the last entity. Useful in range based for loops.
      * 
      * @return Pointer to one past the last entity in the SparseSet. 
      */
-    entity* end() { return dense.data() + dense.size(); }
+    const entity* end() const { return dense.data() + dense.size(); }
 
 };

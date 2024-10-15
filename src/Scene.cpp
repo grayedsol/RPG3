@@ -14,6 +14,6 @@ Scene::~Scene() {
 
 GCmd Scene::readInput() { return controls.commands[game->getInput()]; }
 
-GCmd Scene::readSingleInput() { return controls.commands[game->getSingleInput()]; }
+GCmd Scene::readSingleInput() const { return controls.commands[game->getSingleInput()]; }
 
-const bool Scene::isPressing(GCmd cmd) { return game->isPressing(controls.buttons[cmd]); }
+const bool Scene::isPressing(GCmd cmd) const { return game->isPressing(controls.buttons[cmd]); }
