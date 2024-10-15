@@ -21,8 +21,17 @@ GRY_PixelGame::GRY_PixelGame(int WINDOW_WIDTH, int WINDOW_HEIGHT, int TARGET_FPS
 	pixelScaling = w / (float)SCREEN_WIDTH_PIXELS;
 }
 
+/**
+ * @details
+ * Updates the pixel scaling of the game based on the screen size.
+ * Toggles the debug screen if SELECT is pressed while START is being pressed.
+ */
 void GRY_PixelGame::process() {
 	int w;
 	gsdl.getWindowSize(&w, NULL);
 	pixelScaling = w / (float)SCREEN_WIDTH_PIXELS;
+
+	if (getSingleInput() == VirtualButton::GAME_SELECT && isPressing(VirtualButton::GAME_START)) {
+		toggleDebugScreen();
+	}
 }
