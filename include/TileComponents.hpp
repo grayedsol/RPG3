@@ -5,16 +5,18 @@
 
 struct Actor {
 	enum Direction {
-		Down = 0,
-		Up = 1,
-		Left = 2,
-		Right = 3,
-		DownLeft = 4,
-		DownRight = 5,
-		UpLeft = 6,
-		UpRight = 7,
-
-		SIZE = 8
+		NONE = 0,
+		
+		Down = 1,
+		Up = 2,
+		Left = 3,
+		LeftDown = 4,
+		LeftUp = 5,
+		Right = 6,
+		RightDown = 7,
+		RightUp = 8,
+		
+		SIZE = 9
 	};
 
 	/**
@@ -59,9 +61,9 @@ struct ActorSprite {
 	TilesetId tileset;
 };
 
-struct ActorTextureList {
-	using TileId = Tile::TileId;
-	TileId data[Actor::Direction::SIZE];
-};
+// struct ActorTextureList {
+// 	using TileId = Tile::TileId;
+// 	TileId data[Actor::Direction::SIZE];
+// };
 
 struct Player {};

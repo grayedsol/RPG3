@@ -16,7 +16,7 @@ static entity registerEntity(TileMapECS& ecs, const GRY_JSON::Value& entityData,
 static void registerPosition(TileMapECS& ecs, entity e, const GRY_JSON::Value& pos, float normalTileSize);
 static void registerActor(TileMapECS& ecs, entity e, const GRY_JSON::Value& actor);
 static void registerActorSprite(TileMapECS& ecs, entity e, const GRY_JSON::Value& actorSprite);
-static void registerActorTextureList(TileMapECS& ecs, entity e, const GRY_JSON::Value& actorTextureList);
+//static void registerActorTextureList(TileMapECS& ecs, entity e, const GRY_JSON::Value& actorTextureList);
 static void registerPlayer(TileMapECS& ecs, entity e);
 
 static void sortEntityLayer(ComponentSet<Position2>& positions, std::vector<entity>& layer);
@@ -66,7 +66,7 @@ static entity registerEntity(TileMapECS& ecs, const GRY_JSON::Value& entityData,
 	registerPosition(ecs, e, entityData["position"], normalTileSize);
 	if (entityData.HasMember("actor")) { registerActor(ecs, e, entityData["actor"]); }
 	if (entityData.HasMember("actorSprite")) { registerActorSprite(ecs, e, entityData["actorSprite"]); }
-	if (entityData.HasMember("actorTextureList")) { registerActorTextureList(ecs, e, entityData["actorTextureList"]); }
+	//if (entityData.HasMember("actorTextureList")) { registerActorTextureList(ecs, e, entityData["actorTextureList"]); }
 	if (entityData.HasMember("player")) { registerPlayer(ecs, e); }
 
 	return e;
@@ -104,19 +104,19 @@ static void registerActorSprite(TileMapECS& ecs, entity e, const GRY_JSON::Value
 	ecs.getComponent<ActorSprite>().add(e, sprite);
 }
 
-static void registerActorTextureList(TileMapECS& ecs, entity e, const GRY_JSON::Value& actorTextureList) {
-	GRY_Assert(actorTextureList.GetArray().Size() >= Actor::Direction::SIZE,
-		"[TileEntityMap] Actor texture list array must be at least Actor::Direction::SIZE. Was %d.\n",
-		actorTextureList.GetArray().Size()
-	);
-	ActorTextureList textureList;
+// static void registerActorTextureList(TileMapECS& ecs, entity e, const GRY_JSON::Value& actorTextureList) {
+// 	GRY_Assert(actorTextureList.GetArray().Size() >= Actor::Direction::SIZE,
+// 		"[TileEntityMap] Actor texture list array must be at least Actor::Direction::SIZE. Was %d.\n",
+// 		actorTextureList.GetArray().Size()
+// 	);
+// 	ActorTextureList textureList;
 
-	for (int i = 0; i < Actor::Direction::SIZE; i++) {
-		textureList.data[i] = (TileId)actorTextureList.GetArray()[i].GetUint();
-	}
+// 	for (int i = 0; i < Actor::Direction::SIZE; i++) {
+// 		textureList.data[i] = (TileId)actorTextureList.GetArray()[i].GetUint();
+// 	}
 
-	ecs.getComponent<ActorTextureList>().add(e, textureList);
-}
+// 	ecs.getComponent<ActorTextureList>().add(e, textureList);
+// }
 
 static void registerPlayer(TileMapECS& ecs, entity e) {
 	ecs.getComponent<Player>().add(e, Player{});
