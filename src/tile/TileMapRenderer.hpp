@@ -1,7 +1,7 @@
 /**
  * @file TileMapRenderer.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @copybrief  TileMapRenderer
+ * @copybrief TileMapRenderer
  * @copyright Copyright (c) 2024
  */
 #pragma once
@@ -12,7 +12,7 @@
 class TileMapScene;
 
 /**
- * @brief Renders a tile map.
+ * @brief Renders a tile map and tile entity map.
  * 
  * @details
  * For efficiency, this renderer assumes the map uses only one tileset.
@@ -34,8 +34,16 @@ private:
 	 */
 	SDL_Renderer*& renderer;
 
+	/**
+	 * @brief Reference to the TileMap.
+	 * 
+	 */
 	const TileMap& tileMap;
 
+	/**
+	 * @brief Reference to the TileEntityMap
+	 * 
+	 */
 	const TileEntityMap& entityMap;
 
 	/**
@@ -44,7 +52,16 @@ private:
 	 */
 	const float& pixelScaling;
 
+	/**
+	 * @brief Positions of entites, in game pixels.
+	 * 
+	 */
 	const ComponentSet<Position2>& positions;
+
+	/**
+	 * @brief Sprites of entities.
+	 * 
+	 */
 	const ComponentSet<ActorSprite>& sprites;
 
 	/**

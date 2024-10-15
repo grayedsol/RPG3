@@ -133,7 +133,7 @@ public:
     const VirtualButton getSingleInput() const { return singleInput; }
 
     /**
-	 * @brief Determine if `b` is being pressed..
+	 * @brief Determine if `b` is being pressed.
 	 * 
 	 * @param b VirtualButton to check.
 	 * @return `true` if `b` is being pressed.
