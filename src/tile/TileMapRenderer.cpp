@@ -23,8 +23,8 @@ void TileMapRenderer::renderTile(const Tileset &tileset, const TileId textureInd
 void TileMapRenderer::renderSprite(ECS::entity e) {
 	const Tileset& tileset = entityMap.tilesets[sprites.get(e).tileset];
 	SDL_FRect dstRect {
-		(positions.get(e)[0] + sprites.get(e).offsetX) * pixelScaling,
-		(positions.get(e)[1] + sprites.get(e).offsetY) * pixelScaling,
+		floorf((positions.get(e)[0] + sprites.get(e).offsetX) * pixelScaling),
+		floorf((positions.get(e)[1] + sprites.get(e).offsetY) * pixelScaling),
 		tileset.tileWidth * pixelScaling,
 		tileset.tileHeight * pixelScaling
 	};
@@ -54,7 +54,7 @@ void TileMapRenderer::process() {
 
 		unsigned entityIndex = 0;
 		uint32_t entityRow = entityLayer.empty() ? 0 : (uint32_t)(positions.get(entityLayer[entityIndex])[1] / tileset.tileHeight);
-
+		/* Render by row */
 		for (uint32_t y = 0; y < numRows; y++) {
 			/* Render any entities in the row */
 			while (entityRow == y && entityIndex < entityLayer.size()) {
