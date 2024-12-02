@@ -56,7 +56,7 @@ void TilesetScene::process()
 
     /* Tileset width in pixels */
     float tilesetWidth;
-	SDL_GetTextureSize(tileset->gtexture->texture, &tilesetWidth, NULL);
+	SDL_GetTextureSize(tileset->texture, &tilesetWidth, NULL);
     /* Tileset width in tiles */
     int tilesetWidthTiles = tilesetWidth / tileset->tileWidth;
     /* Destination rectangle for rendering */
@@ -65,7 +65,7 @@ void TilesetScene::process()
     SDL_Renderer*& renderer = game->getSDL().getRenderer();
     for (Tile::TileId i = 1; i < tileset->sourceRects.size(); i++) {
         const SDL_FRect* srcRect = tileset->getSourceRect(i);
-        SDL_RenderTexture(renderer, tileset->gtexture->texture, srcRect, &dstRect);
+        SDL_RenderTexture(renderer, tileset->texture, srcRect, &dstRect);
 
         /* Highlight collisions */
         if (highlightCollisions && collisions->collisions.contains(i)) {

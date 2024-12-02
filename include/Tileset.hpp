@@ -18,11 +18,12 @@
  */
 struct Tileset : public FileResource {
     using TileId = Tile::TileId;
+
     /**
      * @brief Texture the tileset will use.
      * 
      */
-    GRY_Texture* gtexture = nullptr;
+	SDL_Texture* texture = nullptr;
 
     /**
      * @brief Rectangles that define the space of each tile in the texture.
@@ -71,7 +72,10 @@ struct Tileset : public FileResource {
      * @brief Destructor.
      * 
      */
-    ~Tileset() { delete gtexture; gtexture = nullptr; }
+    ~Tileset() {
+		SDL_DestroyTexture(texture);
+		texture = nullptr;
+	}
 
     Tileset(const Tileset&) = delete;
     Tileset& operator=(const Tileset&) = delete;
@@ -79,7 +83,7 @@ struct Tileset : public FileResource {
     friend void swap(Tileset& lhs, Tileset& rhs) {
         using std::swap;
         swap(static_cast<FileResource&>(lhs), static_cast<FileResource&>(rhs));
-        swap(lhs.gtexture, rhs.gtexture);
+        swap(lhs.texture, rhs.texture);
         swap(lhs.sourceRects, rhs.sourceRects);
         swap(lhs.textureIdx, rhs.textureIdx);
         swap(lhs.tileAnimations, rhs.tileAnimations);

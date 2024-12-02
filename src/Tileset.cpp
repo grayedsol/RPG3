@@ -14,12 +14,12 @@ bool Tileset::load(GRY_Game* game) {
     GRY_JSON::Document tilesetDoc;
     GRY_JSON::loadDoc(tilesetDoc, path);
 
-    /* Load texture */
-    if (!gtexture) {
+	/* Load texture */
+	if (!texture) {
 		const char* imagePath = GRY_Tiled::getProperty(tilesetDoc, "imagePath").GetString();
-        gtexture = new GRY_Texture(imagePath);
-        return gtexture->load(game);
-    }
+		texture = game->getSDL().loadTexture(imagePath);
+		return false;
+	}
 
     /* Read width and height of a single tile */
 	tileWidth = tilesetDoc["tilewidth"].GetFloat();
@@ -27,7 +27,7 @@ bool Tileset::load(GRY_Game* game) {
 	assert(tileWidth && tileHeight);
 
     float texture_width;
-	SDL_GetTextureSize(gtexture->texture, &texture_width, NULL);
+	SDL_GetTextureSize(texture, &texture_width, NULL);
 	/* Width of tileset in number of tiles */
 	int tilesetWidth = texture_width / (int)tileWidth;
 
