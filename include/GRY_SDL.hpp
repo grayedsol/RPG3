@@ -8,7 +8,6 @@
 #include "SDL3/SDL.h"
 
 struct TTF_Font;
-// typedef _TTF_Font TTF_Font;
 
 /**
  * @brief Initializes and provides an interface for SDL functionality.

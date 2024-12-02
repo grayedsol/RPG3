@@ -53,7 +53,7 @@ private:
 	const float& pixelScaling;
 
 	/**
-	 * @brief Positions of entites, in game pixels.
+	 * @brief Positions of entities, in game pixels.
 	 * 
 	 */
 	const ComponentSet<Position2>& positions;
