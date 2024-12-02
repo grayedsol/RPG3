@@ -26,7 +26,7 @@ private:
      * @brief Array that maps GRY_Mousecodes to VirtualButtons.
      * 
      */
-    VirtualButton mouseButtons[GRY_NUM_MOUSECODES];
+    VirtualButton mouseButtons[GRY_MOUSECODE_COUNT];
 
     /**
      * @brief Array that can be used to check the pressing state of a VirtualButton.
@@ -44,7 +44,7 @@ private:
      * @brief Array representing the state of each mouse button.
      * 
      */
-    bool mouseState[GRY_NUM_MOUSECODES];
+    bool mouseState[GRY_MOUSECODE_COUNT];
 
     /**
      * @brief Points to the keyboard state obtained from `SDL_GetKeyboardState()`.

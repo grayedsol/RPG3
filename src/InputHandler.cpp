@@ -22,7 +22,7 @@ InputHandler::InputHandler() : keyboardState(SDL_GetKeyboardState(NULL)) {
 		buttonState[i][0] = nullptr;
 		buttonState[i][1] = nullptr;
 	}
-	for (int i = 0; i < GRY_NUM_MOUSECODES; i++) { mouseState[i] = 0; } /* TODO change to GRY_RELEASED or something */
+	for (int i = 0; i < GRY_MOUSECODE_COUNT; i++) { mouseState[i] = 0; } /* TODO change to GRY_RELEASED or something */
 
 	resetControls();
 
@@ -74,7 +74,7 @@ void InputHandler::mapInput(unsigned int code, VirtualButton button, bool mouse,
 
 void InputHandler::resetControls() {
 	for (int i = 0; i < SDL_SCANCODE_COUNT; i++) { keyButtons[i] = VirtualButton::GAME_NONE; }
-	for (int i = 0; i < GRY_NUM_MOUSECODES; i++) { mouseButtons[i] = VirtualButton::GAME_NONE; }
+	for (int i = 0; i < GRY_MOUSECODE_COUNT; i++) { mouseButtons[i] = VirtualButton::GAME_NONE; }
 }
 
 void InputHandler::loadControls() {
