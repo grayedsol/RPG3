@@ -5,6 +5,7 @@
  */
 #include "FPSHandler.hpp"
 #include "SDL3/SDL.h"
+#include <algorithm>
 
 FPSHandler::FPSHandler(const unsigned int TARGET_FPS) :
     TARGET_FPS(TARGET_FPS),
@@ -23,8 +24,7 @@ void FPSHandler::computeDelta() {
     deltaTime = (double)(SDL_GetPerformanceCounter() - start) / SDL_GetPerformanceFrequency();
 
     /* Ensure delta is between maxDelta and minDelta. */
-    if (deltaTime > maxDelta) { deltaTime = maxDelta; }
-    else if (deltaTime < minDelta) { deltaTime = minDelta; }
+	deltaTime = std::max(minDelta, std::min(maxDelta, deltaTime));
 }
 
 /**
