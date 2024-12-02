@@ -22,7 +22,7 @@ InputHandler::InputHandler() : keyboardState(SDL_GetKeyboardState(NULL)) {
 		buttonState[i][0] = nullptr;
 		buttonState[i][1] = nullptr;
 	}
-	for (int i = 0; i < GRY_NUM_MOUSECODES; i++) { mouseState[i] = SDL_RELEASED; }
+	for (int i = 0; i < GRY_NUM_MOUSECODES; i++) { mouseState[i] = 0; } /* TODO change to GRY_RELEASED or something */
 
 	resetControls();
 
@@ -73,7 +73,7 @@ void InputHandler::mapInput(unsigned int code, VirtualButton button, bool mouse,
 }
 
 void InputHandler::resetControls() {
-	for (int i = 0; i < SDL_NUM_SCANCODES; i++) { keyButtons[i] = VirtualButton::GAME_NONE; }
+	for (int i = 0; i < SDL_SCANCODE_COUNT; i++) { keyButtons[i] = VirtualButton::GAME_NONE; }
 	for (int i = 0; i < GRY_NUM_MOUSECODES; i++) { mouseButtons[i] = VirtualButton::GAME_NONE; }
 }
 
@@ -133,14 +133,14 @@ void InputHandler::process(bool& gameRunning) {
 			singleInput = mouseButtons[event.button.button]; /**< Set as the latest current frame input */
 			/* No break here because we update the mouse state for both up and down mouse events */
 		case SDL_EVENT_MOUSE_BUTTON_UP:
-			mouseState[event.button.button] = event.button.state; /**< Update mouse state */
+			mouseState[event.button.button] = event.button.down; /**< Update mouse state */
 			break;
 		case SDL_EVENT_MOUSE_MOTION:
 			break;
 		case SDL_EVENT_KEY_DOWN:
 			if (event.key.repeat) { break; } /** Ensure it's not a key repeat */
-			inputs.push_back(keyButtons[event.key.keysym.scancode]); /**< Add active input to `inputs` */
-			singleInput = keyButtons[event.key.keysym.scancode]; /**< Set as the latest current frame input */
+			inputs.push_back(keyButtons[event.key.scancode]); /**< Add active input to `inputs` */
+			singleInput = keyButtons[event.key.scancode]; /**< Set as the latest current frame input */
 			break;
 		case SDL_EVENT_KEY_UP:
 			break;

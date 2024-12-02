@@ -19,6 +19,7 @@ class GRY_PixelGame;
 class TileMapScene : public Scene {
 	/* friend class DebugTextTileMapScene */
 private:
+	SDL_Texture* chronosprites = nullptr;
 	/**
 	 * @brief TileMap ECS structure.
 	 * 
@@ -128,6 +129,7 @@ public:
 	 * @return `const` reference to the TileEntityMap.
 	 */
 	const TileEntityMap& getTileEntityMap() const { return entityMap; }
+	TileEntityMap& getTileEntityMapNonConst() { return entityMap; }
 
 	/**
 	 * @brief Get the width / height of a normal square tile.

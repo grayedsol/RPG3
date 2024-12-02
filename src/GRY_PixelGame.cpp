@@ -19,10 +19,12 @@ GRY_PixelGame::GRY_PixelGame(int WINDOW_WIDTH, int WINDOW_HEIGHT, int TARGET_FPS
 	int w;
 	gsdl.getWindowSize(&w, NULL);
 	pixelScaling = w / (float)SCREEN_WIDTH_PIXELS;
+	pixelScaling = SDL_ceilf(pixelScaling);
 }
 
 void GRY_PixelGame::process() {
 	int w;
 	gsdl.getWindowSize(&w, NULL);
 	pixelScaling = w / (float)SCREEN_WIDTH_PIXELS;
+	pixelScaling = SDL_ceilf(pixelScaling);
 }

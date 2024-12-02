@@ -1,5 +1,6 @@
 #include "TileMapScene.hpp"
 #include "GRY_JSON.hpp"
+#include "chronosprites.h"
 
 void TileMapScene::setControls() {
     controls.mapCmd(GCmd::GameMenu, VirtualButton::GAME_A);
@@ -13,6 +14,7 @@ void TileMapScene::setControls() {
 
 void TileMapScene::init() {
 	// TODO: Add DebugText
+	
 }
 
 void TileMapScene::process() {
@@ -25,7 +27,7 @@ void TileMapScene::process() {
 	}
 	if (isPressing(GCmd::GameUp)) {}
 
-	tileMapMovement.process();
+	tileMapMovement.process(game->getDelta());
 	tileMapRenderer.process();
 }
 

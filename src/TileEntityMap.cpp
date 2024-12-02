@@ -87,6 +87,11 @@ static void registerActor(TileMapECS& ecs, entity e, const GRY_JSON::Value& acto
 	data.direction = static_cast<Actor::Direction>(actor["direction"].GetUint());
 	data.speed = actor["speed"].GetFloat();
 
+	GRY_Assert(static_cast<Actor::Direction>(data.direction) > 0 &&
+		static_cast<Actor::Direction>(data.direction) < 9,
+		"[TileEntityMap] Actor direction must be between 1 and 8 inclusive."
+	);
+
 	ecs.getComponent<Actor>().add(e, data);
 }
 

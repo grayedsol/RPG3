@@ -67,8 +67,13 @@ void TileMapRenderer::process() {
 			/* Render row of tiles */
 			for (uint32_t x = 0; x < tileMap.width; x++) {
 				Tile tile = layer[y * tileMap.width + x];
-				/* Only render when id is nonzero (if it's 0 it has no texture) */
+				/* Render when id is nonzero (if it's 0 it has no texture) */
 				if (tile.id) { renderTile(tileset, tile.id, &dstRect); }
+				/* Else skip by the number of empty tiles in the row after the current one */
+				else {
+					x += tile.custom;
+					dstRect.x += shift * tile.custom;
+				}
 				/* Increment x */
 				dstRect.x += shift;
 			}

@@ -24,10 +24,7 @@ void DebugText::updateText(const char *text) {
     texture = game->getSDL().loadTextTexture(text, font, color);
 
     /* Update dimensions */
-    int textureWidth; int textureHeight;
-    SDL_QueryTexture(texture, NULL, NULL, &textureWidth, &textureHeight);
-    width = (float)textureWidth;
-    height = (float)textureHeight;
+	SDL_GetTextureSize(texture, &width, &height);
 }
 
 void DebugText::render(float x, float y) const {

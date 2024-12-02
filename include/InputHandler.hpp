@@ -20,7 +20,7 @@ private:
      * @brief Array that maps SDL_Scancodes to VirtualButtons.
      * 
      */
-    VirtualButton keyButtons[SDL_NUM_SCANCODES];
+    VirtualButton keyButtons[SDL_SCANCODE_COUNT];
 
     /**
      * @brief Array that maps GRY_Mousecodes to VirtualButtons.
@@ -38,19 +38,19 @@ private:
      * 
      * @sa isPressing
      */
-    const Uint8* buttonState[VirtualButton::VIRTUAL_BUTTON_SIZE][2];
+    const bool* buttonState[VirtualButton::VIRTUAL_BUTTON_SIZE][2];
 
     /**
      * @brief Array representing the state of each mouse button.
      * 
      */
-    Uint8 mouseState[GRY_NUM_MOUSECODES];
+    bool mouseState[GRY_NUM_MOUSECODES];
 
     /**
      * @brief Points to the keyboard state obtained from `SDL_GetKeyboardState()`.
      * 
      */
-    const Uint8* keyboardState = NULL;
+    const bool* keyboardState = NULL;
 
     /**
      * @brief A list of inputs. Only `inputs.back()` is guaranteed to be currently pressed.

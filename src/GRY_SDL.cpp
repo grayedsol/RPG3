@@ -35,11 +35,15 @@ bool GRY_SDL::init() {
 
 	/* Create renderer */
 	if (USE_VSYNC) {
-		gameRenderer = SDL_CreateRenderer( gameWindow, NULL, 
-			SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
-		);
-		GRY_Log("[GRY_SDL] Using VSync.\n"); }
-	else { gameRenderer = SDL_CreateRenderer(gameWindow, NULL, SDL_RENDERER_ACCELERATED); }
+		SDL_PropertiesID properties = SDL_CreateProperties();
+		SDL_SetPointerProperty(properties, SDL_PROP_RENDERER_CREATE_WINDOW_POINTER, gameWindow);
+		SDL_SetBooleanProperty(properties, SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER, true);
+		// SDL_SetStringProperty(properties, SDL_PROP_RENDERER_CREATE_NAME_STRING, "OpenGL");
+		gameRenderer = SDL_CreateRendererWithProperties(properties);
+		SDL_DestroyProperties(properties);
+		GRY_Log("[GRY_SDL] Using VSync.\n");
+	}
+	else { gameRenderer = SDL_CreateRenderer(gameWindow, NULL); }
 
 	if (gameRenderer == NULL) {
 		GRY_Log("Could not create renderer. Error: %s\n", SDL_GetError());
@@ -85,7 +89,7 @@ SDL_Texture* GRY_SDL::loadTexture(const char* path) {
 	SDL_Surface* surface = IMG_Load(path);
 
 	if (!surface) {
-		GRY_Log("Could not load texture from file. Error: %s\n", IMG_GetError());
+		GRY_Log("Could not load texture from file. Error: %s\n", SDL_GetError());
 		return texture;
 	}
 
@@ -95,7 +99,13 @@ SDL_Texture* GRY_SDL::loadTexture(const char* path) {
 	}
 
 	SDL_DestroySurface(surface);
+
+	SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
 	return texture;
+}
+
+SDL_Texture *GRY_SDL::loadTextureIO(const char *data) {
+	return nullptr;
 }
 
 /**
@@ -104,7 +114,7 @@ SDL_Texture* GRY_SDL::loadTexture(const char* path) {
  */
 SDL_Texture *GRY_SDL::loadTextTexture(const char *text, TTF_Font* font, SDL_Color color) {
 	SDL_Texture* texture = nullptr;
-	SDL_Surface* surface = TTF_RenderUTF8_Solid_Wrapped(font, text, color, 0);
+	SDL_Surface* surface = TTF_RenderText_Solid_Wrapped(font, text, 0, color, 0);
 
 	if (!surface) {
 		GRY_Log("Could not create text surface. Error: %s\n", SDL_GetError());

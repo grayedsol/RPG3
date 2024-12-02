@@ -55,8 +55,8 @@ void TilesetScene::process()
     tileset->processAnimations(game->getDelta());
 
     /* Tileset width in pixels */
-    int tilesetWidth;
-    SDL_QueryTexture(tileset->gtexture->texture, NULL, NULL, &tilesetWidth, NULL);
+    float tilesetWidth;
+	SDL_GetTextureSize(tileset->gtexture->texture, &tilesetWidth, NULL);
     /* Tileset width in tiles */
     int tilesetWidthTiles = tilesetWidth / tileset->tileWidth;
     /* Destination rectangle for rendering */

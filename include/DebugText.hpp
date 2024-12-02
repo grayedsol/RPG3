@@ -7,8 +7,7 @@
 #pragma once
 #include "SDL3/SDL.h"
 
-struct _TTF_Font;
-typedef _TTF_Font TTF_Font;
+struct TTF_Font;
 class DebugScreen;
 class GRY_Game;
 

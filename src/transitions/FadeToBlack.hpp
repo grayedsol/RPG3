@@ -23,21 +23,21 @@ private:
      * @brief Maximum value of RGBA levels in a color.
      * 
      */
-    const float MAX_RGBA_VALUE = 255;
+    float MAX_RGBA_VALUE = 255;
 
     /**
      * @brief Time it will take for the initial phase.
      * 
      * @sa Transition
      */
-    const double initTime;
+    double initTime;
 
     /**
      * @brief Time it will take for the release phase.
      * 
      * @sa Transition
      */
-    const double releaseTime;
+    double releaseTime;
 
     /**
      * @brief Opacity of the fade effect.

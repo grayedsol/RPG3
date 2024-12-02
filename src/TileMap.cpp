@@ -5,6 +5,29 @@
  */
 #include "TileMap.hpp"
 #include "GRY_Tiled.hpp"
+#include <limits>
+
+static void insertSkips(std::vector<TileMap::TileLayer>& layers, uint32_t width) {
+	Tile::entity max = std::numeric_limits<Tile::entity>::max();
+
+	for (auto& layer : layers) {
+		uint32_t numRows = (uint32_t)layer.size() / width;
+		for (uint32_t y = 0; y < numRows; y++) {
+			for (uint32_t x = 0; x < width; x++) {
+				unsigned index = y*width+x;
+				if (layer[index].id) { continue; }
+				Tile& tile = layer[index];
+				Tile::entity skips = 0;
+				while (!layer[index+1].id && skips < max && x+1 < width) {
+					skips++;
+					x++;
+					index++;
+				}
+				tile.custom = skips;
+			}
+		}
+	}
+}
 
 bool TileMap::load(GRY_Game *game) {
 	if (!tileLayers.empty()) { return true; }
@@ -48,6 +71,8 @@ bool TileMap::load(GRY_Game *game) {
 		}
 		tileLayers.push_back(tiles);
 	}
+
+	insertSkips(tileLayers, width);
 	
 	/* Return false normally, but if there were no layers we can return true. */
 	return mapDoc["layers"].GetArray().Size() == 0;

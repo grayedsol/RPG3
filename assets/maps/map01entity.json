@@ -9,15 +9,15 @@
 				"player" : true,
 				"actor" : {
 					"speed" : 120,
-					"direction" : 0
+					"direction" : 1
 				},
 				"actorSprite" : {
 					"offsetX" : -8,
 					"offsetY" : -20,
-					"index" : 25,
+					"index" : 1,
 					"tileset" : 0
 				},
-				"actorTextureList" : [25,26,27,28,27,28,27,28],
+				"actorTextureList" : [1,2,3,4,5,6,7,8],
 				"hitbox" : {
 					"halfWidth" : 8,
 					"halfHeight" : 8

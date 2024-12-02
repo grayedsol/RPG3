@@ -26,8 +26,8 @@ bool Tileset::load(GRY_Game* game) {
 	tileHeight = tilesetDoc["tileheight"].GetFloat();
 	assert(tileWidth && tileHeight);
 
-    int texture_width;
-	SDL_QueryTexture(gtexture->texture, NULL, NULL, &texture_width, NULL);
+    float texture_width;
+	SDL_GetTextureSize(gtexture->texture, &texture_width, NULL);
 	/* Width of tileset in number of tiles */
 	int tilesetWidth = texture_width / (int)tileWidth;
 

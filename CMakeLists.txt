@@ -38,9 +38,14 @@ set(SOURCES src/main.cpp
     src/debugtexts/DebugTextTilesetScene.cpp
 	src/tile/TileMapRenderer.cpp
 	src/tile/TileMapMovement.cpp
+	assets/textures/image/chronosprites.c
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
+
+target_link_options(${PROJECT_NAME}
+	PRIVATE -lprofiler
+)
 
 target_include_directories(${PROJECT_NAME}
     PRIVATE include

@@ -7,8 +7,8 @@
 #pragma once
 #include "SDL3/SDL.h"
 
-struct _TTF_Font;
-typedef _TTF_Font TTF_Font;
+struct TTF_Font;
+// typedef _TTF_Font TTF_Font;
 
 /**
  * @brief Initializes and provides an interface for SDL functionality.
@@ -98,6 +98,8 @@ public:
 	 * @return Pointer to the texture.
 	 */
 	SDL_Texture* loadTexture(const char* path);
+
+	SDL_Texture* loadTextureIO(const char* data);
 
 	/**
 	 * @brief Load a texture from text.
