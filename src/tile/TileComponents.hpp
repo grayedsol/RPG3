@@ -61,9 +61,4 @@ struct ActorSprite {
 	TilesetId tileset;
 };
 
-// struct ActorTextureList {
-// 	using TileId = Tile::TileId;
-// 	TileId data[Actor::Direction::SIZE];
-// };
-
 struct Player {};

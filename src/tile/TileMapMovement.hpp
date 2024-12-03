@@ -10,16 +10,60 @@
 
 class TileMapScene;
 
+/**
+ * @brief Moves entities in a TileMap.
+ * 
+ */
 class TileMapMovement {
 private:
+	/**
+	 * @brief Associated TileMapScene class.
+	 * 
+	 */
 	TileMapScene* scene;
+
+	/**
+	 * @brief Positions of entities, in game pixels.
+	 * 
+	 */
+
 	ComponentSet<Position2>& positions;
+
+	/**
+	 * @brief Velocities of entities, in game pixels per second.
+	 * 
+	 */
 	ComponentSet<Velocity2>& velocities;
+
+	/**
+	 * @brief Actor data of entities.
+	 * 
+	 */
 	ComponentSet<Actor>& actors;
+
+	/**
+	 * @brief Sprites of entities.
+	 * 
+	 */
 	ComponentSet<ActorSprite>& sprites;
+
+	/**
+	 * @brief Set of entities that are players.
+	 * 
+	 */
 	const ComponentSet<Player>& players;
 public:
+	/**
+	 * @brief Constructor.
+	 * 
+	 * @param scene Associated TileMapScene class.
+	 */
 	TileMapMovement(TileMapScene* scene);
 
+	/**
+	 * @brief Process the movement for all entities in the TileMapScene.
+	 * 
+	 * @param delta Delta time for game processing, in seconds.
+	 */
 	void process(double delta);
 };

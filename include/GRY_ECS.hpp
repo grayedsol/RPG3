@@ -110,7 +110,7 @@ public:
      */
 	template<std::size_t I = 0>
 	typename std::enable_if<(I == std::tuple_size<decltype(components)>::value)>::type
-		freeEntity(entity e) { deadEntities.push_back(e); }
+	freeEntity(entity e) { deadEntities.push_back(e); }
 
     /**
      * @brief @copybrief freeEntity
@@ -125,7 +125,7 @@ public:
      */
 	template<std::size_t I = 0>
 	typename std::enable_if<(I < std::tuple_size<decltype(components)>::value)>::type
-		freeEntity(entity e) {
+	freeEntity(entity e) {
 		if (std::get<I>(components).contains(e)) {
 			std::get<I>(components).remove(e);
 		}

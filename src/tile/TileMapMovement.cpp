@@ -1,7 +1,10 @@
+/**
+ * @file TileMapMovement.cpp
+ * @author Grayedsol (grayedsol@gmail.com)
+ * @copyright Copyright (c) 2024
+ */
 #include "TileMapMovement.hpp"
 #include "../scenes/TileMapScene.hpp"
-
-static const char* const dirStrings[] = { "", "Down\n", "Up\n", "Left\n", "LeftDown\n", "LeftUp\n", "Right\n", "RightDown\n", "RightUp\n" };
 
 TileMapMovement::TileMapMovement(TileMapScene* scene) :
 	scene(scene),
@@ -12,8 +15,35 @@ TileMapMovement::TileMapMovement(TileMapScene* scene) :
 	players(scene->getECSReadOnly().getComponentReadOnly<Player>()) {
 }
 
+/**
+ * @details
+ * The movement direction is calculated by adding the vertical and
+ * horizontal inputs together. For example, since Actor::Direction::Down
+ * is 2 and Actor::Direction::Right is 6, add 2 and 6 to get 8, which is
+ * the value of Actor::Direction::RightDown.
+ * If both up and down are input, they cancel each other out; the same
+ * goes for left and right.
+ * 
+ * The bit shifting is an over-engineered branchless version of this code:
+ * @code{.cpp}
+ * 	if (scene->isPressing(GCmd::MapDown) && !scene->isPressing(GCmd::MapUp)) {
+ * 		direction += static_cast<uint8_t>(Actor::Direction::Down);
+ * 	}
+ * 	else if (scene->isPressing(GCmd::MapUp) && !scene->isPressing(GCmd::MapDown)) {
+ * 		direction += static_cast<uint8_t>(Actor::Direction::Up);
+ * 	}
+ * 
+ * 	if (scene->isPressing(GCmd::MapLeft) && !scene->isPressing(GCmd::MapRight)) {
+ * 		direction += static_cast<uint8_t>(Actor::Direction::Left);
+ * 	}
+ * 	else if (scene->isPressing(GCmd::MapRight) && !scene->isPressing(GCmd::MapLeft)) {
+ * 		direction += static_cast<uint8_t>(Actor::Direction::Right);
+ * 	}
+ * @endcode
+ */
 void TileMapMovement::process(double delta) {
 	for (auto e : players) {
+		/* A bit of bit shifting, see function details documentation. */
 		bool r = scene->isPressing(GCmd::MapRight);
 		bool lr = scene->isPressing(GCmd::MapLeft) != r;
 		bool u = scene->isPressing(GCmd::MapUp);
@@ -24,7 +54,7 @@ void TileMapMovement::process(double delta) {
 		direction <<= r;
 		direction += (ud << u);
 
-		Tileset& tileset = scene->getTileEntityMapNonConst().tilesets[sprites.get(e).tileset];
+		Tileset& tileset = scene->getTileEntityMap().tilesets[sprites.get(e).tileset];
 		positions.get(e)[0] += (scene->isPressing(GCmd::MapRight) - scene->isPressing(GCmd::MapLeft)) * actors.get(e).speed * delta;
 		positions.get(e)[1] += (scene->isPressing(GCmd::MapDown) - scene->isPressing(GCmd::MapUp)) * actors.get(e).speed * delta;
 
@@ -35,46 +65,6 @@ void TileMapMovement::process(double delta) {
 		}
 		else {
 			tileset.textureIdx[actors.get(e).direction] = actors.get(e).direction;
-			// TileAnimation& anim = tileset.tileAnimations[actors.get(e).direction];
-			// anim.currentFrame = 0;
-			// const TileAnimation::Frame& newFrame = anim.frames[0];
-			// tileset.textureIdx[anim.tile] = actors.get(e).direction;
-			// anim.timer = newFrame.duration;
 		}
-		
-		// if (scene->isPressing(GCmd::MapDown)) {
-		// 	direction += static_cast<uint8_t>(Actor::Direction::Down);
-		// }
-		// else if (scene->isPressing(GCmd::MapUp)) {
-		// 	direction += static_cast<uint8_t>(Actor::Direction::Up);
-		// }
-
-		// if (scene->isPressing(GCmd::MapLeft)) {
-		// 	direction += static_cast<uint8_t>(Actor::Direction::Left);
-		// }
-		// else if (scene->isPressing(GCmd::MapRight)) {
-		// 	direction += static_cast<uint8_t>(Actor::Direction::Right);
-		// }
-
-		// switch (static_cast<Actor::Direction>(direction)) {
-		// case Actor::Direction::Down:
-		// 	GRY_Log("Down\n"); break;
-		// case Actor::Direction::Up:
-		// 	GRY_Log("Up\n"); break;
-		// case Actor::Direction::Left:
-		// 	GRY_Log("Left\n"); break;
-		// case Actor::Direction::LeftDown:
-		// 	GRY_Log("LeftDown\n"); break;
-		// case Actor::Direction::LeftUp:
-		// 	GRY_Log("LeftUp\n"); break;
-		// case Actor::Direction::Right:
-		// 	GRY_Log("Right\n"); break;
-		// case Actor::Direction::RightDown:
-		// 	GRY_Log("RightDown\n"); break;
-		// case Actor::Direction::RightUp:
-		// 	GRY_Log("RightUp\n"); break;
-		// default:
-		// 	break;
-		// }
 	}
 }

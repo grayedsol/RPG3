@@ -6,8 +6,8 @@
  */
 #pragma once
 #include "Scene.hpp"
-#include "Tileset.hpp"
-#include "TileCollision.hpp"
+#include "../tile/Tileset.hpp"
+#include "../tile/TileCollision.hpp"
 
 /**
  * @brief Loads and displays a tileset.

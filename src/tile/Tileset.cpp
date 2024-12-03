@@ -73,11 +73,11 @@ bool Tileset::load(GRY_Game* game) {
 void Tileset::processAnimations(double delta) {
 	for (auto& anim : tileAnimations) {
 		anim.timer -= delta;
-		if (anim.timer <= 0.0) {
-			if (++anim.currentFrame >= anim.frames.size()) { anim.currentFrame = 0; }
-			const TileAnimation::Frame& newFrame = anim.frames[anim.currentFrame];
-			textureIdx[anim.tile] = newFrame.index;
-			anim.timer = newFrame.duration;
-		}
+		if (anim.timer > 0.0) { continue; }
+		
+		if (++anim.currentFrame >= anim.frames.size()) { anim.currentFrame = 0; }
+		const TileAnimation::Frame& newFrame = anim.frames[anim.currentFrame];
+		textureIdx[anim.tile] = newFrame.index;
+		anim.timer = newFrame.duration;
 	}
 }

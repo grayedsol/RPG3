@@ -13,8 +13,7 @@ SceneManager::~SceneManager() {
 	delete transition;
 }
 
-void SceneManager::process()
-{
+void SceneManager::process() {
     if (allScenes.empty()) { GRY_Log("No scenes in the scene manager."); return; }
 
 	allScenes.back()->process();

@@ -28,10 +28,10 @@ set(SOURCES src/main.cpp
 	src/GRY_PixelGame.cpp
 	src/GRY_Tiled.cpp
 	src/GRY_Texture.cpp
-	src/Tileset.cpp
-	src/TileCollision.cpp
-	src/TileMap.cpp
-	src/TileEntityMap.cpp
+	src/tile/Tileset.cpp
+	src/tile/TileCollision.cpp
+	src/tile/TileMap.cpp
+	src/tile/TileEntityMap.cpp
 	src/scenes/ExampleScene.cpp
 	src/scenes/TilesetScene.cpp
 	src/scenes/TileMapScene.cpp

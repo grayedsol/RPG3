@@ -9,8 +9,9 @@
  * @brief Vector type with tag dispatching.
  * 
  * @details
- * Allows for multiple types of vectors that
- * have the same T and N.
+ * Allows for multiple types of vectors within a tuple
+ * that have the same T (type) and N (size).
+ * 
  * Example:
  * @code{.cpp}
  * struct Position2Tag{};

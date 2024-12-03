@@ -74,14 +74,14 @@ void TileMapRenderer::process() {
 					x += tile.custom;
 					dstRect.x += shift * tile.custom;
 				}
-				/* Increment x */
+				/* Increment dstRect x */
 				dstRect.x += shift;
 			}
-			/* Reset x and increment y */
+			/* Reset dstRect x and increment dstRect y */
 			dstRect.x = 0;
 			dstRect.y += shift;
 		}
-		/* Reset y */
+		/* Reset dstRect y */
 		dstRect.y = 0;
 	}
 }
