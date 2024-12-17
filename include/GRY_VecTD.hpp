@@ -84,7 +84,7 @@ GRY_VecTD<T,N,Tag1> operator+(const GRY_VecTD<T,N,Tag1>& lhs, const GRY_VecTD<T,
 }
 
 template<typename T, uint N, typename Tag1, typename Tag2>
-GRY_VecTD<T,N,Tag1> operator+=(GRY_VecTD<T,N,Tag1>& lhs, const GRY_VecTD<T,N,Tag2>& rhs) {
+void operator+=(GRY_VecTD<T,N,Tag1>& lhs, const GRY_VecTD<T,N,Tag2>& rhs) {
     for (uint i = 0; i < N; i++) { lhs[i] += rhs[i]; }
 }
 
@@ -96,7 +96,7 @@ GRY_VecTD<T,N,Tag1> operator-(const GRY_VecTD<T,N,Tag1>& lhs, const GRY_VecTD<T,
 }
 
 template<typename T, uint N, typename Tag1, typename Tag2>
-GRY_VecTD<T,N,Tag1> operator-=(GRY_VecTD<T,N,Tag1>& lhs, const GRY_VecTD<T,N,Tag2>& rhs) {
+void operator-=(GRY_VecTD<T,N,Tag1>& lhs, const GRY_VecTD<T,N,Tag2>& rhs) {
     for (uint i = 0; i < N; i++) { lhs[i] -= rhs[i]; }
 }
 
