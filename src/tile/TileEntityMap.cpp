@@ -17,7 +17,6 @@ static void registerPosition(TileMapECS& ecs, entity e, const GRY_JSON::Value& p
 static void registerActor(TileMapECS& ecs, entity e, const GRY_JSON::Value& actor);
 static void registerActorSprite(TileMapECS& ecs, entity e, const GRY_JSON::Value& actorSprite);
 static void registerPlayer(TileMapECS& ecs, entity e);
-
 static void sortEntityLayer(ComponentSet<Position2>& positions, std::vector<entity>& layer);
 
 bool TileEntityMap::load(GRY_Game *game) {
@@ -77,6 +76,7 @@ static void registerPosition(TileMapECS& ecs, entity e, const GRY_JSON::Value& p
 	position[1] = pos.GetArray()[1].GetFloat() * normalTileSize;
 
 	ecs.getComponent<Position2>().add(e, position);
+	ecs.getComponent<Velocity2>().add(e, Velocity2(0,0));
 }
 
 static void registerActor(TileMapECS& ecs, entity e, const GRY_JSON::Value& actor) {

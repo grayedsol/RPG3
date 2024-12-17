@@ -54,9 +54,59 @@ void TileMapMovement::process(double delta) {
 		direction <<= r;
 		direction += (ud << u);
 
+		velocities.get(e) = Velocity2(r - scene->isPressing(GCmd::MapLeft), scene->isPressing(GCmd::MapDown) - u) * actors.get(e).speed;
+
+		if (!lr && actors.get(e).direction > 2) { //if was moving horizontal but no longer
+			if (actors.get(e).direction < 6) { //if was moving left
+				if (floorf(positions.get(e)[0]) != positions.get(e)[0]) { //if mid pixel
+					if (floorf(positions.get(e)[0] - (actors.get(e).speed * delta)) < floorf(positions.get(e)[0])) { //if moving would go over the pixel
+						positions.get(e)[0] = floorf(positions.get(e)[0]); //dont move just floor
+						actors.get(e).direction = static_cast<Actor::Direction>(direction); //set direction to new direction
+					}
+					else {
+						positions.get(e)[0] -= actors.get(e).speed * delta; //glide normally
+					}
+				}
+			}
+			else {
+				if (ceilf(positions.get(e)[0]) != positions.get(e)[0]) {
+					if (ceilf(positions.get(e)[0] + (actors.get(e).speed * delta)) > ceilf(positions.get(e)[0])) {
+						positions.get(e)[0] = ceilf(positions.get(e)[0]);
+						actors.get(e).direction = static_cast<Actor::Direction>(direction);
+					}
+					else {
+						positions.get(e)[0] += actors.get(e).speed * delta;
+					}
+				}
+			}
+		}
+
+		if (!ud && (actors.get(e).direction != 3) && (actors.get(e).direction != 6)) { //if was moving vertical but no longer
+			if (actors.get(e).direction == 2 || actors.get(e).direction == 5 || actors.get(e).direction == 8) { //if was moving up
+				if (floorf(positions.get(e)[1]) != positions.get(e)[1]) { //if mid pixel
+					if (floorf(positions.get(e)[1] - (actors.get(e).speed * delta)) < floorf(positions.get(e)[1])) { //if moving would go over the pixel
+						positions.get(e)[1] = floorf(positions.get(e)[1]); //dont move just floor
+						actors.get(e).direction = static_cast<Actor::Direction>(direction); //set direction to new direction
+					}
+					else {
+						positions.get(e)[1] -= actors.get(e).speed * delta; //glide normally
+					}
+				}
+			}
+			else {
+				if (ceilf(positions.get(e)[1]) != positions.get(e)[1]) {
+					if (ceilf(positions.get(e)[1] + (actors.get(e).speed * delta)) > ceilf(positions.get(e)[1])) {
+						positions.get(e)[1] = ceilf(positions.get(e)[1]);
+						actors.get(e).direction = static_cast<Actor::Direction>(direction);
+					}
+					else {
+						positions.get(e)[1] += actors.get(e).speed * delta;
+					}
+				}
+			}
+		}
+
 		Tileset& tileset = scene->getTileEntityMap().tilesets[sprites.get(e).tileset];
-		positions.get(e)[0] += (scene->isPressing(GCmd::MapRight) - scene->isPressing(GCmd::MapLeft)) * actors.get(e).speed * delta;
-		positions.get(e)[1] += (scene->isPressing(GCmd::MapDown) - scene->isPressing(GCmd::MapUp)) * actors.get(e).speed * delta;
 
 		if (direction) {
 			sprites.get(e).index = direction;
@@ -66,5 +116,9 @@ void TileMapMovement::process(double delta) {
 		else {
 			tileset.textureIdx[actors.get(e).direction] = actors.get(e).direction;
 		}
+	}
+	
+	for (auto e : velocities) {
+		positions.get(e) += velocities.get(e) * delta;
 	}
 }
