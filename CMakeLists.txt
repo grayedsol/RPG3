@@ -42,9 +42,11 @@ set(SOURCES src/main.cpp
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_link_options(${PROJECT_NAME}
-	PRIVATE -lprofiler
-)
+if(UNIX)
+	target_link_options(${PROJECT_NAME}
+		PRIVATE -lprofiler
+	)
+endif()
 
 target_include_directories(${PROJECT_NAME}
 	PRIVATE include
