@@ -54,54 +54,33 @@ void TileMapMovement::process(double delta) {
 		direction <<= r;
 		direction += (ud << u);
 
-		velocities.get(e) = Velocity2(r - scene->isPressing(GCmd::MapLeft), scene->isPressing(GCmd::MapDown) - u) * actors.get(e).speed;
+		Velocity2 prevVelocity = velocities.get(e);
+		velocities.get(e) = Velocity2(r - scene->isPressing(GCmd::MapLeft), scene->isPressing(GCmd::MapDown) - u);
 
-		if (!lr && actors.get(e).direction > 2) { //if was moving horizontal but no longer
-			if (actors.get(e).direction < 6) { //if was moving left
-				if (floorf(positions.get(e)[0]) != positions.get(e)[0]) { //if mid pixel
-					if (floorf(positions.get(e)[0] - (actors.get(e).speed * delta)) < floorf(positions.get(e)[0])) { //if moving would go over the pixel
-						positions.get(e)[0] = floorf(positions.get(e)[0]); //dont move just floor
-						actors.get(e).direction = static_cast<Actor::Direction>(direction); //set direction to new direction
-					}
-					else {
-						positions.get(e)[0] -= actors.get(e).speed * delta; //glide normally
-					}
+		if (!lr && prevVelocity[0]) { //if was moving horizontal but no longer
+			float rmndr = positions.get(e)[0] - floorf(positions.get(e)[0]);
+			if (rmndr) {
+				rmndr = floorf(rmndr + prevVelocity[0] * (actors.get(e).speed * delta));
+				if (rmndr) {
+					positions.get(e)[0] = rmndr < 0 ? floorf(positions.get(e)[0]) : ceilf(positions.get(e)[0]);
 				}
-			}
-			else {
-				if (ceilf(positions.get(e)[0]) != positions.get(e)[0]) {
-					if (ceilf(positions.get(e)[0] + (actors.get(e).speed * delta)) > ceilf(positions.get(e)[0])) {
-						positions.get(e)[0] = ceilf(positions.get(e)[0]);
-						actors.get(e).direction = static_cast<Actor::Direction>(direction);
-					}
-					else {
-						positions.get(e)[0] += actors.get(e).speed * delta;
-					}
+				else {
+					velocities.get(e)[0] = prevVelocity[0];
+					direction = actors.get(e).direction;
 				}
 			}
 		}
 
-		if (!ud && (actors.get(e).direction != 3) && (actors.get(e).direction != 6)) { //if was moving vertical but no longer
-			if (actors.get(e).direction == 2 || actors.get(e).direction == 5 || actors.get(e).direction == 8) { //if was moving up
-				if (floorf(positions.get(e)[1]) != positions.get(e)[1]) { //if mid pixel
-					if (floorf(positions.get(e)[1] - (actors.get(e).speed * delta)) < floorf(positions.get(e)[1])) { //if moving would go over the pixel
-						positions.get(e)[1] = floorf(positions.get(e)[1]); //dont move just floor
-						actors.get(e).direction = static_cast<Actor::Direction>(direction); //set direction to new direction
-					}
-					else {
-						positions.get(e)[1] -= actors.get(e).speed * delta; //glide normally
-					}
+		if (!ud && prevVelocity[1]) {
+			float rmndr = positions.get(e)[1] - floorf(positions.get(e)[1]);
+			if (rmndr) {
+				rmndr = floorf(rmndr + prevVelocity[1] * actors.get(e).speed * delta);
+				if (rmndr) {
+					positions.get(e)[1] = rmndr < 0 ? floorf(positions.get(e)[1]) : ceilf(positions.get(e)[1]);
 				}
-			}
-			else {
-				if (ceilf(positions.get(e)[1]) != positions.get(e)[1]) {
-					if (ceilf(positions.get(e)[1] + (actors.get(e).speed * delta)) > ceilf(positions.get(e)[1])) {
-						positions.get(e)[1] = ceilf(positions.get(e)[1]);
-						actors.get(e).direction = static_cast<Actor::Direction>(direction);
-					}
-					else {
-						positions.get(e)[1] += actors.get(e).speed * delta;
-					}
+				else {
+					velocities.get(e)[1] = prevVelocity[1];
+					direction = actors.get(e).direction;
 				}
 			}
 		}
@@ -119,6 +98,6 @@ void TileMapMovement::process(double delta) {
 	}
 	
 	for (auto e : velocities) {
-		positions.get(e) += velocities.get(e) * delta;
+		positions.get(e) += velocities.get(e) * actors.get(e).speed * delta;
 	}
 }
