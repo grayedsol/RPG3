@@ -22,9 +22,11 @@ struct TileCollision : public FileResource {
 
     bool loaded = false;
 
+	TileCollision() = default;
+
     TileCollision(const char* path) : FileResource(path) {}
 
-    ~TileCollision() {}
+    ~TileCollision() = default;
 
     TileCollision(const TileCollision&) = delete;
     TileCollision& operator=(const TileCollision&) = delete;

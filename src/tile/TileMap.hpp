@@ -43,6 +43,13 @@ struct TileMap : public FileResource {
 	/**
 	 * @brief Constructor.
 	 * 
+	 * @copydetails FileResource::FileResource
+	 */
+	TileMap() = default;
+
+	/**
+	 * @brief Constructor.
+	 * 
 	 * @param path File path to Tiled tilemap JSON data.
 	 */
 	TileMap(const char* path) : FileResource(path) {}

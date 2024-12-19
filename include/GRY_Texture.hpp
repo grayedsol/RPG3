@@ -23,6 +23,13 @@ struct GRY_Texture : public FileResource {
 	/**
 	 * @brief Constructor.
 	 * 
+	 * @copydetails FileResource::FileResource
+	 */
+	GRY_Texture() = default;
+
+	/**
+	 * @brief Constructor.
+	 * 
 	 * @param path Path to the image.
 	 */
 	GRY_Texture(const char* path) : FileResource(path) {}

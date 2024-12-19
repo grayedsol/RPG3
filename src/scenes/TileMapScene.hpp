@@ -35,13 +35,13 @@ private:
 	 * @brief TileMap that will be loaded.
 	 *
 	 */
-	TileMap tileMap = TileMap(nullptr);
+	TileMap tileMap;
 
 	/**
 	 * @brief TileEntityMap that will be loaded.
 	 *
 	 */
-	TileEntityMap entityMap = TileEntityMap(nullptr, &ecs);
+	TileEntityMap entityMap = TileEntityMap(ecs);
 
 	/**
 	 * @brief Width and height of a normal square tile, in pixels.

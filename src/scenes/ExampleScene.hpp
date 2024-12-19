@@ -23,7 +23,7 @@ private:
      * @brief Image that will be displayed during the scene.
      * 
      */
-    GRY_Texture examplePng = GRY_Texture(nullptr);
+    GRY_Texture examplePng;
 
     /**
      * @copybrief Scene::setControls

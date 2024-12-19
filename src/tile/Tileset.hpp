@@ -61,6 +61,13 @@ struct Tileset : public FileResource {
      */
 	float tileHeight = 0.0f;
 
+	/**
+	 * @brief Constructor.
+	 * 
+	 * @copydetails FileResource::FileResource
+	 */
+	Tileset() = default;
+
     /**
      * @brief Constructor.
      * 

@@ -28,6 +28,14 @@ struct FileResource {
 	/**
 	 * @brief Abstract constructor.
 	 * 
+	 * @details
+	 * `path` will be `nullptr` by default.
+	 */
+	FileResource() = default;
+
+	/**
+	 * @brief Abstract constructor.
+	 * 
 	 * @param path Path to the file to be loaded.
 	 */
 	FileResource(const char* path) { setPath(path); }
@@ -88,15 +96,4 @@ struct FileResource {
 	 * @param game Associated game class.
 	 */
 	void loadAll(GRY_Game* game) { while (!load(game)) {}; };
-protected:
-	/**
-	 * @brief Protected abstract default constructor. Never explicitly used.
-	 * 
-	 * @details
-	 * Exists to avoid explicitly using a FileResource constructor
-	 * in derived class move constructors.
-	 * 
-	 * Classes derived from FileResource typically should not implement a default constructor.
-	 */
-	FileResource() = default;
 };

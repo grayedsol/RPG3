@@ -20,9 +20,11 @@ struct TileEntityMap : public FileResource {
 
 	std::vector<Tileset> tilesets;
 
-	TileMapECS* ecs = nullptr;
+	TileMapECS* ecs;
 
-	TileEntityMap(const char* path, TileMapECS* ecs) : FileResource(path), ecs(ecs) {}
+	TileEntityMap(TileMapECS& ecs) : ecs(&ecs) {}
+
+	TileEntityMap(const char* path, TileMapECS& ecs) : FileResource(path), ecs(&ecs) {}
 
 	~TileEntityMap() = default;
 

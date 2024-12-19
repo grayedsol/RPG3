@@ -27,13 +27,13 @@ private:
      * @brief Tileset that will be loaded and displayed.
      * 
     */
-    Tileset tileset = Tileset(nullptr);
+    Tileset tileset;
 
     /**
      * @brief Collision data for each tile in the tileset.
      * 
      */
-    TileCollision collisions = TileCollision(nullptr);
+    TileCollision collisions;
 
 	/**
 	 * @brief Pointer to the renderer.
