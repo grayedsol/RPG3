@@ -8,11 +8,11 @@
 
 TileMapMovement::TileMapMovement(TileMapScene* scene) :
 	scene(scene),
-	positions(scene->getECS().getComponent<Position2>()),
-	velocities(scene->getECS().getComponent<Velocity2>()),
-	actors(scene->getECS().getComponent<Actor>()),
-	sprites(scene->getECS().getComponent<ActorSprite>()),
-	players(scene->getECSReadOnly().getComponentReadOnly<Player>()) {
+	positions(&scene->getECS().getComponent<Position2>()),
+	velocities(&scene->getECS().getComponent<Velocity2>()),
+	actors(&scene->getECS().getComponent<Actor>()),
+	sprites(&scene->getECS().getComponent<ActorSprite>()),
+	players(&scene->getECSReadOnly().getComponentReadOnly<Player>()) {
 }
 
 /**
@@ -42,7 +42,7 @@ TileMapMovement::TileMapMovement(TileMapScene* scene) :
  * @endcode
  */
 void TileMapMovement::process(double delta) {
-	for (auto e : players) {
+	for (auto e : *players) {
 		/* A bit of bit shifting, see function details documentation. */
 		bool r = scene->isPressing(GCmd::MapRight);
 		bool lr = scene->isPressing(GCmd::MapLeft) != r;
@@ -54,50 +54,51 @@ void TileMapMovement::process(double delta) {
 		direction <<= r;
 		direction += (ud << u);
 
-		Velocity2 prevVelocity = velocities.get(e);
-		velocities.get(e) = Velocity2(r - scene->isPressing(GCmd::MapLeft), scene->isPressing(GCmd::MapDown) - u);
+		Velocity2 prevVelocity = velocities->get(e);
+		/* Bitwise ops are equivalent to Velocity2(right - left, down - up) to make an 8 way direction vector */
+		velocities->get(e) = Velocity2((lr & r) - (lr & !r), (ud & !u) - (ud & u));
 
 		if (!lr && prevVelocity[0]) { //if was moving horizontal but no longer
-			float rmndr = positions.get(e)[0] - floorf(positions.get(e)[0]);
-			if (rmndr) {
-				rmndr = floorf(rmndr + prevVelocity[0] * (actors.get(e).speed * delta));
-				if (rmndr) {
-					positions.get(e)[0] = rmndr < 0 ? floorf(positions.get(e)[0]) : ceilf(positions.get(e)[0]);
+			float rmndr = positions->get(e)[0] - floorf(positions->get(e)[0]); //get the decimal part of the x coordinate
+			if (rmndr) { //if it's nonzero (mid pixel)
+				rmndr = floorf(rmndr + prevVelocity[0] * (actors->get(e).speed * delta)); //try increment moving and flooring it
+				if (rmndr) { //if it did not floor to 0, it escaped the range 0-1, so it crossed over a pixel
+					positions->get(e)[0] = rmndr < 0 ? floorf(positions->get(e)[0]) : ceilf(positions->get(e)[0]); //floor or ceil to the pixel it crossed
 				}
-				else {
-					velocities.get(e)[0] = prevVelocity[0];
-					direction = actors.get(e).direction;
+				else { //move normally and sustain direction
+					velocities->get(e)[0] = prevVelocity[0];
+					direction = actors->get(e).direction;
 				}
 			}
 		}
 
 		if (!ud && prevVelocity[1]) {
-			float rmndr = positions.get(e)[1] - floorf(positions.get(e)[1]);
+			float rmndr = positions->get(e)[1] - floorf(positions->get(e)[1]);
 			if (rmndr) {
-				rmndr = floorf(rmndr + prevVelocity[1] * actors.get(e).speed * delta);
+				rmndr = floorf(rmndr + prevVelocity[1] * actors->get(e).speed * delta);
 				if (rmndr) {
-					positions.get(e)[1] = rmndr < 0 ? floorf(positions.get(e)[1]) : ceilf(positions.get(e)[1]);
+					positions->get(e)[1] = rmndr < 0 ? floorf(positions->get(e)[1]) : ceilf(positions->get(e)[1]);
 				}
 				else {
-					velocities.get(e)[1] = prevVelocity[1];
-					direction = actors.get(e).direction;
+					velocities->get(e)[1] = prevVelocity[1];
+					direction = actors->get(e).direction;
 				}
 			}
 		}
 
-		Tileset& tileset = scene->getTileEntityMap().tilesets[sprites.get(e).tileset];
+		Tileset& tileset = scene->getTileEntityMap().tilesets[sprites->get(e).tileset];
 
 		if (direction) {
-			sprites.get(e).index = direction;
-			tileset.processAnimations(delta);
-			actors.get(e).direction = static_cast<Actor::Direction>(direction);
+			sprites->get(e).index = direction;
+			tileset.processAnimations(delta); /**< TODO: This is bad, we need to function on something specific to the entity */
+			actors->get(e).direction = static_cast<Actor::Direction>(direction);
 		}
 		else {
-			tileset.textureIdx[actors.get(e).direction] = actors.get(e).direction;
+			tileset.textureIdx[actors->get(e).direction] = actors->get(e).direction;
 		}
 	}
 	
-	for (auto e : velocities) {
-		positions.get(e) += velocities.get(e) * actors.get(e).speed * delta;
+	for (auto e : *velocities) {
+		positions->get(e) += velocities->get(e) * actors->get(e).speed * delta;
 	}
 }

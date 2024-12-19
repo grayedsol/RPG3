@@ -29,40 +29,40 @@ private:
 	const TileMapScene* scene;
 
 	/**
-	 * @brief Reference to the renderer.
+	 * @brief Pointer to the renderer.
 	 * 
 	 */
-	SDL_Renderer*& renderer;
+	SDL_Renderer** renderer;
 
 	/**
-	 * @brief Reference to the TileMap.
+	 * @brief Pointer to the TileMap.
 	 * 
 	 */
-	const TileMap& tileMap;
+	const TileMap* tileMap;
 
 	/**
-	 * @brief Reference to the TileEntityMap
+	 * @brief Pointer to the TileEntityMap.
 	 * 
 	 */
-	const TileEntityMap& entityMap;
+	const TileEntityMap* entityMap;
 
 	/**
 	 * @brief Scaling factor for textures. Ideally a whole number.
 	 * 
 	 */
-	const float& pixelScaling;
+	const float* pixelScaling;
 
 	/**
 	 * @brief Positions of entities, in game pixels.
 	 * 
 	 */
-	const ComponentSet<Position2>& positions;
+	const ComponentSet<Position2>* positions;
 
 	/**
 	 * @brief Sprites of entities.
 	 * 
 	 */
-	const ComponentSet<ActorSprite>& sprites;
+	const ComponentSet<ActorSprite>* sprites;
 
 	/**
 	 * @brief Render a tile on the screen.

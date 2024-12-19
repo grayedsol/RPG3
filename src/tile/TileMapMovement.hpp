@@ -27,31 +27,31 @@ private:
 	 * 
 	 */
 
-	ComponentSet<Position2>& positions;
+	ComponentSet<Position2>* positions;
 
 	/**
 	 * @brief Velocities of entities, in game pixels per second.
 	 * 
 	 */
-	ComponentSet<Velocity2>& velocities;
+	ComponentSet<Velocity2>* velocities;
 
 	/**
 	 * @brief Actor data of entities.
 	 * 
 	 */
-	ComponentSet<Actor>& actors;
+	ComponentSet<Actor>* actors;
 
 	/**
 	 * @brief Sprites of entities.
 	 * 
 	 */
-	ComponentSet<ActorSprite>& sprites;
+	ComponentSet<ActorSprite>* sprites;
 
 	/**
 	 * @brief Set of entities that are players.
 	 * 
 	 */
-	const ComponentSet<Player>& players;
+	const ComponentSet<Player>* players;
 public:
 	/**
 	 * @brief Constructor.
