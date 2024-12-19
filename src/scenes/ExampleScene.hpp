@@ -23,10 +23,10 @@ private:
      * @brief Image that will be displayed during the scene.
      * 
      */
-    std::unique_ptr<GRY_Texture> examplePng;
+    GRY_Texture examplePng = GRY_Texture(nullptr);
 
     /**
-     * @brief @copybrief Scene::setControls
+     * @copybrief Scene::setControls
      */
     void setControls() final override;
 public:

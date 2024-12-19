@@ -36,17 +36,18 @@ void ExampleScene::process() {
     int windowWidth, windowHeight;
     game->getSDL().getWindowSize(&windowWidth, &windowHeight);
     SDL_FRect dstRect { 0, 0, (float)windowWidth, (float)windowHeight };
-    SDL_RenderTexture(game->getSDL().getRenderer(), examplePng.get()->texture, NULL, &dstRect);
+    SDL_RenderTexture(game->getSDL().getRenderer(), examplePng.texture, NULL, &dstRect);
 }
 
 bool ExampleScene::load() {
-    if (examplePng.get()) { return true; }
+    if (examplePng.path) { return examplePng.load(game); }
+	
     /* Open scene document */
     GRY_JSON::Document sceneDoc;
     GRY_JSON::loadDoc(sceneDoc, scenePath);
 
-    /* Load the texture */
-    examplePng = std::make_unique<GRY_Texture>(sceneDoc["texturePath"].GetString());
-    examplePng.get()->load(game);
+	/* Initialize the examplePng */
+	examplePng.setPath(sceneDoc["texturePath"].GetString());
+    
     return false;
 }

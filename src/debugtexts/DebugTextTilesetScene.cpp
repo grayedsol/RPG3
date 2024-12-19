@@ -6,7 +6,7 @@ DebugTextTilesetScene::DebugTextTilesetScene(TilesetScene *scene) :
 }
 
 void DebugTextTilesetScene::process() {
-    size_t newNumTiles = scene->tileset->sourceRects.size() - 1;
+    size_t newNumTiles = scene->tileset.sourceRects.size() - 1;
 
     /* Change texture only if number of tiles has changed */
     if (numTiles != newNumTiles) {

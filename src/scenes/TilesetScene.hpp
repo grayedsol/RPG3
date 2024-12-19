@@ -27,21 +27,27 @@ private:
      * @brief Tileset that will be loaded and displayed.
      * 
     */
-    Tileset* tileset = nullptr;
+    Tileset tileset = Tileset(nullptr);
 
     /**
      * @brief Collision data for each tile in the tileset.
      * 
      */
-    TileCollision* collisions = nullptr;
+    TileCollision collisions = TileCollision(nullptr);
+
+	/**
+	 * @brief Pointer to the renderer.
+	 * 
+	 */
+	SDL_Renderer** renderer = nullptr;
 
     /**
      * @brief Distance between each displayed tile, in pixels.
     */
-    const unsigned int spacing = 2;
+    unsigned int spacing = 2;
 
     /**
-     * @brief @copybrief Scene::setControls
+     * @copybrief Scene::setControls
      */
     void setControls() final override;
 public:
@@ -51,12 +57,9 @@ public:
      * @param game Associated game class.
      * @param tilesetPath File path to the tileset scene.
      */
-    TilesetScene(GRY_Game* game, const char* tilesetPath) : Scene(game, tilesetPath) {}
-
-    ~TilesetScene() {
-        delete tileset; tileset = nullptr;
-        delete collisions; collisions = nullptr;
-    }
+    TilesetScene(GRY_Game* game, const char* tilesetPath) :
+		Scene(game, tilesetPath), renderer(&game->getSDL().getRenderer()) {
+	}
 
     /**
      * @brief Initializes the scene.

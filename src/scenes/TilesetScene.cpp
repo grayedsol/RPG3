@@ -30,8 +30,7 @@ void TilesetScene::init() {
     debugText = new DebugTextTilesetScene(this);
 }
 
-void TilesetScene::process()
-{
+void TilesetScene::process() {
     /* Determines if collision will be highlighted */
     bool highlightCollisions = false;
 
@@ -52,53 +51,53 @@ void TilesetScene::process()
     }
 
     /* Process tileset animations */
-    tileset->processAnimations(game->getDelta());
+    tileset.processAnimations(game->getDelta());
 
     /* Tileset width in pixels */
     float tilesetWidth;
-	SDL_GetTextureSize(tileset->texture, &tilesetWidth, NULL);
+	SDL_GetTextureSize(tileset.texture, &tilesetWidth, NULL);
     /* Tileset width in tiles */
-    int tilesetWidthTiles = tilesetWidth / tileset->tileWidth;
+    int tilesetWidthTiles = tilesetWidth / tileset.tileWidth;
     /* Destination rectangle for rendering */
-    SDL_FRect dstRect{ 0, 0, tileset->tileWidth, tileset->tileHeight };
+    SDL_FRect dstRect{ 0, 0, tileset.tileWidth, tileset.tileHeight };
     /* Display the tileset with a spacing between tiles. Tilesets use 1-based indexing. */
-    SDL_Renderer*& renderer = game->getSDL().getRenderer();
-    for (Tile::TileId i = 1; i < tileset->sourceRects.size(); i++) {
-        const SDL_FRect* srcRect = tileset->getSourceRect(i);
-        SDL_RenderTexture(renderer, tileset->texture, srcRect, &dstRect);
+    for (Tile::TileId i = 1; i < tileset.sourceRects.size(); i++) {
+        const SDL_FRect* srcRect = tileset.getSourceRect(i);
+        SDL_RenderTexture(*renderer, tileset.texture, srcRect, &dstRect);
 
         /* Highlight collisions */
-        if (highlightCollisions && collisions->collisions.contains(i)) {
-            SDL_FRect collisionRect = *collisions->getCollision(i);
-            collisionRect.x += dstRect.x; collisionRect.y += dstRect.y;
-            SDL_SetRenderDrawColor(renderer, 128, 0, 0, 128);
-            SDL_RenderFillRect(renderer, &collisionRect);
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+        if (highlightCollisions && collisions.collisions.contains(i)) {
+            SDL_FRect collisionRect = *collisions.getCollision(i);
+            collisionRect.x += dstRect.x;
+			collisionRect.y += dstRect.y;
+            SDL_SetRenderDrawColor(*renderer, 128, 0, 0, 128);
+            SDL_RenderFillRect(*renderer, &collisionRect);
+            SDL_SetRenderDrawColor(*renderer, 0, 0, 0, 0);
         }
 
-        dstRect.x += tileset->tileWidth + spacing;
-        if (dstRect.x >= (spacing + tileset->tileWidth) * tilesetWidthTiles) {
+        dstRect.x += tileset.tileWidth + spacing;
+        if (dstRect.x >= (spacing + tileset.tileWidth) * tilesetWidthTiles) {
             dstRect.x = 0;
-            dstRect.y += tileset->tileHeight + spacing;
+            dstRect.y += tileset.tileHeight + spacing;
         }
     }
 }
 
 bool TilesetScene::load() {
-    if (tileset && collisions) {
+    if (tileset.path && collisions.path) {
         return
-        tileset->load(game) &&
-        collisions->load(game);
+        tileset.load(game) &&
+        collisions.load(game);
     }
     /* Open scene document */
     GRY_JSON::Document sceneDoc;
     GRY_JSON::loadDoc(sceneDoc, scenePath);
 
     /* Initialize the tileset */
-    tileset = new Tileset(sceneDoc["tilesetPath"].GetString());
+    tileset.setPath(sceneDoc["tilesetPath"].GetString());
 
     /* Initialize the tile collisions */
-    collisions = new TileCollision(sceneDoc["tilesetPath"].GetString());
+    collisions.setPath(sceneDoc["tilesetPath"].GetString());
 
     return false;
 }
