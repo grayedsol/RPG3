@@ -8,7 +8,7 @@
 				"position" : [1,1],
 				"player" : true,
 				"actor" : {
-					"speed" : 120,
+					"speed" : 72,
 					"direction" : 1
 				},
 				"actorSprite" : {
