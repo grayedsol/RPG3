@@ -126,5 +126,4 @@ public:
 	 * @sa getFPS
 	 */
 	bool isLagging() { return deltaTime > minDelta; }
-
 };
