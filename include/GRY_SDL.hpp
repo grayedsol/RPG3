@@ -87,7 +87,7 @@ public:
 	~GRY_SDL();
 
 	
-	GRY_SDL(const GRY_SDL &) = delete;
+	GRY_SDL(const GRY_SDL&) = delete;
 	GRY_SDL& operator =(const GRY_SDL&) = delete;
 
 	/**
