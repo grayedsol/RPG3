@@ -32,7 +32,7 @@ private:
 	 * @brief Pointer to the renderer.
 	 * 
 	 */
-	SDL_Renderer** renderer;
+	SDL_Renderer* renderer;
 
 	/**
 	 * @brief Pointer to the TileMap.

@@ -8,7 +8,7 @@
 
 TileMapRenderer::TileMapRenderer(const TileMapScene *scene) :
 	scene(scene),
-	renderer(&scene->getGame()->getSDL().getRenderer()),
+	renderer(scene->getGame()->getSDL().getRenderer()),
 	tileMap(&scene->getTileMap()),
 	entityMap(&scene->getTileEntityMap()),
 	pixelScaling(&scene->getPixelGame()->getPixelScalingRef()),
@@ -17,7 +17,7 @@ TileMapRenderer::TileMapRenderer(const TileMapScene *scene) :
 }
 
 void TileMapRenderer::renderTile(const Tileset &tileset, const TileId textureIndex, const SDL_FRect *dstRect) {
-	SDL_RenderTexture(*renderer, tileset.texture, &tileset.sourceRects[textureIndex], dstRect);
+	SDL_RenderTexture(renderer, tileset.texture, &tileset.sourceRects[textureIndex], dstRect);
 }
 
 void TileMapRenderer::renderSprite(ECS::entity e) {
@@ -28,7 +28,7 @@ void TileMapRenderer::renderSprite(ECS::entity e) {
 		tileset.tileWidth * *pixelScaling,
 		tileset.tileHeight * *pixelScaling
 	};
-	SDL_RenderTexture(*renderer, tileset.texture, tileset.getSourceRect(sprites->get(e).index), &dstRect);
+	SDL_RenderTexture(renderer, tileset.texture, tileset.getSourceRect(sprites->get(e).index), &dstRect);
 }
 
 /**

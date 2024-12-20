@@ -63,16 +63,16 @@ void TilesetScene::process() {
     /* Display the tileset with a spacing between tiles. Tilesets use 1-based indexing. */
     for (Tile::TileId i = 1; i < tileset.sourceRects.size(); i++) {
         const SDL_FRect* srcRect = tileset.getSourceRect(i);
-        SDL_RenderTexture(*renderer, tileset.texture, srcRect, &dstRect);
+        SDL_RenderTexture(renderer, tileset.texture, srcRect, &dstRect);
 
         /* Highlight collisions */
         if (highlightCollisions && collisions.collisions.contains(i)) {
             SDL_FRect collisionRect = *collisions.getCollision(i);
             collisionRect.x += dstRect.x;
 			collisionRect.y += dstRect.y;
-            SDL_SetRenderDrawColor(*renderer, 128, 0, 0, 128);
-            SDL_RenderFillRect(*renderer, &collisionRect);
-            SDL_SetRenderDrawColor(*renderer, 0, 0, 0, 0);
+            SDL_SetRenderDrawColor(renderer, 128, 0, 0, 128);
+            SDL_RenderFillRect(renderer, &collisionRect);
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
         }
 
         dstRect.x += tileset.tileWidth + spacing;

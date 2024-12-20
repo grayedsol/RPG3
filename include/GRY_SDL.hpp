@@ -158,12 +158,12 @@ public:
 	 * 
 	 * @return Reference to the SDL_Window*.
 	 */
-	SDL_Window*& getWindow() { return gameWindow; }
+	SDL_Window* getWindow() { return gameWindow; }
 
 	/**
 	 * @brief Get the SDL_Renderer* being used.
 	 * 
 	 * @return Reference to the SDL_Renderer*.
 	 */	
-	SDL_Renderer*& getRenderer() { return gameRenderer; }
+	SDL_Renderer* getRenderer() { return gameRenderer; }
 };
