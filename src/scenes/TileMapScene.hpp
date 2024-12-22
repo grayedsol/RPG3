@@ -6,6 +6,7 @@
  */
 #pragma once
 #include "../tile/TileMapMovement.hpp"
+#include "../tile/TileSpriteAnimator.hpp"
 #include "../tile/TileMapRenderer.hpp"
 #include "Scene.hpp"
 #include "../tile/TileMapECS.hpp"
@@ -66,6 +67,8 @@ private:
 	 */
 	TileMapMovement tileMapMovement;
 
+	TileSpriteAnimator tileSpriteAnimator;
+
 	/**
 	 * @copybrief Scene::setControls
 	 *
@@ -81,7 +84,8 @@ public:
 	TileMapScene(GRY_PixelGame *pGame, const char *tileMapPath) :
 		Scene((GRY_Game *)pGame, tileMapPath),
 		tileMapRenderer(this),
-		tileMapMovement(this) {
+		tileMapMovement(this),
+		tileSpriteAnimator(this) {
 	}
 
 	/**

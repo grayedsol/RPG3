@@ -88,13 +88,9 @@ void TileMapMovement::process(double delta) {
 
 		Tileset& tileset = scene->getTileEntityMap().tilesets[sprites->get(e).tileset];
 
+		actors->get(e).moving = direction;
 		if (direction) {
-			sprites->get(e).index = direction;
-			tileset.processAnimations(delta); /**< TODO: This is bad, we need to function on something specific to the entity */
 			actors->get(e).direction = static_cast<Actor::Direction>(direction);
-		}
-		else {
-			tileset.textureIdx[actors->get(e).direction] = actors->get(e).direction;
 		}
 	}
 	

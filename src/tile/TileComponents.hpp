@@ -1,5 +1,4 @@
 #pragma once
-#include "SDL3/SDL.h"
 #include <stdint.h>
 #include "Tile.hpp"
 
@@ -30,6 +29,18 @@ struct Actor {
 	 *
 	 */
 	Direction direction = Direction::Down;
+
+	bool moving = false;
+};
+
+struct ActorSpriteAnimations {
+	using TileId = Tile::TileId;
+	
+	std::vector<TileId> anims[Actor::Direction::SIZE];
+
+	double duration;
+	unsigned index = 0;
+	double timer = 0;
 };
 
 struct ActorSprite {

@@ -26,6 +26,7 @@ void TileMapScene::process() {
 	if (isPressing(GCmd::GameUp)) {}
 
 	tileMapMovement.process(game->getDelta());
+	tileSpriteAnimator.process(game->getDelta());
 	tileMapRenderer.process();
 }
 

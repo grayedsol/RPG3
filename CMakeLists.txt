@@ -38,6 +38,7 @@ set(SOURCES src/main.cpp
 	src/debugtexts/DebugTextTilesetScene.cpp
 	src/tile/TileMapRenderer.cpp
 	src/tile/TileMapMovement.cpp
+	src/tile/TileSpriteAnimator.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
