@@ -6,7 +6,7 @@
  */
 #pragma once
 #include "Tile.hpp"
-#include "GRY_Texture.hpp"
+#include "FileResource.hpp"
 
 /**
  * @brief Parses a texture into an array of simple tiles.
