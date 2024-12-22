@@ -17,7 +17,6 @@
 					"index" : 1,
 					"tileset" : 0
 				},
-				"actorTextureList" : [1,2,3,4,5,6,7,8],
 				"hitbox" : {
 					"halfWidth" : 8,
 					"halfHeight" : 8
