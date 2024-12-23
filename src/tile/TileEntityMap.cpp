@@ -126,7 +126,7 @@ void registerActorSpriteAnimations(TileEntityMap &eMap, entity e, const GRY_JSON
 		for (auto& ani : tileset.tileAnimations) {
 			if (ani.tile == id) { b = &ani; break; }
 		}
-		GRY_Assert(b, "[TileEntityMap] Actor tileset did not have an animation for tile id: %d.", id);
+		GRY_Assert(b, "[TileEntityMap] Actor tileset did not have an animation for tile id: %d.", id-1);
 		for (auto frame : b->frames) {
 			anims.walk[i].push_back(frame.index);
 		}
@@ -139,7 +139,7 @@ void registerActorSpriteAnimations(TileEntityMap &eMap, entity e, const GRY_JSON
 		for (auto& ani : tileset.tileAnimations) {
 			if (ani.tile == id) { b = &ani; break; }
 		}
-		GRY_Assert(b, "[TileEntityMap] Actor tileset did not have an animation for tile id: %d.", id);
+		GRY_Assert(b, "[TileEntityMap] Actor tileset did not have an animation for tile id: %d.", id-1);
 		for (auto frame : b->frames) {
 			anims.sprint[i].push_back(frame.index);
 		}

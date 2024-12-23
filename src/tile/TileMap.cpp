@@ -41,8 +41,9 @@ bool TileMap::load(GRY_Game *game) {
 	/* Create tilesets and tile collision sets */
 	if (tilesets.empty() && tileCollisions.empty() && mapDoc["tilesets"].GetArray().Size() > 0) {
 		for (auto& tileset : mapDoc["tilesets"].GetArray()) {
-			tilesets.push_back(Tileset(tileset["source"].GetString()));
-			tileCollisions.push_back(TileCollision(tileset["source"].GetString()));
+			std::string fullPath = std::string("assets/maps/") + tileset["source"].GetString();
+			tilesets.push_back(Tileset(fullPath.c_str()));
+			tileCollisions.push_back(TileCollision(fullPath.c_str()));
 		}
 	}
 

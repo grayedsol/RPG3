@@ -230,16 +230,8 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"assets/textures/data/tileset01.json"
-        },
-        {
-		 "firstgid":257,
-		 "source":"assets/textures/data/tileset01.json"
-		},
-        {
-		 "firstgid":513,
-		 "source":"assets/textures/data/tileset01.json"
-		}],
+         "source":"..\/textures\/data\/tileset01.json"
+        }],
  "tilewidth":16,
  "type":"map",
  "version":"1.10",
