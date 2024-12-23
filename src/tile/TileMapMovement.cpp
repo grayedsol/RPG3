@@ -6,6 +6,34 @@
 #include "TileMapMovement.hpp"
 #include "../scenes/TileMapScene.hpp"
 
+static Velocity2 dirVecs[Actor::Direction::SIZE] = {
+	Velocity2{0,0},
+	Velocity2{0,1},
+	Velocity2{0,-1},
+	Velocity2{-1,0},
+	Velocity2{-1,1},
+	Velocity2{-1,-1},
+	Velocity2{1,0},
+	Velocity2{1,1},
+	Velocity2{1,-1}
+};
+
+static Actor::Direction vecDirs[Actor::Direction::SIZE] {
+	Actor::Direction::LeftUp,
+	Actor::Direction::Left,
+	Actor::Direction::LeftDown,
+	Actor::Direction::Up,
+	Actor::Direction::NONE,
+	Actor::Direction::Down,
+	Actor::Direction::RightUp,
+	Actor::Direction::Right,
+	Actor::Direction::RightDown
+};
+
+static Actor::Direction vecToDir(Velocity2 vec) {
+	return vecDirs[(int)((vec[0]+1)*3+vec[1]+1)];
+}
+
 TileMapMovement::TileMapMovement(TileMapScene* scene) :
 	scene(scene),
 	positions(&scene->getECS().getComponent<Position2>()),
@@ -17,62 +45,39 @@ TileMapMovement::TileMapMovement(TileMapScene* scene) :
 
 /**
  * @details
- * The movement direction is calculated by adding the vertical and
- * horizontal inputs together. For example, since Actor::Direction::Down
- * is 2 and Actor::Direction::Right is 6, add 2 and 6 to get 8, which is
- * the value of Actor::Direction::RightDown.
- * If both up and down are input, they cancel each other out; the same
- * goes for left and right.
+ * Updates the actor's velocity based on its direction and whether it is moving or not.
  * 
- * The bit shifting is an over-engineered branchless version of this code:
- * @code{.cpp}
- * 	if (scene->isPressing(GCmd::MapDown) && !scene->isPressing(GCmd::MapUp)) {
- * 		direction += static_cast<uint8_t>(Actor::Direction::Down);
- * 	}
- * 	else if (scene->isPressing(GCmd::MapUp) && !scene->isPressing(GCmd::MapDown)) {
- * 		direction += static_cast<uint8_t>(Actor::Direction::Up);
- * 	}
- * 
- * 	if (scene->isPressing(GCmd::MapLeft) && !scene->isPressing(GCmd::MapRight)) {
- * 		direction += static_cast<uint8_t>(Actor::Direction::Left);
- * 	}
- * 	else if (scene->isPressing(GCmd::MapRight) && !scene->isPressing(GCmd::MapLeft)) {
- * 		direction += static_cast<uint8_t>(Actor::Direction::Right);
- * 	}
- * @endcode
+ * Also glides the actor when it stops moving in a direction, so that it will align
+ * to a pixel before it stops moving in that direction.
  */
 void TileMapMovement::process(double delta) {
-	for (auto e : *players) {
-		/* A bit of bit shifting, see function details documentation. */
-		bool r = scene->isPressing(GCmd::MapRight);
-		bool lr = scene->isPressing(GCmd::MapLeft) != r;
-		bool u = scene->isPressing(GCmd::MapUp);
-		bool ud = scene->isPressing(GCmd::MapDown) != u;
-		uint8_t direction = lr;
-		direction <<= 1;
-		direction += lr;
-		direction <<= r;
-		direction += (ud << u);
-
+	for (auto e : *actors) {
+		/* Save the previous velocity for when we check for gliding */
 		Velocity2 prevVelocity = velocities->get(e);
-		/* Bitwise ops are equivalent to Velocity2(right - left, down - up) to make an 8 way direction vector */
-		velocities->get(e) = Velocity2((lr & r) - (lr & !r), (ud & !u) - (ud & u));
+		
+		/* Update the velocity based on direction. If it's not moving, use the 0 vector */
+		velocities->get(e) = dirVecs[actors->get(e).moving ? actors->get(e).direction : 0];
 
-		if (!lr && prevVelocity[0]) { //if was moving horizontal but no longer
-			float rmndr = positions->get(e)[0] - floorf(positions->get(e)[0]); //get the decimal part of the x coordinate
-			if (rmndr) { //if it's nonzero (mid pixel)
-				rmndr = floorf(rmndr + prevVelocity[0] * (actors->get(e).speed * delta)); //try increment moving and flooring it
-				if (rmndr) { //if it did not floor to 0, it escaped the range 0-1, so it crossed over a pixel
-					positions->get(e)[0] = rmndr < 0 ? floorf(positions->get(e)[0]) : ceilf(positions->get(e)[0]); //floor or ceil to the pixel it crossed
+		/* If the actor was moving horizontal but no longer */
+		if (prevVelocity[0] && !velocities->get(e)[0]) {
+			/* Get the decimal part of the x coordinate */
+			float rmndr = positions->get(e)[0] - floorf(positions->get(e)[0]);
+			if (rmndr) { /* If it's non-zero, it's mid-pixel and we want to glide */
+				/* Try an incremental move, and floor it */
+				rmndr = floorf(rmndr + prevVelocity[0] * (actors->get(e).speed * delta));
+				if (rmndr) { /* If it did not floor to 0, it escaped the range 0-1, so it crossed over a pixel */
+					/* Snap to the pixel it crossed, using either floor or ceil */
+					positions->get(e)[0] = rmndr < 0 ? floorf(positions->get(e)[0]) : ceilf(positions->get(e)[0]);
 				}
-				else { //move normally and sustain direction
+				else { /* If it did floor to 0, it's still mid-pixel, so glide it */
 					velocities->get(e)[0] = prevVelocity[0];
-					direction = actors->get(e).direction;
+					actors->get(e).direction = vecToDir(prevVelocity);
 				}
 			}
 		}
 
-		if (!ud && prevVelocity[1]) {
+		/* Repeat for y coordinate */
+		if (prevVelocity[1] && !velocities->get(e)[1]) {
 			float rmndr = positions->get(e)[1] - floorf(positions->get(e)[1]);
 			if (rmndr) {
 				rmndr = floorf(rmndr + prevVelocity[1] * actors->get(e).speed * delta);
@@ -81,14 +86,9 @@ void TileMapMovement::process(double delta) {
 				}
 				else {
 					velocities->get(e)[1] = prevVelocity[1];
-					direction = actors->get(e).direction;
+					actors->get(e).direction = vecToDir(prevVelocity);
 				}
 			}
-		}
-
-		actors->get(e).moving = (bool)direction;
-		if (direction) {
-			actors->get(e).direction = static_cast<Actor::Direction>(direction);
 		}
 	}
 	

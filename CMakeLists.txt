@@ -39,6 +39,7 @@ set(SOURCES src/main.cpp
 	src/tile/TileMapRenderer.cpp
 	src/tile/TileMapMovement.cpp
 	src/tile/TileSpriteAnimator.cpp
+	src/tile/TileMapInput.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

@@ -10,6 +10,7 @@
 #include "../tile/TileMapRenderer.hpp"
 #include "Scene.hpp"
 #include "../tile/TileMapECS.hpp"
+#include "../tile/TileMapInput.hpp"
 
 class GRY_PixelGame;
 
@@ -67,6 +68,8 @@ private:
 	 */
 	TileMapMovement tileMapMovement;
 
+	TileMapInput tileMapInput;
+
 	TileSpriteAnimator tileSpriteAnimator;
 
 	/**
@@ -85,7 +88,8 @@ public:
 		Scene((GRY_Game *)pGame, tileMapPath),
 		tileMapRenderer(this),
 		tileMapMovement(this),
-		tileSpriteAnimator(this) {
+		tileSpriteAnimator(this),
+		tileMapInput(this) {
 	}
 
 	/**
