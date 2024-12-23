@@ -4,26 +4,26 @@
 TileSpriteAnimator::TileSpriteAnimator(TileMapScene *scene) :
 	sprites(&scene->getECS().getComponent<ActorSprite>()),
 	actors(&scene->getECS().getComponentReadOnly<Actor>()),
-	animations(&scene->getECS().getComponent<ActorSpriteAnimations>()) {
+	actorAnimations(&scene->getECS().getComponent<ActorSpriteAnimations>()) {
 }
 
 void TileSpriteAnimator::process(double delta) {
-	for (auto e : *actors) {
+	for (auto e : *actorAnimations) {
+		ActorSpriteAnimations& animations = actorAnimations->get(e);
 		if (!actors->get(e).moving) {
 			sprites->get(e).index = actors->get(e).direction;
-			animations->get(e).timer = 0;
-			animations->get(e).index = 0;
+			animations.timer = 0;
+			animations.index = 0;
 			continue;
 		}
 
-		std::vector<Tile::TileId> anim = animations->get(e).anims[actors->get(e).direction];
-		sprites->get(e).index = anim[animations->get(e).index];
+		std::vector<Tile::TileId> animation = animations.anims[actors->get(e).direction];
+		sprites->get(e).index = animation[animations.index];
 
-		animations->get(e).timer -= delta;
-		if (animations->get(e).timer > 0.0) { continue; }
+		animations.timer -= delta;
+		if (animations.timer > 0.0) { continue; }
 
-		if (++animations->get(e).index >= anim.size()) { animations->get(e).index = 0; }
-		animations->get(e).timer += animations->get(e).duration;
-		sprites->get(e).index = anim[animations->get(e).index];
+		if (++animations.index >= animation.size()) { animations.index = 0; }
+		animations.timer += animations.duration;
 	}
 }

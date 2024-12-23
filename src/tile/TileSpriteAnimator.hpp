@@ -16,7 +16,7 @@ private:
 
 	const ComponentSet<Actor>* actors;
 
-	ComponentSet<ActorSpriteAnimations>* animations;
+	ComponentSet<ActorSpriteAnimations>* actorAnimations;
 
 public:
 	TileSpriteAnimator(TileMapScene* scene);

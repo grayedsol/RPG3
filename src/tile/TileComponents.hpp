@@ -30,6 +30,10 @@ struct Actor {
 	 */
 	Direction direction = Direction::Down;
 
+	/**
+	 * @brief Whether the actor is moving or not.
+	 * 
+	 */
 	bool moving = false;
 };
 
@@ -37,6 +41,17 @@ struct ActorSpriteAnimations {
 	using TileId = Tile::TileId;
 	
 	std::vector<TileId> anims[Actor::Direction::SIZE];
+
+	double duration;
+	unsigned index = 0;
+	double timer = 0;
+};
+
+struct ActorSpriteAnims {
+	using TileId = Tile::TileId;
+	
+	std::vector<TileId> walk[Actor::Direction::SIZE];
+	std::vector<TileId> sprint[Actor::Direction::SIZE];
 
 	double duration;
 	unsigned index = 0;

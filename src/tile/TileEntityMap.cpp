@@ -130,7 +130,7 @@ void registerActorSpriteAnimations(TileEntityMap &eMap, entity e) {
 		}
 	}
 	
-	anims.duration = 0.08;
+	anims.duration = 0.1;
 
 	eMap.ecs->getComponent<ActorSpriteAnimations>().add(e, anims);
 }

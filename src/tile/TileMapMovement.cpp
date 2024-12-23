@@ -86,9 +86,7 @@ void TileMapMovement::process(double delta) {
 			}
 		}
 
-		Tileset& tileset = scene->getTileEntityMap().tilesets[sprites->get(e).tileset];
-
-		actors->get(e).moving = direction;
+		actors->get(e).moving = (bool)direction;
 		if (direction) {
 			actors->get(e).direction = static_cast<Actor::Direction>(direction);
 		}

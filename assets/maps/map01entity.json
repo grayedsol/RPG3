@@ -13,9 +13,14 @@
 				},
 				"actorSprite" : {
 					"offsetX" : -8,
-					"offsetY" : -20,
+					"offsetY" : -24,
 					"index" : 1,
 					"tileset" : 0
+				},
+				"actorAnimations" : {
+					"walk" : [12,18,24,30],
+					"sprint" : [36,38,40,42],
+					"duration" : 80
 				},
 				"hitbox" : {
 					"halfWidth" : 8,
