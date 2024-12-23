@@ -19,7 +19,6 @@ using TileMapECS = GRY_ECS<
 	Hitbox,
 	Actor,
 	ActorSprite,
-	ActorSpriteAnimations,
 	ActorSpriteAnims,
 	Player
 >;

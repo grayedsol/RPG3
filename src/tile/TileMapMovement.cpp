@@ -57,6 +57,7 @@ void TileMapMovement::process(double delta) {
 		
 		/* Update the velocity based on direction. If it's not moving, use the 0 vector */
 		velocities->get(e) = dirVecs[actors->get(e).moving ? actors->get(e).direction : 0];
+		if (actors->get(e).sprinting) { velocities->get(e) *= 2; }
 
 		/* If the actor was moving horizontal but no longer */
 		if (prevVelocity[0] && !velocities->get(e)[0]) {

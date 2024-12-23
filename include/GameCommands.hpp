@@ -19,6 +19,7 @@ enum GCmd {
 	GameRight,
 
 	MapInteract,
+	MapSprint,
 	MapMenu,
 	MapUp,
 	MapDown,

@@ -38,5 +38,9 @@
 
     "GAME_SELECT" : {
         "Primary" : { "code": 49 }
-    }
+    },
+
+	"GAME_LT" : {
+		"Primary" : { "code": 225 }
+	}
 }

@@ -3,6 +3,7 @@
 
 void TileMapScene::setControls() {
     controls.mapCmd(GCmd::MapInteract, VirtualButton::GAME_A);
+	controls.mapCmd(GCmd::MapSprint, VirtualButton::GAME_LT);
     controls.mapCmd(GCmd::GameQuit, VirtualButton::GAME_B);
 	
 	controls.mapCmd(GCmd::MapDown, VirtualButton::GAME_DOWN);

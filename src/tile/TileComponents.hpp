@@ -3,7 +3,7 @@
 #include "Tile.hpp"
 
 struct Actor {
-	enum Direction {
+	enum Direction : uint8_t {
 		NONE = 0,
 		
 		Down = 1,
@@ -35,16 +35,12 @@ struct Actor {
 	 * 
 	 */
 	bool moving = false;
-};
 
-struct ActorSpriteAnimations {
-	using TileId = Tile::TileId;
-	
-	std::vector<TileId> anims[Actor::Direction::SIZE];
-
-	double duration;
-	unsigned index = 0;
-	double timer = 0;
+	/**
+	 * @brief Whether the actor is sprinting or not.
+	 * 
+	 */
+	bool sprinting = false;
 };
 
 struct ActorSpriteAnims {
