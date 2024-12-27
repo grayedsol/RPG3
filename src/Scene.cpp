@@ -5,11 +5,9 @@
  */
 #include "Scene.hpp"
 #include "GRY_Game.hpp"
-#include "DebugText.hpp"
 
 Scene::~Scene() {
     delete[] scenePath;
-    delete debugText;
 }
 
 GCmd Scene::readInput() { return controls.commands[game->getInput()]; }

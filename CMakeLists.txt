@@ -12,8 +12,12 @@ set(HIDE_TERMINAL False)
 include(ExternalProject)
 include("${CMAKE_SOURCE_DIR}/external/rapidjson.cmake")
 include_directories(SYSTEM "${CMAKE_BINARY_DIR}/external/rapidjson/src/rapidjson/include")
+include("${CMAKE_SOURCE_DIR}/external/imgui.cmake")
+include_directories(SYSTEM "${CMAKE_BINARY_DIR}/external/imgui/src/imgui")
+include_directories(SYSTEM "${CMAKE_BINARY_DIR}/external/imgui/src/imgui/backends")
 
-set(SOURCES src/main.cpp
+set(SOURCES
+	src/main.cpp
 	src/InputHandler.cpp
 	src/FPSHandler.cpp
 	src/GRY_SDL.cpp
@@ -22,9 +26,6 @@ set(SOURCES src/main.cpp
 	src/SceneManager.cpp
 	src/transitions/FadeToBlack.cpp
 	src/GRY_JSON.cpp
-	src/DebugScreen.cpp
-	src/DebugText.cpp
-	src/debugtexts/DebugTextFPS.cpp
 	src/GRY_PixelGame.cpp
 	src/GRY_Tiled.cpp
 	src/GRY_Texture.cpp
@@ -35,11 +36,11 @@ set(SOURCES src/main.cpp
 	src/scenes/ExampleScene.cpp
 	src/scenes/TilesetScene.cpp
 	src/scenes/TileMapScene.cpp
-	src/debugtexts/DebugTextTilesetScene.cpp
 	src/tile/TileMapRenderer.cpp
 	src/tile/TileMapMovement.cpp
 	src/tile/TileSpriteAnimator.cpp
 	src/tile/TileMapInput.cpp
+	src/imguiDebugger.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
@@ -50,9 +51,20 @@ if(UNIX)
 	)
 endif()
 
+target_sources(${PROJECT_NAME} PUBLIC
+	${IMGUI_SOURCE_DIR}/imgui.cpp
+	${IMGUI_SOURCE_DIR}/imgui_demo.cpp
+	${IMGUI_SOURCE_DIR}/imgui_draw.cpp
+	${IMGUI_SOURCE_DIR}/imgui_tables.cpp
+	${IMGUI_SOURCE_DIR}/imgui_widgets.cpp
+	${IMGUI_SOURCE_DIR}/backends/imgui_impl_sdl3.cpp
+	${IMGUI_SOURCE_DIR}/backends/imgui_impl_sdlrenderer3.cpp
+)
+
 target_include_directories(${PROJECT_NAME}
 	PRIVATE include
 	PUBLIC ${RAPIDJSON_INCLUDE_DIR}
+	PUBLIC ${IMGUI_INCLUDE_DIR}
 )
 
 configure_file(gameconfig.h.in gameconfig.h)

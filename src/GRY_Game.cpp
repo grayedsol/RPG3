@@ -5,10 +5,17 @@
  */
 #include "GRY_Game.hpp"
 #include "GRY_Log.hpp"
-#include "../src/debugtexts/DebugTextFPS.hpp"
+#include "imgui.h"
+#include "imgui_impl_sdl3.h"
+#include "imgui_impl_sdlrenderer3.h"
+#if defined(IMGUI_IMPL_OPENGL_ES2)
+#include <SDL3/SDL_opengles2.h>
+#else
+#include <SDL3/SDL_opengl.h>
+#endif
 
 GRY_Game::GRY_Game(int WINDOW_WIDTH, int WINDOW_HEIGHT, int TARGET_FPS, bool USE_VSYNC) :
-	gsdl(WINDOW_WIDTH, WINDOW_HEIGHT, USE_VSYNC), fps(TARGET_FPS), debugScreen(this) {
+	gsdl(WINDOW_WIDTH, WINDOW_HEIGHT, USE_VSYNC), fps(TARGET_FPS), imguiDebug(this) {
 
 	if (!gsdl.init()) { 
 		GRY_Log("[Game] GRY_SDL initialization failed.\n");
@@ -16,12 +23,12 @@ GRY_Game::GRY_Game(int WINDOW_WIDTH, int WINDOW_HEIGHT, int TARGET_FPS, bool USE
 		return;
 	}
 
-	debugScreen.init();
-	debugScreen.addDebugText<DebugTextFPS>();
+	imguiDebug.init();
 }
 
 void GRY_Game::runGame() {
     auto& gameRenderer = gsdl.gameRenderer;
+	ImGuiIO& io = ImGui::GetIO();
 
     /* Game loop */
 	while (gameRunning) {
@@ -33,11 +40,14 @@ void GRY_Game::runGame() {
 
 		/* Handle inputs */
 		input.process(gameRunning);
+		imguiDebug.startFrame();
 
 		/* Update game */
+		imguiDebug.process();
 		process();
 		scenes.process();
-		debugScreen.process();
+		
+		imguiDebug.render(gameRenderer);
 
 		fps.computeDelta();
 		if (fps.isLagging()) { GRY_Log("[Game] Lagging.\n"); }
@@ -54,7 +64,4 @@ void GRY_Game::runGame() {
  * Toggles the debug screen if SELECT is pressed while START is being pressed.
  */
 void GRY_Game::process() {
-	if (getSingleInput() == VirtualButton::GAME_SELECT && isPressing(VirtualButton::GAME_START)) {
-		toggleDebugScreen();
-	}
 }

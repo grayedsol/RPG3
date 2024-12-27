@@ -9,7 +9,7 @@
 #include "GRY_Lib.hpp"
 #include "CommandMap.hpp"
 class GRY_Game;
-class DebugText;
+
 /**
  * @brief Abstract game scene.
  * 
@@ -40,12 +40,6 @@ protected:
 	 * 
 	 */
 	const char* scenePath;
-
-	/**
-	 * @brief Optional debug text for the debug screen.
-	 * 
-	 */
-	DebugText* debugText = nullptr;
 
 	/**
 	 * @brief Maps game commands to virtual buttons, and vice versa.
@@ -168,11 +162,4 @@ public:
 	 * @return `false` otherwise.
 	 */
 	const bool isPressing(GCmd cmd) const;
-
-	/**
-	 * @brief Get the debug text.
-	 * 
-	 * @return Pointer to the debug text, which may be nullptr.
-	 */
-	DebugText* getDebugText() { return debugText; }
 };

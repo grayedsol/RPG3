@@ -9,7 +9,7 @@
 #include "SceneManager.hpp"
 #include "FPSHandler.hpp"
 #include "InputHandler.hpp"
-#include "DebugScreen.hpp"
+#include "imguiDebugger.hpp"
 
 /**
  * @brief Runs the game loop and provides access to essential game functions.
@@ -20,34 +20,34 @@
 class GRY_Game {
 protected:
 	/**
-	 * @brief @copybrief GRY_SDL
+	 * @copybrief GRY_SDL
 	 * 
 	 */
 	GRY_SDL gsdl;
 
 	/**
-	 * @brief @copybrief FPSHandler
+	 * @copybrief FPSHandler
 	 * 
 	 */
 	SceneManager scenes;
 
 	/**
-	 * @brief @copybrief SceneManager
+	 * @copybrief SceneManager
 	 * 
 	 */
 	FPSHandler fps;
 
 	/**
-	 * @brief @copybrief InputHandler
+	 * @copybrief InputHandler
 	 * 
 	 */
 	InputHandler input;
 
 	/**
-	 * @brief @copybrief DebugScreen
+	 * @copybrief imguiDebugger
 	 * 
 	 */
-	DebugScreen debugScreen;
+	imguiDebugger imguiDebug;
 
 	/**
 	 * @brief Game running status. When false, the game will exit at the end of the current frame.
@@ -95,25 +95,6 @@ public:
 	 * @return Reference to the GRY_SDL.
 	 */
 	GRY_SDL& getSDL() { return gsdl; }
-
-	/**
-	 * @brief Get the debug screen.
-	 * 
-	 * @return Reference to the debug screen.
-	 */
-	DebugScreen& getDebugScreen() { return debugScreen; }
-
-	/**
-	 * @copydoc DebugScreen::toggle
-	 */
-	void toggleDebugScreen() { debugScreen.toggle(); }
-
-	/**
-	 * @brief Get the debug text from the active scene.
-	 * 
-	 * @return Pointer to the active scene's debug text.
-	 */
-	DebugText* getSceneDebugText() { return scenes.allScenes.back()->getDebugText(); }
 
 	/**
 	 * @copydoc SceneManager::stackScene

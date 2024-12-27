@@ -21,19 +21,19 @@
  * Pressing GAME_UP will highlight the collision boxes for the tiles.
  */
 class TilesetScene : public Scene {
-    friend class DebugTextTilesetScene;
+	friend class DebugTextTilesetScene;
 private:
-    /**
-     * @brief Tileset that will be loaded and displayed.
-     * 
-    */
-    Tileset tileset;
+	/**
+	 * @brief Tileset that will be loaded and displayed.
+	 * 
+	*/
+	Tileset tileset;
 
-    /**
-     * @brief Collision data for each tile in the tileset.
-     * 
-     */
-    TileCollision collisions;
+	/**
+	 * @brief Collision data for each tile in the tileset.
+	 * 
+	 */
+	TileCollision collisions;
 
 	/**
 	 * @brief Pointer to the renderer.
@@ -41,39 +41,41 @@ private:
 	 */
 	SDL_Renderer* renderer = nullptr;
 
-    /**
-     * @brief Distance between each displayed tile, in pixels.
-    */
-    unsigned int spacing = 2;
+	/**
+	 * @brief Distance between each displayed tile, in pixels.
+	*/
+	unsigned int spacing = 2;
 
-    /**
-     * @copybrief Scene::setControls
-     */
-    void setControls() final override;
+	/**
+	 * @copybrief Scene::setControls
+	 */
+	void setControls() final;
 public:
-    /**
-     * @brief Constructor.
-     * 
-     * @param game Associated game class.
-     * @param tilesetPath File path to the tileset scene.
-     */
-    TilesetScene(GRY_Game* game, const char* tilesetPath) :
+	/**
+	 * @brief Constructor.
+	 * 
+	 * @param game Associated game class.
+	 * @param tilesetPath File path to the tileset scene.
+	 */
+	TilesetScene(GRY_Game* game, const char* tilesetPath) :
 		Scene(game, tilesetPath), renderer(game->getSDL().getRenderer()) {
 	}
 
-    /**
-     * @brief Initializes the scene.
-     * 
-     */
-    void init() final override;
+	/**
+	 * @brief Initializes the scene.
+	 * 
+	 * @details
+	 * This scene is simple, so nothing is done.
+	 */
+	void init() final {}
 
-    /**
-     * @copydoc Scene::process
-     */
-    void process();
+	/**
+	 * @copydoc Scene::process
+	 */
+	void process();
 
-    /**
-     * @copydoc Scene::load
-     */
-    bool load() final override;
+	/**
+	 * @copydoc Scene::load
+	 */
+	bool load() final;
 };

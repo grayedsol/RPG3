@@ -6,6 +6,7 @@
 #include "InputHandler.hpp"
 #include "GRY_Log.hpp"
 #include "GRY_JSON.hpp"
+#include "imgui_impl_sdl3.h"
 
 /**
  * @brief File path to data for control scheme.
@@ -117,6 +118,7 @@ void InputHandler::process(bool& gameRunning) {
 	/* Poll for events */
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
+		ImGui_ImplSDL3_ProcessEvent(&event);
 		switch (event.window.type) {
 		case SDL_EVENT_WINDOW_RESIZED:
 			SDL_Log("Resized window.");

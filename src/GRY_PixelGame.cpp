@@ -32,8 +32,4 @@ void GRY_PixelGame::process() {
 	gsdl.getWindowSize(&w, NULL);
 	pixelScaling = w / (float)SCREEN_WIDTH_PIXELS;
 	pixelScaling = SDL_ceilf(pixelScaling);
-
-	if (getSingleInput() == VirtualButton::GAME_SELECT && isPressing(VirtualButton::GAME_START)) {
-		toggleDebugScreen();
-	}
 }
