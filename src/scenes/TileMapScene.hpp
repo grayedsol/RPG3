@@ -76,7 +76,7 @@ private:
 	 * @copybrief Scene::setControls
 	 *
 	 */
-	void setControls() final override;
+	void setControls() final;
 public:
 	/**
 	 * @brief Constructor.
@@ -95,18 +95,20 @@ public:
 	/**
 	 * @brief Initializes the scene.
 	 *
+	 * @details
+	 * This scene is simple, so nothing is done.
 	 */
-	void init() final override;
+	void init() final {}
 
 	/**
 	 * @copydoc Scene::process
 	 */
-	void process() final override;
+	void process() final;
 
 	/**
 	 * @copydoc Scene::load
 	 */
-	bool load() final override;
+	bool load() final;
 
 	/**
 	 * @brief Get a pointer to the GRY_PixelGame.

@@ -7,6 +7,9 @@
 #include "GRY_Game.hpp"
 #include "GRY_JSON.hpp"
 #include "../transitions/FadeToBlack.hpp"
+#ifndef NDEBUG
+#include "imgui.h"
+#endif
 
 /**
  * @details
@@ -72,6 +75,12 @@ void TilesetScene::process() {
 			dstRect.y += tileset.tileHeight + spacing;
 		}
 	}
+	#ifndef NDEBUG
+	size_t numTiles = tileset.sourceRects.size() - 1;
+	ImGui::Begin("Tileset Scene");
+	ImGui::Text("Number of tiles: %i", numTiles);
+	ImGui::End();
+	#endif
 }
 
 bool TilesetScene::load() {

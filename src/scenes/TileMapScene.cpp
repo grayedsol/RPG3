@@ -1,5 +1,8 @@
 #include "TileMapScene.hpp"
 #include "GRY_JSON.hpp"
+#ifndef NDEBUG
+#include "GRY_ECSImGui.hpp"
+#endif
 
 void TileMapScene::setControls() {
     controls.mapCmd(GCmd::MapInteract, VirtualButton::GAME_A);
@@ -10,10 +13,6 @@ void TileMapScene::setControls() {
 	controls.mapCmd(GCmd::MapUp, VirtualButton::GAME_UP);
 	controls.mapCmd(GCmd::MapLeft, VirtualButton::GAME_LEFT);
 	controls.mapCmd(GCmd::MapRight, VirtualButton::GAME_RIGHT);
-}
-
-void TileMapScene::init() {
-	// TODO: Add DebugText
 }
 
 void TileMapScene::process() {
@@ -30,6 +29,10 @@ void TileMapScene::process() {
 	tileMapMovement.process(game->getDelta());
 	tileSpriteAnimator.process(game->getDelta());
 	tileMapRenderer.process();
+
+	#ifndef NDEBUG
+	imgui_ecs(ecs);
+	#endif
 }
 
 bool TileMapScene::load() {

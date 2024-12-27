@@ -9,8 +9,7 @@
 #include <SDL3/SDL_opengl.h>
 #endif
 
-imguiDebugger::imguiDebugger(GRY_Game* game) : game(game) {
-}
+imguiDebugger::imguiDebugger(GRY_Game* game) : game(game) {}
 
 imguiDebugger::~imguiDebugger() {
     ImGui_ImplSDLRenderer3_Shutdown();
@@ -19,18 +18,18 @@ imguiDebugger::~imguiDebugger() {
 }
 
 void imguiDebugger::init() {
-	// Setup Dear ImGui context
+	/* Setup context */
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     io = &ImGui::GetIO();
-    io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+	/* Enable keyboard and gamepad controls */
+    io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 
-    // Setup Dear ImGui style
+    /* Use dark style */
     ImGui::StyleColorsDark();
-    //ImGui::StyleColorsLight();
 
-    // Setup Platform/Renderer backends
+    /* Setup with SDL */
     ImGui_ImplSDL3_InitForSDLRenderer(game->getSDL().getWindow(), game->getSDL().getRenderer());
     ImGui_ImplSDLRenderer3_Init(game->getSDL().getRenderer());
 }
@@ -42,8 +41,6 @@ void imguiDebugger::startFrame() {
 }
 
 void imguiDebugger::process() {
-	static bool foo = true;
-	ImGui::ShowDemoWindow(&foo);
 	ImGui::Begin("Hello, world!");
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io->Framerate, io->Framerate);
 	ImGui::End();

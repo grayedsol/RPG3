@@ -53,7 +53,6 @@ endif()
 
 target_sources(${PROJECT_NAME} PUBLIC
 	${IMGUI_SOURCE_DIR}/imgui.cpp
-	${IMGUI_SOURCE_DIR}/imgui_demo.cpp
 	${IMGUI_SOURCE_DIR}/imgui_draw.cpp
 	${IMGUI_SOURCE_DIR}/imgui_tables.cpp
 	${IMGUI_SOURCE_DIR}/imgui_widgets.cpp
