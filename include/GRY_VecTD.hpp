@@ -37,18 +37,14 @@
  */
 template<typename T, uint N, typename Tag>
 struct GRY_VecTD {
-private:
     T data[N];
-public:
     T& operator[](const uint i) { return data[i]; }
     const T& operator[](const uint i) const { return data[i]; }
 };
 
 template<typename T, typename Tag>
 struct GRY_VecTD<T,3,Tag> {
-private:
     T data[3];
-public:
     GRY_VecTD() {}
     GRY_VecTD(T x, T y, T z) {
         data[0] = x; data[1] = y; data[2] = z;
@@ -59,9 +55,7 @@ public:
 
 template<typename T, typename Tag>
 struct GRY_VecTD<T,2,Tag> {
-private:
     T data[2];
-public:
     GRY_VecTD() {}
     GRY_VecTD(T x, T y) {
         data[0] = x; data[1] = y;
