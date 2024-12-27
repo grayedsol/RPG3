@@ -12,7 +12,7 @@ template<class... Ts>
 class GRY_ECS;
 
 template<class... Ts>
-void imgui_ecs(GRY_ECS<Ts...>& ecs);
+void imguiECS(GRY_ECS<Ts...>& ecs);
 
 /**
  * @brief Database-like structure that manages entities and components.
@@ -25,7 +25,9 @@ void imgui_ecs(GRY_ECS<Ts...>& ecs);
  */
 template<class... Ts>
 class GRY_ECS {
-	friend void imgui_ecs<>(GRY_ECS<Ts...>& ecs);
+public:
+	using TupleType = std::tuple<ComponentSet<Ts>...>;
+	friend void imguiECS<>(GRY_ECS<Ts...>& ecs);
 private:
 	using entity = ECS::entity;
 

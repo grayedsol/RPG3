@@ -1,73 +1,40 @@
 #pragma once
 #include "GRY_ECS.hpp"
 #include "Components.hpp"
-#include "../src/tile/TileComponents.hpp"
 #include "imgui.h"
 
-template<class T>
-void componentImGui(T t);
-
 template<typename T>
-void imguiComponentSet(ComponentSet<T>& set, size_t I);
+void imguiComponentSet(ComponentSet<T>& set, std::size_t I, const char** componentStrings);
 
 template<std::size_t I = 0, class... Ts>
 typename std::enable_if<(I == std::tuple_size<std::tuple<ComponentSet<Ts>...>>::value)>::type
-imguiECS(std::tuple<ComponentSet<Ts>...>& components) {
+imguiRecurseComponents(std::tuple<ComponentSet<Ts>...>& components, const char** componentStrings = nullptr) {
 }
 
 template<std::size_t I = 0, class... Ts>
 typename std::enable_if<(I < std::tuple_size<std::tuple<ComponentSet<Ts>...>>::value)>::type
-imguiECS(std::tuple<ComponentSet<Ts>...>& components) {
-	imguiComponentSet(std::get<I>(components), I);
-	imguiECS<I+1,Ts...>(components);
-}
-
-template<class... Ts>
-void imgui_ecs(GRY_ECS<Ts...>& ecs) {
-	ImGui::Begin("ECS");
-	imguiECS(ecs.components);
-	ImGui::End();
+imguiRecurseComponents(std::tuple<ComponentSet<Ts>...>& components, const char** componentStrings = nullptr) {
+	imguiComponentSet(std::get<I>(components), I, componentStrings);
+	imguiRecurseComponents<I+1,Ts...>(components, componentStrings);
 }
 
 template<class T>
-void componentImGui(T t) {}
+void componentImGui(T& t) {
+	ImGui::Text("No ImGui implementation for this component.");
+}
 
-template<>
-void componentImGui(Actor actor) {
-	if (ImGui::BeginTable("actor", 2)) {
-		ImGui::TableSetupColumn("Name");
-		ImGui::TableSetupColumn("Value");
-		ImGui::TableHeadersRow();
-
-		ImGui::TableNextRow();
-		ImGui::TableNextColumn();
-		ImGui::Text("speed");
-		ImGui::TableNextColumn();
-		ImGui::Text("%f", actor.speed);
-
-		ImGui::TableNextColumn();
-		ImGui::Text("direction");
-		ImGui::TableNextColumn();
-		ImGui::Text("%d", actor.direction);
-
-		ImGui::TableNextColumn();
-		ImGui::Text("moving");
-		ImGui::TableNextColumn();
-		ImGui::Text("%d", actor.moving);
-
-		ImGui::TableNextColumn();
-		ImGui::Text("sprinting");
-		ImGui::TableNextColumn();
-		ImGui::Text("%d", actor.sprinting);
-
-		ImGui::EndTable();
-	}
+template<class... Ts>
+void imguiECS(GRY_ECS<Ts...>& ecs) {
+	ImGui::Begin("ECS");
+	imguiRecurseComponents(ecs.components);
+	ImGui::End();
 }
 
 template<typename T>
-void imguiComponentSet(ComponentSet<T>& set, size_t I) {
+void imguiComponentSet(ComponentSet<T>& set, std::size_t I, const char** componentStrings) {
 	ImGui::PushID(I);
-	if (ImGui::TreeNode("", "Component Set %d", I)) {
+	const char* name = componentStrings ? componentStrings[I] : "ComponentSet %d";
+	if (ImGui::TreeNode("", name, I)) {
 		for (int i = 0; i < set.dense.size(); i++) {
 			ECS::entity e = set.dense.at(i);
 			ImGui::PushID(e);

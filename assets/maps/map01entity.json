@@ -8,7 +8,7 @@
 				"position" : [1,1],
 				"player" : true,
 				"actor" : {
-					"speed" : 72,
+					"speed" : 60,
 					"direction" : 1
 				},
 				"actorSprite" : {
@@ -20,7 +20,7 @@
 				"actorAnimations" : {
 					"walk" : [12,18,24,24,24,30,30,30],
 					"sprint" : [36,38,40,40,40,42,42,42],
-					"duration" : 112
+					"duration" : 117
 				},
 				"hitbox" : {
 					"halfWidth" : 8,

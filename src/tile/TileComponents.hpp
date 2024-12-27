@@ -43,17 +43,6 @@ struct Actor {
 	bool sprinting = false;
 };
 
-struct ActorSpriteAnims {
-	using TileId = Tile::TileId;
-	
-	std::vector<TileId> walk[Actor::Direction::SIZE];
-	std::vector<TileId> sprint[Actor::Direction::SIZE];
-
-	double duration;
-	unsigned index = 0;
-	double timer = 0;
-};
-
 struct ActorSprite {
 	using TileId = Tile::TileId;
 	using TilesetId = Tile::TilesetId;
@@ -81,6 +70,17 @@ struct ActorSprite {
 	 *
 	 */
 	TilesetId tileset;
+};
+
+struct ActorSpriteAnims {
+	using TileId = Tile::TileId;
+	
+	std::vector<TileId> walk[Actor::Direction::SIZE];
+	std::vector<TileId> sprint[Actor::Direction::SIZE];
+
+	double duration;
+	unsigned index = 0;
+	double timer = 0;
 };
 
 struct Player {};

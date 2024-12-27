@@ -1,7 +1,7 @@
 #include "TileMapScene.hpp"
 #include "GRY_JSON.hpp"
 #ifndef NDEBUG
-#include "GRY_ECSImGui.hpp"
+#include "../tile/TileMapImGui.hpp"
 #endif
 
 void TileMapScene::setControls() {
@@ -31,7 +31,7 @@ void TileMapScene::process() {
 	tileMapRenderer.process();
 
 	#ifndef NDEBUG
-	imgui_ecs(ecs);
+	tileMapImGui(ecs);
 	#endif
 }
 
