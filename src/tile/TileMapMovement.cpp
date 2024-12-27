@@ -57,18 +57,17 @@ void TileMapMovement::process(double delta) {
 		
 		/* Update the velocity based on direction. If it's not moving, use the 0 vector */
 		velocities->get(e) = dirVecs[actors->get(e).moving ? actors->get(e).direction : 0];
-		if (actors->get(e).sprinting) { velocities->get(e) *= 2; }
 
-		/* If the actor was moving horizontal but no longer */
+		/* If the actor was moving horizontally last frame but not this one */
 		if (prevVelocity[0] && !velocities->get(e)[0]) {
 			/* Get the decimal part of the x coordinate */
-			float rmndr = positions->get(e)[0] - floorf(positions->get(e)[0]);
+			float rmndr = fabsf(positions->get(e)[0] - floorf(positions->get(e)[0]));
 			if (rmndr) { /* If it's non-zero, it's mid-pixel and we want to glide */
 				/* Try an incremental move, and floor it */
-				rmndr = floorf(rmndr + prevVelocity[0] * (actors->get(e).speed * delta));
+				rmndr = floorf(rmndr + (actors->get(e).speed * delta));
 				if (rmndr) { /* If it did not floor to 0, it escaped the range 0-1, so it crossed over a pixel */
 					/* Snap to the pixel it crossed, using either floor or ceil */
-					positions->get(e)[0] = rmndr < 0 ? floorf(positions->get(e)[0]) : ceilf(positions->get(e)[0]);
+					positions->get(e)[0] = prevVelocity[0] < 0 ? floorf(positions->get(e)[0]) : ceilf(positions->get(e)[0]);
 				}
 				else { /* If it did floor to 0, it's still mid-pixel, so glide it */
 					velocities->get(e)[0] = prevVelocity[0];
@@ -79,11 +78,11 @@ void TileMapMovement::process(double delta) {
 
 		/* Repeat for y coordinate */
 		if (prevVelocity[1] && !velocities->get(e)[1]) {
-			float rmndr = positions->get(e)[1] - floorf(positions->get(e)[1]);
+			float rmndr = fabsf(positions->get(e)[1] - floorf(positions->get(e)[1]));
 			if (rmndr) {
-				rmndr = floorf(rmndr + prevVelocity[1] * actors->get(e).speed * delta);
+				rmndr = floorf(rmndr + actors->get(e).speed * delta);
 				if (rmndr) {
-					positions->get(e)[1] = rmndr < 0 ? floorf(positions->get(e)[1]) : ceilf(positions->get(e)[1]);
+					positions->get(e)[1] = prevVelocity[1] < 0 ? floorf(positions->get(e)[1]) : ceilf(positions->get(e)[1]);
 				}
 				else {
 					velocities->get(e)[1] = prevVelocity[1];
@@ -94,6 +93,6 @@ void TileMapMovement::process(double delta) {
 	}
 	
 	for (auto e : *velocities) {
-		positions->get(e) += velocities->get(e) * actors->get(e).speed * delta;
+		positions->get(e) += velocities->get(e) * actors->get(e).speed * (1 + actors->get(e).sprinting) * delta;
 	}
 }
