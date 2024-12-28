@@ -15,3 +15,10 @@ void componentImGui(Velocity2& vel) {
 	ImGui::SameLine();
 	ImGui::InputFloat2("", vel.data);
 }
+
+template<>
+void componentImGui(Hitbox& hitbox) {
+	ImGui::Text("center: %f, %f", hitbox.centerX, hitbox.centerY);
+	ImGui::Text("halfWidth: %f", hitbox.halfWidth);
+	ImGui::Text("halfHeight: %f", hitbox.halfHeight);
+}
