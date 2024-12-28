@@ -186,7 +186,7 @@
                  "width":0,
                  "x":144,
                  "y":48
-                },
+                }, 
                 {
                  "height":0,
                  "id":32,
@@ -221,7 +221,7 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":5,
+ "nextlayerid":6,
  "nextobjectid":33,
  "orientation":"orthogonal",
  "renderorder":"right-down",
