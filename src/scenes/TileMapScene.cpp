@@ -15,6 +15,38 @@ void TileMapScene::setControls() {
 	controls.mapCmd(GCmd::MapRight, VirtualButton::GAME_RIGHT);
 }
 
+/**
+ * @details
+ * Sets up collision rectangles as entities
+ */
+void TileMapScene::init() {
+	GRY_Assert(tileMap.tileLayers.size() >= tileMap.collisionRects.size(),
+		"[TileMapScene] Cannot have more object layers than tile layers."
+	);
+	for (int i = 0; i < tileMap.collisionRects.size(); i++) {
+		auto& rectangleLayer = tileMap.collisionRects.at(i);
+		auto& tileLayer = tileMap.tileLayers.at(i);
+		for (SDL_FRect rect : rectangleLayer) {
+			Hitbox hitbox{rect.x, rect.y, rect.w * 0.5f, rect.h * 0.5f};
+			hitbox.centerX += hitbox.halfWidth;
+			hitbox.centerX += hitbox.halfHeight;
+			ECS::entity e = ecs.createEntity();
+			ecs.getComponent<Hitbox>().add(e, hitbox);
+			unsigned tilex = rect.x / normalTileSize;
+			unsigned tiley = rect.y / normalTileSize;
+			unsigned tilew = ceilf(rect.w / normalTileSize);
+			unsigned tileh = ceilf(rect.h / normalTileSize);
+			unsigned startIndex = tiley * tileMap.width + tilex;
+			for (int y = 0; y < tileh; y++) {
+				for (int x = 0; x < tilew; x++) {
+					unsigned index = startIndex + (y * tileMap.width) + x;
+					tileLayer.at(index).custom = e;
+				}
+			}
+		}
+	}
+}
+
 void TileMapScene::process() {
 	switch (readSingleInput()) {
 		case GCmd::GameQuit:

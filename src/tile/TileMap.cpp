@@ -59,8 +59,9 @@ bool TileMap::load(GRY_Game *game) {
 
 	/* Load tile layers */
 	for (auto& layer : mapDoc["layers"].GetArray()) {
+		if (strcmp(layer["type"].GetString(), "tilelayer")) { continue; }
+
 		std::vector<Tile> tiles;
-		if (!layer.HasMember("data")) { continue; }
 		for (auto& tile : layer["data"].GetArray()) {
 			Tile::TileId tileId = tile.GetUint();
 			uint8_t tilesetId = 0;
@@ -73,7 +74,26 @@ bool TileMap::load(GRY_Game *game) {
 		tileLayers.push_back(tiles);
 	}
 
-	insertSkips(tileLayers, width);
+	/* Load object layers */
+	for (auto& layer : mapDoc["layers"].GetArray()) {
+		if (strcmp(layer["type"].GetString(), "objectgroup")) { continue; }
+
+		std::vector<SDL_FRect> rectangles;
+		for (auto& object : layer["objects"].GetArray()) {
+			if (object.HasMember("polyline")) {}
+			else if (!strcmp(object["type"].GetString(), "")) {
+				SDL_FRect rect{ 0, 0, 0, 0 };
+				rect.x = object["x"].GetFloat();
+				rect.y = object["y"].GetFloat();
+				rect.h = object["height"].GetFloat();
+				rect.w = object["width"].GetFloat();
+				rectangles.push_back(rect);
+			}
+		}
+		collisionRects.push_back(rectangles);
+	}
+
+	// insertSkips(tileLayers, width);
 	
 	/* Return false normally, but if there were no layers we can return true. */
 	return mapDoc["layers"].GetArray().Size() == 0;

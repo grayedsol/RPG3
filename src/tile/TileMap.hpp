@@ -15,6 +15,7 @@
  */
 struct TileMap : public FileResource {
 	using TileLayer = std::vector<Tile>;
+	using RectangleLayer = std::vector<SDL_FRect>;
 
 	/**
 	 * @brief Container for layers of tiles.
@@ -33,6 +34,12 @@ struct TileMap : public FileResource {
 	 * 
 	 */
 	std::vector<TileCollision> tileCollisions;
+
+	/**
+	 * @brief Container for collision rectangles that can span multiple tiles.
+	 * 
+	 */
+	std::vector<RectangleLayer> collisionRects;
 	
 	/**
 	 * @brief Width of the map, in tiles.

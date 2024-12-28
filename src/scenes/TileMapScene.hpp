@@ -43,7 +43,7 @@ private:
 	 * @brief TileEntityMap that will be loaded.
 	 *
 	 */
-	TileEntityMap entityMap = TileEntityMap(ecs);
+	TileEntityMap entityMap;
 
 	/**
 	 * @brief Width and height of a normal square tile, in pixels.
@@ -86,6 +86,7 @@ public:
 	 */
 	TileMapScene(GRY_PixelGame *pGame, const char *tileMapPath) :
 		Scene((GRY_Game *)pGame, tileMapPath),
+		entityMap(ecs),
 		tileMapRenderer(this),
 		tileMapMovement(this),
 		tileSpriteAnimator(this),
@@ -95,10 +96,8 @@ public:
 	/**
 	 * @brief Initializes the scene.
 	 *
-	 * @details
-	 * This scene is simple, so nothing is done.
 	 */
-	void init() final {}
+	void init() final;
 
 	/**
 	 * @copydoc Scene::process
