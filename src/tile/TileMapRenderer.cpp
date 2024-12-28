@@ -70,10 +70,10 @@ void TileMapRenderer::process() {
 				/* Render when id is nonzero (if it's 0 it has no texture) */
 				if (tile.id) { renderTile(tileset, tile.id, &dstRect); }
 				/* Else skip by the number of empty tiles in the row after the current one */
-				else {
-					x += tile.custom;
-					dstRect.x += shift * tile.custom;
-				}
+				// else {
+				// 	x += tile.custom;
+				// 	dstRect.x += shift * tile.custom;
+				// }
 				/* Increment dstRect x */
 				dstRect.x += shift;
 			}
