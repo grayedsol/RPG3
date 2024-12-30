@@ -8,8 +8,8 @@ struct Velocity2Tag {};
 using Velocity2 = GRY_VecTD<float, 2, Velocity2Tag>;
 
 struct Hitbox {
-	float centerX;
-	float centerY;
-	float halfWidth;
-	float halfHeight;
+	float x;
+	float y;
+	float w;
+	float h;
 };

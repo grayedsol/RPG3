@@ -23,8 +23,7 @@
 					"duration" : 117
 				},
 				"hitbox" : {
-					"halfWidth" : 8,
-					"halfHeight" : 8
+					"radius" : 8
 				}
 			}
 		]

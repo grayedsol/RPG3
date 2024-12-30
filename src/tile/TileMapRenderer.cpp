@@ -13,7 +13,8 @@ TileMapRenderer::TileMapRenderer(const TileMapScene *scene) :
 	entityMap(&scene->getTileEntityMap()),
 	pixelScaling(&scene->getPixelGame()->getPixelScalingRef()),
 	positions(&scene->getECSReadOnly().getComponentReadOnly<Position2>()),
-	sprites(&scene->getECSReadOnly().getComponentReadOnly<ActorSprite>()) {
+	sprites(&scene->getECSReadOnly().getComponentReadOnly<ActorSprite>()),
+	hitboxes(&scene->getECSReadOnly().getComponentReadOnly<Hitbox>()) {
 }
 
 void TileMapRenderer::renderTile(const Tileset &tileset, const TileId textureIndex, const SDL_FRect *dstRect) {
@@ -53,17 +54,13 @@ void TileMapRenderer::process() {
 		uint32_t numRows = (uint32_t)layer.size() / tileMap->width;
 
 		unsigned entityIndex = 0;
-		uint32_t entityRow = entityLayer.empty() ? 0 : (uint32_t)(positions->get(entityLayer[entityIndex])[1] / tileset.tileHeight);
+		uint32_t entityRow = 0;
+		if (!entityLayer.empty()) {
+			Hitbox box = hitboxes->get(entityLayer[entityIndex]);
+			entityRow = (uint32_t)((box.y + box.h) / tileset.tileHeight);
+		}
 		/* Render by row */
 		for (uint32_t y = 0; y < numRows; y++) {
-			/* Render any entities in the row */
-			while (entityRow == y && entityIndex < entityLayer.size()) {
-				renderSprite(entityLayer[entityIndex]);
-				entityIndex++;
-				if (entityIndex < entityLayer.size()) {
-					entityRow = (uint32_t)(positions->get(entityLayer[entityIndex])[1] / tileset.tileHeight);
-				}
-			}
 			/* Render row of tiles */
 			for (uint32_t x = 0; x < tileMap->width; x++) {
 				Tile tile = layer[y * tileMap->width + x];
@@ -75,6 +72,16 @@ void TileMapRenderer::process() {
 			/* Reset dstRect x and increment dstRect y */
 			dstRect.x = 0;
 			dstRect.y += shift;
+
+			/* Render any entities in the row */
+			while (entityRow == y && entityIndex < entityLayer.size()) {
+				renderSprite(entityLayer[entityIndex]);
+				entityIndex++;
+				if (entityIndex < entityLayer.size()) {
+					Hitbox box = hitboxes->get(entityLayer[entityIndex]);
+					entityRow = (uint32_t)((box.y + box.h) / tileset.tileHeight);
+				}
+			}
 		}
 		/* Reset dstRect y */
 		dstRect.y = 0;

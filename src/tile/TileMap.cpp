@@ -51,6 +51,7 @@ bool TileMap::load(GRY_Game *game) {
 		if (strcmp(layer["type"].GetString(), "objectgroup")) { continue; }
 
 		std::vector<SDL_FRect> rectangles;
+		rectangles.push_back(SDL_FRect{ 0, 0, 0, 0 }); /**< 0 element rect is no collision */
 		for (auto& object : layer["objects"].GetArray()) {
 			if (object.HasMember("polyline")) {}
 			else if (!strcmp(object["type"].GetString(), "")) {
@@ -62,8 +63,15 @@ bool TileMap::load(GRY_Game *game) {
 				rectangles.push_back(rect);
 			}
 		}
+		GRY_Assert(collisionRects.size() < (std::size_t)std::numeric_limits<Tile::CollisionId>::max,
+			"[TileMap] A layer had too many collision rectangles."
+		);
 		collisionRects.push_back(rectangles);
 	}
+	
+	GRY_Assert(tileLayers.size() >= collisionRects.size(),
+		"[TileMap] Cannot have more object layers than tile layers."
+	);
 	
 	/* Return false normally, but if there were no layers we can return true. */
 	return mapDoc["layers"].GetArray().Size() == 0;

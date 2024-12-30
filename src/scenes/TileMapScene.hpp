@@ -159,4 +159,13 @@ public:
 	 * @return The normal tile size.
 	 */
 	uint16_t getNormalTileSize() const { return normalTileSize; }
+
+	/**
+	 * @brief Get a vector of collision rectangles that collide with `rect`.
+	 * 
+	 * @param rect SDL_FRect to test collision against
+	 * @param layer Which collision layer to test within
+	 * @return Vector of rectangles colliding with `rect`
+	 */
+	std::vector<SDL_FRect> queryCollisions(const SDL_FRect rect, std::size_t layer) const;
 };

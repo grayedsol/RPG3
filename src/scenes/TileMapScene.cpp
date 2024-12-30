@@ -17,21 +17,14 @@ void TileMapScene::setControls() {
 
 /**
  * @details
- * Sets up collision rectangles as entities
+ * Assign collision rectangles to tiles.
  */
 void TileMapScene::init() {
-	GRY_Assert(tileMap.tileLayers.size() >= tileMap.collisionRects.size(),
-		"[TileMapScene] Cannot have more object layers than tile layers."
-	);
 	for (int i = 0; i < tileMap.collisionRects.size(); i++) {
 		auto& rectangleLayer = tileMap.collisionRects.at(i);
 		auto& tileLayer = tileMap.tileLayers.at(i);
-		for (SDL_FRect rect : rectangleLayer) {
-			Hitbox hitbox{rect.x, rect.y, rect.w * 0.5f, rect.h * 0.5f};
-			hitbox.centerX += hitbox.halfWidth;
-			hitbox.centerX += hitbox.halfHeight;
-			ECS::entity e = ecs.createEntity();
-			ecs.getComponent<Hitbox>().add(e, hitbox);
+		for (int j = 0; j < rectangleLayer.size(); j++) {
+			SDL_FRect rect = rectangleLayer.at(j);
 			unsigned tilex = rect.x / normalTileSize;
 			unsigned tiley = rect.y / normalTileSize;
 			unsigned tilew = ceilf(rect.w / normalTileSize);
@@ -40,7 +33,7 @@ void TileMapScene::init() {
 			for (int y = 0; y < tileh; y++) {
 				for (int x = 0; x < tilew; x++) {
 					unsigned index = startIndex + (y * tileMap.width) + x;
-					tileLayer.at(index).collision = e;
+					tileLayer.at(index).collision = j;
 				}
 			}
 		}
@@ -84,4 +77,33 @@ bool TileMapScene::load() {
 	normalTileSize = sceneDoc["normalTileSize"].GetUint();
 
 	return false;
+}
+
+std::vector<SDL_FRect> TileMapScene::queryCollisions(const SDL_FRect rect, std::size_t layer) const {
+	auto collides = [rect](const SDL_FRect other) {
+		return
+			rect.x + rect.w > other.x &&
+			rect.x < other.x + other.w &&
+			rect.y + rect.h > other.y &&
+			rect.y < other.y + other.h;
+	};
+	std::vector<SDL_FRect> returnVec;
+	int tileIndex = (int)(rect.y / normalTileSize) * tileMap.width + (int)(rect.x / normalTileSize);
+	int width = (int)ceilf(rect.w / normalTileSize);
+	int height = (int)ceilf(rect.h / normalTileSize);
+
+	const TileMap::TileLayer& tileLayer = tileMap.tileLayers.at(layer);
+	for (int i = 0; i <= height; i++) {
+		for (int j = 0; j <= width; j++) {
+			int index = tileIndex + (i * tileMap.width) + j;
+			if (index < 0 || index > tileLayer.size()) { continue; }
+			Tile::CollisionId collision = tileLayer.at(index).collision;
+			if (!collision) { continue; }
+			SDL_FRect collisionRect = tileMap.collisionRects.at(layer).at(collision);
+			if (collides(collisionRect)) {
+				returnVec.push_back(collisionRect);
+			}
+		}
+	}
+	return returnVec;
 }

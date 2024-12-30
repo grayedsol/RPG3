@@ -39,7 +39,6 @@ bool GRY_SDL::init() {
 		SDL_PropertiesID properties = SDL_CreateProperties();
 		SDL_SetPointerProperty(properties, SDL_PROP_RENDERER_CREATE_WINDOW_POINTER, gameWindow);
 		SDL_SetBooleanProperty(properties, SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER, true);
-		// SDL_SetStringProperty(properties, SDL_PROP_RENDERER_CREATE_NAME_STRING, "OpenGL");
 		gameRenderer = SDL_CreateRendererWithProperties(properties);
 		SDL_DestroyProperties(properties);
 		GRY_Log("[GRY_SDL] Using VSync.\n");

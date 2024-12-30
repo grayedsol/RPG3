@@ -55,13 +55,12 @@ struct GRY_VecTD<T,3,Tag> {
 
 template<typename T, typename Tag>
 struct GRY_VecTD<T,2,Tag> {
-    T data[2];
+	T x;
+	T y;
     GRY_VecTD() {}
-    GRY_VecTD(T x, T y) {
-        data[0] = x; data[1] = y;
-    }
-    T& operator[](const uint i) { return data[i]; }
-    const T& operator[](const uint i) const { return data[i]; }
+    GRY_VecTD(T x, T y) : x(x), y(y) {}
+    T& operator[](const uint i) { return ((T*)this)[i]; }
+    const T& operator[](const uint i) const { return ((T*)this)[i]; }
 };
 
 template<typename Tag>
