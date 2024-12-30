@@ -40,7 +40,7 @@ void TileMapScene::init() {
 			for (int y = 0; y < tileh; y++) {
 				for (int x = 0; x < tilew; x++) {
 					unsigned index = startIndex + (y * tileMap.width) + x;
-					tileLayer.at(index).custom = e;
+					tileLayer.at(index).collision = e;
 				}
 			}
 		}

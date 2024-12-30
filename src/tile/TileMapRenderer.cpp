@@ -37,7 +37,7 @@ void TileMapRenderer::renderSprite(ECS::entity e) {
  */
 void TileMapRenderer::process() {
 	/* Tileset that will be used */
-	const Tileset& tileset = tileMap->tilesets[0];
+	const Tileset& tileset = tileMap->tileset;
 	/* Distance to shift x or y when moving columns/rows in the rendering loop */
 	const float shift = scene->getNormalTileSize() * *pixelScaling;
 	/* Destination rectangle, defines position and size of rendered tile */
@@ -69,11 +69,6 @@ void TileMapRenderer::process() {
 				Tile tile = layer[y * tileMap->width + x];
 				/* Render when id is nonzero (if it's 0 it has no texture) */
 				if (tile.id) { renderTile(tileset, tile.id, &dstRect); }
-				/* Else skip by the number of empty tiles in the row after the current one */
-				// else {
-				// 	x += tile.custom;
-				// 	dstRect.x += shift * tile.custom;
-				// }
 				/* Increment dstRect x */
 				dstRect.x += shift;
 			}

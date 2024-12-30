@@ -14,6 +14,7 @@
  */
 struct Tile {
     using TileId = uint16_t;
+	using CollisionId = uint16_t;
 	using TilesetId = uint8_t;
     using entity = ECS::entity;
 
@@ -23,17 +24,11 @@ struct Tile {
      */
     TileId id;
 
-    /**
-     * @brief Index of the tileset to use.
-     * 
-     */
-    TilesetId tileset;
-
-    /**
-     * @brief Associated entity for more complex features.
-     * 
-     */
-    entity custom = ECS::NONE;
+	/**
+	 * @brief Identifier for collision data.
+	 * 
+	 */
+    CollisionId collision = 0;
 };
 
 /**
