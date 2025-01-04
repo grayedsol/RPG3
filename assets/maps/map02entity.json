@@ -1,0 +1,35 @@
+{
+	"layers":[
+		[
+			
+		],
+		[
+			{
+				"position" : [3,3],
+				"player" : true,
+				"actor" : {
+					"speed" : 60,
+					"direction" : 1
+				},
+				"actorSprite" : {
+					"offsetX" : -8,
+					"offsetY" : -24,
+					"index" : 1,
+					"tileset" : 0
+				},
+				"actorAnimations" : {
+					"walk" : [12,18,24,24,24,30,30,30],
+					"sprint" : [36,38,40,40,40,42,42,42],
+					"duration" : 117
+				},
+				"hitbox" : {
+					"radius" : 8
+				}
+			}
+		]
+	],
+	"normalTileSize" : 16,
+	"tilesets" : [
+		"assets\/textures\/data\/chronosprites.json"
+	]
+}
