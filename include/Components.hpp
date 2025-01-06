@@ -13,3 +13,17 @@ struct Hitbox {
 	float w;
 	float h;
 };
+
+inline bool operator==(Hitbox lhs, Hitbox rhs) {
+	return lhs.x == rhs.x &&
+	lhs.y == rhs.y &&
+	lhs.w == rhs.w &&
+	lhs.h == rhs.h;
+}
+
+inline bool operator!=(Hitbox lhs, Hitbox rhs) {
+	return lhs.x != rhs.x ||
+	lhs.y != rhs.y ||
+	lhs.w != rhs.w ||
+	lhs.h != rhs.h;
+}

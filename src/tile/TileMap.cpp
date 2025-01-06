@@ -15,6 +15,8 @@ bool TileMap::load(GRY_Game *game) {
 
 	/* Read map width */
 	width = mapDoc["width"].GetUint();
+	/* Set height to zero for now */
+	height = 0;
 
 	/* Create tilesets and tile collision sets */
 	if (!tileset.path && !tileCollision.path) {
@@ -43,6 +45,7 @@ bool TileMap::load(GRY_Game *game) {
 			Tile::TileId tileId = tile.GetUint();
 			tiles.push_back(Tile{ tileId });
 		}
+		height = std::max(height, (uint32_t)(tiles.size() / width));
 		tileLayers.push_back(tiles);
 	}
 

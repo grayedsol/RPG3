@@ -152,11 +152,11 @@ public:
 	TileEntityMap& getTileEntityMap() { return entityMap; }
 
 	/**
-	 * @brief Get the width / height of a normal square tile.
+	 * @brief Get the width / height of a normal square tile, in pixels.
 	 *
 	 * @copydetails TileMapScene::normalTileSize
 	 *
-	 * @return The normal tile size.
+	 * @return The normal tile size in pixels.
 	 */
 	uint16_t getNormalTileSize() const { return normalTileSize; }
 

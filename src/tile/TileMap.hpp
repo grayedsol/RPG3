@@ -46,6 +46,15 @@ struct TileMap : public FileResource {
 	 * 
 	 */
 	uint32_t width;
+
+	/**
+	 * @brief Height of the map, in tiles.
+	 * 
+	 * @details
+	 * If there are layers of different heights, the height
+	 * is equal to the height of the largest layer.
+	 */
+	uint32_t height;
 	
 	/**
 	 * @brief Constructor.

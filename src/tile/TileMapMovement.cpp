@@ -5,6 +5,7 @@
  */
 #include "TileMapMovement.hpp"
 #include "../scenes/TileMapScene.hpp"
+#include "QuadTree.hpp"
 
 static const float INV_SQRT_TWO = 0.7071f;
 
@@ -101,6 +102,13 @@ TileMapMovement::TileMapMovement(TileMapScene *scene) :
  * to a pixel before it stops moving in that direction.
  */
 void TileMapMovement::process(double delta) {
+	Hitbox mapSize = Hitbox{
+		0, 0,
+		(float)(scene->getTileMap().width * scene->getNormalTileSize()),
+		(float)(scene->getTileMap().height * scene->getNormalTileSize())
+	};
+	QuadTree tree(mapSize);
+
 	for (auto e : *actors) {
 		/* Save the previous velocity for when we check for gliding */
 		Velocity2 prevVelocity = velocities->get(e);
@@ -115,6 +123,8 @@ void TileMapMovement::process(double delta) {
 	for (int layer = 0; layer < scene->getTileEntityMap().entityLayers.size(); layer++) {
 		for (auto e : scene->getTileEntityMap().entityLayers.at(layer)) {
 			if (hitboxes->contains(e)) {
+				std::vector<Hitbox> eCollisions;
+				tree.query(hitboxes->get(e), eCollisions);
 				Hitbox box = hitboxes->get(e);
 				Position2* pos = reinterpret_cast<Position2*>(&box);
 				*pos = positions->get(e);
@@ -122,6 +132,7 @@ void TileMapMovement::process(double delta) {
 				box = handleTileCollisions(box, layer);
 				positions->get(e) = *pos;
 				hitboxes->get(e) = box;
+				tree.insert(box);
 			}
 			else if (velocities->contains(e)) {
 				positions->get(e) += velocities->get(e) * actors->get(e).speed * (1 + actors->get(e).sprinting) * delta;

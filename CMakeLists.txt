@@ -41,6 +41,7 @@ set(SOURCES
 	src/tile/TileSpriteAnimator.cpp
 	src/tile/TileMapInput.cpp
 	src/imguiDebugger.cpp
+	src/QuadTree.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
