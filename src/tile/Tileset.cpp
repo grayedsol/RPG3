@@ -64,6 +64,17 @@ bool Tileset::load(GRY_Game* game) {
 				}
 				tileAnimations.push_back(TileAnimation{frames, 0, frames.at(0).duration, id});
 			}
+			/* Change textureIdx */
+			/* TODO: Find a way to make this better until Tiled finally adds arrays >:( */
+			if (GRY_Tiled::searchProperty(tile, "textureIdx")) {
+				textureIdx.at(GRY_Tiled::getProperty(tile, "textureIdx").GetUint()) = id;
+			}
+			if (GRY_Tiled::searchProperty(tile, "textureIdx2")) {
+				textureIdx.at(GRY_Tiled::getProperty(tile, "textureIdx2").GetUint()) = id;
+			}
+			if (GRY_Tiled::searchProperty(tile, "textureIdx3")) {
+				textureIdx.at(GRY_Tiled::getProperty(tile, "textureIdx3").GetUint()) = id;
+			}
 		}
 	}
 
