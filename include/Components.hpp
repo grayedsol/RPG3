@@ -1,3 +1,9 @@
+/**
+ * @file Components.hpp
+ * @author Grayedsol (grayedsol@gmail.com)
+ * @brief Component structures for a game.
+ * @copyright Copyright (c) 2025
+ */
 #pragma once
 #include "GRY_VecTD.hpp"
 

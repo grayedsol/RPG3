@@ -1,3 +1,9 @@
+/**
+ * @file GRY_ECSImGui.hpp
+ * @author Grayedsol (grayedsol@gmail.com)
+ * @brief Utility functions for displaying ECS data with Dear ImGui.
+ * @copyright Copyright (c) 2025
+ */
 #pragma once
 #include "GRY_ECS.hpp"
 #include "Components.hpp"

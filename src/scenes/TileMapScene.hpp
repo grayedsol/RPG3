@@ -21,6 +21,7 @@ class GRY_PixelGame;
  * Controls:
  * Directional inputs: Move
  * GAME_A: Interact
+ * GAME_LT: Sprint
  * GAME_B: Quit
  */
 class TileMapScene : public Scene {

@@ -1,3 +1,9 @@
+/**
+ * @file TileComponents.hpp
+ * @author Grayedsol (grayedsol@gmail.com)
+ * @brief Component structures for a tile based game.
+ * @copyright Copyright (c) 2025
+ */
 #pragma once
 #include <stdint.h>
 #include "Tile.hpp"

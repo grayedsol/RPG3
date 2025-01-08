@@ -1,3 +1,9 @@
+/**
+ * @file ComponentsImGui.hpp
+ * @author Grayedsol (grayedsol@gmail.com)
+ * @brief Functions for displaying Tile Component data for Dear ImGui.
+ * @copyright Copyright (c) 2025
+ */
 #pragma once
 #include "GRY_ECSImGui.hpp"
 #include "Components.hpp"

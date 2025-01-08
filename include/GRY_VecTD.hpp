@@ -9,7 +9,7 @@
  * @brief Vector type with tag dispatching.
  * 
  * @details
- * Allows for multiple types of vectors within a tuple
+ * Allows for multiple types of vectors within a std::tuple
  * that have the same T (type) and N (size).
  * 
  * Example:

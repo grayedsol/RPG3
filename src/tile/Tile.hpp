@@ -1,7 +1,7 @@
 /**
  * @file Tile.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @brief Defines Tile and TileAnimation types.
+ * @brief Defines basic Tile and TileAnimation types.
  * @copyright Copyright (c) 2024
  */
 #pragma once
