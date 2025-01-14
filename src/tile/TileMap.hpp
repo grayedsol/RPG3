@@ -24,28 +24,37 @@ struct TileMap : public FileResource {
 	std::vector<TileLayer> tileLayers;
 
 	/**
-	 * @brief Container for tilesets.
-	 * 
-	 */
-	std::vector<Tileset> tilesets;
-
-	/**
-	 * @brief Container for tile collision sets.
-	 * 
-	 */
-	std::vector<TileCollision> tileCollisions;
-
-	/**
 	 * @brief Container for collision rectangles that can span multiple tiles.
 	 * 
 	 */
 	std::vector<RectangleLayer> collisionRects;
+
+	/**
+	 * @brief The tileset of the TileMap.
+	 * 
+	 */
+	Tileset tileset;
+
+	/**
+	 * @brief Tile collision data for the Tileset.
+	 * 
+	 */
+	TileCollision tileCollision;
 	
 	/**
 	 * @brief Width of the map, in tiles.
 	 * 
 	 */
 	uint32_t width;
+
+	/**
+	 * @brief Height of the map, in tiles.
+	 * 
+	 * @details
+	 * If there are layers of different heights, the height
+	 * is equal to the height of the largest layer.
+	 */
+	uint32_t height;
 	
 	/**
 	 * @brief Constructor.
@@ -74,8 +83,9 @@ struct TileMap : public FileResource {
 		using std::swap;
         swap(static_cast<FileResource&>(lhs), static_cast<FileResource&>(rhs));
 		swap(lhs.tileLayers, rhs.tileLayers);
-		swap(lhs.tilesets, rhs.tilesets);
-		swap(lhs.tileCollisions, rhs.tileCollisions);
+		swap(lhs.collisionRects, rhs.collisionRects);
+		swap(lhs.tileset, rhs.tileset);
+		swap(lhs.tileCollision, rhs.tileCollision);
 		swap(lhs.width, rhs.width);
 	}
 

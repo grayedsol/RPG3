@@ -1,3 +1,9 @@
+/**
+ * @file TileMapImGui.hpp
+ * @author Grayedsol (grayedsol@gmail.com)
+ * @brief Utilities for using Dear ImGui in a TileMapScene.
+ * @copyright Copyright (c) 2025
+ */
 #pragma once
 #include "GRY_ECSImGui.hpp"
 #include "ComponentsImGui.hpp"
@@ -21,6 +27,6 @@ void imguiECS(TileMapECS& ecs) {
 	ImGui::End();
 }
 
-void tileMapImGui(TileMapECS& ecs) {
+inline void tileMapImGui(TileMapECS& ecs) {
 	imguiECS(ecs);
 }

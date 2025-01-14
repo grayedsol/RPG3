@@ -1,7 +1,7 @@
 /**
  * @file GRY_Lib.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @brief Miscellaneous functions
+ * @brief Miscellaneous functions.
  * @copyright Copyright (c) 2024
  */
 #pragma once

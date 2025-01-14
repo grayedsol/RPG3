@@ -21,6 +21,7 @@ class GRY_PixelGame;
  * Controls:
  * Directional inputs: Move
  * GAME_A: Interact
+ * GAME_LT: Sprint
  * GAME_B: Quit
  */
 class TileMapScene : public Scene {
@@ -152,11 +153,20 @@ public:
 	TileEntityMap& getTileEntityMap() { return entityMap; }
 
 	/**
-	 * @brief Get the width / height of a normal square tile.
+	 * @brief Get the width / height of a normal square tile, in pixels.
 	 *
 	 * @copydetails TileMapScene::normalTileSize
 	 *
-	 * @return The normal tile size.
+	 * @return The normal tile size in pixels.
 	 */
 	uint16_t getNormalTileSize() const { return normalTileSize; }
+
+	/**
+	 * @brief Get a vector of collision rectangles that collide with `rect`.
+	 * 
+	 * @param rect SDL_FRect to test collision against
+	 * @param layer Which collision layer to test within
+	 * @return Vector of rectangles colliding with `rect`
+	 */
+	std::vector<SDL_FRect> queryCollisions(const SDL_FRect rect, std::size_t layer) const;
 };

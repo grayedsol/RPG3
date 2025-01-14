@@ -18,6 +18,7 @@ static void registerActor(TileEntityMap& eMap, entity e, const GRY_JSON::Value& 
 static void registerActorSprite(TileEntityMap& eMap, entity e, const GRY_JSON::Value& actorSprite);
 static void registerActorSpriteAnimations(TileEntityMap& eMap, entity e, const GRY_JSON::Value& actorAnimations);
 static void registerPlayer(TileEntityMap& eMap, entity e);
+static void registerHitbox(TileEntityMap& eMap, entity e, const GRY_JSON::Value& hitbox);
 static void sortEntityLayer(ComponentSet<Position2>& positions, std::vector<entity>& layer);
 
 bool TileEntityMap::load(GRY_Game *game) {
@@ -56,6 +57,10 @@ bool TileEntityMap::load(GRY_Game *game) {
 	return doc["layers"].GetArray().Size() == 0;
 }
 
+void TileEntityMap::sortLayer(TileEntityMap *entityMap, unsigned layer) {
+	sortEntityLayer(entityMap->ecs->getComponent<Position2>(), entityMap->entityLayers.at(layer));
+}
+
 entity registerEntity(TileEntityMap& eMap, const GRY_JSON::Value& entityData, float normalTileSize) {
 	entity e = eMap.ecs->createEntity();
 
@@ -67,6 +72,7 @@ entity registerEntity(TileEntityMap& eMap, const GRY_JSON::Value& entityData, fl
 	if (entityData.HasMember("actorSprite")) { registerActorSprite(eMap, e, entityData["actorSprite"]); }
 	if (entityData.HasMember("actorAnimations")) { registerActorSpriteAnimations(eMap, e, entityData["actorAnimations"]); }
 	if (entityData.HasMember("player")) { registerPlayer(eMap, e); }
+	if (entityData.HasMember("hitbox")) { registerHitbox(eMap, e, entityData["hitbox"]); }
 
 	return e;
 }
@@ -111,6 +117,18 @@ void registerActorSprite(TileEntityMap& eMap, entity e, const GRY_JSON::Value& a
 
 void registerPlayer(TileEntityMap& eMap, entity e) {
 	eMap.ecs->getComponent<Player>().add(e, Player{});
+}
+
+void registerHitbox(TileEntityMap &eMap, entity e, const GRY_JSON::Value& hitbox) {
+	GRY_Assert(eMap.ecs->getComponent<Position2>().contains(e),
+		"[TileEntityMap] Entity with 'hitbox' must have a position."
+	);
+	Hitbox box;
+	Position2 pos = eMap.ecs->getComponent<Position2>().get(e);
+	box.x = pos.x; box.y = pos.y;
+	box.h = 2 * hitbox["radius"].GetFloat();
+	box.w = box.h;
+	eMap.ecs->getComponent<Hitbox>().add(e, box);
 }
 
 void registerActorSpriteAnimations(TileEntityMap &eMap, entity e, const GRY_JSON::Value& actorAnimations) {

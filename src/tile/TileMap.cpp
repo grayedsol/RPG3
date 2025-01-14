@@ -7,28 +7,6 @@
 #include "GRY_Tiled.hpp"
 #include <limits>
 
-static void insertSkips(std::vector<TileMap::TileLayer>& layers, uint32_t width) {
-	Tile::entity max = std::numeric_limits<Tile::entity>::max();
-
-	for (auto& layer : layers) {
-		uint32_t numRows = (uint32_t)layer.size() / width;
-		for (uint32_t y = 0; y < numRows; y++) {
-			for (uint32_t x = 0; x < width; x++) {
-				unsigned index = y*width+x;
-				if (layer[index].id) { continue; }
-				Tile& tile = layer[index];
-				Tile::entity skips = 0;
-				while (!layer[index+1].id && skips < max && x+1 < width) {
-					skips++;
-					x++;
-					index++;
-				}
-				tile.custom = skips;
-			}
-		}
-	}
-}
-
 bool TileMap::load(GRY_Game *game) {
 	if (!tileLayers.empty()) { return true; }
 
@@ -37,25 +15,26 @@ bool TileMap::load(GRY_Game *game) {
 
 	/* Read map width */
 	width = mapDoc["width"].GetUint();
+	/* Set height to zero for now */
+	height = 0;
 
 	/* Create tilesets and tile collision sets */
-	if (tilesets.empty() && tileCollisions.empty() && mapDoc["tilesets"].GetArray().Size() > 0) {
-		for (auto& tileset : mapDoc["tilesets"].GetArray()) {
-			std::string fullPath = std::string("assets/maps/") + tileset["source"].GetString();
-			tilesets.push_back(Tileset(fullPath.c_str()));
-			tileCollisions.push_back(TileCollision(fullPath.c_str()));
-		}
+	if (!tileset.path && !tileCollision.path) {
+		GRY_Assert(mapDoc["tilesets"].GetArray().Size() == 1,
+			"[TileMap] Tileset must use exactly one tileset."
+		);
+		auto& tilesetData = mapDoc["tilesets"].GetArray()[0];
+		std::string fullPath = std::string("assets/maps/") + tilesetData["source"].GetString();
+		tileset.setPath(fullPath.c_str());
+		tileCollision.setPath(fullPath.c_str());
 	}
 
-	/* Load tilesets one by one */
-	for (auto& tileset : tilesets) {
-		if (!tileset.load(game)) { return false; }
-	}
+	/* Load the tileset */
+	if (!tileset.load(game)) { return false; }
 
-	/* Load tile collision sets one by one */
-	for (auto& tileCollision : tileCollisions) {
-		if (!tileCollision.load(game)) { return false; }
-	}
+	/* Load the tile collision data */
+	if (!tileCollision.load(game)) { return false; }
+
 
 	/* Load tile layers */
 	for (auto& layer : mapDoc["layers"].GetArray()) {
@@ -64,13 +43,9 @@ bool TileMap::load(GRY_Game *game) {
 		std::vector<Tile> tiles;
 		for (auto& tile : layer["data"].GetArray()) {
 			Tile::TileId tileId = tile.GetUint();
-			uint8_t tilesetId = 0;
-			while (tileId > tilesets.at(tilesetId).size()) {
-				tileId -= tilesets.at(tilesetId).size();
-				tilesetId++;
-			}
-			tiles.push_back(Tile{ tileId, tilesetId });
+			tiles.push_back(Tile{ tileId });
 		}
+		height = std::max(height, (uint32_t)(tiles.size() / width));
 		tileLayers.push_back(tiles);
 	}
 
@@ -79,6 +54,7 @@ bool TileMap::load(GRY_Game *game) {
 		if (strcmp(layer["type"].GetString(), "objectgroup")) { continue; }
 
 		std::vector<SDL_FRect> rectangles;
+		rectangles.push_back(SDL_FRect{ 0, 0, 0, 0 }); /**< 0 element rect is no collision */
 		for (auto& object : layer["objects"].GetArray()) {
 			if (object.HasMember("polyline")) {}
 			else if (!strcmp(object["type"].GetString(), "")) {
@@ -90,10 +66,15 @@ bool TileMap::load(GRY_Game *game) {
 				rectangles.push_back(rect);
 			}
 		}
+		GRY_Assert(collisionRects.size() < (std::size_t)std::numeric_limits<Tile::CollisionId>::max,
+			"[TileMap] A layer had too many collision rectangles."
+		);
 		collisionRects.push_back(rectangles);
 	}
-
-	// insertSkips(tileLayers, width);
+	
+	GRY_Assert(tileLayers.size() >= collisionRects.size(),
+		"[TileMap] Cannot have more object layers than tile layers."
+	);
 	
 	/* Return false normally, but if there were no layers we can return true. */
 	return mapDoc["layers"].GetArray().Size() == 0;

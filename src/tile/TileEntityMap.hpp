@@ -42,4 +42,6 @@ struct TileEntityMap : public FileResource {
 	TileEntityMap(TileEntityMap&& other) noexcept { swap(*this, other); }
 
 	bool load(GRY_Game* game) final override;
+
+	static void sortLayer(TileEntityMap* entityMap, unsigned layer);
 };

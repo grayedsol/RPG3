@@ -65,6 +65,12 @@ private:
 	const ComponentSet<ActorSprite>* sprites;
 
 	/**
+	 * @brief Hitboxes of entities.
+	 * 
+	 */
+	const ComponentSet<Hitbox>* hitboxes;
+
+	/**
 	 * @brief Render a tile on the screen.
 	 * 
 	 * @param tileset Tileset to use.

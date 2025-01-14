@@ -1,5 +1,5 @@
 {
-	"tileMapPath" : "assets\/maps\/map01.json",
-	"tileEntityMapPath" : "assets\/maps\/map01entity.json",
+	"tileMapPath" : "assets\/maps\/map02.json",
+	"tileEntityMapPath" : "assets\/maps\/map02entity.json",
 	"normalTileSize" : 16
 }

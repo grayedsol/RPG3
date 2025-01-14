@@ -1,3 +1,9 @@
+/**
+ * @file Components.hpp
+ * @author Grayedsol (grayedsol@gmail.com)
+ * @brief Component structures for a game.
+ * @copyright Copyright (c) 2025
+ */
 #pragma once
 #include "GRY_VecTD.hpp"
 
@@ -8,8 +14,22 @@ struct Velocity2Tag {};
 using Velocity2 = GRY_VecTD<float, 2, Velocity2Tag>;
 
 struct Hitbox {
-	float centerX;
-	float centerY;
-	float halfWidth;
-	float halfHeight;
+	float x;
+	float y;
+	float w;
+	float h;
 };
+
+inline bool operator==(Hitbox lhs, Hitbox rhs) {
+	return lhs.x == rhs.x &&
+	lhs.y == rhs.y &&
+	lhs.w == rhs.w &&
+	lhs.h == rhs.h;
+}
+
+inline bool operator!=(Hitbox lhs, Hitbox rhs) {
+	return lhs.x != rhs.x ||
+	lhs.y != rhs.y ||
+	lhs.w != rhs.w ||
+	lhs.h != rhs.h;
+}

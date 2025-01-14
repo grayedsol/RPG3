@@ -1,3 +1,9 @@
+/**
+ * @file ComponentsImGui.hpp
+ * @author Grayedsol (grayedsol@gmail.com)
+ * @brief Functions for displaying Tile Component data for Dear ImGui.
+ * @copyright Copyright (c) 2025
+ */
 #pragma once
 #include "GRY_ECSImGui.hpp"
 #include "Components.hpp"
@@ -6,19 +12,20 @@ template<>
 void componentImGui(Position2& pos) {
 	ImGui::Text("position");
 	ImGui::SameLine();
-	ImGui::InputFloat2("", pos.data);
+	ImGui::InputFloat2("", &pos.x);
 }
 
 template<>
 void componentImGui(Velocity2& vel) {
 	ImGui::Text("velocity");
 	ImGui::SameLine();
-	ImGui::InputFloat2("", vel.data);
+	ImGui::InputFloat2("", &vel.x);
 }
 
 template<>
 void componentImGui(Hitbox& hitbox) {
-	ImGui::Text("center: %f, %f", hitbox.centerX, hitbox.centerY);
-	ImGui::Text("halfWidth: %f", hitbox.halfWidth);
-	ImGui::Text("halfHeight: %f", hitbox.halfHeight);
+	ImGui::Text("x: %f", hitbox.x);
+	ImGui::Text("y: %f", hitbox.y);
+	ImGui::Text("w: %f", hitbox.w);
+	ImGui::Text("h: %f", hitbox.h);
 }

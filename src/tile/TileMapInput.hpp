@@ -30,7 +30,16 @@ private:
 	 */
 	const ComponentSet<Player>* players;
 public:
+	/**
+	 * @brief Constructor.
+	 * 
+	 * @param scene Associated TileMapScene class.
+	 */
 	TileMapInput(TileMapScene* scene);
 
+	/**
+	 * @brief Scan and process inputs.
+	 * 
+	 */
 	void process();
 };

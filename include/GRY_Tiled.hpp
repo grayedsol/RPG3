@@ -35,6 +35,15 @@ namespace GRY_Tiled {
     const Value& getProperty(const Value& value, const char* name);
 
     /**
+     * @brief Find out if a Tiled object has a property.
+     * 
+     * @param value Object to search for property from.
+     * @param name Name of the property.
+     * @return `true` if the object has the property, `false` otherwise.
+     */
+	bool searchProperty(const Value& value, const char* name);
+
+    /**
      * @brief Get a rectangle Tiled object as an SDL_FRect.
      * 
      * @param value Object to get rectangle data from.
