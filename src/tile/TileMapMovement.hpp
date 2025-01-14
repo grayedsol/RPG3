@@ -9,6 +9,7 @@
 #include "GRY_PixelGame.hpp"
 
 class TileMapScene;
+class QuadTree;
 
 /**
  * @brief Moves entities in a TileMap.
@@ -60,6 +61,8 @@ private:
 	const ComponentSet<Player>* players;
 
 	void glide(double delta, Velocity2 prevVelocity, ECS::entity e);
+
+	Hitbox handleEntityCollisions(Hitbox box, QuadTree* tree, int layer);
 
 	Hitbox handleTileCollisions(Hitbox box, int layer);
 public:

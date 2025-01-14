@@ -57,6 +57,10 @@ bool TileEntityMap::load(GRY_Game *game) {
 	return doc["layers"].GetArray().Size() == 0;
 }
 
+void TileEntityMap::sortLayer(TileEntityMap *entityMap, unsigned layer) {
+	sortEntityLayer(entityMap->ecs->getComponent<Position2>(), entityMap->entityLayers.at(layer));
+}
+
 entity registerEntity(TileEntityMap& eMap, const GRY_JSON::Value& entityData, float normalTileSize) {
 	entity e = eMap.ecs->createEntity();
 

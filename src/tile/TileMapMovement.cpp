@@ -58,7 +58,7 @@ void TileMapMovement::glide(double delta, Velocity2 prevVelocity, ECS::entity e)
 	}
 }
 
-static Velocity2 AABBMTV(const SDL_FRect& lhs, const SDL_FRect& rhs) {
+static Velocity2 AABBMTV(const Hitbox& lhs, const Hitbox& rhs) {
 	Velocity2 returnVec{ 0, 0 };
 
 	float left = rhs.x - (lhs.x + lhs.w);
@@ -75,12 +75,21 @@ static Velocity2 AABBMTV(const SDL_FRect& lhs, const SDL_FRect& rhs) {
 	return returnVec;
 }
 
+Hitbox TileMapMovement::handleEntityCollisions(Hitbox box, QuadTree* tree, int layer) {
+	std::vector<Hitbox> eCollisions;
+	tree->query(box, eCollisions);
+	if (eCollisions.empty()) { return box; }
+	*((Position2*)&box) += AABBMTV(box, eCollisions.back());
+
+	return handleEntityCollisions(box, tree, layer);
+}
+
 Hitbox TileMapMovement::handleTileCollisions(Hitbox box, int layer) {
 	SDL_FRect* rect = reinterpret_cast<SDL_FRect*>(&box);
 	std::vector<SDL_FRect> collisions = scene->queryCollisions(*rect, layer);
 	if (collisions.empty()) { return box; }
 	SDL_FRect f = collisions.back();
-	*((Position2*)&box) += AABBMTV(*rect, f);
+	*((Position2*)&box) += AABBMTV(box, *(Hitbox*)&f);
 	return handleTileCollisions(box, layer);
 }
 
@@ -123,19 +132,22 @@ void TileMapMovement::process(double delta) {
 	for (int layer = 0; layer < scene->getTileEntityMap().entityLayers.size(); layer++) {
 		for (auto e : scene->getTileEntityMap().entityLayers.at(layer)) {
 			if (hitboxes->contains(e)) {
-				std::vector<Hitbox> eCollisions;
-				tree.query(hitboxes->get(e), eCollisions);
 				Hitbox box = hitboxes->get(e);
 				Position2* pos = reinterpret_cast<Position2*>(&box);
 				*pos = positions->get(e);
 				*pos += velocities->get(e) * actors->get(e).speed * (1 + actors->get(e).sprinting) * delta;
+
+				box = handleEntityCollisions(box, &tree, layer);
 				box = handleTileCollisions(box, layer);
+
 				positions->get(e) = *pos;
 				hitboxes->get(e) = box;
 				tree.insert(box);
+				TileEntityMap::sortLayer(&scene->getTileEntityMap(), layer);
 			}
 			else if (velocities->contains(e)) {
 				positions->get(e) += velocities->get(e) * actors->get(e).speed * (1 + actors->get(e).sprinting) * delta;
+				TileEntityMap::sortLayer(&scene->getTileEntityMap(), layer);
 			}
 		}
 	}
