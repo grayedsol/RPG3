@@ -32,4 +32,8 @@ void GRY_PixelGame::process() {
 	gsdl.getWindowSize(&w, NULL);
 	pixelScaling = w / (float)SCREEN_WIDTH_PIXELS;
 	pixelScaling = SDL_ceilf(pixelScaling);
+
+	if (input.isPressing(GAME_START) && input.getSingleInput() == GAME_SELECT) {
+		imguiDebug.toggle();
+	}
 }

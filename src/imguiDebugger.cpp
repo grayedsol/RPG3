@@ -41,6 +41,8 @@ void imguiDebugger::startFrame() {
 }
 
 void imguiDebugger::process() {
+	if (!active) { return; }
+	
 	ImGui::Begin("Hello, world!");
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io->Framerate, io->Framerate);
 	ImGui::End();

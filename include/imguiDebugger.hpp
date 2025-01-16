@@ -22,6 +22,9 @@ private:
 	ImGuiIO* io;
 
 public:
+
+	bool active = true;
+
 	imguiDebugger(GRY_Game* game);
 
 	~imguiDebugger();
@@ -33,4 +36,6 @@ public:
 	void process();
 
 	void render(SDL_Renderer* renderer);
+
+	void toggle() { active = !active; }
 };

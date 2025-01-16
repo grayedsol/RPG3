@@ -130,4 +130,6 @@ public:
 	 * @copydoc InputHandler::isPressing
 	 */
 	const bool isPressing(VirtualButton b) { return input.isPressing(b); }
+
+	const bool debugModeOn() { return imguiDebug.active; }
 };

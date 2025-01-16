@@ -58,7 +58,7 @@ void TileMapScene::process() {
 	tileMapRenderer.process();
 
 	#ifndef NDEBUG
-	tileMapImGui(ecs);
+	if (game->debugModeOn()) { tileMapImGui(ecs); }
 	#endif
 }
 
