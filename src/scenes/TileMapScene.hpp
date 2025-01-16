@@ -26,9 +26,7 @@ class GRY_PixelGame;
  * GAME_B: Quit
  */
 class TileMapScene : public Scene {
-	/* friend class DebugTextTileMapScene */
 private:
-	SDL_Texture* chronosprites = nullptr;
 	/**
 	 * @brief TileMap ECS structure.
 	 *
