@@ -38,6 +38,7 @@ void TileMapScene::init() {
 			}
 		}
 	}
+	tileMapMovement.init();
 }
 
 void TileMapScene::process() {
@@ -53,6 +54,7 @@ void TileMapScene::process() {
 	tileMapInput.process();
 	tileMapMovement.process(game->getDelta());
 	tileSpriteAnimator.process(game->getDelta());
+	tileMapCamera.process();
 	tileMapRenderer.process();
 
 	#ifndef NDEBUG

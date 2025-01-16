@@ -5,26 +5,30 @@ static const unsigned int THRESHOLD = 6;
 static const unsigned int NUM_QUADRANTS = 4;
 static const float MIN_BOX_SIZE = 2.0f;
 
-static void query(const QuadNode* node, Hitbox box, std::vector<Hitbox>& out);
-static void insert(QuadNode* node, Hitbox box);
+static void query(const QuadNode* node, Hitbox box, ECS::entity e, std::vector<Hitbox>& out);
+static void insert(QuadNode* node, Hitbox box, ECS::entity e);
 static void mergeLeaves(QuadNode* node);
 
 static Hitbox quadrantRect(Hitbox box, int quadrant);
 static bool isWithin(const Hitbox outerBox, const Hitbox innerBox);
 
 QuadTree::QuadTree(Hitbox area) : node(area) {
-	node.type = QuadNode::Branch;
 }
 
-void QuadTree::insert(Hitbox box) {
-	::insert(&node, box);
+void QuadTree::insert(Hitbox box, ECS::entity e) {
+	::insert(&node, box, e);
 }
 
-void QuadTree::query(Hitbox box, std::vector<Hitbox>& out) const {
-	::query(&node, box, out);
+void QuadTree::query(Hitbox box, ECS::entity e, std::vector<Hitbox>& out) const {
+	::query(&node, box, e, out);
 }
 
-void query(const QuadNode *node, Hitbox box, std::vector<Hitbox> &out) {
+void QuadTree::reset() {
+	for (auto child : node.nodes) { delete child; }
+	node.nodes.clear();
+}
+
+void query(const QuadNode *node, Hitbox box, ECS::entity e, std::vector<Hitbox> &out) {
 	auto collides = [box](const Hitbox other) {
 		return
 			box.x + box.w > other.x &&
@@ -36,23 +40,23 @@ void query(const QuadNode *node, Hitbox box, std::vector<Hitbox> &out) {
 	for (auto child : node->nodes) {
 		if (!collides(child->area)) { continue; }
 
-		if (child->type == QuadNode::Leaf && child->area != box) {
+		if (child->type == QuadNode::Leaf && child->e != e) {
 			out.push_back(child->area);
 		}
-		else { query(child, box, out); }
+		else { query(child, box, e, out); }
 	}
 }
 
-void insert(QuadNode *node, Hitbox box) {
+void insert(QuadNode *node, Hitbox box, ECS::entity e) {
 	for (auto child : node->nodes) {
 		if (child->type == QuadNode::Leaf) { continue; }
 		if (isWithin(child->area, box)) {
-			insert(child, box);
+			insert(child, box, e);
 			return;
 		}
 	}
 
-	node->nodes.push_back(new QuadNode(box));
+	node->nodes.push_back(new QuadNode(box, e));
 	if (node->nodes.size() > THRESHOLD) { mergeLeaves(node); }
 }
 
@@ -76,7 +80,7 @@ void mergeLeaves(QuadNode* node) {
 		for (int j = node->nodes.size() - 1; j >= 0; j++) {
 			QuadNode* child = node->nodes.at(j);
 			if (child->type == QuadNode::Branch || !isWithin(box, child->area)) { continue; }
-			insert(newNode, child->area);
+			insert(newNode, child->area, child->e);
 
 			std::swap(node->nodes.at(j), node->nodes.back());
 			delete node->nodes.back();

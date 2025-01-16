@@ -47,7 +47,7 @@ private:
 	const TileEntityMap* entityMap;
 
 	/**
-	 * @brief Scaling factor for textures. Ideally a whole number.
+	 * @brief Scaling factor for textures.
 	 * 
 	 */
 	const float* pixelScaling;
@@ -69,6 +69,18 @@ private:
 	 * 
 	 */
 	const ComponentSet<Hitbox>* hitboxes;
+
+	/**
+	 * @brief X component of rendering offset.
+	 * 
+	 */
+	float offsetX = 0.f;
+
+	/**
+	 * @brief Y component of rendering offset.
+	 * 
+	 */
+	float offsetY = 0.f;
 
 	/**
 	 * @brief Render a tile on the screen.
@@ -98,4 +110,15 @@ public:
 	 * 
 	 */
 	void process();
+
+	/**
+	 * @brief Set the rendering offset.
+	 * 
+	 * @param x X offset
+	 * @param x Y offset
+	 */
+	void setOffset(float x, float y) {
+		offsetX = x;
+		offsetY = y;
+	}
 };

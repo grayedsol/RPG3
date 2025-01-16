@@ -8,6 +8,7 @@
 #include "../tile/TileMapMovement.hpp"
 #include "../tile/TileSpriteAnimator.hpp"
 #include "../tile/TileMapRenderer.hpp"
+#include "../tile/TileMapCamera.hpp"
 #include "Scene.hpp"
 #include "../tile/TileMapECS.hpp"
 #include "../tile/TileMapInput.hpp"
@@ -47,6 +48,36 @@ private:
 	TileEntityMap entityMap;
 
 	/**
+	 * @brief Renderer for the tile map.
+	 *
+	 */
+	TileMapRenderer tileMapRenderer;
+	
+	/**
+	 * @brief Camera controller.
+	 * 
+	 */
+	TileMapCamera tileMapCamera;
+
+	/**
+	 * @brief Movement for the tile map entities.
+	 *
+	 */
+	TileMapMovement tileMapMovement;
+
+	/**
+	 * @brief Input system for the tile map.
+	 * 
+	 */
+	TileMapInput tileMapInput;
+
+	/**
+	 * @brief Animator for sprites.
+	 * 
+	 */
+	TileSpriteAnimator tileSpriteAnimator;
+
+	/**
 	 * @brief Width and height of a normal square tile, in pixels.
 	 *
 	 * @details
@@ -56,22 +87,6 @@ private:
 	 * in terms of normal tiles.
 	 */
 	uint16_t normalTileSize = 0;
-
-	/**
-	 * @brief Renderer for the tile map.
-	 *
-	 */
-	TileMapRenderer tileMapRenderer;
-
-	/**
-	 * @brief Movement for the tile map entities.
-	 *
-	 */
-	TileMapMovement tileMapMovement;
-
-	TileMapInput tileMapInput;
-
-	TileSpriteAnimator tileSpriteAnimator;
 
 	/**
 	 * @copybrief Scene::setControls
@@ -89,6 +104,7 @@ public:
 		Scene((GRY_Game *)pGame, tileMapPath),
 		entityMap(ecs),
 		tileMapRenderer(this),
+		tileMapCamera(this),
 		tileMapMovement(this),
 		tileSpriteAnimator(this),
 		tileMapInput(this) {
@@ -160,6 +176,14 @@ public:
 	 * @return The normal tile size in pixels.
 	 */
 	uint16_t getNormalTileSize() const { return normalTileSize; }
+
+	/**
+	 * @copydoc TileMapRenderer::setOffset
+	 * 
+	 */
+	void setRenderOffset(float x, float y) {
+		tileMapRenderer.setOffset(x,y);
+	}
 
 	/**
 	 * @brief Get a vector of collision rectangles that collide with `rect`.

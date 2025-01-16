@@ -24,8 +24,8 @@ void TileMapRenderer::renderTile(const Tileset &tileset, const TileId textureInd
 void TileMapRenderer::renderSprite(ECS::entity e) {
 	const Tileset& tileset = entityMap->tilesets[sprites->get(e).tileset];
 	SDL_FRect dstRect {
-		floorf((positions->get(e)[0] + sprites->get(e).offsetX) * *pixelScaling),
-		floorf((positions->get(e)[1] + sprites->get(e).offsetY) * *pixelScaling),
+		floorf((positions->get(e)[0] + sprites->get(e).offsetX) * *pixelScaling) + offsetX,
+		floorf((positions->get(e)[1] + sprites->get(e).offsetY) * *pixelScaling) + offsetY,
 		tileset.tileWidth * *pixelScaling,
 		tileset.tileHeight * *pixelScaling
 	};
@@ -42,7 +42,7 @@ void TileMapRenderer::process() {
 	/* Distance to shift x or y when moving columns/rows in the rendering loop */
 	const float shift = scene->getNormalTileSize() * *pixelScaling;
 	/* Destination rectangle, defines position and size of rendered tile */
-	SDL_FRect dstRect { 0, 0, tileset.tileWidth * *pixelScaling, tileset.tileHeight * *pixelScaling };
+	SDL_FRect dstRect { offsetX, offsetY, tileset.tileWidth * *pixelScaling, tileset.tileHeight * *pixelScaling };
 
 	GRY_Assert(tileMap->tileLayers.size() == entityMap->entityLayers.size(), 
 		"[TileMapRenderer] Tile map and Entity map need to have the same number of layers.\n"
@@ -70,7 +70,7 @@ void TileMapRenderer::process() {
 				dstRect.x += shift;
 			}
 			/* Reset dstRect x and increment dstRect y */
-			dstRect.x = 0;
+			dstRect.x =  offsetX;
 			dstRect.y += shift;
 
 			/* Render any entities in the row */
@@ -84,6 +84,6 @@ void TileMapRenderer::process() {
 			}
 		}
 		/* Reset dstRect y */
-		dstRect.y = 0;
+		dstRect.y = offsetY;
 	}
 }
