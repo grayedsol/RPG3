@@ -91,10 +91,17 @@ if(WIN32)
 		${PROJECT_SOURCE_DIR}/assets
 		"${CMAKE_BINARY_DIR}/assets"
 	)
+
+	add_custom_command(TARGET game POST_BUILD
+		COMMAND "${CMAKE_COMMAND}" -E copy_directory_if_different
+		${PROJECT_SOURCE_DIR}/config
+		"${CMAKE_BINARY_DIR}/config"
+	)
     
 else()
 	#TODO check if this can be better linux
 	file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
+	file(COPY config DESTINATION ${CMAKE_BINARY_DIR})
 endif()
 
 if(USE_SHARED_LIBS)

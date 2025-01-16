@@ -6,7 +6,7 @@
 #include "GRY_PixelGame.hpp"
 #include "GRY_JSON.hpp"
 
-static const char* PIXEL_GAME_CONFIG_PATH = "assets/pixelGameConfig.json";
+static const char* PIXEL_GAME_CONFIG_PATH = "config/pixelGameConfig.json";
 
 GRY_PixelGame::GRY_PixelGame(int WINDOW_WIDTH, int WINDOW_HEIGHT, int TARGET_FPS, bool USE_VSYNC) : 
 	GRY_Game(WINDOW_WIDTH, WINDOW_HEIGHT, TARGET_FPS, USE_VSYNC) {

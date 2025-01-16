@@ -12,7 +12,7 @@
  * @brief File path to data for control scheme.
  * 
  */
-static const char* CONTROLS_PATH = "assets/controls.json";
+static const char* CONTROLS_PATH = "config/controls.json";
 
 /**
  * @details
