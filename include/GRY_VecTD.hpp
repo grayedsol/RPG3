@@ -1,3 +1,9 @@
+/**
+ * @file GRY_VecTD.hpp
+ * @author Grayedsol (grayedsol@gmail.com)
+ * @brief @copybrief GRY_VecTD
+ * @copyright Copyright (c) 2025
+ */
 #pragma once
 #include <cmath>
 

@@ -1,7 +1,7 @@
 /**
  * @file QuadTree.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @copybrief QuadTree
+ * @brief @copybrief QuadTree
  * @copyright Copyright (c) 2025
  */
 #pragma once

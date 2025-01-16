@@ -1,7 +1,7 @@
 /**
  * @file imguiDebugger.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @copybrief imguiDebugger
+ * @brief @copybrief imguiDebugger
  * @copyright Copyright (c) 2024
  */
 #pragma once

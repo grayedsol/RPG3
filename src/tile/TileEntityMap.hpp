@@ -1,7 +1,7 @@
 /**
  * @file TileEntityMap.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @copybrief TileEntityMap
+ * @brief @copybrief TileEntityMap
  * @copyright Copyright (c) 2024
  */
 #pragma once

@@ -1,7 +1,7 @@
 /**
  * @file TileSpriteAnimator.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @copybrief TileSpriteAnimator
+ * @brief @copybrief TileSpriteAnimator
  * @copyright Copyright (c) 2024
  */
 #pragma once

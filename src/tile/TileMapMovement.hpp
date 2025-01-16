@@ -1,7 +1,7 @@
 /**
  * @file TileMapMovement.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @copybrief TileMapMovement
+ * @brief @copybrief TileMapMovement
  * @copyright Copyright (c) 2024
  */
 #pragma once
@@ -109,7 +109,7 @@ public:
 	void process(double delta);
 
 	/**
-	 * @brief Initializes the quadtrees.
+	 * @brief Initializes the system. Must be called once before using `process`.
 	 * 
 	 */
 	void init();

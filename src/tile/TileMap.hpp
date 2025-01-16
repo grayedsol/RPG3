@@ -1,7 +1,7 @@
 /**
  * @file TileMap.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @brief @copydoc TileMap
+ * @brief @copybrief TileMap
  * @copyright Copyright (c) 2024
  */
 

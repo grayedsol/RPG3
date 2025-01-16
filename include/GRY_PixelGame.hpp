@@ -1,7 +1,7 @@
 /**
  * @file GRY_PixelGame.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @copybrief GRY_PixelGame
+ * @brief @copybrief GRY_PixelGame
  * @copyright Copyright (c) 2024
  */
 #pragma once

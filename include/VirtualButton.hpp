@@ -1,13 +1,13 @@
 /**
  * @file VirtualButton.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @brief Enum type that correlates to a theoretical button.
+ * @brief Enum type that correlates to an abstract button.
  * @copyright Copyright (c) 2024
  */
 #pragma once
 
 /**
- * @brief Correlates to a theoretical button.
+ * @brief Correlates to an abstract button.
  * 
  */
 enum VirtualButton {

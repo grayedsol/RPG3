@@ -1,7 +1,7 @@
 /**
  * @file TileMapCamera.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @copybrief TileMapCamera
+ * @brief @copybrief TileMapCamera
  * @copyright Copyright (c) 2025
  */
 #pragma once

@@ -1,7 +1,7 @@
 /**
  * @file TileMapRenderer.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @copybrief TileMapRenderer
+ * @brief @copybrief TileMapRenderer
  * @copyright Copyright (c) 2024
  */
 #pragma once

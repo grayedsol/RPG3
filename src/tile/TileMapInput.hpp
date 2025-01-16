@@ -1,7 +1,7 @@
 /**
  * @file TileMapInput.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @copybrief TileMapInput
+ * @brief @copybrief TileMapInput
  * @copyright Copyright (c) 2024
  */
 #pragma once
@@ -10,6 +10,10 @@
 
 class TileMapScene;
 
+/**
+ * @brief Processes input for a TileMapScene.
+ * 
+ */
 class TileMapInput {
 private:
 	/**
