@@ -8,12 +8,6 @@
 #include "ECS.hpp"
 #include <tuple>
 
-template<class... Ts>
-class GRY_ECS;
-
-template<class... Ts>
-void imguiECS(GRY_ECS<Ts...>& ecs);
-
 /**
  * @brief Database-like structure that manages entities and components.
  * 
@@ -24,34 +18,16 @@ void imguiECS(GRY_ECS<Ts...>& ecs);
  * @tparam Ts List of component data types.
  */
 template<class... Ts>
-class GRY_ECS {
-public:
+struct GRY_ECS {
 	using TupleType = std::tuple<ComponentSet<Ts>...>;
-	friend void imguiECS<>(GRY_ECS<Ts...>& ecs);
-private:
 	using entity = ECS::entity;
 
 	/**
 	 * @brief Collection of all ComponentSets, one for each component type.
 	 * 
 	 */
-	std::tuple<ComponentSet<Ts>...> components;
+	TupleType components;
 
-	/**
-	 * @brief Container to keep track of entities that are no longer in use.
-	 * 
-	 */
-    std::vector<entity> deadEntities;
-	
-	/**
-	 * @brief Next entity to be created.
-	 * 
-	 * @details
-	 * If the number of created entities has reached `ECS::MAX_ENTITIES`,
-	 * then the next entity will come from `deadEntities` instead.
-	 */
-	entity back = 0;
-public:
 	/**
 	 * @brief Constructor.
 	 * 
@@ -140,4 +116,20 @@ public:
 		}
 		freeEntity<I + 1>(e);
 	}
+
+private:
+	/**
+	 * @brief Container to keep track of entities that are no longer in use.
+	 * 
+	 */
+    std::vector<entity> deadEntities;
+	
+	/**
+	 * @brief Next entity to be created.
+	 * 
+	 * @details
+	 * If the number of created entities has reached `ECS::MAX_ENTITIES`,
+	 * then the next entity will come from `deadEntities` instead.
+	 */
+	entity back = 0;
 };
