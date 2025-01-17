@@ -12,6 +12,7 @@
 #include "Scene.hpp"
 #include "../tile/TileMapECS.hpp"
 #include "../tile/TileMapInput.hpp"
+#include "TextBoxScene.hpp"
 
 class GRY_PixelGame;
 
@@ -76,6 +77,12 @@ private:
 	TileSpriteAnimator tileSpriteAnimator;
 
 	/**
+	 * @brief Text box scene.
+	 * 
+	 */
+	TextBoxScene textBoxScene;
+
+	/**
 	 * @brief Width and height of a normal square tile, in pixels.
 	 *
 	 * @details
@@ -105,7 +112,8 @@ public:
 		tileMapCamera(this),
 		tileMapMovement(this),
 		tileSpriteAnimator(this),
-		tileMapInput(this) {
+		tileMapInput(this),
+		textBoxScene(pGame, "assets/textboxscene/scene.json") {
 	}
 
 	/**

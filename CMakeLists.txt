@@ -45,6 +45,8 @@ set(SOURCES
 	src/tile/TileMapInput.cpp
 	src/imguiDebugger.cpp
 	src/QuadTree.cpp
+	src/scenes/TextBoxScene.cpp
+	src/textbox/Fontset.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

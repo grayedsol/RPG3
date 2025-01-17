@@ -17,7 +17,7 @@ void TileMapScene::setControls() {
 
 /**
  * @details
- * Assign collision rectangles to tiles.
+ * Assign collision rectangles to tiles and initialize map movement.
  */
 void TileMapScene::init() {
 	for (int i = 0; i < tileMap.collisionRects.size(); i++) {
@@ -38,6 +38,7 @@ void TileMapScene::init() {
 			}
 		}
 	}
+
 	tileMapMovement.init();
 }
 
@@ -49,7 +50,6 @@ void TileMapScene::process() {
 		default:
 			break;
 	}
-	if (isPressing(GCmd::GameUp)) {}
 
 	tileMapInput.process();
 	tileMapMovement.process(game->getDelta());
@@ -64,7 +64,7 @@ void TileMapScene::process() {
 
 bool TileMapScene::load() {
 	if (tileMap.path && entityMap.path) {
-		return tileMap.load(game) && entityMap.load(game);
+		return tileMap.load(game) && entityMap.load(game) && textBoxScene.load();
 	}
 
     /* Open scene document */
