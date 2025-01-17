@@ -10,10 +10,17 @@ void TextBoxScene::setControls() {
 	controls.mapCmd(GCmd::MessageOk, VirtualButton::GAME_A);
 }
 
-TextBoxScene::TextBoxScene(GRY_PixelGame *pGame, const char *scenePath) : Scene((GRY_Game *)pGame, scenePath) {
+void TextBoxScene::init() {
+	textBoxRenderer.init();
 }
 
 void TextBoxScene::process() {
+	if (readSingleInput() == GCmd::MessageOk) {
+		done = !done;
+		if (done) { deactivate(); parentScene->activate(); }
+		else { parentScene->deactivate(); }
+	}
+	if (!done) { textBoxRenderer.process(); }
 }
 
 bool TextBoxScene::load() {

@@ -17,7 +17,7 @@ void TileMapScene::setControls() {
 
 /**
  * @details
- * Assign collision rectangles to tiles and initialize map movement.
+ * Assign collision rectangles to tiles and initialize systems.
  */
 void TileMapScene::init() {
 	for (int i = 0; i < tileMap.collisionRects.size(); i++) {
@@ -40,12 +40,16 @@ void TileMapScene::init() {
 	}
 
 	tileMapMovement.init();
+	textBoxScene.init();
 }
 
 void TileMapScene::process() {
 	switch (readSingleInput()) {
 		case GCmd::GameQuit:
 			game->quit();
+			break;
+		case GCmd::MapInteract:
+			textBoxScene.activate();
 			break;
 		default:
 			break;
@@ -56,6 +60,8 @@ void TileMapScene::process() {
 	tileSpriteAnimator.process(game->getDelta());
 	tileMapCamera.process();
 	tileMapRenderer.process();
+	
+	textBoxScene.process();
 
 	#ifndef NDEBUG
 	if (game->debugModeOn()) { tileMapImGui(ecs); }

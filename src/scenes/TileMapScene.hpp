@@ -113,7 +113,7 @@ public:
 		tileMapMovement(this),
 		tileSpriteAnimator(this),
 		tileMapInput(this),
-		textBoxScene(pGame, "assets/textboxscene/scene.json") {
+		textBoxScene(pGame, "assets/textboxscene/scene.json", this) {
 	}
 
 	/**

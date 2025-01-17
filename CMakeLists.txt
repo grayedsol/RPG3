@@ -47,6 +47,7 @@ set(SOURCES
 	src/QuadTree.cpp
 	src/scenes/TextBoxScene.cpp
 	src/textbox/Fontset.cpp
+	src/textbox/TextBoxRenderer.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

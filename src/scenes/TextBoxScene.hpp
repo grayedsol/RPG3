@@ -8,6 +8,7 @@
 #include "Scene.hpp"
 #include "GRY_Texture.hpp"
 #include "../textbox/Fontset.hpp"
+#include "../textbox/TextBoxRenderer.hpp"
 
 class GRY_PixelGame;
 
@@ -19,6 +20,7 @@ class GRY_PixelGame;
  */
 class TextBoxScene : public Scene {
 private:
+	Scene* parentScene = nullptr;
 	/**
 	 * @brief Texture of the message box.
 	 * 
@@ -31,6 +33,10 @@ private:
 	 */
 	Fontset font;
 
+	TextBoxRenderer textBoxRenderer;
+
+	bool done = true;
+
 	/**
 	 * @copybrief Scene::setControls
 	 *
@@ -40,16 +46,21 @@ public:
 	/**
 	 * @brief Constructor.
 	 *
-	 * @param game Associated game class.
-	 * @param scenePath File path to the scene data.
+	 * @param game Associated game class
+	 * @param scenePath File path to the scene data
+	 * @param parentScene Scene to activate/deactivate
 	 */
-	TextBoxScene(GRY_PixelGame *pGame, const char *scenePath);
+	TextBoxScene(GRY_PixelGame *pGame, const char *scenePath, Scene* parentScene) :
+		Scene((GRY_Game *)pGame, scenePath),
+		parentScene(parentScene),
+		textBoxRenderer(this) {
+	}
 
 	/**
 	 * @brief Initializes the scene.
 	 *
 	 */
-	void init() final {};
+	void init() final;
 
 	/**
 	 * @copydoc Scene::process
@@ -60,4 +71,18 @@ public:
 	 * @copydoc Scene::load
 	 */
 	bool load() final;
+
+	/**
+	 * @brief Get the text box texture.
+	 * 
+	 * @return The text box texture
+	 */
+	SDL_Texture* getBoxTexture() const { return boxTexture.texture; }
+
+	/**
+	 * @brief Get a pointer to the GRY_PixelGame.
+	 *
+	 * @return Pointer to the GRY_PixelGame.
+	 */
+	GRY_PixelGame* getPixelGame() const { return (GRY_PixelGame*)game; }
 };
