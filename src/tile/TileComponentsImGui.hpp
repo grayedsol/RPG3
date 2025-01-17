@@ -76,3 +76,8 @@ template<>
 void componentImGui(Player& player) {
 	ImGui::Text("Entity is a player");
 }
+
+template<>
+void componentImGui(NPC& npc) {
+	ImGui::Text("Entity is an NPC");
+}
