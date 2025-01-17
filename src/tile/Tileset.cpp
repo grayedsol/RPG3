@@ -24,7 +24,7 @@ bool Tileset::load(GRY_Game* game) {
     /* Read width and height of a single tile */
 	tileWidth = tilesetDoc["tilewidth"].GetFloat();
 	tileHeight = tilesetDoc["tileheight"].GetFloat();
-	assert(tileWidth && tileHeight);
+	GRY_Assert((tileWidth > 0) && (tileHeight > 0), "[Tileset] Invalid tileWidth or tileHeight.");
 
     float texture_width;
 	SDL_GetTextureSize(texture, &texture_width, NULL);
