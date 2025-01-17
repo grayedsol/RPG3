@@ -18,6 +18,7 @@ static void registerActor(TileEntityMap& eMap, entity e, const GRY_JSON::Value& 
 static void registerActorSprite(TileEntityMap& eMap, entity e, const GRY_JSON::Value& actorSprite);
 static void registerActorSpriteAnimations(TileEntityMap& eMap, entity e, const GRY_JSON::Value& actorAnimations);
 static void registerPlayer(TileEntityMap& eMap, entity e);
+static void registerNPC(TileEntityMap& eMap, entity e);
 static void registerHitbox(TileEntityMap& eMap, entity e, const GRY_JSON::Value& hitbox);
 static void sortEntityLayer(ComponentSet<Position2>& positions, std::vector<entity>& layer);
 
@@ -72,6 +73,7 @@ entity registerEntity(TileEntityMap& eMap, const GRY_JSON::Value& entityData, fl
 	if (entityData.HasMember("actorSprite")) { registerActorSprite(eMap, e, entityData["actorSprite"]); }
 	if (entityData.HasMember("actorAnimations")) { registerActorSpriteAnimations(eMap, e, entityData["actorAnimations"]); }
 	if (entityData.HasMember("player")) { registerPlayer(eMap, e); }
+	if (entityData.HasMember("npc")) { registerNPC(eMap, e); }
 	if (entityData.HasMember("hitbox")) { registerHitbox(eMap, e, entityData["hitbox"]); }
 
 	return e;
@@ -117,6 +119,10 @@ void registerActorSprite(TileEntityMap& eMap, entity e, const GRY_JSON::Value& a
 
 void registerPlayer(TileEntityMap& eMap, entity e) {
 	eMap.ecs->getComponent<Player>().add(e, Player{});
+}
+
+void registerNPC(TileEntityMap &eMap, entity e) {
+	eMap.ecs->getComponent<NPC>().add(e, NPC{});
 }
 
 void registerHitbox(TileEntityMap &eMap, entity e, const GRY_JSON::Value& hitbox) {

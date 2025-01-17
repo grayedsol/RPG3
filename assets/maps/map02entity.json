@@ -25,11 +25,34 @@
 				"hitbox" : {
 					"radius" : 8
 				}
+			},
+			{
+				"position" : [5,5],
+				"npc" : true,
+				"actor" : {
+					"speed" : 60,
+					"direction" : 1
+				},
+				"actorSprite" : {
+					"offsetX" : -23,
+					"offsetY" : -29,
+					"index" : 1,
+					"tileset" : 1
+				},
+				"actorAnimations" : {
+					"walk" : [32,40,56,56,56,48,48,48],
+					"sprint" : [38,46,62,62,62,54,54,54],
+					"duration" : 117
+				},
+				"hitbox" : {
+					"radius" : 8
+				}
 			}
 		]
 	],
 	"normalTileSize" : 16,
 	"tilesets" : [
-		"assets\/textures\/data\/BoyA.json"
+		"assets\/textures\/data\/BoyA.json",
+		"assets\/textures\/data\/GirlA.json"
 	]
 }

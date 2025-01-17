@@ -90,3 +90,5 @@ struct ActorSpriteAnims {
 };
 
 struct Player {};
+
+struct NPC {};
