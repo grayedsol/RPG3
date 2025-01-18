@@ -53,6 +53,7 @@ bool TileEntityMap::load(GRY_Game *game) {
 		sortEntityLayer(this->ecs->getComponent<Position2>(), entityLayer);
 		entityLayers.push_back(entityLayer);
 	}
+	updateLayers(this);
 
 	/* Return false normally, but if there were no layers we can return true. */
 	return doc["layers"].GetArray().Size() == 0;
@@ -60,6 +61,15 @@ bool TileEntityMap::load(GRY_Game *game) {
 
 void TileEntityMap::sortLayer(TileEntityMap *entityMap, unsigned layer) {
 	sortEntityLayer(entityMap->ecs->getComponent<Position2>(), entityMap->entityLayers.at(layer));
+}
+
+void TileEntityMap::updateLayers(TileEntityMap* entityMap) {
+	ComponentSet<Actor>& actors = entityMap->ecs->getComponent<Actor>();
+	for (int layer = 0; layer < entityMap->entityLayers.size(); layer++) {
+		for (auto e : entityMap->entityLayers.at(layer)) {
+			actors.get(e).layer = layer;
+		}
+	}
 }
 
 entity registerEntity(TileEntityMap& eMap, const GRY_JSON::Value& entityData, float normalTileSize) {

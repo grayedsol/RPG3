@@ -23,6 +23,12 @@ private:
 	TileMapScene* scene;
 
 	/**
+	 * @brief Hitboxes of entities.
+	 * 
+	 */
+	const ComponentSet<Hitbox>* hitboxes;
+
+	/**
 	 * @brief Actor data of entities.
 	 * 
 	 */
@@ -33,6 +39,10 @@ private:
 	 * 
 	 */
 	const ComponentSet<Player>* players;
+
+	const ComponentSet<NPC>* npcs;
+
+	bool interact();
 public:
 	/**
 	 * @brief Constructor.

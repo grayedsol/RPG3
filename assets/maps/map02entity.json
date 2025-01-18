@@ -29,6 +29,7 @@
 			{
 				"position" : [5,5],
 				"npc" : true,
+				"dialogueId" : 0,
 				"actor" : {
 					"speed" : 60,
 					"direction" : 1

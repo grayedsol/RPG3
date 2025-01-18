@@ -10,8 +10,8 @@ TileMapCamera::TileMapCamera(TileMapScene *scene) : scene(scene),
 
 void TileMapCamera::process() {
 	GRY_Assert(players->size() > 0, "[TileMapCamera] There were no players.");
-	GRY_PixelGame* game = scene->getPixelGame();
 	ECS::entity e = players->getEntity(0);
+	GRY_PixelGame* game = scene->getPixelGame();
 	float playerX = hitboxes->get(e).x + (hitboxes->get(e).w * 0.5f);
 	float playerY = hitboxes->get(e).y + (hitboxes->get(e).h * 0.5f);
 	scene->setRenderOffset(

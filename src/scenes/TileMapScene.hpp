@@ -6,6 +6,7 @@
  */
 #pragma once
 #include "../tile/TileMapMovement.hpp"
+#include "../tile/TileMapQuadTrees.hpp"
 #include "../tile/TileSpriteAnimator.hpp"
 #include "../tile/TileMapRenderer.hpp"
 #include "../tile/TileMapCamera.hpp"
@@ -65,6 +66,12 @@ private:
 	TileMapMovement tileMapMovement;
 
 	/**
+	 * @brief Stores quadtrees for the collision hitboxes of entities for each layer.
+	 * 
+	 */
+	TileMapQuadTrees tileMapQuadTrees;
+
+	/**
 	 * @brief Input system for the tile map.
 	 * 
 	 */
@@ -111,6 +118,7 @@ public:
 		tileMapRenderer(this),
 		tileMapCamera(this),
 		tileMapMovement(this),
+		tileMapQuadTrees(this),
 		tileSpriteAnimator(this),
 		tileMapInput(this),
 		textBoxScene(pGame, "assets/textboxscene/scene.json", this) {
@@ -190,6 +198,8 @@ public:
 		tileMapRenderer.setOffset(x,y);
 	}
 
+	const std::vector<QuadTree>& getQuadTrees() { return tileMapQuadTrees.getQuadTrees(); }
+
 	/**
 	 * @brief Get a vector of collision rectangles that collide with `rect`.
 	 * 
@@ -198,4 +208,6 @@ public:
 	 * @return Vector of rectangles colliding with `rect`
 	 */
 	std::vector<SDL_FRect> queryCollisions(const SDL_FRect rect, std::size_t layer) const;
+
+	void activateTextBox() { textBoxScene.activateControlScheme(); }
 };

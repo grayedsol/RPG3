@@ -44,4 +44,5 @@ struct TileEntityMap : public FileResource {
 	bool load(GRY_Game* game) final override;
 
 	static void sortLayer(TileEntityMap* entityMap, unsigned layer);
+	static void updateLayers(TileEntityMap* entityMap);
 };

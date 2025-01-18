@@ -61,12 +61,6 @@ private:
 	const ComponentSet<Player>* players;
 
 	/**
-	 * @brief Stores quadtrees for the collision hitboxes of entities for each layer.
-	 * 
-	 */
-	std::vector<QuadTree> trees;
-
-	/**
 	 * @brief Attempt to glide an entity so that it aligns to the nearest pixel.
 	 * 
 	 * @param delta Delta time for game processing, in seconds.
@@ -107,10 +101,4 @@ public:
 	 * @param delta Delta time for game processing, in seconds.
 	 */
 	void process(double delta);
-
-	/**
-	 * @brief Initializes the system. Must be called once before using `process`.
-	 * 
-	 */
-	void init();
 };

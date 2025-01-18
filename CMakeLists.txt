@@ -41,6 +41,7 @@ set(SOURCES
 	src/tile/TileMapRenderer.cpp
 	src/tile/TileMapCamera.cpp
 	src/tile/TileMapMovement.cpp
+	src/tile/TileMapQuadTrees.cpp
 	src/tile/TileSpriteAnimator.cpp
 	src/tile/TileMapInput.cpp
 	src/imguiDebugger.cpp

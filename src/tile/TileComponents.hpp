@@ -37,6 +37,12 @@ struct Actor {
 	Direction direction = Direction::Down;
 
 	/**
+	 * @brief The map layer the actor is on.
+	 * 
+	 */
+	uint8_t layer = 0;
+
+	/**
 	 * @brief Whether the actor is moving or not.
 	 * 
 	 */

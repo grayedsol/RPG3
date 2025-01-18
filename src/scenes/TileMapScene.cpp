@@ -41,7 +41,7 @@ void TileMapScene::init() {
 		}
 	}
 
-	tileMapMovement.init();
+	tileMapQuadTrees.init();
 	textBoxScene.init();
 }
 
@@ -51,20 +51,20 @@ void TileMapScene::process() {
 		case GCmd::GameQuit:
 			game->quit();
 			break;
-		case GCmd::MapInteract:
-			textBoxScene.activateControlScheme();
-			break;
 		default:
 			break;
 	}
 
 	tileMapInput.process();
 	tileMapMovement.process(game->getDelta());
+	tileMapQuadTrees.process();
 	tileSpriteAnimator.process(game->getDelta());
 	tileMapCamera.process();
 	tileMapRenderer.process();
 	
 	textBoxScene.process();
+
+	TileEntityMap::updateLayers(&entityMap);
 
 	#ifndef NDEBUG
 	if (game->debugMenuIsOn()) { tileMapImGui(ecs); }
