@@ -117,19 +117,36 @@ public:
 	double getFPS() { return fps.getFPS(); }
 
 	/**
+	 * @copydoc InputHandler::setControlScheme
+	 */
+	void setControlScheme(CommandMap map) { input.setControlScheme(map); }
+
+	/**
+	 * @brief Reset the control scheme.
+	 * 
+	 */
+	void resetControlScheme() { input.setControlScheme(CommandMap()); }
+
+	/**
 	 * @copydoc InputHandler::getInput
 	 */
-	const VirtualButton getInput() { return input.getInput(); }
+	const GCmd getInput() { return input.getInput(); }
 
-   	/**
+	/**
 	 * @copydoc InputHandler::getSingleInput
 	 */
-	const VirtualButton getSingleInput() { return input.getSingleInput(); }
+	const GCmd getSingleInput() { return input.getSingleInput(); }
 
 	/**
 	 * @copydoc InputHandler::isPressing
 	 */
-	const bool isPressing(VirtualButton b) { return input.isPressing(b); }
+	const bool isPressing(GCmd cmd) { return input.isPressing(cmd); }
 
-	const bool debugModeOn() { return imguiDebug.active; }
+	/**
+	 * @brief Determine whether the debug menu is active or not.
+	 * 
+	 * @return `true` if the debug menu is on.
+	 * @return `false` otherwise.
+	 */
+	const bool debugMenuIsOn() { return imguiDebug.active; }
 };

@@ -42,7 +42,7 @@ protected:
 	const char* scenePath;
 
 	/**
-	 * @brief Maps game commands to virtual buttons, and vice versa.
+	 * @brief Maps game commands to virtual buttons, and vice versa. Should be called in `init`.
 	 * 
 	 * @details
 	 * The implementation of this function should essentially be
@@ -95,6 +95,8 @@ public:
 	/**
 	 * @brief Initialize the scene to a usable state, but without activating player controls.
 	 * 
+	 * @details
+	 * `setControls` should always be called in this function.
 	 */
 	virtual void init() = 0;
 
@@ -126,13 +128,13 @@ public:
 	 * @brief Activate player control in the scene.
 	 * 
 	 */
-	void activate() { setControls(); }
+	void activateControlScheme();
 
     /**
      * @brief Remove player control in the scene.
      * 
      */
-	void deactivate() { controls.resetCmds(); }
+	void deactivateControlScheme();
 
 	/**
      * @brief Get the latest active GCmd input.

@@ -185,7 +185,6 @@ public:
 
 	/**
 	 * @copydoc TileMapRenderer::setOffset
-	 * 
 	 */
 	void setRenderOffset(float x, float y) {
 		tileMapRenderer.setOffset(x,y);

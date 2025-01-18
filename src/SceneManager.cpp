@@ -5,7 +5,6 @@
  */
 #include "SceneManager.hpp"
 #include "GRY_Log.hpp"
-#include <assert.h>
 
 SceneManager::~SceneManager() {
 	closeAllScenes();
@@ -22,10 +21,9 @@ void SceneManager::process() {
 }
 
 void SceneManager::stackScene(Scene *scene) {
-	if (!allScenes.empty()) { allScenes.back()->deactivate(); }
 	scene->loadAll();
 	scene->init();
-	scene->activate();
+	scene->activateControlScheme();
 	allScenes.push_back(scene);
 }
 
@@ -39,20 +37,20 @@ void SceneManager::switchScene(Scene *scene, Transition *trns) {
 	}
 
 	/* Add transition, it will start processing this frame */
-	assert(transition == nullptr);
+	GRY_Assert(transition == nullptr, "[SceneManager] Transition was nullptr.");
 	transition = trns;
-	assert(loadingScene == nullptr);
+	GRY_Assert(loadingScene == nullptr, "[SceneManager] Loading scene was nullptr.");
 	loadingScene = scene;
 
 	/* Remove player control from current scene */
-	allScenes.back()->deactivate();
+	allScenes.back()->deactivateControlScheme();
 }
 
 void SceneManager::popScene() {
 	if (!allScenes.empty()) {
 		delete allScenes.back();
 		allScenes.pop_back();
-		allScenes.back()->activate();
+		allScenes.back()->activateControlScheme();
 	}
 	else { GRY_Log("Tried to pop scene, but there were none."); }
 }
@@ -89,7 +87,7 @@ void SceneManager::processSwitchingScene() {
 		/* Wait for it to finish completely */
 		if (transition->process()) {
 			/* Give player control to the newly active scene and clean up transition */
-			allScenes.back()->activate();
+			allScenes.back()->activateControlScheme();
 			delete transition;
 			transition = nullptr;
 		}

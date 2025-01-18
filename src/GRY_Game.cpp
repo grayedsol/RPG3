@@ -64,7 +64,7 @@ void GRY_Game::runGame() {
  * Toggles the debug screen if SELECT is pressed while START is being pressed.
  */
 void GRY_Game::process() {
-	if (input.isPressing(GAME_START) && input.getSingleInput() == GAME_SELECT) {
+	if (input.isPressingVButton(GAME_START) && input.getSingleInputVButton() == GAME_SELECT) {
 		imguiDebug.toggle();
 	}
 }

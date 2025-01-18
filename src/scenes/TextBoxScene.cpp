@@ -11,14 +11,14 @@ void TextBoxScene::setControls() {
 }
 
 void TextBoxScene::init() {
+	setControls();
 	textBoxRenderer.init();
 }
 
 void TextBoxScene::process() {
 	if (readSingleInput() == GCmd::MessageOk) {
 		done = !done;
-		if (done) { deactivate(); parentScene->activate(); }
-		else { parentScene->deactivate(); }
+		if (done) { parentScene->activateControlScheme(); }
 	}
 	if (!done) { textBoxRenderer.process(); }
 }

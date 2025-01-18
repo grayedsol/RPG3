@@ -152,7 +152,7 @@ void InputHandler::process(bool& gameRunning) {
 	}
 
 	/* Remove from `inputs` until an active input is found */
-	while (!inputs.empty() && !isPressing(inputs.back())) {
+	while (!inputs.empty() && !isPressingVButton(inputs.back())) {
 		inputs.pop_back();
 	}
 }

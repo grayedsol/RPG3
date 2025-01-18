@@ -33,7 +33,7 @@ void GRY_PixelGame::process() {
 	pixelScaling = w / (float)SCREEN_WIDTH_PIXELS;
 	pixelScaling = SDL_ceilf(pixelScaling);
 
-	if (input.isPressing(GAME_START) && input.getSingleInput() == GAME_SELECT) {
+	if (input.isPressingVButton(GAME_START) && input.getSingleInputVButton() == GAME_SELECT) {
 		imguiDebug.toggle();
 	}
 }

@@ -64,10 +64,8 @@ public:
 	/**
 	 * @brief Initializes the scene.
 	 * 
-	 * @details
-	 * This scene is simple, so nothing is done.
 	 */
-	void init() final {}
+	void init() final { setControls(); }
 
 	/**
 	 * @copydoc Scene::process
