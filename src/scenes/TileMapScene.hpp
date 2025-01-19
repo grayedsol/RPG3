@@ -14,6 +14,7 @@
 #include "../tile/TileMapECS.hpp"
 #include "../tile/TileMapInput.hpp"
 #include "TextBoxScene.hpp"
+#include "DialogueResource.hpp"
 
 class GRY_PixelGame;
 
@@ -46,6 +47,12 @@ private:
 	 *
 	 */
 	TileEntityMap entityMap;
+
+	/**
+	 * @brief Container for dialogue data.
+	 * 
+	 */
+	DialogueResource mapDialogues;
 
 	/**
 	 * @brief Renderer for the tile map.
