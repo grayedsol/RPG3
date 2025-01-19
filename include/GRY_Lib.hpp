@@ -14,6 +14,6 @@
  * 
  * @returns A pointer to the newly created string.
  */
-inline const char* GRY_copyString(const char *string) {
+inline char* GRY_copyString(const char *string) {
     return strcpy(new char[strlen(string) + 1], string);
 }
