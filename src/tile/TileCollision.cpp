@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2024
  */
 #include "TileCollision.hpp"
+#include "GRY_Game.hpp"
 #include "GRY_Tiled.hpp"
 
 bool TileCollision::load(GRY_Game* game) {

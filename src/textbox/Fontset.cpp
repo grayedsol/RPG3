@@ -5,6 +5,7 @@
  */
 #include "Fontset.hpp"
 #include "GRY_JSON.hpp"
+#include "GRY_Game.hpp"
 
 static SDL_FRect createSourceRect(int textureIndex, int textureWidth, int emWidth, int charWidth, int charHeight);
 

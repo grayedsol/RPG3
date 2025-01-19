@@ -6,6 +6,8 @@
  */
 #pragma once
 #include "FileResource.hpp"
+#include <vector>
+#include "SDL3/SDL.h"
 
 /**
  * @brief Parses a font texture into an array character textures.

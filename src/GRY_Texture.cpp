@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2024
  */
 #include "GRY_Texture.hpp"
+#include "GRY_Game.hpp"
 
 bool GRY_Texture::load(GRY_Game* game) {
     if (texture) { return true; }

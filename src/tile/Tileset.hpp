@@ -7,6 +7,7 @@
 #pragma once
 #include "Tile.hpp"
 #include "FileResource.hpp"
+#include "SDL3/SDL.h"
 
 /**
  * @brief Parses a texture into an array of simple tiles.

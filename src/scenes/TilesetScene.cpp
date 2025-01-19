@@ -24,6 +24,11 @@ void TilesetScene::setControls() {
 	controls.mapCmd(GCmd::GameQuit, VirtualButton::GAME_B);
 }
 
+TilesetScene::TilesetScene(GRY_Game *game, const char *tilesetPath) :
+	Scene(game, tilesetPath),
+	renderer(game->getSDL().getRenderer()) {
+}
+
 void TilesetScene::process() {
 	/* Determines if collision will be highlighted */
 	bool highlightCollisions = false;

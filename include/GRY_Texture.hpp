@@ -38,7 +38,6 @@ struct GRY_Texture : public FileResource {
 	 * @brief Destructor.
 	 * 
 	 */
-
 	~GRY_Texture() { SDL_DestroyTexture(texture); texture = nullptr; }
 
 	GRY_Texture(const GRY_Texture&) = delete;
@@ -71,5 +70,5 @@ struct GRY_Texture : public FileResource {
 	 * @returns `true` if the texture was already loaded.
 	 * @returns `false` otherwise.
 	 */
-	bool load(GRY_Game* game) final override;
+	bool load(GRY_Game* game) final;
 };

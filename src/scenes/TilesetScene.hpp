@@ -57,10 +57,8 @@ public:
 	 * @param game Associated game class.
 	 * @param tilesetPath File path to the tileset scene.
 	 */
-	TilesetScene(GRY_Game* game, const char* tilesetPath) :
-		Scene(game, tilesetPath), renderer(game->getSDL().getRenderer()) {
-	}
-
+	TilesetScene(GRY_Game* game, const char* tilesetPath);
+	
 	/**
 	 * @brief Initializes the scene.
 	 * 

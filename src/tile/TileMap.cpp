@@ -5,6 +5,7 @@
  */
 #include "TileMap.hpp"
 #include "GRY_Tiled.hpp"
+#include "GRY_Game.hpp"
 #include <limits>
 
 bool TileMap::load(GRY_Game *game) {
