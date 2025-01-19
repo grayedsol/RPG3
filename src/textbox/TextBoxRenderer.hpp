@@ -9,6 +9,10 @@
 
 class TextBoxScene;
 
+/**
+ * @brief Renders the text box from a TextBoxScene.
+ * 
+ */
 class TextBoxRenderer {
 private:
 	/**
@@ -16,12 +20,6 @@ private:
 	 * 
 	 */
 	const TextBoxScene* scene;
-
-	/**
-	 * @brief Destination rectangle for the text box.
-	 * 
-	 */
-	SDL_FRect dstRect;
 
 	/**
 	 * @brief Pointer to the renderer.
@@ -41,12 +39,6 @@ public:
 	 * @param scene Associated TextBoxScene class.
 	 */
 	TextBoxRenderer(TextBoxScene* scene);
-
-	/**
-	 * @brief Initializes the renderer. Must be called once before using `process`.
-	 * 
-	 */
-	void init();
 
 	/**
 	 * @brief Render the text box.

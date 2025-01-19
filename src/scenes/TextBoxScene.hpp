@@ -20,7 +20,7 @@ class GRY_PixelGame;
  */
 class TextBoxScene : public Scene {
 private:
-	Scene* parentScene = nullptr;
+	Scene* parentScene;
 	/**
 	 * @brief Texture of the message box.
 	 * 
@@ -28,11 +28,21 @@ private:
 	GRY_Texture boxTexture;
 
 	/**
+	 * @brief Destination rectangle for the text box.
+	 * 
+	 */
+	SDL_FRect boxTextureArea;
+
+	/**
 	 * @brief Texture of the message font.
 	 * 
 	 */
 	Fontset font;
 
+	/**
+	 * @brief Renders the text box.
+	 * 
+	 */
 	TextBoxRenderer textBoxRenderer;
 
 	bool done = true;
@@ -48,7 +58,7 @@ public:
 	 *
 	 * @param game Associated game class
 	 * @param scenePath File path to the scene data
-	 * @param parentScene Scene to activate/deactivate
+	 * @param parentScene Scene to activate when done
 	 */
 	TextBoxScene(GRY_PixelGame *pGame, const char *scenePath, Scene* parentScene) :
 		Scene((GRY_Game *)pGame, scenePath),
@@ -78,6 +88,13 @@ public:
 	 * @return The text box texture
 	 */
 	SDL_Texture* getBoxTexture() const { return boxTexture.texture; }
+
+	/**
+	 * @brief Get the text box texture area.
+	 * 
+	 * @return The text box texture area
+	 */
+	SDL_FRect getBoxTextureArea() const { return boxTextureArea; }
 
 	/**
 	 * @brief Get a pointer to the GRY_PixelGame.
