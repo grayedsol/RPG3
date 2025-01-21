@@ -1,0 +1,15 @@
+/**
+ * @file SDL_FRectOps.hpp
+ * @author Grayedsol (grayedsol@gmail.com)
+ * @brief Operator overloads for SDL_FRect
+ * @copyright Copyright (c) 2025
+ */
+#pragma once
+#include "SDL3/SDL.h"
+
+void operator*=(SDL_FRect& rect, float scalar) {
+	rect.x *= scalar;
+	rect.y *= scalar;
+	rect.w *= scalar;
+	rect.h *= scalar;
+}
