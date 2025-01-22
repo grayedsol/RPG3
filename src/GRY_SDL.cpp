@@ -26,7 +26,7 @@ bool GRY_SDL::init() {
 	gameWindow = SDL_CreateWindow(
 		"SDL Game",
 		WINDOW_WIDTH, WINDOW_HEIGHT,
-		SDL_WINDOW_RESIZABLE);
+		0);
 	
 	if (gameWindow == NULL) {
 		GRY_Log("Could not create window. Error: %s\n", SDL_GetError());
