@@ -6,7 +6,6 @@
 #include "GRY_SDL.hpp"
 #include "GRY_Log.hpp"
 #include "SDL3_image/SDL_image.h"
-#include "SDL3_ttf/SDL_ttf.h"
 
 GRY_SDL::GRY_SDL(int WINDOW_WIDTH, int WINDOW_HEIGHT, bool USE_VSYNC) : 
 	WINDOW_WIDTH(WINDOW_WIDTH),
@@ -55,19 +54,6 @@ bool GRY_SDL::init() {
 	/* Initialize renderer blend mode */
 	SDL_SetRenderDrawBlendMode(gameRenderer, SDL_BLENDMODE_BLEND);
 
-	/* Initialize SDL_image */
-	int imgFlags = IMG_INIT_PNG;
-	if (!(IMG_Init(imgFlags) & imgFlags)) {
-		GRY_Log("Could not initialize SDL_image. Error: %s\n", SDL_GetError());
-		return false;
-	}
-
-	/* Initialize SDL_ttf */
-	if (TTF_Init() == -1) {
-		GRY_Log("Could not initialize SDL_ttf. Error: %s\n", SDL_GetError());
-		return false;
-	}
-
 	return true;
 }
 
@@ -79,8 +65,6 @@ void GRY_SDL::exit() {
 	gameWindow = NULL;
 
 	/* Close SDL subsystems */
-	TTF_Quit();
-	IMG_Quit();
 	SDL_Quit();
 }
 
@@ -106,36 +90,4 @@ SDL_Texture* GRY_SDL::loadTexture(const char* path) {
 
 SDL_Texture *GRY_SDL::loadTextureIO(const char *data) {
 	return nullptr;
-}
-
-/**
- * @details 
- * The text will wrap to a new line on newline characters in `text`.
- */
-SDL_Texture *GRY_SDL::loadTextTexture(const char *text, TTF_Font* font, SDL_Color color) {
-	SDL_Texture* texture = nullptr;
-	SDL_Surface* surface = TTF_RenderText_Solid_Wrapped(font, text, 0, color, 0);
-
-	if (!surface) {
-		GRY_Log("Could not create text surface. Error: %s\n", SDL_GetError());
-		return texture;
-	}
-
-	texture = SDL_CreateTextureFromSurface(gameRenderer, surface);
-	if (!texture) {
-		GRY_Log("Could not create texture from surface. Error: %s\n", SDL_GetError());
-	}
-
-	SDL_DestroySurface(surface);
-	return texture;
-}
-
-TTF_Font* GRY_SDL::loadFont(const char *fontPath, int ptSize) {
-    TTF_Font* font = TTF_OpenFont(fontPath, ptSize);
-
-	if (!font) {
-		GRY_Log("Could not load font. Error: %s\n", SDL_GetError());
-	}
-
-	return font;
 }
