@@ -53,8 +53,8 @@ void TileMapRenderer::process() {
 
 	uint32_t startX = std::max(0.f, -offsetX / (float)scene->getNormalTileSize());
 	uint32_t startY = std::max(0.f, -offsetY / (float)scene->getNormalTileSize());
-	uint32_t endX = std::min(tileMap->width, (uint32_t)(-offsetX / (float)scene->getNormalTileSize()) + tileViewport.x);
-	uint32_t endY = (uint32_t)(-offsetY / (float)scene->getNormalTileSize()) + tileViewport.y + 1;
+	uint32_t endX = std::min(tileMap->width, (uint32_t)(-offsetX / (float)scene->getNormalTileSize()) + tileViewport.x + 1);
+	uint32_t endY = (uint32_t)(-offsetY / (float)scene->getNormalTileSize()) + tileViewport.y + 2;
 	/* Destination rectangle, defines position and size of rendered tile */
 	SDL_FRect dstRect {
 		(offsetX + (startX * scene->getNormalTileSize())),
@@ -76,7 +76,7 @@ void TileMapRenderer::process() {
 		}
 
 		endY = std::min((uint32_t)tileMap->tileLayers[i].size() / tileMap->width,
-						(uint32_t)(-offsetY / (float)scene->getNormalTileSize()) + tileViewport.y + 1);
+						(uint32_t)(-offsetY / (float)scene->getNormalTileSize()) + tileViewport.y + 2);
 		/* Render by row */
 		for (uint32_t y = startY; y < endY; y++) {
 			/* Render row of tiles */
