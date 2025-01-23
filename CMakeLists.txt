@@ -9,11 +9,11 @@ option(USE_SHARED_LIBS "Whether to use shared or static libraries." ON)
 set(HIDE_TERMINAL False)
 
 include(ExternalProject)
-include(FetchContent)
 
 include("${CMAKE_SOURCE_DIR}/external/rapidjson.cmake")
 include_directories(SYSTEM "${CMAKE_BINARY_DIR}/external/rapidjson/src/rapidjson/include")
 
+include(FetchContent)
 include("${CMAKE_SOURCE_DIR}/external/imgui.cmake")
 include_directories(SYSTEM "${CMAKE_BINARY_DIR}/_deps/imgui-src/")
 include_directories(SYSTEM "${CMAKE_BINARY_DIR}/_deps/imgui-src/backends")
@@ -53,6 +53,7 @@ set(SOURCES
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
+add_dependencies(game rapidjson)
 
 if(UNIX)
 	target_link_options(${PROJECT_NAME}
