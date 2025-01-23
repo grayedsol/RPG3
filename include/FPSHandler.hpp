@@ -115,15 +115,4 @@ public:
 	 * @sa getDelta
 	 */
 	double getFPS() { return 1.0 / deltaTime; }
-
-	/**
-	 * @brief Determine if the game is running below `TARGET_FPS`.
-	 * 
-	 * @return `true` if the game is running below `TARGET_FPS`.
-	 * @return `false` otherwise.
-	 * 
-	 * @sa getDelta
-	 * @sa getFPS
-	 */
-	bool isLagging() { return deltaTime > minDelta; }
 };

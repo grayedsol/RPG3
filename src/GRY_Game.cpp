@@ -49,13 +49,11 @@ void GRY_Game::runGame() {
 		
 		imguiDebug.render(gameRenderer);
 
-		fps.computeDelta();
-		if (fps.isLagging()) { GRY_Log("[Game] Lagging.\n"); }
-
 		/* Output */
 		SDL_RenderPresent(gameRenderer);
 
 		if (!gsdl.USE_VSYNC) { fps.delay(); }
+		fps.computeDelta();
 	}
 }
 
