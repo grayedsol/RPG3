@@ -32,6 +32,8 @@ private:
 	 * 
 	 */
 	const float* pixelScaling;
+
+	void printChar(char character, float x, float y);
 public:
 	/**
 	 * @brief Constructor.
@@ -45,4 +47,6 @@ public:
 	 * 
 	 */
 	void process();
+
+	void printLine(const char* line);
 };

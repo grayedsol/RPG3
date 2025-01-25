@@ -34,6 +34,12 @@ private:
 	SDL_FRect boxTextureArea;
 
 	/**
+	 * @brief Area within the box that text is rendered.
+	 * 
+	 */
+	SDL_FRect textArea;
+
+	/**
 	 * @brief Texture of the message font.
 	 * 
 	 */
@@ -45,7 +51,12 @@ private:
 	 */
 	TextBoxRenderer textBoxRenderer;
 
+	char* storedLine = nullptr;
+	char* incomingLine = nullptr;
+
 	bool done = true;
+
+	void parseLine(char* line);
 
 	/**
 	 * @copybrief Scene::setControls
@@ -96,10 +107,17 @@ public:
 	 */
 	SDL_FRect getBoxTextureArea() const { return boxTextureArea; }
 
+	SDL_FRect getTextArea() const { return textArea; }
+
+	const Fontset& getFont() const { return font; }
+
 	/**
 	 * @brief Get a pointer to the GRY_PixelGame.
 	 *
 	 * @return Pointer to the GRY_PixelGame.
 	 */
 	GRY_PixelGame* getPixelGame() const { return (GRY_PixelGame*)game; }
+
+	const char* getStoredLine() const { return storedLine; }
+	const char* getIncomingLine() const { return incomingLine; }
 };

@@ -1,4 +1,6 @@
 {
 	"boxTexturePath" : "assets/textures/image/textbox.png",
-	"fontTexturePath" : "assets/textures/data/font.json"
+	"fontTexturePath" : "assets/textures/data/font.json",
+	"marginX" : 10,
+	"marginY" : 8
 }

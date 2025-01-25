@@ -7,7 +7,7 @@
 #pragma once
 #include "SDL3/SDL.h"
 
-void operator*=(SDL_FRect& rect, float scalar) {
+inline void operator*=(SDL_FRect& rect, float scalar) {
 	rect.x *= scalar;
 	rect.y *= scalar;
 	rect.w *= scalar;
