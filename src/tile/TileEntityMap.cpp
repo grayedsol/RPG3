@@ -20,6 +20,7 @@ static void registerActorSpriteAnimations(TileEntityMap& eMap, entity e, const G
 static void registerPlayer(TileEntityMap& eMap, entity e);
 static void registerNPC(TileEntityMap& eMap, entity e);
 static void registerHitbox(TileEntityMap& eMap, entity e, const GRY_JSON::Value& hitbox);
+static void registerTileMapAction(TileEntityMap& eMap, entity e, const GRY_JSON::Value& actionData);
 static void sortEntityLayer(ComponentSet<Position2>& positions, std::vector<entity>& layer);
 
 bool TileEntityMap::load(GRY_Game *game) {
@@ -85,6 +86,7 @@ entity registerEntity(TileEntityMap& eMap, const GRY_JSON::Value& entityData, fl
 	if (entityData.HasMember("player")) { registerPlayer(eMap, e); }
 	if (entityData.HasMember("npc")) { registerNPC(eMap, e); }
 	if (entityData.HasMember("hitbox")) { registerHitbox(eMap, e, entityData["hitbox"]); }
+	if (entityData.HasMember("action")) { registerTileMapAction(eMap, e, entityData["action"]); }
 
 	return e;
 }
@@ -145,6 +147,19 @@ void registerHitbox(TileEntityMap &eMap, entity e, const GRY_JSON::Value& hitbox
 	box.h = 2 * hitbox["radius"].GetFloat();
 	box.w = box.h;
 	eMap.ecs->getComponent<Hitbox>().add(e, box);
+}
+
+void registerTileMapAction(TileEntityMap &eMap, entity e, const GRY_JSON::Value &actionData) {
+	TileMapAction action;
+	const char* type = actionData["type"].GetString();
+	if (strcmp("Speak", type) == 0) {
+		action.type = TileMapAction::Speak;
+	}
+	else {
+		GRY_Assert(false, "[TileEntityMap] Unknown action type for entity %d", e);
+	}
+	action.id = actionData["id"].GetUint();
+	eMap.ecs->getComponent<TileMapAction>().add(e, action);
 }
 
 void registerActorSpriteAnimations(TileEntityMap &eMap, entity e, const GRY_JSON::Value& actorAnimations) {

@@ -54,7 +54,7 @@ private:
 	char* storedLine = nullptr;
 	char* incomingLine = nullptr;
 
-	bool done = true;
+	bool active = false;
 
 	void parseLine(char* line);
 
@@ -78,6 +78,15 @@ public:
 	}
 
 	/**
+	 * @brief Destructor.
+	 * 
+	 */
+	~TextBoxScene() {
+		delete[] storedLine; storedLine = nullptr;
+		delete[] incomingLine; incomingLine = nullptr;
+	}
+
+	/**
 	 * @brief Initializes the scene.
 	 *
 	 */
@@ -92,6 +101,41 @@ public:
 	 * @copydoc Scene::load
 	 */
 	bool load() final;
+
+	/**
+	 * @brief Whether the box is ready to accept a new line of dialogue.
+	 * 
+	 * @return `true` if the the box is ready,
+	 * @return `false` otherwise.
+	 */
+	bool isReady();
+
+	/**
+	 * @brief Whether the text box is open or not.
+	 * 
+	 * @return `true` if the text box is open,
+	 * @return `false` if not.
+	 */
+	bool isOpen() { return active; }
+
+	/**
+	 * @brief Opens and activates the text box.
+	 * 
+	 */
+	void open();
+
+	/**
+	 * @brief Closes the textbox and activates the parent scene.
+	 * 
+	 */
+	void close();
+
+	/**
+	 * @brief Print a line to the text box.
+	 * 
+	 * @param line Line to print to the text box
+	 */
+	void printLine(const char* line);
 
 	/**
 	 * @brief Get the text box texture.

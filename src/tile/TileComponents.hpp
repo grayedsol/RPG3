@@ -98,3 +98,11 @@ struct ActorSpriteAnims {
 struct Player {};
 
 struct NPC {};
+
+struct TileMapAction {
+	enum {
+		Speak
+	} type = Speak;
+
+	unsigned id;
+};

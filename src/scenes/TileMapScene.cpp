@@ -56,6 +56,7 @@ void TileMapScene::process() {
 	}
 
 	tileMapInput.process();
+	tileMapSpeak.process();
 	tileMapMovement.process(game->getDelta());
 	tileMapQuadTrees.process();
 	tileSpriteAnimator.process(game->getDelta());

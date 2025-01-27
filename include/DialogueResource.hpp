@@ -9,7 +9,7 @@
 #include <vector>
 
 struct DialogueResource : public FileResource {
-	using Dialogue = std::vector<char*>;
+	using Dialogue = std::vector<const char*>;
 	std::vector<Dialogue> dialogues;
 
 	DialogueResource() = default;

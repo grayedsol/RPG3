@@ -13,6 +13,7 @@
 #include "Scene.hpp"
 #include "../tile/TileMapECS.hpp"
 #include "../tile/TileMapInput.hpp"
+#include "../tile/TileMapSpeak.hpp"
 #include "TextBoxScene.hpp"
 #include "DialogueResource.hpp"
 
@@ -96,6 +97,8 @@ private:
 	 */
 	TextBoxScene textBoxScene;
 
+	TileMapSpeak tileMapSpeak;
+
 	/**
 	 * @brief Width and height of a normal square tile, in pixels.
 	 *
@@ -128,7 +131,8 @@ public:
 		tileMapQuadTrees(this),
 		tileSpriteAnimator(this),
 		tileMapInput(this),
-		textBoxScene(pGame, "assets/textboxscene/scene.json", this) {
+		textBoxScene(pGame, "assets/textboxscene/scene.json", this),
+		tileMapSpeak(this) {
 	}
 
 	/**
@@ -188,6 +192,12 @@ public:
 	 * @return Reference to the TileEntityMap.
 	 */
 	TileEntityMap& getTileEntityMap() { return entityMap; }
+
+	TextBoxScene& getTextBox() { return textBoxScene; }
+
+	TileMapSpeak& getTileMapSpeak() { return tileMapSpeak; }
+
+	const DialogueResource& getDialogueResource() { return mapDialogues; }
 
 	/**
 	 * @brief Get the width / height of a normal square tile, in pixels.

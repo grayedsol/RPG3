@@ -18,7 +18,8 @@ static const char* TileMapECSComponentStrings[std::tuple_size_v<TileMapECS::Tupl
 	"ActorSprite",
 	"ActorSpriteAnims",
 	"Player",
-	"NPC"
+	"NPC",
+	"TileMapAction"
 };
 
 template<>

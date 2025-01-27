@@ -64,21 +64,16 @@ void TextBoxScene::init() {
 }
 
 void TextBoxScene::process() {
-	if (readSingleInput() == GCmd::MessageOk) {
-		done = !done;
-		if (done) {
-			delete[] storedLine; storedLine = nullptr;
-			delete[] incomingLine; incomingLine = nullptr;
-			parentScene->activateControlScheme();
-		}
-	}
-	if (!done) {
-		textBoxRenderer.process();
-		if (!incomingLine) {
-			incomingLine = GRY_copyString("Welcome to the paradise of life itself. Are you struggling to find your ground in such a desolate battleground as this?");
-			parseLine(incomingLine);
-		}
+	if (!active) { return; }
+
+	textBoxRenderer.process();
+
+	if (storedLine) { textBoxRenderer.printLine(storedLine); }
+	if (incomingLine) {
 		textBoxRenderer.printLine(incomingLine);
+		delete[] storedLine;
+		storedLine = incomingLine;
+		incomingLine = nullptr;
 	}
 }
 
@@ -100,4 +95,28 @@ bool TextBoxScene::load() {
 	textArea.h = sceneDoc["marginY"].GetFloat();
 
 	return false;
+}
+
+bool TextBoxScene::isReady() {
+	GRY_Assert(active, "[TextBoxScene] You must open the text box before calling isReady()!");
+	return readSingleInput() == GCmd::MessageOk && !incomingLine;
+}
+
+void TextBoxScene::open() {
+	activateControlScheme();
+	active = true;
+}
+
+void TextBoxScene::close() {
+	delete[] storedLine; storedLine = nullptr;
+	delete[] incomingLine; incomingLine = nullptr;
+	parentScene->activateControlScheme();
+	active = false;
+}
+
+void TextBoxScene::printLine(const char *line) {
+	GRY_Assert(!incomingLine, "[TextBoxScene] printLine() called before the textbox was ready.");
+	if (incomingLine) { return; }
+	incomingLine = GRY_copyString(line);
+	parseLine(incomingLine);
 }

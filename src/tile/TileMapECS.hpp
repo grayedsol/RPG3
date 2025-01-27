@@ -21,5 +21,6 @@ using TileMapECS = GRY_ECS<
 	ActorSprite,
 	ActorSpriteAnims,
 	Player,
-	NPC
+	NPC,
+	TileMapAction
 >;

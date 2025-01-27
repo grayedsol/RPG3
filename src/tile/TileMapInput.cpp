@@ -15,12 +15,24 @@ static Velocity2 dirVecs[Actor::Direction::SIZE] = {
 	Velocity2{INV_SQRT_TWO,-INV_SQRT_TWO}
 };
 
+static Actor::Direction invDirs[Actor::Direction::SIZE] {
+	Actor::Direction::NONE,
+	Actor::Direction::Up,
+	Actor::Direction::Down,
+	Actor::Direction::Right,
+	Actor::Direction::RightUp,
+	Actor::Direction::RightDown,
+	Actor::Direction::Left,
+	Actor::Direction::LeftUp,
+	Actor::Direction::LeftDown
+};
+
 TileMapInput::TileMapInput(TileMapScene* scene) :
 	scene(scene),
 	hitboxes(&scene->getECSReadOnly().getComponentReadOnly<Hitbox>()),
 	actors(&scene->getECS().getComponent<Actor>()),
 	players(&scene->getECS().getComponentReadOnly<Player>()),
-	npcs(&scene->getECSReadOnly().getComponentReadOnly<NPC>()) {
+	actions(&scene->getECSReadOnly().getComponentReadOnly<TileMapAction>()) {
 }
 
 /**
@@ -103,9 +115,20 @@ bool TileMapInput::interact() {
 		}
 	}
 
-	/* If they are an npc, speak with them */
-	if (npcs->contains(target)) {
-		scene->activateTextBox();
+	/* If they have an action, invoke it */
+	if (actions->contains(target)) {
+		switch (actions->get(target).type) {
+		case TileMapAction::Speak:
+			if (actors->contains(target)) {
+				actors->get(target).direction = invDirs[actors->get(player).direction];
+			}
+			scene->getTileMapSpeak().speak(actions->get(target).id);
+			break;
+		default:
+			GRY_Log("Entity %d had an unknown action.", target);
+			break;
+		}
+
 		return true;
 	}
 	return false;

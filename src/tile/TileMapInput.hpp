@@ -42,6 +42,8 @@ private:
 
 	const ComponentSet<NPC>* npcs;
 
+	const ComponentSet<TileMapAction>* actions;
+
 	bool interact();
 public:
 	/**

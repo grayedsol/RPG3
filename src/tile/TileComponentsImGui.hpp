@@ -81,3 +81,16 @@ template<>
 void componentImGui(NPC& npc) {
 	ImGui::Text("Entity is an NPC");
 }
+
+template<>
+void componentImGui(TileMapAction& action) {
+	switch (action.type) {
+	case TileMapAction::Speak:
+		ImGui::Text("Speak");
+		break;
+	default:
+		ImGui::Text("Unknown");
+		break;
+	}
+	ImGui::Text("id: %d", action.id);
+}
