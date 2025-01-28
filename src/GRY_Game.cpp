@@ -14,8 +14,8 @@
 #include <SDL3/SDL_opengl.h>
 #endif
 
-GRY_Game::GRY_Game(int WINDOW_WIDTH, int WINDOW_HEIGHT, int TARGET_FPS, bool USE_VSYNC) :
-	gsdl(WINDOW_WIDTH, WINDOW_HEIGHT, USE_VSYNC), fps(TARGET_FPS), imguiDebug(this) {
+GRY_Game::GRY_Game(int WINDOW_WIDTH, int WINDOW_HEIGHT, int MAX_FPS, bool USE_VSYNC) :
+	gsdl(WINDOW_WIDTH, WINDOW_HEIGHT, USE_VSYNC), fps(MAX_FPS), imguiDebug(this) {
 
 	if (!gsdl.init()) { 
 		GRY_Log("[Game] GRY_SDL initialization failed.\n");

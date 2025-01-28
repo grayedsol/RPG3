@@ -34,7 +34,7 @@ public:
 	/**
 	 * @copydoc GRY_Game::GRY_Game
 	 */
-	GRY_PixelGame(int WINDOW_WIDTH, int WINDOW_HEIGHT, int TARGET_FPS, bool USE_VSYNC = true);
+	GRY_PixelGame(int WINDOW_WIDTH, int WINDOW_HEIGHT, int MAX_FPS, bool USE_VSYNC = true);
 
 	/**
 	 * @copydoc GRY_Game::process

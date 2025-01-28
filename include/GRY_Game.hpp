@@ -60,10 +60,10 @@ public:
 	 * 
 	 * @param WINDOW_WIDTH Screen width in pixels.
 	 * @param WINDOW_HEIGHT Screen height in pixels.
-	 * @param TARGET_FPS Desired frames per second the game should run at.
+	 * @param MAX_FPS Maximum frames per second the game should run at.
 	 * @param USE_VSYNC Whether the game will use VSync, `true` by default.
 	 */
-	GRY_Game(int WINDOW_WIDTH, int WINDOW_HEIGHT, int TARGET_FPS, bool USE_VSYNC = true);
+	GRY_Game(int WINDOW_WIDTH, int WINDOW_HEIGHT, int MAX_FPS, bool USE_VSYNC = true);
 
 	GRY_Game(const GRY_Game&) = delete;
 	GRY_Game& operator=(const GRY_Game&) = delete;

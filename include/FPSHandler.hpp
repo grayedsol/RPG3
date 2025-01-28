@@ -19,7 +19,7 @@ private:
 	 * @brief Desired frames per second for the program.
 	 * 
 	 */
-	const unsigned int TARGET_FPS;
+	const unsigned int MAX_FPS;
 
 	/**
 	 * @brief Desired length of a frame in milliseconds.
@@ -31,7 +31,7 @@ private:
 	 * @brief Delta time for game processing, in seconds.
 	 * 
 	 * @details
-	 * Initialized to `1.0 / TARGET_FPS`.
+	 * Initialized to `1.0 / MAX_FPS`.
 	 */
 	double deltaTime;
 
@@ -71,9 +71,9 @@ public:
 	/**
 	 * @brief Constructor.
 	 * 
-	 * @param TARGET_FPS The desired frames per second for the program.
+	 * @param MAX_FPS The desired frames per second for the program.
 	 */
-	FPSHandler(const unsigned int TARGET_FPS);
+	FPSHandler(const unsigned int MAX_FPS);
 
 	/**
 	 * @brief Mark the start time of the frame.

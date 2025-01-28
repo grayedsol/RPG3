@@ -7,11 +7,11 @@
 #include "SDL3/SDL.h"
 #include <algorithm>
 
-FPSHandler::FPSHandler(const unsigned int TARGET_FPS) :
-    TARGET_FPS(TARGET_FPS),
-    frameLength(1000 / TARGET_FPS),
-    deltaTime(1.0 / TARGET_FPS),
-    minDelta(1.0 / TARGET_FPS) {
+FPSHandler::FPSHandler(const unsigned int MAX_FPS) :
+    MAX_FPS(MAX_FPS),
+    frameLength(1000 / MAX_FPS),
+    deltaTime(1.0 / MAX_FPS),
+    minDelta(1.0 / MAX_FPS) {
 }
 
 void FPSHandler::frameStart() {
