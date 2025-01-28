@@ -63,4 +63,8 @@ public:
 	void beginRender(const char* storedLine);
 
 	void endRender();
+
+	void scrollUp(double scrollSpeed, double delta);
+
+	float yAfterPrintingLine(const char* line);
 };

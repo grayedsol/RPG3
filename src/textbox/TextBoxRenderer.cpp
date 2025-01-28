@@ -51,7 +51,13 @@ bool TextBoxRenderer::printLine(const char *line, double scrollSpeed, double del
 	SDL_Rect rect = scene->getTextArea();
 	
 	for (int i = 0; i < index && line[i]; i++) {
-		if (cursor.y + font.charHeight + LINE_SPACING > rect.h) { yStart -= scrollSpeed * delta; return false; }
+		if (cursor.y + font.charHeight + LINE_SPACING > rect.h) {
+			yStart -= scrollSpeed * delta;
+			if (cursor.y - (scrollSpeed * delta) + font.charHeight + LINE_SPACING < rect.h) { 
+				yStart += rect.h - cursor.y + (scrollSpeed * delta) - font.charHeight - LINE_SPACING;
+			}
+			return false;
+		}
 		if (line[i] == '\n') {
 			cursor.y += font.charHeight + LINE_SPACING;
 			cursor.x = 0;
@@ -86,4 +92,19 @@ void TextBoxRenderer::beginRender(const char* storedLine) {
 void TextBoxRenderer::endRender() {
 	cursor.x = 0;
 	cursor.y = yStart;
+}
+
+void TextBoxRenderer::scrollUp(double scrollSpeed, double delta) {
+	yStart -= scrollSpeed * delta;
+}
+
+float TextBoxRenderer::yAfterPrintingLine(const char *line) {
+	float retVal = cursor.y;
+	const Fontset& font = scene->getFont();
+
+	for (; *line != '\0'; line++) {
+		if (*line == '\n') { retVal += font.charHeight + LINE_SPACING; }
+	}
+	retVal += font.charHeight + LINE_SPACING;
+	return retVal;
 }

@@ -8,8 +8,8 @@
 #include "GRY_PixelGame.hpp"
 
 static const float BOTTOM_MARGIN = 8.f;
-static const double SCROLL_SPEED = 16.0;
-static const double TIMER_LENGTH = 0.05;
+static const double SCROLL_SPEED = 64.0;
+static const double TIMER_LENGTH = 0.025;
 
 void TextBoxScene::parseLine(char* line) {
 	char* character = line;
@@ -68,11 +68,27 @@ void TextBoxScene::init() {
 void TextBoxScene::process() {
 	if (!active) { return; }
 
+	if (readSingleInput() == GCmd::MessageOk && index != 0) {
+		doubleSpeed = true;
+	}
+
 	if (*incomingLine && incomingLine[index] == '\0') {
-		strncpy(storedLine, incomingLine, MAX_LINE_LENGTH);
-		textBoxRenderer.beginRender(storedLine);
-		*incomingLine = 0;
-		index = 0;	
+		if (*storedLine && textBoxRenderer.yAfterPrintingLine(storedLine) > 0) {
+			textBoxRenderer.beginProcess();
+			textBoxRenderer.scrollUp(SCROLL_SPEED * (1 + doubleSpeed), game->getDelta());
+			textBoxRenderer.printLine(storedLine, SCROLL_SPEED, game->getDelta());
+			textBoxRenderer.printLine(incomingLine, SCROLL_SPEED, game->getDelta());
+			textBoxRenderer.endProcess();
+			textBoxRenderer.endRender();
+			return;
+		}
+		else {
+			strncpy(storedLine, incomingLine, MAX_LINE_LENGTH);
+			textBoxRenderer.beginRender(storedLine);
+			doubleSpeed = false;
+			*incomingLine = 0;
+			index = 0;
+		}
 	}
 
 	textBoxRenderer.beginProcess();
@@ -82,11 +98,12 @@ void TextBoxScene::process() {
 	}
 
 	if (*incomingLine) {
-		if (textBoxRenderer.printLine(incomingLine, SCROLL_SPEED, game->getDelta(), index)) {
-			timer -= game->getDelta();
-			if (timer <= 0.0) {
+		double speed = SCROLL_SPEED * (1 + doubleSpeed);
+		if (textBoxRenderer.printLine(incomingLine, speed, game->getDelta(), index)) {
+			timer -= game->getDelta() * (1 + doubleSpeed);
+			while (timer <= 0.0) {
 				index++;
-				timer = TIMER_LENGTH;
+				timer += TIMER_LENGTH;
 			}
 		}
 	}

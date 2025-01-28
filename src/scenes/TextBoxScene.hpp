@@ -59,6 +59,7 @@ private:
 	double timer = 0;
 
 	bool active = false;
+	bool doubleSpeed = false;
 
 	void parseLine(char* line);
 
