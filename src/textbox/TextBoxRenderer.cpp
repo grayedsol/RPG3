@@ -53,8 +53,8 @@ bool TextBoxRenderer::printLine(const char *line, double scrollSpeed, double del
 	for (int i = 0; i < index && line[i]; i++) {
 		if (cursor.y + font.charHeight + LINE_SPACING > rect.h) {
 			yStart -= scrollSpeed * delta;
-			if (cursor.y - (scrollSpeed * delta) + font.charHeight + LINE_SPACING < rect.h) { 
-				yStart += rect.h - cursor.y + (scrollSpeed * delta) - font.charHeight - LINE_SPACING;
+			if (cursor.y + font.charHeight + LINE_SPACING - (scrollSpeed * delta) < rect.h) { 
+				yStart += rect.h - cursor.y - font.charHeight - LINE_SPACING + (scrollSpeed * delta);
 			}
 			return false;
 		}
@@ -70,7 +70,7 @@ bool TextBoxRenderer::printLine(const char *line, double scrollSpeed, double del
 			};
 			cursor.x += dstRect.w;
 			dstRect *= *pixelScaling;
-			dstRect.y = ceilf(dstRect.y);
+			dstRect.y = floorf(dstRect.y);
 			SDL_RenderTexture(renderer, font.texture, srcRect, &dstRect);
 		}
 	}
