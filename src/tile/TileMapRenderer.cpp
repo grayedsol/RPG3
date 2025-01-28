@@ -57,11 +57,10 @@ void TileMapRenderer::process() {
 	uint32_t endY = (uint32_t)(-offsetY / (float)scene->getNormalTileSize()) + tileViewport.y + 2;
 	/* Destination rectangle, defines position and size of rendered tile */
 	SDL_FRect dstRect {
-		(offsetX + (startX * scene->getNormalTileSize())),
-		(offsetY + (startY * scene->getNormalTileSize())),
-		tileset.tileWidth, tileset.tileHeight
+		floorf((offsetX + (startX * scene->getNormalTileSize())) * *pixelScaling),
+		floorf((offsetY + (startY * scene->getNormalTileSize())) * *pixelScaling),
+		tileset.tileWidth * *pixelScaling, tileset.tileHeight * *pixelScaling
 	};
-	dstRect *= *pixelScaling;
 	for (int i = 0; i < tileMap->tileLayers.size(); i++) {
 		const TileLayer& layer = tileMap->tileLayers[i];
 		const EntityLayer& entityLayer = entityMap->entityLayers[i];
@@ -99,10 +98,10 @@ void TileMapRenderer::process() {
 			}
 
 			/* Reset dstRect x and increment dstRect y */
-			dstRect.x = (offsetX + (startX * scene->getNormalTileSize())) * *pixelScaling;
+			dstRect.x = floorf((offsetX + (startX * scene->getNormalTileSize())) * *pixelScaling);
 			dstRect.y += shift;
 		}
 		/* Reset dstRect y */
-		dstRect.y = (offsetY + (startY * scene->getNormalTileSize())) * *pixelScaling;
+		dstRect.y = floorf((offsetY + (startY * scene->getNormalTileSize())) * *pixelScaling);
 	}
 }
