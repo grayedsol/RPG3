@@ -8,6 +8,8 @@
 #include "GRY_PixelGame.hpp"
 
 static const float BOTTOM_MARGIN = 8.f;
+static const double SCROLL_SPEED = 16.0;
+static const double TIMER_LENGTH = 0.05;
 
 void TextBoxScene::parseLine(char* line) {
 	char* character = line;
@@ -56,25 +58,40 @@ void TextBoxScene::init() {
 	boxTextureArea = SDL_FRect{ x, y, textureWidth, textureHeight };
 
 	/* Recall that textArea width and height have the margins stored in them right now. */
-	textArea.x = boxTextureArea.x + textArea.w;
-	textArea.y = boxTextureArea.y + textArea.h;
+	textArea.x = (int)boxTextureArea.x + textArea.w;
+	textArea.y = (int)boxTextureArea.y + textArea.h;
 	/* Now we can set the actual width and height */
-	textArea.w = boxTextureArea.w - (2 * textArea.w);
-	textArea.h = boxTextureArea.h - (2 * textArea.h);
+	textArea.w = (int)boxTextureArea.w - (2 * textArea.w);
+	textArea.h = (int)boxTextureArea.h - (2 * textArea.h);
 }
 
 void TextBoxScene::process() {
 	if (!active) { return; }
 
-	textBoxRenderer.process();
-
-	if (storedLine) { textBoxRenderer.printLine(storedLine); }
-	if (incomingLine) {
-		textBoxRenderer.printLine(incomingLine);
-		delete[] storedLine;
-		storedLine = incomingLine;
-		incomingLine = nullptr;
+	if (*incomingLine && incomingLine[index] == '\0') {
+		strncpy(storedLine, incomingLine, MAX_LINE_LENGTH);
+		textBoxRenderer.beginRender(storedLine);
+		*incomingLine = 0;
+		index = 0;	
 	}
+
+	textBoxRenderer.beginProcess();
+	
+	if (*storedLine) {
+		textBoxRenderer.printLine(storedLine, SCROLL_SPEED, game->getDelta());
+	}
+
+	if (*incomingLine) {
+		if (textBoxRenderer.printLine(incomingLine, SCROLL_SPEED, game->getDelta(), index)) {
+			timer -= game->getDelta();
+			if (timer <= 0.0) {
+				index++;
+				timer = TIMER_LENGTH;
+			}
+		}
+	}
+
+	textBoxRenderer.endProcess();
 }
 
 bool TextBoxScene::load() {
@@ -91,15 +108,14 @@ bool TextBoxScene::load() {
 	/* Initialize the font texture */
 	font.setPath(sceneDoc["fontTexturePath"].GetString());
 	/* Store margins in textArea for now */
-	textArea.w = sceneDoc["marginX"].GetFloat();
-	textArea.h = sceneDoc["marginY"].GetFloat();
-
+	textArea.w = sceneDoc["marginX"].GetUint();
+	textArea.h = sceneDoc["marginY"].GetUint();
 	return false;
 }
 
 bool TextBoxScene::isReady() {
 	GRY_Assert(active, "[TextBoxScene] You must open the text box before calling isReady()!");
-	return readSingleInput() == GCmd::MessageOk && !incomingLine;
+	return readSingleInput() == GCmd::MessageOk && !*incomingLine;
 }
 
 void TextBoxScene::open() {
@@ -108,15 +124,16 @@ void TextBoxScene::open() {
 }
 
 void TextBoxScene::close() {
-	delete[] storedLine; storedLine = nullptr;
-	delete[] incomingLine; incomingLine = nullptr;
+	*storedLine = 0;
+	*incomingLine = 0;
 	parentScene->activateControlScheme();
 	active = false;
 }
 
 void TextBoxScene::printLine(const char *line) {
-	GRY_Assert(!incomingLine, "[TextBoxScene] printLine() called before the textbox was ready.");
-	if (incomingLine) { return; }
-	incomingLine = GRY_copyString(line);
+	GRY_Assert(!*incomingLine, "[TextBoxScene] printLine() called before the textbox was ready.");
+	if (*incomingLine) { return; }
+	strncpy(incomingLine, line, MAX_LINE_LENGTH);
+	incomingLine[MAX_LINE_LENGTH-1] = 0; /**< Ensure null termination */
 	parseLine(incomingLine);
 }

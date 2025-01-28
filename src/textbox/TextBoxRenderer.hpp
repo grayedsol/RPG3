@@ -33,6 +33,13 @@ private:
 	 */
 	const float* pixelScaling;
 
+	struct {
+		float x = 0;
+		float y = 0;
+	} cursor;
+
+	float yStart = 0;
+
 	void printChar(char character, float x, float y);
 public:
 	/**
@@ -48,5 +55,12 @@ public:
 	 */
 	void process();
 
-	void printLine(const char* line);
+	void beginProcess();
+	void endProcess();
+
+	bool printLine(const char* line, double scrollSpeed, double delta, int index = -1);
+
+	void beginRender(const char* storedLine);
+
+	void endRender();
 };

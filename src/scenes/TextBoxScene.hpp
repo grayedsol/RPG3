@@ -37,7 +37,7 @@ private:
 	 * @brief Area within the box that text is rendered.
 	 * 
 	 */
-	SDL_FRect textArea;
+	SDL_Rect textArea;
 
 	/**
 	 * @brief Texture of the message font.
@@ -51,8 +51,12 @@ private:
 	 */
 	TextBoxRenderer textBoxRenderer;
 
-	char* storedLine = nullptr;
-	char* incomingLine = nullptr;
+	static const unsigned MAX_LINE_LENGTH = 256;
+	char storedLine[MAX_LINE_LENGTH] = { 0 };
+	char incomingLine[MAX_LINE_LENGTH] = { 0 };
+
+	int index = 0;
+	double timer = 0;
 
 	bool active = false;
 
@@ -75,15 +79,6 @@ public:
 		Scene((GRY_Game *)pGame, scenePath),
 		parentScene(parentScene),
 		textBoxRenderer(this) {
-	}
-
-	/**
-	 * @brief Destructor.
-	 * 
-	 */
-	~TextBoxScene() {
-		delete[] storedLine; storedLine = nullptr;
-		delete[] incomingLine; incomingLine = nullptr;
 	}
 
 	/**
@@ -151,7 +146,7 @@ public:
 	 */
 	SDL_FRect getBoxTextureArea() const { return boxTextureArea; }
 
-	SDL_FRect getTextArea() const { return textArea; }
+	SDL_Rect getTextArea() const { return textArea; }
 
 	const Fontset& getFont() const { return font; }
 

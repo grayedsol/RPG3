@@ -13,3 +13,10 @@ inline void operator*=(SDL_FRect& rect, float scalar) {
 	rect.w *= scalar;
 	rect.h *= scalar;
 }
+
+inline void operator*=(SDL_Rect& rect, int scalar) {
+	rect.x *= scalar;
+	rect.y *= scalar;
+	rect.w *= scalar;
+	rect.h *= scalar;
+}

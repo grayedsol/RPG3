@@ -2,8 +2,14 @@
 #include "../scenes/TextBoxScene.hpp"
 #include "GRY_PixelGame.hpp"
 #include "SDL_FRectOps.hpp"
+#include <math.h>
 
-static const float BOTTOM_MARGIN = 8.f;
+static const float LINE_SPACING = 2.f;
+
+struct TextCursor {
+	float x = 0;
+	float y = 0;
+};
 
 void TextBoxRenderer::printChar(char character, float x, float y) {
 }
@@ -17,24 +23,67 @@ void TextBoxRenderer::process() {
 	SDL_FRect dstRect = scene->getBoxTextureArea();
 	dstRect *= *pixelScaling;
 	SDL_RenderTexture(renderer, scene->getBoxTexture(), NULL, &dstRect);
+	cursor.x = 0;
+	cursor.y = yStart;
 }
 
-void TextBoxRenderer::printLine(const char *line) {
+void TextBoxRenderer::beginProcess() {
+	SDL_FRect dstRect = scene->getBoxTextureArea();
+	dstRect *= *pixelScaling;
+	SDL_RenderTexture(renderer, scene->getBoxTexture(), NULL, &dstRect);
+
+	SDL_Rect rect = scene->getTextArea();
+	rect *= (int)*pixelScaling;
+	SDL_SetRenderViewport(renderer, &rect);
+
+	cursor.x = 0;
+	cursor.y = yStart;
+}
+
+void TextBoxRenderer::endProcess() {
+	SDL_SetRenderViewport(renderer, NULL);
+}
+
+bool TextBoxRenderer::printLine(const char *line, double scrollSpeed, double delta, int index) {
+	if (index < 0) { index = 256; } /**< TextBoxScene::MAX_LINE_LENGTH */
+	
 	const Fontset& font = scene->getFont();
-	SDL_FRect textArea = scene->getTextArea();
-	float x = textArea.x;
-	float y = textArea.y;
-	for (; *line != '\0'; line++) {
-		if (*line == '\n') { y += font.charHeight + 2; x = textArea.x; }
+	SDL_Rect rect = scene->getTextArea();
+	
+	for (int i = 0; i < index && line[i]; i++) {
+		if (cursor.y + font.charHeight + LINE_SPACING > rect.h) { yStart -= scrollSpeed * delta; return false; }
+		if (line[i] == '\n') {
+			cursor.y += font.charHeight + LINE_SPACING;
+			cursor.x = 0;
+		}
 		else {
-			const SDL_FRect* srcRect = font.getSourceRect(*line - ' ');
+			const SDL_FRect* srcRect = font.getSourceRect(line[i] - ' ');
 			SDL_FRect dstRect{
-				x, y,
-				srcRect->w, srcRect->h 
+				cursor.x, cursor.y,
+				srcRect->w, srcRect->h
 			};
-			x += dstRect.w;
+			cursor.x += dstRect.w;
 			dstRect *= *pixelScaling;
+			dstRect.y = ceilf(dstRect.y);
 			SDL_RenderTexture(renderer, font.texture, srcRect, &dstRect);
 		}
 	}
+	cursor.y += font.charHeight + LINE_SPACING;
+	cursor.x = 0;
+	return true;
+}
+
+void TextBoxRenderer::beginRender(const char* storedLine) {
+	const Fontset& font = scene->getFont();
+
+	yStart = scene->getTextArea().h - (font.charHeight + LINE_SPACING);
+	for (; *storedLine != '\0'; storedLine++) {
+		if (*storedLine == '\n') { yStart -= font.charHeight + LINE_SPACING; }
+	}
+	yStart = std::min(0.f, yStart);
+}
+
+void TextBoxRenderer::endRender() {
+	cursor.x = 0;
+	cursor.y = yStart;
 }
