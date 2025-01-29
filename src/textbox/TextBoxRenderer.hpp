@@ -39,8 +39,6 @@ private:
 	} cursor;
 
 	float yStart = 0;
-
-	void printChar(char character, float x, float y);
 public:
 	/**
 	 * @brief Constructor.
@@ -50,21 +48,22 @@ public:
 	TextBoxRenderer(TextBoxScene* scene);
 
 	/**
-	 * @brief Render the text box.
+	 * @brief Set the viewport and prepare for rendering text.
 	 * 
 	 */
-	void process();
+	void beginRender();
 
-	void beginProcess();
-	void endProcess();
-
-	bool printLine(const char* line, double scrollSpeed, double delta, int index = -1);
-
-	void beginRender(const char* storedLine);
-
+	/**
+	 * @brief Set the viewport back to normal.
+	 * 
+	 */
 	void endRender();
 
-	void scrollUp(double scrollSpeed, double delta);
+	bool printLine(const char* line, double scrollAmt, int index = -1);
 
-	float yAfterPrintingLine(const char* line);
+	void setSpacingFromLine(const char* storedLine);
+
+	void scrollUp(double scrollAmt) { yStart -= scrollAmt; }
+
+	float getCursorY() { return cursor.y; }
 };

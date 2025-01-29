@@ -8,7 +8,8 @@
 #include "GRY_PixelGame.hpp"
 
 static const float BOTTOM_MARGIN = 8.f;
-static const double SCROLL_SPEED = 64.0;
+static const double BASE_SCROLL_SPEED = 64.0;
+static const double SCROLL_SPEED_MULTIPLIER = 2.0;
 static const double TIMER_LENGTH = 0.025;
 
 void TextBoxScene::parseLine(char* line) {
@@ -18,17 +19,17 @@ void TextBoxScene::parseLine(char* line) {
 		float charWidth = font.getSourceRect(*character - ' ')->w;
 		if (*character == ' ' || character == line) {
 			float wordWidth = charWidth;
-			char* wordStart = character + 1;
-			while (*wordStart && *wordStart != ' ') {
-				wordWidth += font.getSourceRect(*wordStart - ' ')->w;
-				wordStart++;
+			char* word = character + 1;
+			while (*word && *word != ' ') {
+				wordWidth += font.getSourceRect(*word - ' ')->w;
+				word++;
 			}
 			if (wordWidth > widthRemaining && wordWidth < textArea.w) {
 				*character = '\n';
 				widthRemaining = textArea.w - wordWidth + charWidth;
 			}
 			else {
-				character = wordStart;
+				character = word;
 				widthRemaining -= wordWidth;
 				continue;
 			}
@@ -57,7 +58,7 @@ void TextBoxScene::init() {
 
 	boxTextureArea = SDL_FRect{ x, y, textureWidth, textureHeight };
 
-	/* Recall that textArea width and height have the margins stored in them right now. */
+	/* Recall that textArea width and height have the margins stored in them right now */
 	textArea.x = (int)boxTextureArea.x + textArea.w;
 	textArea.y = (int)boxTextureArea.y + textArea.h;
 	/* Now we can set the actual width and height */
@@ -68,47 +69,43 @@ void TextBoxScene::init() {
 void TextBoxScene::process() {
 	if (!active) { return; }
 
-	if (readSingleInput() == GCmd::MessageOk && index != 0) {
-		doubleSpeed = true;
-	}
+	if (readSingleInput() == GCmd::MessageOk && index != 0) { speedup = true; }
+	double speed = BASE_SCROLL_SPEED * (1 + (speedup * SCROLL_SPEED_MULTIPLIER));
+	double scrollAmt = speed * game->getDelta();
 
-	if (*incomingLine && incomingLine[index] == '\0') {
-		if (*storedLine && textBoxRenderer.yAfterPrintingLine(storedLine) > 0) {
-			textBoxRenderer.beginProcess();
-			textBoxRenderer.scrollUp(SCROLL_SPEED * (1 + doubleSpeed), game->getDelta());
-			textBoxRenderer.printLine(storedLine, SCROLL_SPEED, game->getDelta());
-			textBoxRenderer.printLine(incomingLine, SCROLL_SPEED, game->getDelta());
-			textBoxRenderer.endProcess();
-			textBoxRenderer.endRender();
-			return;
+	textBoxRenderer.beginRender();
+
+	textBoxRenderer.printLine(storedLine, scrollAmt);
+
+	if (!*incomingLine) { /* Skip to end of function */ }
+	/* If incoming line has finished printing */
+	else if (incomingLine[index] == 0) {
+		/* Scroll up until the text box only shows the incoming line */
+		if (textBoxRenderer.getCursorY() > 0) {
+			textBoxRenderer.scrollUp(scrollAmt); /**< Does not affect cursor.y this frame */
+			textBoxRenderer.printLine(incomingLine, scrollAmt);
 		}
+		/* Replace the stored line with the incoming line, reset the incoming line */
 		else {
 			strncpy(storedLine, incomingLine, MAX_LINE_LENGTH);
-			textBoxRenderer.beginRender(storedLine);
-			doubleSpeed = false;
+			textBoxRenderer.setSpacingFromLine(storedLine);
+			textBoxRenderer.printLine(storedLine, scrollAmt);
+
+			speedup = false;
 			*incomingLine = 0;
 			index = 0;
 		}
 	}
-
-	textBoxRenderer.beginProcess();
-	
-	if (*storedLine) {
-		textBoxRenderer.printLine(storedLine, SCROLL_SPEED, game->getDelta());
-	}
-
-	if (*incomingLine) {
-		double speed = SCROLL_SPEED * (1 + doubleSpeed);
-		if (textBoxRenderer.printLine(incomingLine, speed, game->getDelta(), index)) {
-			timer -= game->getDelta() * (1 + doubleSpeed);
-			while (timer <= 0.0) {
-				index++;
-				timer += TIMER_LENGTH;
-			}
+	/* Print incoming line. If it successfully printed up to index, increment index on a timer */
+	else if (textBoxRenderer.printLine(incomingLine, scrollAmt, index)) {
+		timer -= game->getDelta() * (1 + speedup);
+		while (timer <= 0.0) {
+			index++;
+			timer += TIMER_LENGTH;
 		}
 	}
 
-	textBoxRenderer.endProcess();
+	textBoxRenderer.endRender();
 }
 
 bool TextBoxScene::load() {
@@ -136,11 +133,13 @@ bool TextBoxScene::isReady() {
 }
 
 void TextBoxScene::open() {
+	GRY_Assert(!active, "[TextBoxScene] open() called when the text box was already open!");
 	activateControlScheme();
 	active = true;
 }
 
 void TextBoxScene::close() {
+	GRY_Assert(active, "[TextBoxScene] close() called when the text box was not open!");
 	*storedLine = 0;
 	*incomingLine = 0;
 	parentScene->activateControlScheme();

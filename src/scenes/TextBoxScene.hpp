@@ -19,6 +19,8 @@ class GRY_PixelGame;
  * GAME_A: Proceed
  */
 class TextBoxScene : public Scene {
+public:
+	static const unsigned MAX_LINE_LENGTH = 256;
 private:
 	Scene* parentScene;
 	/**
@@ -51,7 +53,6 @@ private:
 	 */
 	TextBoxRenderer textBoxRenderer;
 
-	static const unsigned MAX_LINE_LENGTH = 256;
 	char storedLine[MAX_LINE_LENGTH] = { 0 };
 	char incomingLine[MAX_LINE_LENGTH] = { 0 };
 
@@ -59,7 +60,7 @@ private:
 	double timer = 0;
 
 	bool active = false;
-	bool doubleSpeed = false;
+	bool speedup = false;
 
 	void parseLine(char* line);
 
@@ -147,8 +148,18 @@ public:
 	 */
 	SDL_FRect getBoxTextureArea() const { return boxTextureArea; }
 
+	/**
+	 * @brief Get the area where text should be typed within the box.
+	 * 
+	 * @return The text area
+	 */
 	SDL_Rect getTextArea() const { return textArea; }
 
+	/**
+	 * @brief Get the Fontset of the text box.
+	 * 
+	 * @return `const` reference to the Fontset. 
+	 */
 	const Fontset& getFont() const { return font; }
 
 	/**
@@ -157,7 +168,4 @@ public:
 	 * @return Pointer to the GRY_PixelGame.
 	 */
 	GRY_PixelGame* getPixelGame() const { return (GRY_PixelGame*)game; }
-
-	const char* getStoredLine() const { return storedLine; }
-	const char* getIncomingLine() const { return incomingLine; }
 };
