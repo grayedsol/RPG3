@@ -28,13 +28,13 @@ void TextBoxRenderer::endRender() {
 	SDL_SetRenderViewport(renderer, NULL);
 }
 
-bool TextBoxRenderer::printLine(const char* line, double scrollAmt, int index) {
+bool TextBoxRenderer::renderLine(const char* line, float scrollAmt, int index) {
 	if (!*line) { return false; }
 	if (index < 0) { index = TextBoxScene::MAX_LINE_LENGTH; }
 	
 	const Fontset& font = scene->getFont();
 	SDL_Rect rect = scene->getTextArea();
-	double lineSpaceAvailable = rect.h - font.charHeight - LINE_SPACING;
+	float lineSpaceAvailable = rect.h - font.charHeight - LINE_SPACING;
 
 	for (int i = 0; i < index && line[i]; i++) {
 		if (lineSpaceAvailable < cursor.y) {
@@ -71,13 +71,18 @@ bool TextBoxRenderer::printLine(const char* line, double scrollAmt, int index) {
 	return true;
 }
 
-void TextBoxRenderer::setSpacingFromLine(const char* storedLine) {
+/**
+ * @details
+ * The current y position of the cursor is also set to the updated spacing.
+ */
+void TextBoxRenderer::setSpacingFromLine(const char* line) {
 	const Fontset& font = scene->getFont();
 
 	yStart = scene->getTextArea().h - (font.charHeight + LINE_SPACING);
-	for (; *storedLine != '\0'; storedLine++) {
-		if (*storedLine == '\n') { yStart -= font.charHeight + LINE_SPACING; }
+	for (; *line != '\0'; line++) {
+		if (*line == '\n') { yStart -= font.charHeight + LINE_SPACING; }
 	}
+	yStart -= font.charHeight + LINE_SPACING; /**< TODO: Why is this need on Linux but not Windows? */
 	yStart = std::min(0.f, yStart);
 	cursor.y = yStart;
 }

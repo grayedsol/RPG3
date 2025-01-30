@@ -71,11 +71,11 @@ void TextBoxScene::process() {
 
 	if (readSingleInput() == GCmd::MessageOk && index != 0) { speedup = true; }
 	double speed = BASE_SCROLL_SPEED * (1 + (speedup * SCROLL_SPEED_MULTIPLIER));
-	double scrollAmt = speed * game->getDelta();
+	float scrollAmt = speed * game->getDelta();
 
 	textBoxRenderer.beginRender();
 
-	textBoxRenderer.printLine(storedLine, scrollAmt);
+	textBoxRenderer.renderLine(storedLine, scrollAmt);
 
 	if (!*incomingLine) { /* Skip to end of function */ }
 	/* If incoming line has finished printing */
@@ -83,13 +83,13 @@ void TextBoxScene::process() {
 		/* Scroll up until the text box only shows the incoming line */
 		if (textBoxRenderer.getCursorY() > 0) {
 			textBoxRenderer.scrollUp(scrollAmt); /**< Does not affect cursor.y this frame */
-			textBoxRenderer.printLine(incomingLine, scrollAmt);
+			textBoxRenderer.renderLine(incomingLine, scrollAmt);
 		}
 		/* Replace the stored line with the incoming line, reset the incoming line */
 		else {
 			strncpy(storedLine, incomingLine, MAX_LINE_LENGTH);
 			textBoxRenderer.setSpacingFromLine(storedLine);
-			textBoxRenderer.printLine(storedLine, scrollAmt);
+			textBoxRenderer.renderLine(storedLine, scrollAmt);
 
 			speedup = false;
 			*incomingLine = 0;
@@ -97,7 +97,7 @@ void TextBoxScene::process() {
 		}
 	}
 	/* Print incoming line. If it successfully printed up to index, increment index on a timer */
-	else if (textBoxRenderer.printLine(incomingLine, scrollAmt, index)) {
+	else if (textBoxRenderer.renderLine(incomingLine, scrollAmt, index)) {
 		timer -= game->getDelta() * (1 + speedup);
 		while (timer <= 0.0) {
 			index++;

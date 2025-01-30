@@ -59,11 +59,35 @@ public:
 	 */
 	void endRender();
 
-	bool printLine(const char* line, double scrollAmt, int index = -1);
+	/**
+	 * @brief Render a line of text to the text box.
+	 * 
+	 * @param line Line of text to render
+	 * @param scrollAmt Distance to scroll if there is not enough space
+	 * @param index Character index to print to, or -1 for the whole line
+	 * @return `true` if the line was rendered up to `index`,
+	 * @return `false` if there was not enough room or the line was empty
+	 */
+	bool renderLine(const char* line, float scrollAmt, int index = -1);
 
-	void setSpacingFromLine(const char* storedLine);
+	/**
+	 * @brief Set vertical spacing based on a line so it can be completely printed.
+	 * 
+	 * @param line Line to set spacing for
+	 */
+	void setSpacingFromLine(const char* line);
 
-	void scrollUp(double scrollAmt) { yStart -= scrollAmt; }
+	/**
+	 * @brief Move the vertical spacing up by an amount.
+	 * 
+	 * @param scrollAmt Distance to scroll
+	 */
+	void scrollUp(float scrollAmt) { yStart -= scrollAmt; }
 
+	/**
+	 * @brief Get the current y position of the cursor.
+	 * 
+	 * @return y position of the cursor
+	 */
 	float getCursorY() { return cursor.y; }
 };
