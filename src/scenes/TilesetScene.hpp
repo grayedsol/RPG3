@@ -9,6 +9,8 @@
 #include "../tile/Tileset.hpp"
 #include "../tile/TileCollision.hpp"
 
+struct SDL_Renderer;
+
 /**
  * @brief Loads and displays a tileset.
  * 

@@ -18,7 +18,7 @@ private:
 
 	TextBoxScene* textbox;
 
-	int index = 0;
+	unsigned index = 0;
 
 	TileMapScene* scene;
 public:

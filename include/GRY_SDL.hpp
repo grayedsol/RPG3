@@ -5,7 +5,10 @@
  * @copyright Copyright (c) 2024
  */
 #pragma once
-#include "SDL3/SDL.h"
+
+struct SDL_Window;
+struct SDL_Renderer;
+struct SDL_Texture;
 
 /**
  * @brief Initializes and provides an interface for SDL functionality.
@@ -47,13 +50,13 @@ private:
 	 * @brief Pointer to the SDL_Window being used.
 	 * 
 	 */
-	SDL_Window* gameWindow = NULL;
+	SDL_Window* gameWindow = nullptr;
 
 	/**
 	 * @brief Pointer to the SDL_Renderer being used.
 	 * 
 	 */
-	SDL_Renderer* gameRenderer = NULL;
+	SDL_Renderer* gameRenderer = nullptr;
 
 	/**
 	 * @brief Closes SDL.
@@ -103,18 +106,13 @@ public:
 	 * 
 	 * @param fullscreen `true` to set the window to fullscreen, `false` for windowed.
 	 */
-	void setWindowFullscreen(bool fullscreen) {
-		SDL_SetWindowFullscreen(gameWindow, fullscreen);
-	}
+	void setWindowFullscreen(bool fullscreen);
 
 	/**
 	 * @brief Toggle the window's fullscreen status.
 	 * 
 	 */
-	void toggleFullscreen() {
-		SDL_SetWindowFullscreen(gameWindow, !gameFullscreen);
-		gameFullscreen = !gameFullscreen;
-	}
+	void toggleFullscreen();
 
 	/**
 	 * @brief Fill the pointers with the dimensions of the window.
@@ -122,7 +120,7 @@ public:
 	 * @param w Pointer to fill with width of the window. Can be NULL.
 	 * @param h Pointer to fill with the height of the window. Can be NULL.
 	 */
-	void getWindowSize(int* w, int* h) { SDL_GetWindowSize(gameWindow, w, h); }
+	void getWindowSize(int* w, int* h);
 
 	/**
 	 * @brief Set the size of the window.
@@ -130,7 +128,7 @@ public:
 	 * @param w Width of the window in pixels.
 	 * @param h Height of the window in pixels.
 	 */
-	void setWindowSize(int w, int h) { SDL_SetWindowSize(gameWindow, w, h); }
+	void setWindowSize(int w, int h);
 
 	/**
 	 * @brief Get the SDL_Window* being used.

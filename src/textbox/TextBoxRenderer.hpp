@@ -5,8 +5,8 @@
  * @copyright Copyright (c) 2025
  */
 #pragma once
-#include "SDL3/SDL.h"
 
+struct SDL_Renderer;
 class TextBoxScene;
 
 /**

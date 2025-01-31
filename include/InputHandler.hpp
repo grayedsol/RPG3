@@ -5,7 +5,7 @@
  * @copyright Copyright (c) 2024
  */
 #pragma once
-#include "SDL3/SDL.h"
+#include "SDL3/SDL_scancode.h"
 #include "GRY_Mousecode.hpp"
 #include "CommandMap.hpp"
 #include <vector>

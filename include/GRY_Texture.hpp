@@ -5,9 +5,9 @@
  * @copyright Copyright (c) 2024
  */
 #pragma once
-#include "SDL3/SDL.h"
-#include "SDL3_image/SDL_image.h"
 #include "FileResource.hpp"
+
+struct SDL_Texture;
 
 /**
  * @brief Texture resource.
@@ -38,7 +38,7 @@ struct GRY_Texture : public FileResource {
 	 * @brief Destructor.
 	 * 
 	 */
-	~GRY_Texture() { SDL_DestroyTexture(texture); texture = nullptr; }
+	~GRY_Texture();
 
 	GRY_Texture(const GRY_Texture&) = delete;
 	GRY_Texture& operator=(const GRY_Texture&) = delete;

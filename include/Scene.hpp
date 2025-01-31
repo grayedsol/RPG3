@@ -5,9 +5,8 @@
  * @copyright Copyright (c) 2024
  */
 #pragma once
-#include <memory>
-#include "GRY_Lib.hpp"
 #include "CommandMap.hpp"
+
 class GRY_Game;
 
 /**
@@ -64,10 +63,7 @@ public:
 	 * @param game Associated game class.
 	 * @param scenePath File path to scene data.
 	 */
-	Scene(GRY_Game* game, const char* scenePath) :
-		game(game),
-		scenePath(GRY_copyString(scenePath)) {
-	}
+	Scene(GRY_Game* game, const char* scenePath);
 
 	/**
 	 * @brief Virtual destructor.

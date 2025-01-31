@@ -4,8 +4,14 @@
  * @copyright Copyright (c) 2025
  */
 #include "Fontset.hpp"
+#include "SDL3/SDL_render.h"
 #include "GRY_JSON.hpp"
 #include "GRY_Game.hpp"
+
+Fontset::~Fontset() {
+	SDL_DestroyTexture(texture);
+	texture = nullptr;
+}
 
 static SDL_FRect createSourceRect(int textureIndex, int textureWidth, int emWidth, int charWidth, int charHeight);
 

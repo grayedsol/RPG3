@@ -27,6 +27,7 @@ set(SOURCES
 	src/Scene.cpp
 	src/SceneManager.cpp
 	src/transitions/FadeToBlack.cpp
+	src/GRY_Lib.cpp
 	src/GRY_JSON.cpp
 	src/GRY_PixelGame.cpp
 	src/GRY_Tiled.cpp

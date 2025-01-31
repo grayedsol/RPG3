@@ -5,7 +5,8 @@
  */
 #include "TileMapRenderer.hpp"
 #include "../scenes/TileMapScene.hpp"
-#include "SDL_FRectOps.hpp"
+#include "SDL_RectOps.hpp"
+#include "SDL3/SDL_render.h"
 
 TileMapRenderer::TileMapRenderer(const TileMapScene *scene) :
 	scene(scene),

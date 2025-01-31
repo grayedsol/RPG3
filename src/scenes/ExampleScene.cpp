@@ -6,6 +6,7 @@
 #include "ExampleScene.hpp"
 #include "GRY_Game.hpp"
 #include "GRY_JSON.hpp"
+#include "SDL3/SDL_render.h"
 #include "../transitions/FadeToBlack.hpp"
 
 /**

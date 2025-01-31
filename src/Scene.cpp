@@ -5,6 +5,12 @@
  */
 #include "Scene.hpp"
 #include "GRY_Game.hpp"
+#include "GRY_Lib.hpp"
+
+Scene::	Scene(GRY_Game* game, const char* scenePath) :
+	game(game),
+	scenePath(GRY_copyString(scenePath)) {
+}
 
 Scene::~Scene() {
     delete[] scenePath;

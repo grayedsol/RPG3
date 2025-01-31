@@ -7,7 +7,6 @@
 #pragma once
 #pragma warning(push, 0)
 #include "rapidjson/document.h"
-#include "rapidjson/filereadstream.h"
 #pragma warning(pop)
 
 /**

@@ -7,6 +7,7 @@
 #include "GRY_Game.hpp"
 #include "GRY_SDL.hpp"
 #include "GRY_Log.hpp"
+#include "SDL3/SDL_render.h"
 
 bool FadeToBlack::process() {
     /* Initial phase */

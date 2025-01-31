@@ -5,6 +5,7 @@
  */
 #include "GRY_SDL.hpp"
 #include "GRY_Log.hpp"
+#include "SDL3/SDL.h"
 #include "SDL3_image/SDL_image.h"
 
 GRY_SDL::GRY_SDL(int WINDOW_WIDTH, int WINDOW_HEIGHT, bool USE_VSYNC) : 
@@ -90,4 +91,21 @@ SDL_Texture* GRY_SDL::loadTexture(const char* path) {
 
 SDL_Texture *GRY_SDL::loadTextureIO(const char *data) {
 	return nullptr;
+}
+
+void GRY_SDL::setWindowFullscreen(bool fullscreen) {
+	SDL_SetWindowFullscreen(gameWindow, fullscreen);
+}
+
+void GRY_SDL::toggleFullscreen() {
+	gameFullscreen = !gameFullscreen;
+	SDL_SetWindowFullscreen(gameWindow, gameFullscreen);
+}
+
+void GRY_SDL::getWindowSize(int *w, int *h) {
+	SDL_GetWindowSize(gameWindow, w, h);	
+}
+
+void GRY_SDL::setWindowSize(int w, int h) {
+	SDL_SetWindowSize(gameWindow, w, h);
 }

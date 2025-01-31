@@ -5,7 +5,7 @@
  * @copyright Copyright (c) 2025
  */
 #pragma once
-#include "SDL3/SDL.h"
+#include "SDL3/SDL_rect.h"
 
 inline void operator*=(SDL_FRect& rect, float scalar) {
 	rect.x *= scalar;

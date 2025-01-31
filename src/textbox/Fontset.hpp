@@ -6,8 +6,10 @@
  */
 #pragma once
 #include "FileResource.hpp"
+#include "SDL3/SDL_rect.h"
 #include <vector>
-#include "SDL3/SDL.h"
+
+struct SDL_Texture;
 
 /**
  * @brief Parses a font texture into an array character textures.
@@ -61,10 +63,7 @@ struct Fontset : public FileResource {
      * @brief Destructor.
      * 
      */
-    ~Fontset() {
-		SDL_DestroyTexture(texture);
-		texture = nullptr;
-	}
+    ~Fontset();
 
     Fontset(const Fontset&) = delete;
     Fontset& operator=(const Fontset&) = delete;

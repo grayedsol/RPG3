@@ -1,7 +1,8 @@
 #include "TextBoxRenderer.hpp"
+#include "SDL_RectOps.hpp"
+#include "SDL3/SDL_render.h"
 #include "../scenes/TextBoxScene.hpp"
 #include "GRY_PixelGame.hpp"
-#include "SDL_FRectOps.hpp"
 #include <math.h>
 
 static const float LINE_SPACING = 2.f;

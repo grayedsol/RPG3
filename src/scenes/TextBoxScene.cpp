@@ -6,6 +6,7 @@
 #include "TextBoxScene.hpp"
 #include "GRY_JSON.hpp"
 #include "GRY_PixelGame.hpp"
+#include "SDL3/SDL_render.h"
 
 static const float BOTTOM_MARGIN = 8.f;
 static const double BASE_SCROLL_SPEED = 64.0;

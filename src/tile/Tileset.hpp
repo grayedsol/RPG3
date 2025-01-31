@@ -7,7 +7,9 @@
 #pragma once
 #include "Tile.hpp"
 #include "FileResource.hpp"
-#include "SDL3/SDL.h"
+#include "SDL3/SDL_rect.h"
+
+struct SDL_Texture;
 
 /**
  * @brief Parses a texture into an array of simple tiles.
@@ -80,10 +82,7 @@ struct Tileset : public FileResource {
      * @brief Destructor.
      * 
      */
-    ~Tileset() {
-		SDL_DestroyTexture(texture);
-		texture = nullptr;
-	}
+    ~Tileset();
 
     Tileset(const Tileset&) = delete;
     Tileset& operator=(const Tileset&) = delete;

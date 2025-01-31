@@ -5,6 +5,7 @@
  */
 #include "GRY_Game.hpp"
 #include "GRY_Log.hpp"
+#include "SDL3/SDL_render.h"
 #include "imgui.h"
 #include "imgui_impl_sdl3.h"
 #include "imgui_impl_sdlrenderer3.h"

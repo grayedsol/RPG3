@@ -6,6 +6,12 @@
 #include "Tileset.hpp"
 #include "GRY_Game.hpp"
 #include "GRY_Tiled.hpp"
+#include "SDL3/SDL_render.h"
+
+Tileset::~Tileset() {
+	SDL_DestroyTexture(texture);
+	texture = nullptr;
+}
 
 bool Tileset::load(GRY_Game* game) {
     if (tileWidth != 0.0f) { return true; }
