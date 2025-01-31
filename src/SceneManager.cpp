@@ -4,6 +4,8 @@
  * @copyright Copyright (c) 2024
  */
 #include "SceneManager.hpp"
+#include "Scene.hpp"
+#include "Transition.hpp"
 #include "GRY_Log.hpp"
 
 SceneManager::~SceneManager() {
