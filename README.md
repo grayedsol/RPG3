@@ -7,7 +7,6 @@ Texture assets are from [Seliel the Shaper's](https://seliel-the-shaper.itch.io/
 ### Dependencies
 - SDL3
 - SDL3_image
-- SDL3_ttf
 
 ### Compilation
 In the terminal:

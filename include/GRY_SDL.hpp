@@ -5,9 +5,10 @@
  * @copyright Copyright (c) 2024
  */
 #pragma once
-#include "SDL3/SDL.h"
 
-struct TTF_Font;
+struct SDL_Window;
+struct SDL_Renderer;
+struct SDL_Texture;
 
 /**
  * @brief Initializes and provides an interface for SDL functionality.
@@ -49,13 +50,13 @@ private:
 	 * @brief Pointer to the SDL_Window being used.
 	 * 
 	 */
-	SDL_Window* gameWindow = NULL;
+	SDL_Window* gameWindow = nullptr;
 
 	/**
 	 * @brief Pointer to the SDL_Renderer being used.
 	 * 
 	 */
-	SDL_Renderer* gameRenderer = NULL;
+	SDL_Renderer* gameRenderer = nullptr;
 
 	/**
 	 * @brief Closes SDL.
@@ -101,41 +102,17 @@ public:
 	SDL_Texture* loadTextureIO(const char* data);
 
 	/**
-	 * @brief Load a texture from text.
-	 * 
-	 * @param text UTF8 encoded text that will be shown in the texture.
-	 * @param font Font of the text.
-	 * @param color Color of the text.
-	 * @return Pointer to the texture.
-	 */
-	SDL_Texture* loadTextTexture(const char* text, TTF_Font* font, SDL_Color color);
-
-	/**
-	 * @brief Load a font from a file.
-	 * 
-	 * @param fontPath File path to the ttf font.
-	 * @param ptSize Point size to use for the font.
-	 * @return Pointer to the font.
-	 */
-	TTF_Font* loadFont(const char* fontPath, int ptSize);
-
-	/**
 	 * @brief Set the window's fullscreen status.
 	 * 
 	 * @param fullscreen `true` to set the window to fullscreen, `false` for windowed.
 	 */
-	void setWindowFullscreen(bool fullscreen) {
-		SDL_SetWindowFullscreen(gameWindow, fullscreen);
-	}
+	void setWindowFullscreen(bool fullscreen);
 
 	/**
 	 * @brief Toggle the window's fullscreen status.
 	 * 
 	 */
-	void toggleFullscreen() {
-		SDL_SetWindowFullscreen(gameWindow, !gameFullscreen);
-		gameFullscreen = !gameFullscreen;
-	}
+	void toggleFullscreen();
 
 	/**
 	 * @brief Fill the pointers with the dimensions of the window.
@@ -143,7 +120,7 @@ public:
 	 * @param w Pointer to fill with width of the window. Can be NULL.
 	 * @param h Pointer to fill with the height of the window. Can be NULL.
 	 */
-	void getWindowSize(int* w, int* h) { SDL_GetWindowSize(gameWindow, w, h); }
+	void getWindowSize(int* w, int* h);
 
 	/**
 	 * @brief Set the size of the window.
@@ -151,7 +128,7 @@ public:
 	 * @param w Width of the window in pixels.
 	 * @param h Height of the window in pixels.
 	 */
-	void setWindowSize(int w, int h) { SDL_SetWindowSize(gameWindow, w, h); }
+	void setWindowSize(int w, int h);
 
 	/**
 	 * @brief Get the SDL_Window* being used.

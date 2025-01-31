@@ -6,6 +6,7 @@
 #include "InputHandler.hpp"
 #include "GRY_Log.hpp"
 #include "GRY_JSON.hpp"
+#include "SDL3/SDL_events.h"
 #include "imgui_impl_sdl3.h"
 
 /**
@@ -121,7 +122,7 @@ void InputHandler::process(bool& gameRunning) {
 		ImGui_ImplSDL3_ProcessEvent(&event);
 		switch (event.window.type) {
 		case SDL_EVENT_WINDOW_RESIZED:
-			SDL_Log("Resized window.");
+			GRY_Log("Resized window.");
 			break;
 		default:
 			break;
@@ -152,7 +153,7 @@ void InputHandler::process(bool& gameRunning) {
 	}
 
 	/* Remove from `inputs` until an active input is found */
-	while (!inputs.empty() && !isPressing(inputs.back())) {
+	while (!inputs.empty() && !isPressingVButton(inputs.back())) {
 		inputs.pop_back();
 	}
 }

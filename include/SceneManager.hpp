@@ -5,9 +5,10 @@
  * @copyright Copyright (c) 2024
  */
 #pragma once
-#include "Scene.hpp"
-#include "Transition.hpp"
 #include <vector>
+
+class Scene;
+class Transition;
 
 /**
  * @brief Stores, loads, deletes, and switches between scenes.

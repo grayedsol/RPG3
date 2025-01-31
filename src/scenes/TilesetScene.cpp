@@ -6,6 +6,7 @@
 #include "TilesetScene.hpp"
 #include "GRY_Game.hpp"
 #include "GRY_JSON.hpp"
+#include "SDL3/SDL_render.h"
 #include "../transitions/FadeToBlack.hpp"
 #ifndef NDEBUG
 #include "imgui.h"
@@ -22,6 +23,11 @@ void TilesetScene::setControls() {
 	controls.mapCmd(GCmd::GameMenu, VirtualButton::GAME_A);
 	controls.mapCmd(GCmd::GameUp, VirtualButton::GAME_UP);
 	controls.mapCmd(GCmd::GameQuit, VirtualButton::GAME_B);
+}
+
+TilesetScene::TilesetScene(GRY_Game *game, const char *tilesetPath) :
+	Scene(game, tilesetPath),
+	renderer(game->getSDL().getRenderer()) {
 }
 
 void TilesetScene::process() {

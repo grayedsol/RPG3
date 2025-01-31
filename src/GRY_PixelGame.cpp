@@ -8,8 +8,8 @@
 
 static const char* PIXEL_GAME_CONFIG_PATH = "config/pixelGameConfig.json";
 
-GRY_PixelGame::GRY_PixelGame(int WINDOW_WIDTH, int WINDOW_HEIGHT, int TARGET_FPS, bool USE_VSYNC) : 
-	GRY_Game(WINDOW_WIDTH, WINDOW_HEIGHT, TARGET_FPS, USE_VSYNC) {
+GRY_PixelGame::GRY_PixelGame(int WINDOW_WIDTH, int WINDOW_HEIGHT, int MAX_FPS, bool USE_VSYNC) : 
+	GRY_Game(WINDOW_WIDTH, WINDOW_HEIGHT, MAX_FPS, USE_VSYNC) {
 	GRY_JSON::Document doc;
 	GRY_JSON::loadDoc(doc, PIXEL_GAME_CONFIG_PATH);
 
@@ -33,7 +33,7 @@ void GRY_PixelGame::process() {
 	pixelScaling = w / (float)SCREEN_WIDTH_PIXELS;
 	pixelScaling = SDL_ceilf(pixelScaling);
 
-	if (input.isPressing(GAME_START) && input.getSingleInput() == GAME_SELECT) {
+	if (input.isPressingVButton(GAME_START) && input.getSingleInputVButton() == GAME_SELECT) {
 		imguiDebug.toggle();
 	}
 }

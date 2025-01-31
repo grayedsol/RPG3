@@ -8,6 +8,7 @@
 #include "Tile.hpp"
 #include "FileResource.hpp"
 #include "SparseSet.hpp"
+#include "SDL3/SDL_rect.h"
 
 /**
  * @brief Holds collision data for a tileset.

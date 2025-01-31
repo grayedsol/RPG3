@@ -77,7 +77,7 @@ static Velocity2 AABBMTV(const Hitbox& lhs, const Hitbox& rhs) {
 
 Hitbox TileMapMovement::handleEntityCollisions(Hitbox box, ECS::entity e, int layer) {
 	std::vector<Hitbox> eCollisions;
-	trees.at(layer).query(box, e, eCollisions);
+	scene->getQuadTrees().at(layer).query(box, e, eCollisions);
 	if (eCollisions.empty()) { return box; }
 	*((Position2*)&box) += AABBMTV(box, eCollisions.back());
 
@@ -120,43 +120,24 @@ void TileMapMovement::process(double delta) {
 
 		/* Try gliding */
 		glide(delta, prevVelocity, e);
-	}
 
-	for (int layer = 0; layer < scene->getTileEntityMap().entityLayers.size(); layer++) {
-		for (auto e : scene->getTileEntityMap().entityLayers.at(layer)) {
-			if (hitboxes->contains(e)) {
-				Hitbox box = hitboxes->get(e);
-				Position2* pos = reinterpret_cast<Position2*>(&box);
-				*pos = positions->get(e);
-				*pos += velocities->get(e) * actors->get(e).speed * (1 + actors->get(e).sprinting) * delta;
+		unsigned layer = actors->get(e).layer;
+		if (hitboxes->contains(e) && velocities->contains(e)) {
+			Hitbox box = hitboxes->get(e);
+			Position2* pos = reinterpret_cast<Position2*>(&box);
+			*pos = positions->get(e);
+			*pos += velocities->get(e) * actors->get(e).speed * (1 + actors->get(e).sprinting) * delta;
 
-				box = handleEntityCollisions(box, e, layer);
-				box = handleTileCollisions(box, layer);
+			box = handleEntityCollisions(box, e, layer);
+			box = handleTileCollisions(box, layer);
 
-				positions->get(e) = *pos;
-				hitboxes->get(e) = box;
-				TileEntityMap::sortLayer(&scene->getTileEntityMap(), layer);
-			}
-			else if (velocities->contains(e)) {
-				positions->get(e) += velocities->get(e) * actors->get(e).speed * (1 + actors->get(e).sprinting) * delta;
-				TileEntityMap::sortLayer(&scene->getTileEntityMap(), layer);
-			}
+			positions->get(e) = *pos;
+			hitboxes->get(e) = box;
+			TileEntityMap::sortLayer(&scene->getTileEntityMap(), layer);
 		}
-	}
-	for (int layer = 0; layer < scene->getTileEntityMap().entityLayers.size(); layer++) {
-		trees.at(layer).reset();
-		for (auto e : scene->getTileEntityMap().entityLayers.at(layer)) {
-			trees.at(layer).insert(hitboxes->get(e), e);
+		else if (velocities->contains(e)) {
+			positions->get(e) += velocities->get(e) * actors->get(e).speed * (1 + actors->get(e).sprinting) * delta;
+			TileEntityMap::sortLayer(&scene->getTileEntityMap(), layer);
 		}
-	}
-}
-
-void TileMapMovement::init() {
-	Hitbox mapSize{0, 0,
-		(float)(scene->getTileMap().width * scene->getNormalTileSize()),
-		(float)(scene->getTileMap().height * scene->getNormalTileSize())
-	};
-	for (int layer = 0; layer < scene->getTileEntityMap().entityLayers.size(); layer++) {
-		trees.push_back(QuadTree(mapSize));
 	}
 }

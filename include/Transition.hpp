@@ -5,6 +5,7 @@
  * @copyright Copyright (c) 2024
  */
 #pragma once
+
 class GRY_Game;
 
 /**

@@ -9,6 +9,8 @@
 #include "../tile/Tileset.hpp"
 #include "../tile/TileCollision.hpp"
 
+struct SDL_Renderer;
+
 /**
  * @brief Loads and displays a tileset.
  * 
@@ -57,17 +59,13 @@ public:
 	 * @param game Associated game class.
 	 * @param tilesetPath File path to the tileset scene.
 	 */
-	TilesetScene(GRY_Game* game, const char* tilesetPath) :
-		Scene(game, tilesetPath), renderer(game->getSDL().getRenderer()) {
-	}
-
+	TilesetScene(GRY_Game* game, const char* tilesetPath);
+	
 	/**
 	 * @brief Initializes the scene.
 	 * 
-	 * @details
-	 * This scene is simple, so nothing is done.
 	 */
-	void init() final {}
+	void init() final { setControls(); }
 
 	/**
 	 * @copydoc Scene::process

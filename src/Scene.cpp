@@ -5,13 +5,23 @@
  */
 #include "Scene.hpp"
 #include "GRY_Game.hpp"
+#include "GRY_Lib.hpp"
+
+Scene::	Scene(GRY_Game* game, const char* scenePath) :
+	game(game),
+	scenePath(GRY_copyString(scenePath)) {
+}
 
 Scene::~Scene() {
     delete[] scenePath;
 }
 
-GCmd Scene::readInput() { return controls.commands[game->getInput()]; }
+void Scene::activateControlScheme() { game->setControlScheme(controls); }
 
-GCmd Scene::readSingleInput() const { return controls.commands[game->getSingleInput()]; }
+void Scene::deactivateControlScheme() { game->resetControlScheme(); }
 
-const bool Scene::isPressing(GCmd cmd) const { return game->isPressing(controls.buttons[cmd]); }
+GCmd Scene::readInput() { return game->getInput(); }
+
+GCmd Scene::readSingleInput() const { return game->getSingleInput(); }
+
+const bool Scene::isPressing(GCmd cmd) const { return game->isPressing(cmd); }

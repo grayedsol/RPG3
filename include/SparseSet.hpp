@@ -6,7 +6,6 @@
  */
 #pragma once
 #include <vector>
-#include <assert.h>
 #include "GRY_Log.hpp"
 
 /**

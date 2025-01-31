@@ -5,6 +5,7 @@
  */
 #include "GRY_JSON.hpp"
 #include "GRY_Log.hpp"
+#include "rapidjson/filereadstream.h"
 
 void GRY_JSON::loadDoc(Document& doc, const char* path) {
     int BUFFER_SIZE = 65536;

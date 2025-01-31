@@ -5,6 +5,8 @@
  */
 #include "TileMapRenderer.hpp"
 #include "../scenes/TileMapScene.hpp"
+#include "SDL_RectOps.hpp"
+#include "SDL3/SDL_render.h"
 
 TileMapRenderer::TileMapRenderer(const TileMapScene *scene) :
 	scene(scene),
@@ -24,8 +26,8 @@ void TileMapRenderer::renderTile(const Tileset &tileset, const TileId textureInd
 void TileMapRenderer::renderSprite(ECS::entity e) {
 	const Tileset& tileset = entityMap->tilesets[sprites->get(e).tileset];
 	SDL_FRect dstRect {
-		floorf((positions->get(e)[0] + sprites->get(e).offsetX) * *pixelScaling) + offsetX,
-		floorf((positions->get(e)[1] + sprites->get(e).offsetY) * *pixelScaling) + offsetY,
+		floorf((positions->get(e)[0] + sprites->get(e).offsetX + offsetX) * *pixelScaling),
+		floorf((positions->get(e)[1] + sprites->get(e).offsetY + offsetY) * *pixelScaling),
 		tileset.tileWidth * *pixelScaling,
 		tileset.tileHeight * *pixelScaling
 	};
@@ -37,17 +39,29 @@ void TileMapRenderer::renderSprite(ECS::entity e) {
  * For efficiency, this renderer assumes the map uses only one tileset.
  */
 void TileMapRenderer::process() {
+	GRY_VecTD<uint32_t, 2, void> tileViewport{
+		scene->getPixelGame()->getScreenWidthPixels() / scene->getNormalTileSize(),
+		scene->getPixelGame()->getScreenHeightPixels() / scene->getNormalTileSize()
+	};
 	/* Tileset that will be used */
 	const Tileset& tileset = tileMap->tileset;
 	/* Distance to shift x or y when moving columns/rows in the rendering loop */
 	const float shift = scene->getNormalTileSize() * *pixelScaling;
-	/* Destination rectangle, defines position and size of rendered tile */
-	SDL_FRect dstRect { offsetX, offsetY, tileset.tileWidth * *pixelScaling, tileset.tileHeight * *pixelScaling };
 
 	GRY_Assert(tileMap->tileLayers.size() == entityMap->entityLayers.size(), 
 		"[TileMapRenderer] Tile map and Entity map need to have the same number of layers.\n"
 	);
 
+	uint32_t startX = std::max(0.f, -offsetX / (float)scene->getNormalTileSize());
+	uint32_t startY = std::max(0.f, -offsetY / (float)scene->getNormalTileSize());
+	uint32_t endX = std::min(tileMap->width, (uint32_t)(-offsetX / (float)scene->getNormalTileSize()) + tileViewport.x + 1);
+	uint32_t endY = (uint32_t)(-offsetY / (float)scene->getNormalTileSize()) + tileViewport.y + 2;
+	/* Destination rectangle, defines position and size of rendered tile */
+	SDL_FRect dstRect {
+		floorf((offsetX + (startX * scene->getNormalTileSize())) * *pixelScaling),
+		floorf((offsetY + (startY * scene->getNormalTileSize())) * *pixelScaling),
+		tileset.tileWidth * *pixelScaling, tileset.tileHeight * *pixelScaling
+	};
 	for (int i = 0; i < tileMap->tileLayers.size(); i++) {
 		const TileLayer& layer = tileMap->tileLayers[i];
 		const EntityLayer& entityLayer = entityMap->entityLayers[i];
@@ -55,23 +69,24 @@ void TileMapRenderer::process() {
 
 		unsigned entityIndex = 0;
 		uint32_t entityRow = 0;
-		if (!entityLayer.empty()) {
+		for (; entityIndex < entityLayer.size(); entityIndex++) {
 			Hitbox box = hitboxes->get(entityLayer[entityIndex]);
 			entityRow = (uint32_t)((box.y + box.h) / tileset.tileHeight);
+			if (entityRow >= startY) { break; }
 		}
+
+		endY = std::min((uint32_t)tileMap->tileLayers[i].size() / tileMap->width,
+						(uint32_t)(-offsetY / (float)scene->getNormalTileSize()) + tileViewport.y + 2);
 		/* Render by row */
-		for (uint32_t y = 0; y < numRows; y++) {
+		for (uint32_t y = startY; y < endY; y++) {
 			/* Render row of tiles */
-			for (uint32_t x = 0; x < tileMap->width; x++) {
+			for (uint32_t x = startX; x < endX; x++) {
 				Tile tile = layer[y * tileMap->width + x];
 				/* Render when id is nonzero (if it's 0 it has no texture) */
 				if (tile.id) { renderTile(tileset, tile.id, &dstRect); }
 				/* Increment dstRect x */
 				dstRect.x += shift;
 			}
-			/* Reset dstRect x and increment dstRect y */
-			dstRect.x =  offsetX;
-			dstRect.y += shift;
 
 			/* Render any entities in the row */
 			while (entityRow == y && entityIndex < entityLayer.size()) {
@@ -82,8 +97,12 @@ void TileMapRenderer::process() {
 					entityRow = (uint32_t)((box.y + box.h) / tileset.tileHeight);
 				}
 			}
+
+			/* Reset dstRect x and increment dstRect y */
+			dstRect.x = floorf((offsetX + (startX * scene->getNormalTileSize())) * *pixelScaling);
+			dstRect.y += shift;
 		}
 		/* Reset dstRect y */
-		dstRect.y = offsetY;
+		dstRect.y = floorf((offsetY + (startY * scene->getNormalTileSize())) * *pixelScaling);
 	}
 }

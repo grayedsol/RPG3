@@ -18,7 +18,9 @@ static void registerActor(TileEntityMap& eMap, entity e, const GRY_JSON::Value& 
 static void registerActorSprite(TileEntityMap& eMap, entity e, const GRY_JSON::Value& actorSprite);
 static void registerActorSpriteAnimations(TileEntityMap& eMap, entity e, const GRY_JSON::Value& actorAnimations);
 static void registerPlayer(TileEntityMap& eMap, entity e);
+static void registerNPC(TileEntityMap& eMap, entity e);
 static void registerHitbox(TileEntityMap& eMap, entity e, const GRY_JSON::Value& hitbox);
+static void registerTileMapAction(TileEntityMap& eMap, entity e, const GRY_JSON::Value& actionData);
 static void sortEntityLayer(ComponentSet<Position2>& positions, std::vector<entity>& layer);
 
 bool TileEntityMap::load(GRY_Game *game) {
@@ -52,6 +54,7 @@ bool TileEntityMap::load(GRY_Game *game) {
 		sortEntityLayer(this->ecs->getComponent<Position2>(), entityLayer);
 		entityLayers.push_back(entityLayer);
 	}
+	updateLayers(this);
 
 	/* Return false normally, but if there were no layers we can return true. */
 	return doc["layers"].GetArray().Size() == 0;
@@ -59,6 +62,15 @@ bool TileEntityMap::load(GRY_Game *game) {
 
 void TileEntityMap::sortLayer(TileEntityMap *entityMap, unsigned layer) {
 	sortEntityLayer(entityMap->ecs->getComponent<Position2>(), entityMap->entityLayers.at(layer));
+}
+
+void TileEntityMap::updateLayers(TileEntityMap* entityMap) {
+	ComponentSet<Actor>& actors = entityMap->ecs->getComponent<Actor>();
+	for (int layer = 0; layer < entityMap->entityLayers.size(); layer++) {
+		for (auto e : entityMap->entityLayers.at(layer)) {
+			actors.get(e).layer = layer;
+		}
+	}
 }
 
 entity registerEntity(TileEntityMap& eMap, const GRY_JSON::Value& entityData, float normalTileSize) {
@@ -72,7 +84,9 @@ entity registerEntity(TileEntityMap& eMap, const GRY_JSON::Value& entityData, fl
 	if (entityData.HasMember("actorSprite")) { registerActorSprite(eMap, e, entityData["actorSprite"]); }
 	if (entityData.HasMember("actorAnimations")) { registerActorSpriteAnimations(eMap, e, entityData["actorAnimations"]); }
 	if (entityData.HasMember("player")) { registerPlayer(eMap, e); }
+	if (entityData.HasMember("npc")) { registerNPC(eMap, e); }
 	if (entityData.HasMember("hitbox")) { registerHitbox(eMap, e, entityData["hitbox"]); }
+	if (entityData.HasMember("action")) { registerTileMapAction(eMap, e, entityData["action"]); }
 
 	return e;
 }
@@ -119,6 +133,10 @@ void registerPlayer(TileEntityMap& eMap, entity e) {
 	eMap.ecs->getComponent<Player>().add(e, Player{});
 }
 
+void registerNPC(TileEntityMap &eMap, entity e) {
+	eMap.ecs->getComponent<NPC>().add(e, NPC{});
+}
+
 void registerHitbox(TileEntityMap &eMap, entity e, const GRY_JSON::Value& hitbox) {
 	GRY_Assert(eMap.ecs->getComponent<Position2>().contains(e),
 		"[TileEntityMap] Entity with 'hitbox' must have a position."
@@ -129,6 +147,19 @@ void registerHitbox(TileEntityMap &eMap, entity e, const GRY_JSON::Value& hitbox
 	box.h = 2 * hitbox["radius"].GetFloat();
 	box.w = box.h;
 	eMap.ecs->getComponent<Hitbox>().add(e, box);
+}
+
+void registerTileMapAction(TileEntityMap &eMap, entity e, const GRY_JSON::Value &actionData) {
+	TileMapAction action;
+	const char* type = actionData["type"].GetString();
+	if (strcmp("Speak", type) == 0) {
+		action.type = TileMapAction::Speak;
+	}
+	else {
+		GRY_Assert(false, "[TileEntityMap] Unknown action type for entity %d", e);
+	}
+	action.id = actionData["id"].GetUint();
+	eMap.ecs->getComponent<TileMapAction>().add(e, action);
 }
 
 void registerActorSpriteAnimations(TileEntityMap &eMap, entity e, const GRY_JSON::Value& actorAnimations) {

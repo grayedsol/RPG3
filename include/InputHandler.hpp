@@ -5,9 +5,9 @@
  * @copyright Copyright (c) 2024
  */
 #pragma once
-#include "SDL3/SDL.h"
-#include "VirtualButton.hpp"
+#include "SDL3/SDL_scancode.h"
 #include "GRY_Mousecode.hpp"
+#include "CommandMap.hpp"
 #include <vector>
 
 /**
@@ -36,7 +36,7 @@ private:
      * primary or secondary binding, respectively.
      * The bindings point to the state of a physical mouse or keyboard input.
      * 
-     * @sa isPressing
+     * @sa isPressingVButton
      */
     const bool* buttonState[VirtualButton::VIRTUAL_BUTTON_SIZE][2];
 
@@ -71,6 +71,12 @@ private:
      */
 	VirtualButton singleInput = GAME_NONE;
 
+	/**
+	 * @brief The command map control scheme of the game.
+	 * 
+	 */
+	CommandMap controlScheme;
+
     /**
      * @brief Map a virtual button to a physical input, and vice-versa.
      * 
@@ -104,6 +110,13 @@ public:
      */
     void process(bool& gameRunning);
 
+	/**
+	 * @brief Set the control scheme.
+	 * 
+	 * @param map Map to set the control scheme to
+	 */
+	void setControlScheme(CommandMap map) { controlScheme = map; }
+
     /**
      * @brief Get the latest active VirtualButton input.
      * 
@@ -112,10 +125,10 @@ public:
      * 
      * @return A VirtualButton input.
      * 
-     * @sa getSingleInput
-     * @sa isPressing
+     * @sa getSingleInputVButton
+     * @sa isPressingVButton
      */
-    const VirtualButton getInput() const { 
+    const VirtualButton getInputVButton() const { 
         return inputs.size() ? inputs.back() : VirtualButton::GAME_NONE;
     }
 
@@ -127,10 +140,10 @@ public:
      * 
      * @return A VirtualButton input.
      * 
-     * @sa getInput
-     * @sa isPressing
+     * @sa getInputVButton
+     * @sa isPressingVButton
      */
-    const VirtualButton getSingleInput() const { return singleInput; }
+    const VirtualButton getSingleInputVButton() const { return singleInput; }
 
     /**
 	 * @brief Determine if `b` is being pressed.
@@ -139,12 +152,52 @@ public:
 	 * @return `true` if `b` is being pressed.
 	 * @return `false` otherwise.
      * 
-     * @sa getInput
-     * @sa getSingleInput
+     * @sa getInputVButton
+     * @sa getSingleInputVButton
 	 */
-    const bool isPressing(VirtualButton b) const {
+    const bool isPressingVButton(VirtualButton b) const {
 	    return b &&
 		    ((buttonState[b][0] && *buttonState[b][0]) ||
 		    (buttonState[b][1] && *buttonState[b][1]));
     }
+
+    /**
+     * @brief Get the latest active GCmd input.
+     * 
+     * @details
+     * Returns GCmd::NONE if there are no active inputs.
+     * 
+     * @return A GCmd input.
+     * 
+     * @sa getSingleInput
+     * @sa isPressing
+     */
+	const GCmd getInput() const { return controlScheme.commands[getInputVButton()]; }
+
+    /**
+     * @brief Get the latest active GCmd input from the current frame only.
+     * 
+     * @details
+     * Returns GCmd::NONE if there are no active inputs from this frame.
+     * 
+     * @return A GCmd input.
+     * 
+     * @sa getInput
+     * @sa isPressing
+     */
+	const GCmd getSingleInput() const { return controlScheme.commands[singleInput]; }
+
+    /**
+	 * @brief Determine if the VirtualButton mapped to `cmd` is being pressed.
+	 * 
+	 * @param cmd GCmd to check.
+	 * @return `true` if `cmd` is being pressed.
+	 * @return `false` otherwise.
+     * 
+     * @sa getInput
+     * @sa getSingleInput
+	 */
+	const bool isPressing(GCmd cmd) const {
+		return isPressingVButton(controlScheme.buttons[cmd]);
+	}
 };

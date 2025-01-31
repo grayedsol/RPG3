@@ -5,6 +5,7 @@
  */
 #include "GRY_Game.hpp"
 #include "GRY_Log.hpp"
+#include "SDL3/SDL_render.h"
 #include "imgui.h"
 #include "imgui_impl_sdl3.h"
 #include "imgui_impl_sdlrenderer3.h"
@@ -14,8 +15,8 @@
 #include <SDL3/SDL_opengl.h>
 #endif
 
-GRY_Game::GRY_Game(int WINDOW_WIDTH, int WINDOW_HEIGHT, int TARGET_FPS, bool USE_VSYNC) :
-	gsdl(WINDOW_WIDTH, WINDOW_HEIGHT, USE_VSYNC), fps(TARGET_FPS), imguiDebug(this) {
+GRY_Game::GRY_Game(int WINDOW_WIDTH, int WINDOW_HEIGHT, int MAX_FPS, bool USE_VSYNC) :
+	gsdl(WINDOW_WIDTH, WINDOW_HEIGHT, USE_VSYNC), fps(MAX_FPS), imguiDebug(this) {
 
 	if (!gsdl.init()) { 
 		GRY_Log("[Game] GRY_SDL initialization failed.\n");
@@ -49,13 +50,11 @@ void GRY_Game::runGame() {
 		
 		imguiDebug.render(gameRenderer);
 
-		fps.computeDelta();
-		if (fps.isLagging()) { GRY_Log("[Game] Lagging.\n"); }
-
 		/* Output */
 		SDL_RenderPresent(gameRenderer);
 
 		if (!gsdl.USE_VSYNC) { fps.delay(); }
+		fps.computeDelta();
 	}
 }
 
@@ -64,7 +63,7 @@ void GRY_Game::runGame() {
  * Toggles the debug screen if SELECT is pressed while START is being pressed.
  */
 void GRY_Game::process() {
-	if (input.isPressing(GAME_START) && input.getSingleInput() == GAME_SELECT) {
+	if (input.isPressingVButton(GAME_START) && input.getSingleInputVButton() == GAME_SELECT) {
 		imguiDebug.toggle();
 	}
 }

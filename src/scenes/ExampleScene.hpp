@@ -28,7 +28,7 @@ private:
     /**
      * @copybrief Scene::setControls
      */
-    void setControls() final override;
+    void setControls() final;
 public:
     /**
      * @brief Constructor.
@@ -41,10 +41,8 @@ public:
     /**
      * @brief Initializes the scene.
      * 
-     * @details
-     * This scene is simple, so nothing is done.
      */
-    void init() final override {}
+    void init() final { setControls(); }
 
     /**
      * @copydoc Scene::process
@@ -54,5 +52,5 @@ public:
     /**
      * @copydoc Scene::load
      */
-    bool load() final override;
+    bool load() final;
 };

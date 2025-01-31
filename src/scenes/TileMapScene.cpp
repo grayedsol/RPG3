@@ -17,9 +17,11 @@ void TileMapScene::setControls() {
 
 /**
  * @details
- * Assign collision rectangles to tiles.
+ * Assign collision rectangles to tiles and initialize systems.
  */
 void TileMapScene::init() {
+	setControls();
+	
 	for (int i = 0; i < tileMap.collisionRects.size(); i++) {
 		auto& rectangleLayer = tileMap.collisionRects.at(i);
 		auto& tileLayer = tileMap.tileLayers.at(i);
@@ -38,33 +40,43 @@ void TileMapScene::init() {
 			}
 		}
 	}
-	tileMapMovement.init();
+
+	tileMapQuadTrees.init();
+	textBoxScene.init();
 }
 
 void TileMapScene::process() {
-	switch (readSingleInput()) {
+	GCmd cmd = readSingleInput();
+	switch (cmd) {
 		case GCmd::GameQuit:
 			game->quit();
 			break;
 		default:
 			break;
 	}
-	if (isPressing(GCmd::GameUp)) {}
 
 	tileMapInput.process();
+	tileMapSpeak.process();
 	tileMapMovement.process(game->getDelta());
+	tileMapQuadTrees.process();
 	tileSpriteAnimator.process(game->getDelta());
 	tileMapCamera.process();
 	tileMapRenderer.process();
+	
+	textBoxScene.process();
+
+	TileEntityMap::updateLayers(&entityMap);
 
 	#ifndef NDEBUG
-	if (game->debugModeOn()) { tileMapImGui(ecs); }
+	if (game->debugMenuIsOn()) { tileMapImGui(ecs); }
 	#endif
 }
 
 bool TileMapScene::load() {
-	if (tileMap.path && entityMap.path) {
-		return tileMap.load(game) && entityMap.load(game);
+	if (tileMap.path && entityMap.path && mapDialogues.path) {
+		return
+		tileMap.load(game) && entityMap.load(game) &&
+		mapDialogues.load(game) && textBoxScene.load();
 	}
 
     /* Open scene document */
@@ -75,6 +87,8 @@ bool TileMapScene::load() {
 	tileMap.setPath(sceneDoc["tileMapPath"].GetString());
 	/* Initialize the tile entity map */
 	entityMap.setPath(sceneDoc["tileEntityMapPath"].GetString());
+	/* Initialize the dialogue resource */
+	mapDialogues.setPath(sceneDoc["dialoguePath"].GetString());
 	/* Read the normal tile size */
 	normalTileSize = sceneDoc["normalTileSize"].GetUint();
 

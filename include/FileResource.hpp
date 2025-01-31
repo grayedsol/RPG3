@@ -6,9 +6,9 @@
  */
 #pragma once
 #include <utility>
-#include <assert.h>
 #include "GRY_Lib.hpp"
-#include "GRY_Game.hpp"
+
+class GRY_Game;
 
 /**
  * @brief Abstract file resource type that can be loaded after its construction.

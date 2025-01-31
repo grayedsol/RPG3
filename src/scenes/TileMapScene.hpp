@@ -6,12 +6,16 @@
  */
 #pragma once
 #include "../tile/TileMapMovement.hpp"
+#include "../tile/TileMapQuadTrees.hpp"
 #include "../tile/TileSpriteAnimator.hpp"
 #include "../tile/TileMapRenderer.hpp"
 #include "../tile/TileMapCamera.hpp"
 #include "Scene.hpp"
 #include "../tile/TileMapECS.hpp"
 #include "../tile/TileMapInput.hpp"
+#include "../tile/TileMapSpeak.hpp"
+#include "TextBoxScene.hpp"
+#include "DialogueResource.hpp"
 
 class GRY_PixelGame;
 
@@ -46,6 +50,12 @@ private:
 	TileEntityMap entityMap;
 
 	/**
+	 * @brief Container for dialogue data.
+	 * 
+	 */
+	DialogueResource mapDialogues;
+
+	/**
 	 * @brief Renderer for the tile map.
 	 *
 	 */
@@ -64,6 +74,12 @@ private:
 	TileMapMovement tileMapMovement;
 
 	/**
+	 * @brief Stores quadtrees for the collision hitboxes of entities for each layer.
+	 * 
+	 */
+	TileMapQuadTrees tileMapQuadTrees;
+
+	/**
 	 * @brief Input system for the tile map.
 	 * 
 	 */
@@ -74,6 +90,14 @@ private:
 	 * 
 	 */
 	TileSpriteAnimator tileSpriteAnimator;
+
+	/**
+	 * @brief Text box scene.
+	 * 
+	 */
+	TextBoxScene textBoxScene;
+
+	TileMapSpeak tileMapSpeak;
 
 	/**
 	 * @brief Width and height of a normal square tile, in pixels.
@@ -104,8 +128,11 @@ public:
 		tileMapRenderer(this),
 		tileMapCamera(this),
 		tileMapMovement(this),
+		tileMapQuadTrees(this),
 		tileSpriteAnimator(this),
-		tileMapInput(this) {
+		tileMapInput(this),
+		textBoxScene(pGame, "assets/textboxscene/scene.json", this),
+		tileMapSpeak(this) {
 	}
 
 	/**
@@ -166,6 +193,12 @@ public:
 	 */
 	TileEntityMap& getTileEntityMap() { return entityMap; }
 
+	TextBoxScene& getTextBox() { return textBoxScene; }
+
+	TileMapSpeak& getTileMapSpeak() { return tileMapSpeak; }
+
+	const DialogueResource& getDialogueResource() { return mapDialogues; }
+
 	/**
 	 * @brief Get the width / height of a normal square tile, in pixels.
 	 *
@@ -177,11 +210,12 @@ public:
 
 	/**
 	 * @copydoc TileMapRenderer::setOffset
-	 * 
 	 */
 	void setRenderOffset(float x, float y) {
 		tileMapRenderer.setOffset(x,y);
 	}
+
+	const std::vector<QuadTree>& getQuadTrees() { return tileMapQuadTrees.getQuadTrees(); }
 
 	/**
 	 * @brief Get a vector of collision rectangles that collide with `rect`.
@@ -191,4 +225,6 @@ public:
 	 * @return Vector of rectangles colliding with `rect`
 	 */
 	std::vector<SDL_FRect> queryCollisions(const SDL_FRect rect, std::size_t layer) const;
+
+	void activateTextBox() { textBoxScene.activateControlScheme(); }
 };

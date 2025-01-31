@@ -60,10 +60,10 @@ public:
 	 * 
 	 * @param WINDOW_WIDTH Screen width in pixels.
 	 * @param WINDOW_HEIGHT Screen height in pixels.
-	 * @param TARGET_FPS Desired frames per second the game should run at.
+	 * @param MAX_FPS Maximum frames per second the game should run at.
 	 * @param USE_VSYNC Whether the game will use VSync, `true` by default.
 	 */
-	GRY_Game(int WINDOW_WIDTH, int WINDOW_HEIGHT, int TARGET_FPS, bool USE_VSYNC = true);
+	GRY_Game(int WINDOW_WIDTH, int WINDOW_HEIGHT, int MAX_FPS, bool USE_VSYNC = true);
 
 	GRY_Game(const GRY_Game&) = delete;
 	GRY_Game& operator=(const GRY_Game&) = delete;
@@ -117,19 +117,36 @@ public:
 	double getFPS() { return fps.getFPS(); }
 
 	/**
+	 * @copydoc InputHandler::setControlScheme
+	 */
+	void setControlScheme(CommandMap map) { input.setControlScheme(map); }
+
+	/**
+	 * @brief Reset the control scheme.
+	 * 
+	 */
+	void resetControlScheme() { input.setControlScheme(CommandMap()); }
+
+	/**
 	 * @copydoc InputHandler::getInput
 	 */
-	const VirtualButton getInput() { return input.getInput(); }
+	const GCmd getInput() { return input.getInput(); }
 
-   	/**
+	/**
 	 * @copydoc InputHandler::getSingleInput
 	 */
-	const VirtualButton getSingleInput() { return input.getSingleInput(); }
+	const GCmd getSingleInput() { return input.getSingleInput(); }
 
 	/**
 	 * @copydoc InputHandler::isPressing
 	 */
-	const bool isPressing(VirtualButton b) { return input.isPressing(b); }
+	const bool isPressing(GCmd cmd) { return input.isPressing(cmd); }
 
-	const bool debugModeOn() { return imguiDebug.active; }
+	/**
+	 * @brief Determine whether the debug menu is active or not.
+	 * 
+	 * @return `true` if the debug menu is on.
+	 * @return `false` otherwise.
+	 */
+	const bool debugMenuIsOn() { return imguiDebug.active; }
 };

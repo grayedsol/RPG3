@@ -20,5 +20,7 @@ using TileMapECS = GRY_ECS<
 	Actor,
 	ActorSprite,
 	ActorSpriteAnims,
-	Player
+	Player,
+	NPC,
+	TileMapAction
 >;

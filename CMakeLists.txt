@@ -9,11 +9,11 @@ option(USE_SHARED_LIBS "Whether to use shared or static libraries." ON)
 set(HIDE_TERMINAL False)
 
 include(ExternalProject)
-include(FetchContent)
 
 include("${CMAKE_SOURCE_DIR}/external/rapidjson.cmake")
 include_directories(SYSTEM "${CMAKE_BINARY_DIR}/external/rapidjson/src/rapidjson/include")
 
+include(FetchContent)
 include("${CMAKE_SOURCE_DIR}/external/imgui.cmake")
 include_directories(SYSTEM "${CMAKE_BINARY_DIR}/_deps/imgui-src/")
 include_directories(SYSTEM "${CMAKE_BINARY_DIR}/_deps/imgui-src/backends")
@@ -27,10 +27,12 @@ set(SOURCES
 	src/Scene.cpp
 	src/SceneManager.cpp
 	src/transitions/FadeToBlack.cpp
+	src/GRY_Lib.cpp
 	src/GRY_JSON.cpp
 	src/GRY_PixelGame.cpp
 	src/GRY_Tiled.cpp
 	src/GRY_Texture.cpp
+	src/DialogueResource.cpp
 	src/tile/Tileset.cpp
 	src/tile/TileCollision.cpp
 	src/tile/TileMap.cpp
@@ -41,13 +43,19 @@ set(SOURCES
 	src/tile/TileMapRenderer.cpp
 	src/tile/TileMapCamera.cpp
 	src/tile/TileMapMovement.cpp
+	src/tile/TileMapQuadTrees.cpp
 	src/tile/TileSpriteAnimator.cpp
 	src/tile/TileMapInput.cpp
+	src/tile/TileMapSpeak.cpp
 	src/imguiDebugger.cpp
 	src/QuadTree.cpp
+	src/scenes/TextBoxScene.cpp
+	src/textbox/Fontset.cpp
+	src/textbox/TextBoxRenderer.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
+add_dependencies(game rapidjson)
 
 if(UNIX)
 	target_link_options(${PROJECT_NAME}
@@ -116,24 +124,19 @@ if(USE_SHARED_LIBS)
 
 	find_library(SDL3_LIB NAMES SDL3 sdl3 PATH_SUFFIXES lib)
 	find_library(SDL3_IMAGE_LIB NAMES SDL3_image sdl3_image PATH_SUFFIXES lib)
-	find_library(SDL3_TTF_LIB NAMES SDL3_ttf sdl3_ttf PATH_SUFFIXES lib)
 
 	message(STATUS "SDL3 shared library: ${SDL3_LIB}")
 	message(STATUS "SDL3_image shared library: ${SDL3_IMAGE_LIB}")
-	message(STATUS "SDL3_ttf shared library: ${SDL3_TTF_LIB}")
 
 	add_library(SDL3::SDL3 SHARED IMPORTED)
 	add_library(SDL3::IMAGE SHARED IMPORTED)
-	add_library(SDL3::TTF SHARED IMPORTED)
 
 	if(WIN32)
 	set_property(TARGET SDL3::SDL3 PROPERTY IMPORTED_IMPLIB ${SDL3_LIB})
 	set_property(TARGET SDL3::IMAGE PROPERTY IMPORTED_IMPLIB ${SDL3_IMAGE_LIB})
-	set_property(TARGET SDL3::TTF PROPERTY IMPORTED_IMPLIB ${SDL3_TTF_LIB})
 	else()
 	set_property(TARGET SDL3::SDL3 PROPERTY IMPORTED_LOCATION ${SDL3_LIB})
 	set_property(TARGET SDL3::IMAGE PROPERTY IMPORTED_LOCATION ${SDL3_IMAGE_LIB})
-	set_property(TARGET SDL3::TTF PROPERTY IMPORTED_LOCATION ${SDL3_TTF_LIB})
 	endif()
 else()
 	message(STATUS "Building using static libs")
@@ -156,42 +159,33 @@ else()
 	if(WIN32)
 	find_library(SDL3_LIB NAMES SDL3-static sdl3-static PATH_SUFFIXES lib)
 	find_library(SDL3_IMAGE_LIB NAMES SDL3_image-static sdl3_image-static PATH_SUFFIXES lib)
-	find_library(SDL3_TTF_LIB NAMES SDL3_ttf-static sdl3_ttf-static PATH_SUFFIXES lib)
 	else()
 	find_library(SDL3_LIB NAMES libSDL3.a PATH_SUFFIXES lib)
 	find_library(SDL3_IMAGE_LIB NAMES libSDL3_image.a PATH_SUFFIXES lib)
-	find_library(SDL3_TTF_LIB NAMES libSDL3_ttf.a PATH_SUFFIXES lib)
 	endif()
 	message(STATUS "SDL3 static library: ${SDL3_LIB}")
 	message(STATUS "SDL3_image static library: ${SDL3_IMAGE_LIB}")
-	message(STATUS "SDL3_ttf static library: ${SDL3_TTF_LIB}")
 
 	add_library(SDL3::SDL3 STATIC IMPORTED)
 	add_library(SDL3::IMAGE STATIC IMPORTED)
-	add_library(SDL3::TTF STATIC IMPORTED)
 
 	set_property(TARGET SDL3::SDL3 PROPERTY IMPORTED_LOCATION ${SDL3_LIB})
 	set_property(TARGET SDL3::IMAGE PROPERTY IMPORTED_LOCATION ${SDL3_IMAGE_LIB})
-	set_property(TARGET SDL3::TTF PROPERTY IMPORTED_LOCATION ${SDL3_TTF_LIB})
 endif()
 
 find_path(SDL3_INCLUDE_PATH NAMES SDL3)
 find_path(SDL3_IMAGE_INCLUDE_PATH NAMES SDL3_image)
-find_path(SDL3_TTF_INCLUDE_PATH NAMES SDL3_ttf)
 
 message(STATUS "SDL3 include path: ${SDL3_INCLUDE_PATH}")
 message(STATUS "SDL3_image include path: ${SDL3_IMAGE_INCLUDE_PATH}")
-message(STATUS "SDL3_ttf include path: ${SDL3_TTF_INCLUDE_PATH}")
 
 target_include_directories(${PROJECT_NAME}
 	PUBLIC ${PROJECT_BINARY_DIR}
 	PUBLIC ${SDL3_INCLUDE_PATH}
 	PUBLIC ${SDL3_IMAGE_INCLUDE_PATH}
-	PUBLIC ${SDL3_TTF_INCLUDE_PATH}
 )
 
 target_link_libraries(${PROJECT_NAME} 
 	PUBLIC SDL3::SDL3
 	PUBLIC SDL3::IMAGE
-	PUBLIC SDL3::TTF
 )

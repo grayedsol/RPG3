@@ -90,6 +90,15 @@ struct QuadTree {
 	void query(Hitbox box, ECS::entity e, std::vector<Hitbox>& out) const;
 
 	/**
+	 * @brief Query for collisions within the QuadTree.
+	 * 
+	 * @param box Hitbox of the entity
+	 * @param e The id of the entity (collisions with itself will be ignored)
+	 * @param out A vector of entityies with a hitbox that collides with the entity
+	 */
+	void query(Hitbox box, ECS::entity e, std::vector<ECS::entity>& out) const;
+
+	/**
 	 * @brief Safely resets the QuadTree to an empty state.
 	 * 
 	 */

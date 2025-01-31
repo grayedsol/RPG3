@@ -6,8 +6,7 @@
  */
 #pragma once
 #include "GRY_JSON.hpp"
-#include "SDL3/SDL.h"
-#include "GRY_Log.hpp"
+#include "SDL3/SDL_rect.h"
 
 /**
  * @brief Defines functions for extracting data from Tiled files in JSON format.

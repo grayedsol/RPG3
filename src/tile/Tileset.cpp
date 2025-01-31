@@ -6,6 +6,12 @@
 #include "Tileset.hpp"
 #include "GRY_Game.hpp"
 #include "GRY_Tiled.hpp"
+#include "SDL3/SDL_render.h"
+
+Tileset::~Tileset() {
+	SDL_DestroyTexture(texture);
+	texture = nullptr;
+}
 
 bool Tileset::load(GRY_Game* game) {
     if (tileWidth != 0.0f) { return true; }
@@ -24,7 +30,7 @@ bool Tileset::load(GRY_Game* game) {
     /* Read width and height of a single tile */
 	tileWidth = tilesetDoc["tilewidth"].GetFloat();
 	tileHeight = tilesetDoc["tileheight"].GetFloat();
-	assert(tileWidth && tileHeight);
+	GRY_Assert((tileWidth > 0) && (tileHeight > 0), "[Tileset] Invalid tileWidth or tileHeight.");
 
     float texture_width;
 	SDL_GetTextureSize(texture, &texture_width, NULL);

@@ -6,6 +6,7 @@
  */
 #pragma once
 #include <cstdio>
+#include <assert.h>
 
 #ifdef _WIN32
 	#ifdef __MINGW32__

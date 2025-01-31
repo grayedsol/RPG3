@@ -6,6 +6,7 @@ static const unsigned int NUM_QUADRANTS = 4;
 static const float MIN_BOX_SIZE = 2.0f;
 
 static void query(const QuadNode* node, Hitbox box, ECS::entity e, std::vector<Hitbox>& out);
+static void query(const QuadNode* node, Hitbox box, ECS::entity e, std::vector<ECS::entity>& out);
 static void insert(QuadNode* node, Hitbox box, ECS::entity e);
 static void mergeLeaves(QuadNode* node);
 
@@ -20,6 +21,10 @@ void QuadTree::insert(Hitbox box, ECS::entity e) {
 }
 
 void QuadTree::query(Hitbox box, ECS::entity e, std::vector<Hitbox>& out) const {
+	::query(&node, box, e, out);
+}
+
+void QuadTree::query(Hitbox box, ECS::entity e, std::vector<ECS::entity>& out) const {
 	::query(&node, box, e, out);
 }
 
@@ -42,6 +47,25 @@ void query(const QuadNode *node, Hitbox box, ECS::entity e, std::vector<Hitbox> 
 
 		if (child->type == QuadNode::Leaf && child->e != e) {
 			out.push_back(child->area);
+		}
+		else { query(child, box, e, out); }
+	}
+}
+
+void query(const QuadNode *node, Hitbox box, ECS::entity e, std::vector<ECS::entity> &out) {
+	auto collides = [box](const Hitbox other) {
+		return
+			box.x + box.w > other.x &&
+			box.x < other.x + other.w &&
+			box.y + box.h > other.y &&
+			box.y < other.y + other.h;
+	};
+
+	for (auto child : node->nodes) {
+		if (!collides(child->area)) { continue; }
+
+		if (child->type == QuadNode::Leaf && child->e != e) {
+			out.push_back(child->e);
 		}
 		else { query(child, box, e, out); }
 	}
