@@ -10,50 +10,48 @@
 
 #ifdef _WIN32
 	#ifdef __MINGW32__
-	#include "windows.h"
-	/**
-	 * @brief Log a message to the console.
-	 * 
-	 * @param fmt A C-style formatted string.
-	 * @param ... Parameters to match % formatting tokens from `fmt`.
-	 */
-	#define GRY_Log(fmt, ...) {char cad[512]; snprintf(cad, 512, fmt, ##__VA_ARGS__);  printf(cad);}
+		/**
+		 * @brief Log a message to the console.
+		 * 
+		 * @param fmt A C-style formatted string.
+		 * @param ... Parameters to match % formatting tokens from `fmt`.
+		 */
+		#define GRY_Log(fmt, ...) {char cad[512]; snprintf(cad, 512, fmt, ##__VA_ARGS__);  printf(cad);}
 
-	#ifdef NDEBUG
-		#define GRY_Assert(expression, fmt, ...) ((void)0)
-		#else
-			#define GRY_Assert(expression, fmt, ...) {\
-				if (!(expression)) {\
-					GRY_Log(fmt, ##__VA_ARGS__);\
-					assert(false);\
-				}\
-			}
-	#endif
+		#ifdef NDEBUG
+			#define GRY_Assert(expression, fmt, ...) ((void)0)
+			#else
+				#define GRY_Assert(expression, fmt, ...) {\
+					if (!(expression)) {\
+						GRY_Log(fmt, ##__VA_ARGS__);\
+						assert(false);\
+					}\
+				}
+		#endif
 
 	#else
 		#ifndef NOMINMAX
-		#define NOMINMAX
+			#define NOMINMAX
 		#endif
-	#include "windows.h"
-	/**
-	 * @brief Log a message to the console.
-	 * 
-	 * @param fmt A C-style formatted string.
-	 * @param ... Parameters to match % formatting tokens from `fmt`.
-	 */
-	#define GRY_Log(fmt, ...) {char cad[512]; snprintf(cad, 512, fmt, __VA_ARGS__);  OutputDebugStringA(cad);}
+		#include "windows.h"
+		/**
+		 * @brief Log a message to the console.
+		 * 
+		 * @param fmt A C-style formatted string.
+		 * @param ... Parameters to match % formatting tokens from `fmt`.
+		 */
+		#define GRY_Log(fmt, ...) {char cad[512]; snprintf(cad, 512, fmt, __VA_ARGS__);  OutputDebugStringA(cad);}
 
-	#ifdef NDEBUG
-		#define GRY_Assert(expression, fmt, ...) ((void)0)
-	#else
-		#define GRY_Assert(expression, fmt, ...) {\
-			if (!(expression)) {\
-				GRY_Log(fmt, __VA_ARGS__);\
-				assert(false);\
-			}\
-		}
-	#endif
-
+		#ifdef NDEBUG
+			#define GRY_Assert(expression, fmt, ...) ((void)0)
+		#else
+			#define GRY_Assert(expression, fmt, ...) {\
+				if (!(expression)) {\
+					GRY_Log(fmt, __VA_ARGS__);\
+					assert(false);\
+				}\
+			}
+		#endif
 	#endif
 #endif
 
