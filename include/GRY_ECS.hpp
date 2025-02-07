@@ -88,10 +88,9 @@ struct GRY_ECS {
 	 * @details
 	 * This is the base case for freeEntity().
 	 * The recursive case deletes the entity's component data.
+	 * "now for the tricky bit"
      * 
      * @param e Entity to free.
-     * @par Returns
-	 * 	Nothing.
      */
 	template<std::size_t I = 0>
 	typename std::enable_if<(I == std::tuple_size<decltype(components)>::value)>::type
@@ -105,8 +104,6 @@ struct GRY_ECS {
 	 * The base case adds the entity to the container of dead entities.
      * 
      * @param e Entity to free.
-     * @par Returns
-	 * 	Nothing.
      */
 	template<std::size_t I = 0>
 	typename std::enable_if<(I < std::tuple_size<decltype(components)>::value)>::type
