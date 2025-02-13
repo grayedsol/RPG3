@@ -18,9 +18,11 @@ void GRY_JSON::loadDoc(Document& doc, const char* path) {
     #elif __linux__
     fp = fopen(path, "rb");
     #else
-    GRY_Log("GRY_JSON::loadDoc: OS not explicitly supported.\n")
+    GRY_Log("[GRY_JSON] loadDoc: OS not explicitly supported.\n")
     fp = fopen(path, "rb");
     #endif
+	GRY_Assert(fp, "[GRY_JSON] Could not open file: %s", path);
+	if (!fp) { return; }
     /* Create a buffer, and pass it into the stream with the file */
     char* readBuffer = new char[BUFFER_SIZE];
     rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
