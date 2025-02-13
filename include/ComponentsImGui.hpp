@@ -1,7 +1,7 @@
 /**
  * @file ComponentsImGui.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @brief Functions for displaying Tile Component data for Dear ImGui.
+ * @brief Functions for displaying Component data for Dear ImGui.
  * @copyright Copyright (c) 2025
  */
 #pragma once
