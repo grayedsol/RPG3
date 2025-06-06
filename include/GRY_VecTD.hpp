@@ -46,6 +46,17 @@ struct GRY_VecTD {
     T data[N];
     T& operator[](const uint i) { return data[i]; }
     const T& operator[](const uint i) const { return data[i]; }
+
+	template<typename Tag2>
+	GRY_VecTD(const GRY_VecTD<T,N,Tag2>& other) {
+		for (uint i = 0; i < N; i++) { data[i] = other.data[i]; }
+	}
+
+	template<typename Tag2>
+	GRY_VecTD& operator=(const GRY_VecTD<T,N,Tag2>& other) {
+		for (uint i = 0; i < N; i++) { data[i] = other.data[i]; }
+		return *this;
+	}
 };
 
 template<typename T, typename Tag>
@@ -57,6 +68,16 @@ struct GRY_VecTD<T,3,Tag> {
     }
     T& operator[](const uint i) { return data[i]; }
     const T& operator[](const uint i) const { return data[i]; }
+
+	template<typename Tag2>
+	GRY_VecTD(const GRY_VecTD<T,3,Tag2>& other) {
+		for (uint i = 0; i < 3; i++) { data[i] = other.data[i]; }
+	}
+
+	template<typename Tag2>
+	void operator=(const GRY_VecTD<T,3,Tag2>& other) {
+		for (uint i = 0; i < 3; i++) { data[i] = other.data[i]; }
+	}
 };
 
 template<typename T, typename Tag>
@@ -67,6 +88,18 @@ struct GRY_VecTD<T,2,Tag> {
     GRY_VecTD(T x, T y) : x(x), y(y) {}
     T& operator[](const uint i) { return ((T*)this)[i]; }
     const T& operator[](const uint i) const { return ((T*)this)[i]; }
+
+	template<typename Tag2>
+	GRY_VecTD(const GRY_VecTD<T,2,Tag2>& other) {
+		x = other.x;
+		y = other.y;
+	}
+
+	template<typename Tag2>
+	void operator=(const GRY_VecTD<T,2,Tag2>& other) {
+		x = other.x;
+		y = other.y;
+	}
 };
 
 template<typename Tag>
