@@ -47,6 +47,7 @@ set(SOURCES
 	src/tile/TileSpriteAnimator.cpp
 	src/tile/TileMapInput.cpp
 	src/tile/TileMapSpeak.cpp
+	src/tile/TileMapScripting.cpp
 	src/imguiDebugger.cpp
 	src/QuadTree.cpp
 	src/scenes/TextBoxScene.cpp
