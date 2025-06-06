@@ -14,6 +14,7 @@
 #include "../tile/TileMapECS.hpp"
 #include "../tile/TileMapInput.hpp"
 #include "../tile/TileMapSpeak.hpp"
+#include "../tile/TileMapScripting.hpp"
 #include "TextBoxScene.hpp"
 #include "DialogueResource.hpp"
 
@@ -100,6 +101,8 @@ namespace Tile {
 
 		MapSpeak tileMapSpeak;
 
+		MapScripting mapScripting;
+
 		/**
 		 * @brief Width and height of a normal square tile, in pixels.
 		 *
@@ -133,7 +136,8 @@ namespace Tile {
 			tileSpriteAnimator(this),
 			tileMapInput(this),
 			textBoxScene(pGame, "assets/textboxscene/scene.json", this),
-			tileMapSpeak(this) {
+			tileMapSpeak(this),
+			mapScripting(this) {
 		}
 
 		/**

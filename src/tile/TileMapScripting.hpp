@@ -26,6 +26,6 @@ namespace Tile {
 	private:
 		void removeCommand(size_t index);
 
-		bool processMoveActorPos(TMC_MoveActorPos args);
+		bool processMoveActorPos(TMC_MoveActorPos& args);
 	};
 };

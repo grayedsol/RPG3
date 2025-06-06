@@ -16,6 +16,7 @@ namespace Tile {
 
 	struct TMC_MoveActorPos {
 		MapCommandType type = MAP_CMD_MOVE_ACTOR_POS;
+		Position2 startPos = Position2{ 0, 0 };
 		Position2 targetPos;
 		ECS::entity e;
 	};
