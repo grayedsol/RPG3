@@ -144,6 +144,14 @@ void operator*=(GRY_VecTD<T,N,Tag>& vec, const K& scalar) {
     for (uint i = 0; i < N; i++) { vec[i] *= scalar; }
 }
 
+template<typename T, uint N, typename Tag1, typename Tag2>
+bool operator==(const GRY_VecTD<T,N,Tag1>& lhs, const GRY_VecTD<T,N,Tag2>& rhs) {
+	for (uint i = 0; i < N; i++) {
+		if (lhs[i] != rhs[i]) { return false; }
+	}
+	return true;
+}
+
 template<typename T, uint N, typename Tag>
 T GRY_VecLengthSq(const GRY_VecTD<T,N,Tag>& vec) {
     T sum = 0;
