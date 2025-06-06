@@ -1,7 +1,7 @@
 /**
  * @file TileMapQuadTrees.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @brief @copybrief TileMapQuadTrees
+ * @brief @copybrief Tile::MapQuadTrees
  * @copyright Copyright (c) 2025
  */
 #pragma once
@@ -9,23 +9,25 @@
 #include "Components.hpp"
 #include "ECS.hpp"
 
-class TileMapScene;
+namespace Tile {
+	class MapScene;
 
-class TileMapQuadTrees {
-private:
-	std::vector<QuadTree> quadtrees;
-	TileMapScene* scene;
-	const ComponentSet<Hitbox>* hitboxes;
-public:
-	TileMapQuadTrees(TileMapScene* scene);
+	class MapQuadTrees {
+	private:
+		std::vector<QuadTree> quadtrees;
+		MapScene* scene;
+		const ComponentSet<Hitbox>* hitboxes;
+	public:
+		MapQuadTrees(MapScene* scene);
 
-	void process();
+		void process();
 
-	/**
-	 * @brief Initializes the system. Must be called once before using `process`.
-	 * 
-	 */
-	void init();
+		/**
+		 * @brief Initializes the system. Must be called once before using `process`.
+		 * 
+		 */
+		void init();
 
-	const std::vector<QuadTree>& getQuadTrees() { return quadtrees; }
+		const std::vector<QuadTree>& getQuadTrees() { return quadtrees; }
+	};
 };

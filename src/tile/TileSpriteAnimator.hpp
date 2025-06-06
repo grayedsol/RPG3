@@ -1,50 +1,52 @@
 /**
- * @file TileSpriteAnimator.hpp
+ * @file SpriteAnimator.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @brief @copybrief TileSpriteAnimator
+ * @brief @copybrief Tile::SpriteAnimator
  * @copyright Copyright (c) 2024
  */
 #pragma once
 #include "TileComponents.hpp"
 
-class TileMapScene;
-
-/**
- * @brief Animates ActorSprites while they are moving.
- * 
- */
-class TileSpriteAnimator {
-private:
-	/**
-	 * @brief Sprites of actors.
-	 * 
-	 */
-	ComponentSet<ActorSprite>* sprites;
+namespace Tile {
+	class MapScene;
 
 	/**
-	 * @brief Actor data.
+	 * @brief Animates ActorSprites while they are moving.
 	 * 
 	 */
-	const ComponentSet<Actor>* actors;
+	class SpriteAnimator {
+	private:
+		/**
+		 * @brief Sprites of actors.
+		 * 
+		 */
+		ComponentSet<ActorSprite>* sprites;
 
-	/**
-	 * @brief Animations of ActorSprites.
-	 * 
-	 */
-	ComponentSet<ActorSpriteAnims>* actorAnimations;
+		/**
+		 * @brief Actor data.
+		 * 
+		 */
+		const ComponentSet<Actor>* actors;
 
-public:
-	/**
-	 * @brief Constructor.
-	 * 
-	 * @param scene Associated TileMapScene class.
-	 */
-	TileSpriteAnimator(TileMapScene* scene);
+		/**
+		 * @brief Animations of ActorSprites.
+		 * 
+		 */
+		ComponentSet<ActorSpriteAnims>* actorAnimations;
 
-	/**
-	 * @brief Animate moving actors.
-	 * 
-	 * @param delta Delta time for game processing, in seconds.
-	 */
-	void process(double delta);
+	public:
+		/**
+		 * @brief Constructor.
+		 * 
+		 * @param scene Associated MapScene class.
+		 */
+		SpriteAnimator(MapScene* scene);
+
+		/**
+		 * @brief Animate moving actors.
+		 * 
+		 * @param delta Delta time for game processing, in seconds.
+		 */
+		void process(double delta);
+	};
 };

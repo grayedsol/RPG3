@@ -4,7 +4,7 @@
 #include "../tile/TileMapImGui.hpp"
 #endif
 
-void TileMapScene::setControls() {
+void Tile::MapScene::setControls() {
     controls.mapCmd(GCmd::MapInteract, VirtualButton::GAME_A);
 	controls.mapCmd(GCmd::MapSprint, VirtualButton::GAME_LT);
     controls.mapCmd(GCmd::GameQuit, VirtualButton::GAME_B);
@@ -19,7 +19,7 @@ void TileMapScene::setControls() {
  * @details
  * Assign collision rectangles to tiles and initialize systems.
  */
-void TileMapScene::init() {
+void Tile::MapScene::init() {
 	setControls();
 	
 	for (int i = 0; i < tileMap.collisionRects.size(); i++) {
@@ -45,7 +45,7 @@ void TileMapScene::init() {
 	textBoxScene.init();
 }
 
-void TileMapScene::process() {
+void Tile::MapScene::process() {
 	GCmd cmd = readSingleInput();
 	switch (cmd) {
 		case GCmd::GameQuit:
@@ -65,14 +65,14 @@ void TileMapScene::process() {
 	
 	textBoxScene.process();
 
-	TileEntityMap::updateLayers(&entityMap);
+	EntityMap::updateLayers(&entityMap);
 
 	#ifndef NDEBUG
 	if (game->debugMenuIsOn()) { tileMapImGui(ecs); }
 	#endif
 }
 
-bool TileMapScene::load() {
+bool Tile::MapScene::load() {
 	if (tileMap.path && entityMap.path && mapDialogues.path) {
 		return
 		tileMap.load(game) && entityMap.load(game) &&
@@ -95,7 +95,7 @@ bool TileMapScene::load() {
 	return false;
 }
 
-std::vector<SDL_FRect> TileMapScene::queryCollisions(const SDL_FRect rect, std::size_t layer) const {
+std::vector<SDL_FRect> Tile::MapScene::queryCollisions(const SDL_FRect rect, std::size_t layer) const {
 	auto collides = [rect](const SDL_FRect other) {
 		return
 			rect.x + rect.w > other.x &&
@@ -108,12 +108,12 @@ std::vector<SDL_FRect> TileMapScene::queryCollisions(const SDL_FRect rect, std::
 	int width = (int)ceilf(rect.w / normalTileSize);
 	int height = (int)ceilf(rect.h / normalTileSize);
 
-	const TileMap::TileLayer& tileLayer = tileMap.tileLayers.at(layer);
+	const TileLayer& tileLayer = tileMap.tileLayers.at(layer);
 	for (int i = 0; i <= height; i++) {
 		for (int j = 0; j <= width; j++) {
 			int index = tileIndex + (i * tileMap.width) + j;
 			if (index < 0 || index > tileLayer.size()) { continue; }
-			Tile::CollisionId collision = tileLayer.at(index).collision;
+			CollisionId collision = tileLayer.at(index).collision;
 			if (!collision) { continue; }
 			SDL_FRect collisionRect = tileMap.collisionRects.at(layer).at(collision);
 			if (collides(collisionRect)) {

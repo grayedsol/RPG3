@@ -1,14 +1,19 @@
+/**
+ * @file TileMapCamera.cpp
+ * @author Grayedsol (grayedsol@gmail.com)
+ * @copyright Copyright (c) 2025
+ */
 #include "TileMapCamera.hpp"
 #include "../scenes/TileMapScene.hpp"
 #include "GRY_PixelGame.hpp"
 
-TileMapCamera::TileMapCamera(TileMapScene *scene) : scene(scene),
+Tile::MapCamera::MapCamera(MapScene *scene) : scene(scene),
 	hitboxes(&scene->getECSReadOnly().getComponentReadOnly<Hitbox>()),
 	players(&scene->getECSReadOnly().getComponentReadOnly<Player>()),
 	pixelScaling(&scene->getPixelGame()->getPixelScalingRef()) {
 }
 
-void TileMapCamera::process() {
+void Tile::MapCamera::process() {
 	GRY_Assert(players->size() > 0, "[TileMapCamera] There were no players.");
 	ECS::entity e = players->getEntity(0);
 	GRY_PixelGame* game = scene->getPixelGame();

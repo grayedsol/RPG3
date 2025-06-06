@@ -8,7 +8,7 @@
 #include "GRY_Game.hpp"
 #include <limits>
 
-bool TileMap::load(GRY_Game *game) {
+bool Tile::TileMap::load(GRY_Game *game) {
 	if (!tileLayers.empty()) { return true; }
 
 	GRY_JSON::Document mapDoc;
@@ -43,7 +43,7 @@ bool TileMap::load(GRY_Game *game) {
 
 		std::vector<Tile> tiles;
 		for (auto& tile : layer["data"].GetArray()) {
-			Tile::TileId tileId = tile.GetUint();
+			TileId tileId = tile.GetUint();
 			tiles.push_back(Tile{ tileId });
 		}
 		height = std::max(height, (uint32_t)(tiles.size() / width));
@@ -67,7 +67,7 @@ bool TileMap::load(GRY_Game *game) {
 				rectangles.push_back(rect);
 			}
 		}
-		GRY_Assert(collisionRects.size() < (std::size_t)std::numeric_limits<Tile::CollisionId>::max,
+		GRY_Assert(collisionRects.size() < (std::size_t)std::numeric_limits<CollisionId>::max,
 			"[TileMap] A layer had too many collision rectangles."
 		);
 		collisionRects.push_back(rectangles);

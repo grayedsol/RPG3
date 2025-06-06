@@ -9,7 +9,7 @@
 #include "GRY_ECSImGui.hpp"
 
 template<>
-void componentImGui(Actor& actor) {
+void componentImGui(Tile::Actor& actor) {
 	ImGui::Text("speed");
 	ImGui::SameLine();
 	ImGui::InputFloat("##0", &actor.speed, 1.f, 0);
@@ -20,7 +20,7 @@ void componentImGui(Actor& actor) {
 }
 
 template<>
-void componentImGui(ActorSprite& sprite) {
+void componentImGui(Tile::ActorSprite& sprite) {
 	ImGui::Text("offset");
 	ImGui::SameLine();
 	ImGui::InputFloat2("", &sprite.offsetX);
@@ -30,11 +30,11 @@ void componentImGui(ActorSprite& sprite) {
 }
 
 template<>
-void componentImGui(ActorSpriteAnims& anims) {
+void componentImGui(Tile::ActorSpriteAnims& anims) {
 	if (ImGui::TreeNode("walk", "walking")) {
-		for (int i = 1; i < Actor::Direction::SIZE; i++) {
+		for (int i = 1; i < Tile::Direction::DirectionSize; i++) {
 			ImGui::PushID(i);
-			if (ImGui::TreeNode("", "Direction %d", i)) {
+			if (ImGui::TreeNode("", "TileMapDirection %d", i)) {
 				ImGui::BeginTable("", anims.walk[i].size(), ImGuiTableFlags_SizingFixedFit);
 				ImGui::TableNextRow();
 				for (int j = 0; j < anims.walk[i].size(); j++) {
@@ -50,9 +50,9 @@ void componentImGui(ActorSpriteAnims& anims) {
 	}
 
 	if (ImGui::TreeNode("sprint", "sprinting")) {
-		for (int i = 1; i < Actor::Direction::SIZE; i++) {
+		for (int i = 1; i < Tile::Direction::DirectionSize; i++) {
 			ImGui::PushID(i);
-			if (ImGui::TreeNode("", "Direction %d", i)) {
+			if (ImGui::TreeNode("", "TileMapDirection %d", i)) {
 				ImGui::BeginTable("", anims.sprint[i].size(), ImGuiTableFlags_SizingFixedFit);
 				ImGui::TableNextRow();
 				for (int j = 0; j < anims.sprint[i].size(); j++) {
@@ -73,19 +73,19 @@ void componentImGui(ActorSpriteAnims& anims) {
 }
 
 template<>
-void componentImGui(Player& player) {
+void componentImGui(Tile::Player& player) {
 	ImGui::Text("Entity is a player");
 }
 
 template<>
-void componentImGui(NPC& npc) {
+void componentImGui(Tile::NPC& npc) {
 	ImGui::Text("Entity is an NPC");
 }
 
 template<>
-void componentImGui(TileMapAction& action) {
+void componentImGui(Tile::MapAction& action) {
 	switch (action.type) {
-	case TileMapAction::Speak:
+	case Tile::MapAction::Speak:
 		ImGui::Text("Speak");
 		break;
 	default:

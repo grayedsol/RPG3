@@ -1,61 +1,63 @@
 /**
  * @file TileMapInput.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @brief @copybrief TileMapInput
+ * @brief @copybrief Tile::MapInput
  * @copyright Copyright (c) 2024
  */
 #pragma once
 #include "Tile.hpp"
 #include "TileEntityMap.hpp"
 
-class TileMapScene;
-
-/**
- * @brief Processes input for a TileMapScene.
- * 
- */
-class TileMapInput {
-private:
-	/**
-	 * @brief Associated TileMapScene class.
-	 * 
-	 */
-	TileMapScene* scene;
+namespace Tile {
+	class MapScene;
 
 	/**
-	 * @brief Hitboxes of entities.
+	 * @brief Processes input for a Tile::MapScene.
 	 * 
 	 */
-	const ComponentSet<Hitbox>* hitboxes;
+	class MapInput {
+	private:
+		/**
+		 * @brief Associated Tile::MapScene class.
+		 * 
+		 */
+		MapScene* scene;
 
-	/**
-	 * @brief Actor data of entities.
-	 * 
-	 */
-	ComponentSet<Actor>* actors;
+		/**
+		 * @brief Hitboxes of entities.
+		 * 
+		 */
+		const ComponentSet<Hitbox>* hitboxes;
 
-	/**
-	 * @brief Set of entities that are players.
-	 * 
-	 */
-	const ComponentSet<Player>* players;
+		/**
+		 * @brief Actor data of entities.
+		 * 
+		 */
+		ComponentSet<Actor>* actors;
 
-	const ComponentSet<NPC>* npcs;
+		/**
+		 * @brief Set of entities that are players.
+		 * 
+		 */
+		const ComponentSet<Player>* players;
 
-	const ComponentSet<TileMapAction>* actions;
+		const ComponentSet<NPC>* npcs;
 
-	bool interact();
-public:
-	/**
-	 * @brief Constructor.
-	 * 
-	 * @param scene Associated TileMapScene class.
-	 */
-	TileMapInput(TileMapScene* scene);
+		const ComponentSet<MapAction>* actions;
 
-	/**
-	 * @brief Scan and process inputs.
-	 * 
-	 */
-	void process();
+		bool interact();
+	public:
+		/**
+		 * @brief Constructor.
+		 * 
+		 * @param scene Associated Tile::MapScene class.
+		 */
+		MapInput(MapScene* scene);
+
+		/**
+		 * @brief Scan and process inputs.
+		 * 
+		 */
+		void process();
+	};
 };

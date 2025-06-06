@@ -11,19 +11,19 @@ using TileId = Tile::TileId;
 using TilesetId = Tile::TilesetId;
 using entity = ECS::entity;
 
-static entity registerEntity(TileEntityMap& eMap, const GRY_JSON::Value& entityData, float normalTileSize);
+static entity registerEntity(Tile::EntityMap& eMap, const GRY_JSON::Value& entityData, float normalTileSize);
 
-static void registerPosition(TileEntityMap& eMap, entity e, const GRY_JSON::Value& pos, float normalTileSize);
-static void registerActor(TileEntityMap& eMap, entity e, const GRY_JSON::Value& actor);
-static void registerActorSprite(TileEntityMap& eMap, entity e, const GRY_JSON::Value& actorSprite);
-static void registerActorSpriteAnimations(TileEntityMap& eMap, entity e, const GRY_JSON::Value& actorAnimations);
-static void registerPlayer(TileEntityMap& eMap, entity e);
-static void registerNPC(TileEntityMap& eMap, entity e);
-static void registerHitbox(TileEntityMap& eMap, entity e, const GRY_JSON::Value& hitbox);
-static void registerTileMapAction(TileEntityMap& eMap, entity e, const GRY_JSON::Value& actionData);
+static void registerPosition(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& pos, float normalTileSize);
+static void registerActor(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actor);
+static void registerActorSprite(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actorSprite);
+static void registerActorSpriteAnimations(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actorAnimations);
+static void registerPlayer(Tile::EntityMap& eMap, entity e);
+static void registerNPC(Tile::EntityMap& eMap, entity e);
+static void registerHitbox(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& hitbox);
+static void registerTileMapAction(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actionData);
 static void sortEntityLayer(ComponentSet<Position2>& positions, std::vector<entity>& layer);
 
-bool TileEntityMap::load(GRY_Game *game) {
+bool Tile::EntityMap::load(GRY_Game *game) {
 	if (!entityLayers.empty()) { return true; }
 	GRY_JSON::Document doc;
 	GRY_JSON::loadDoc(doc, path);
@@ -60,11 +60,11 @@ bool TileEntityMap::load(GRY_Game *game) {
 	return doc["layers"].GetArray().Size() == 0;
 }
 
-void TileEntityMap::sortLayer(TileEntityMap *entityMap, unsigned layer) {
+void Tile::EntityMap::sortLayer(EntityMap *entityMap, unsigned layer) {
 	sortEntityLayer(entityMap->ecs->getComponent<Position2>(), entityMap->entityLayers.at(layer));
 }
 
-void TileEntityMap::updateLayers(TileEntityMap* entityMap) {
+void Tile::EntityMap::updateLayers(EntityMap* entityMap) {
 	ComponentSet<Actor>& actors = entityMap->ecs->getComponent<Actor>();
 	for (int layer = 0; layer < entityMap->entityLayers.size(); layer++) {
 		for (auto e : entityMap->entityLayers.at(layer)) {
@@ -73,11 +73,11 @@ void TileEntityMap::updateLayers(TileEntityMap* entityMap) {
 	}
 }
 
-entity registerEntity(TileEntityMap& eMap, const GRY_JSON::Value& entityData, float normalTileSize) {
+entity registerEntity(Tile::EntityMap& eMap, const GRY_JSON::Value& entityData, float normalTileSize) {
 	entity e = eMap.ecs->createEntity();
 
 	GRY_Assert(entityData.HasMember("position"),
-		"[TileEntityMap] An entity did not have a position component.\n"
+		"[Tile::EntityMap] An entity did not have a position component.\n"
 	);
 	registerPosition(eMap, e, entityData["position"], normalTileSize);
 	if (entityData.HasMember("actor")) { registerActor(eMap, e, entityData["actor"]); }
@@ -91,7 +91,7 @@ entity registerEntity(TileEntityMap& eMap, const GRY_JSON::Value& entityData, fl
 	return e;
 }
 
-void registerPosition(TileEntityMap& eMap, entity e, const GRY_JSON::Value& pos, float normalTileSize) {
+void registerPosition(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& pos, float normalTileSize) {
 	Position2 position;
 
 	position[0] = pos.GetArray()[0].GetFloat() * normalTileSize;
@@ -101,22 +101,22 @@ void registerPosition(TileEntityMap& eMap, entity e, const GRY_JSON::Value& pos,
 	eMap.ecs->getComponent<Velocity2>().add(e, Velocity2(0,0));
 }
 
-void registerActor(TileEntityMap& eMap, entity e, const GRY_JSON::Value& actor) {
-	Actor data;
+void registerActor(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actor) {
+	Tile::Actor data;
 
-	data.direction = static_cast<Actor::Direction>(actor["direction"].GetUint());
+	data.direction = static_cast<Tile::Direction>(actor["direction"].GetUint());
 	data.speed = actor["speed"].GetFloat();
 
-	GRY_Assert(static_cast<Actor::Direction>(data.direction) > 0 &&
-		static_cast<Actor::Direction>(data.direction) < 9,
-		"[TileEntityMap] Actor direction must be between 1 and 8 inclusive."
+	GRY_Assert(static_cast<Tile::Direction>(data.direction) > 0 &&
+		static_cast<Tile::Direction>(data.direction) < 9,
+		"[Tile::EntityMap] Actor direction must be between 1 and 8 inclusive."
 	);
 
-	eMap.ecs->getComponent<Actor>().add(e, data);
+	eMap.ecs->getComponent<Tile::Actor>().add(e, data);
 }
 
-void registerActorSprite(TileEntityMap& eMap, entity e, const GRY_JSON::Value& actorSprite) {
-	ActorSprite sprite;
+void registerActorSprite(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actorSprite) {
+	Tile::ActorSprite sprite;
 
 	sprite.offsetX = 0;
 	sprite.offsetY = 0;
@@ -126,20 +126,20 @@ void registerActorSprite(TileEntityMap& eMap, entity e, const GRY_JSON::Value& a
 	if (actorSprite.HasMember("offsetX")) { sprite.offsetX = actorSprite["offsetX"].GetFloat(); }
 	if (actorSprite.HasMember("offsetY")) { sprite.offsetY = actorSprite["offsetY"].GetFloat(); }
 
-	eMap.ecs->getComponent<ActorSprite>().add(e, sprite);
+	eMap.ecs->getComponent<Tile::ActorSprite>().add(e, sprite);
 }
 
-void registerPlayer(TileEntityMap& eMap, entity e) {
-	eMap.ecs->getComponent<Player>().add(e, Player{});
+void registerPlayer(Tile::EntityMap& eMap, entity e) {
+	eMap.ecs->getComponent<Tile::Player>().add(e, Tile::Player{});
 }
 
-void registerNPC(TileEntityMap &eMap, entity e) {
-	eMap.ecs->getComponent<NPC>().add(e, NPC{});
+void registerNPC(Tile::EntityMap &eMap, entity e) {
+	eMap.ecs->getComponent<Tile::NPC>().add(e, Tile::NPC{});
 }
 
-void registerHitbox(TileEntityMap &eMap, entity e, const GRY_JSON::Value& hitbox) {
+void registerHitbox(Tile::EntityMap &eMap, entity e, const GRY_JSON::Value& hitbox) {
 	GRY_Assert(eMap.ecs->getComponent<Position2>().contains(e),
-		"[TileEntityMap] Entity with 'hitbox' must have a position."
+		"[Tile::EntityMap] Entity with 'hitbox' must have a position."
 	);
 	Hitbox box;
 	Position2 pos = eMap.ecs->getComponent<Position2>().get(e);
@@ -149,52 +149,52 @@ void registerHitbox(TileEntityMap &eMap, entity e, const GRY_JSON::Value& hitbox
 	eMap.ecs->getComponent<Hitbox>().add(e, box);
 }
 
-void registerTileMapAction(TileEntityMap &eMap, entity e, const GRY_JSON::Value &actionData) {
-	TileMapAction action;
+void registerTileMapAction(Tile::EntityMap &eMap, entity e, const GRY_JSON::Value &actionData) {
+	Tile::MapAction action;
 	const char* type = actionData["type"].GetString();
 	if (strcmp("Speak", type) == 0) {
-		action.type = TileMapAction::Speak;
+		action.type = Tile::MapAction::Speak;
 	}
 	else {
-		GRY_Assert(false, "[TileEntityMap] Unknown action type for entity %d", e);
+		GRY_Assert(false, "[Tile::EntityMap] Unknown action type for entity %d", e);
 	}
 	action.id = actionData["id"].GetUint();
-	eMap.ecs->getComponent<TileMapAction>().add(e, action);
+	eMap.ecs->getComponent<Tile::MapAction>().add(e, action);
 }
 
-void registerActorSpriteAnimations(TileEntityMap &eMap, entity e, const GRY_JSON::Value& actorAnimations) {
-	ActorSpriteAnims anims;
+void registerActorSpriteAnimations(Tile::EntityMap &eMap, entity e, const GRY_JSON::Value& actorAnimations) {
+	Tile::ActorSpriteAnims anims;
 	anims.duration = actorAnimations["duration"].GetDouble() / 1000.0;
 
-	Tileset& tileset = eMap.tilesets.at(eMap.ecs->getComponent<ActorSprite>().get(e).tileset);
+	Tile::Tileset& tileset = eMap.tilesets.at(eMap.ecs->getComponent<Tile::ActorSprite>().get(e).tileset);
 
-	for (int i = 1; i < Actor::Direction::SIZE; i++) {
+	for (int i = 1; i < Tile::Direction::DirectionSize; i++) {
 		TileId id = actorAnimations["walk"].GetArray()[i-1].GetUint() + 1;
-		TileAnimation* b = nullptr;
+		Tile::Animation* b = nullptr;
 
 		for (auto& ani : tileset.tileAnimations) {
 			if (ani.tile == id) { b = &ani; break; }
 		}
-		GRY_Assert(b, "[TileEntityMap] Actor tileset did not have an animation for tile id: %d.", id-1);
+		GRY_Assert(b, "[Tile::EntityMap] Actor tileset did not have an animation for tile id: %d.", id-1);
 		for (auto frame : b->frames) {
 			anims.walk[i].push_back(frame.index);
 		}
 	}
 
-	for (int i = 1; i < Actor::Direction::SIZE; i++) {
+	for (int i = 1; i < Tile::Direction::DirectionSize; i++) {
 		TileId id = actorAnimations["sprint"].GetArray()[i-1].GetUint() + 1;
-		TileAnimation* b = nullptr;
+		Tile::Animation* b = nullptr;
 
 		for (auto& ani : tileset.tileAnimations) {
 			if (ani.tile == id) { b = &ani; break; }
 		}
-		GRY_Assert(b, "[TileEntityMap] Actor tileset did not have an animation for tile id: %d.", id-1);
+		GRY_Assert(b, "[Tile::EntityMap] Actor tileset did not have an animation for tile id: %d.", id-1);
 		for (auto frame : b->frames) {
 			anims.sprint[i].push_back(frame.index);
 		}
 	}
 
-	eMap.ecs->getComponent<ActorSpriteAnims>().add(e, anims);
+	eMap.ecs->getComponent<Tile::ActorSpriteAnims>().add(e, anims);
 }
 
 void sortEntityLayer(ComponentSet<Position2>& positions, std::vector<entity>& layer) {

@@ -7,7 +7,7 @@
 #include "GRY_Game.hpp"
 #include "GRY_Tiled.hpp"
 
-bool TileCollision::load(GRY_Game* game) {
+bool Tile::Collision::load(GRY_Game* game) {
     if (loaded) { return true; }
 
     /* Open the tileset file */
@@ -34,7 +34,7 @@ bool TileCollision::load(GRY_Game* game) {
     return false;
 }
 
-const SDL_FRect* TileCollision::getCollision(TileId tile) {
+const SDL_FRect* Tile::Collision::getCollision(TileId tile) {
     if (!collisions.contains(tile)) { return nullptr; }
     return &collisions.get(tile);
 }

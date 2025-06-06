@@ -11,69 +11,71 @@
 
 struct SDL_Renderer;
 
-/**
- * @brief Loads and displays a tileset.
- * 
- * @details
- * The scene displays a tileset from the assets folder on the screen.
- * Useful for testing purposes.
- * 
- * The player can press GAME_A to switch to a new instance
- * of this scene with a FadeToBlack transition, or GAME_B to exit.
- * Pressing GAME_UP will highlight the collision boxes for the tiles.
- */
-class TilesetScene : public Scene {
-	friend class DebugTextTilesetScene;
-private:
+namespace Tile {
 	/**
-	 * @brief Tileset that will be loaded and displayed.
+	 * @brief Loads and displays a tileset.
 	 * 
-	*/
-	Tileset tileset;
-
-	/**
-	 * @brief Collision data for each tile in the tileset.
+	 * @details
+	 * The scene displays a tileset from the assets folder on the screen.
+	 * Useful for testing purposes.
 	 * 
+	 * The player can press GAME_A to switch to a new instance
+	 * of this scene with a FadeToBlack transition, or GAME_B to exit.
+	 * Pressing GAME_UP will highlight the collision boxes for the tiles.
 	 */
-	TileCollision collisions;
+	class TilesetScene : public Scene {
+		friend class DebugTextTilesetScene;
+	private:
+		/**
+		 * @brief Tileset that will be loaded and displayed.
+		 * 
+		*/
+		Tileset tileset;
 
-	/**
-	 * @brief Pointer to the renderer.
-	 * 
-	 */
-	SDL_Renderer* renderer = nullptr;
+		/**
+		 * @brief Collision data for each tile in the tileset.
+		 * 
+		 */
+		Collision collisions;
 
-	/**
-	 * @brief Distance between each displayed tile, in pixels.
-	*/
-	unsigned int spacing = 2;
+		/**
+		 * @brief Pointer to the renderer.
+		 * 
+		 */
+		SDL_Renderer* renderer = nullptr;
 
-	/**
-	 * @copybrief Scene::setControls
-	 */
-	void setControls() final;
-public:
-	/**
-	 * @brief Constructor.
-	 * 
-	 * @param game Associated game class.
-	 * @param tilesetPath File path to the tileset scene.
-	 */
-	TilesetScene(GRY_Game* game, const char* tilesetPath);
-	
-	/**
-	 * @brief Initializes the scene.
-	 * 
-	 */
-	void init() final { setControls(); }
+		/**
+		 * @brief Distance between each displayed tile, in pixels.
+		*/
+		unsigned int spacing = 2;
 
-	/**
-	 * @copydoc Scene::process
-	 */
-	void process();
+		/**
+		 * @copybrief Scene::setControls
+		 */
+		void setControls() final;
+	public:
+		/**
+		 * @brief Constructor.
+		 * 
+		 * @param game Associated game class.
+		 * @param tilesetPath File path to the tileset scene.
+		 */
+		TilesetScene(GRY_Game* game, const char* tilesetPath);
+		
+		/**
+		 * @brief Initializes the scene.
+		 * 
+		 */
+		void init() final { setControls(); }
 
-	/**
-	 * @copydoc Scene::load
-	 */
-	bool load() final;
+		/**
+		 * @copydoc Scene::process
+		 */
+		void process();
+
+		/**
+		 * @copydoc Scene::load
+		 */
+		bool load() final;
+	};
 };

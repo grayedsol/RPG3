@@ -1,58 +1,60 @@
 /**
  * @file TileMapCamera.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @brief @copybrief TileMapCamera
+ * @brief @copybrief Tile::MapCamera
  * @copyright Copyright (c) 2025
  */
 #pragma once
 #include "Components.hpp"
 #include "TileComponents.hpp"
 
-class TileMapScene;
-
-/**
- * @brief Adjusts a TileMapScene's rendering offset based on the player's position.
- * 
- */
-class TileMapCamera {
-private:
-	/**
-	 * @brief Associated TileMapScene class.
-	 * 
-	 */
-	TileMapScene* scene;
+namespace Tile {
+	class MapScene;
 
 	/**
-	 * @brief Scaling factor for the rendering offset.
+	 * @brief Adjusts a MapScene's rendering offset based on the player's position.
 	 * 
 	 */
-	const float* pixelScaling;
+	class MapCamera {
+	private:
+		/**
+		 * @brief Associated MapScene class.
+		 * 
+		 */
+		MapScene* scene;
 
-	/**
-	 * @brief Hitboxes of entities.
-	 * 
-	 */
-	const ComponentSet<Hitbox>* hitboxes;
+		/**
+		 * @brief Scaling factor for the rendering offset.
+		 * 
+		 */
+		const float* pixelScaling;
 
-	/**
-	 * @brief Set of entities that are players.
-	 * 
-	 * @details
-	 * There should really only be one player.
-	 */
-	const ComponentSet<Player>* players;
+		/**
+		 * @brief Hitboxes of entities.
+		 * 
+		 */
+		const ComponentSet<Hitbox>* hitboxes;
 
-public:
-	/**
-	 * @brief Constructor.
-	 * 
-	 * @param scene Associated TileMapScene class.
-	 */
-	TileMapCamera(TileMapScene* scene);
+		/**
+		 * @brief Set of entities that are players.
+		 * 
+		 * @details
+		 * There should really only be one player.
+		 */
+		const ComponentSet<Player>* players;
 
-	/**
-	 * @brief Sets the rendering offset based on the player's position.
-	 * 
-	 */
-	void process();
+	public:
+		/**
+		 * @brief Constructor.
+		 * 
+		 * @param scene Associated MapScene class.
+		 */
+		MapCamera(MapScene* scene);
+
+		/**
+		 * @brief Sets the rendering offset based on the player's position.
+		 * 
+		 */
+		void process();
+	};
 };

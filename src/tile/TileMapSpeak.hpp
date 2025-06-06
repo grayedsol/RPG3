@@ -1,30 +1,33 @@
 /**
  * @file TileMapSpeak.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @brief @copybrief TileMapSpeak
+ * @brief @copybrief Tile::MapSpeak
  * @copyright Copyright (c) 2025
  */
 #pragma once
 #include "DialogueResource.hpp"
 
-class TileMapScene;
 class TextBoxScene;
 
-class TileMapSpeak {
-private:
-	using Dialogue = DialogueResource::Dialogue;
+namespace Tile {
+	class MapScene;
 
-	const Dialogue* currentDialogue = nullptr;
+	class MapSpeak {
+	private:
+		using Dialogue = DialogueResource::Dialogue;
 
-	TextBoxScene* textbox;
+		const Dialogue* currentDialogue = nullptr;
 
-	unsigned index = 0;
+		TextBoxScene* textbox;
 
-	TileMapScene* scene;
-public:
-	TileMapSpeak(TileMapScene* scene);
+		unsigned index = 0;
 
-	void process();
+		MapScene* scene;
+	public:
+		MapSpeak(MapScene* scene);
 
-	void speak(unsigned dialogueId);
+		void process();
+
+		void speak(unsigned dialogueId);
+	};
 };

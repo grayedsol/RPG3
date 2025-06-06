@@ -8,12 +8,12 @@
 #include "GRY_Tiled.hpp"
 #include "SDL3/SDL_render.h"
 
-Tileset::~Tileset() {
+Tile::Tileset::~Tileset() {
 	SDL_DestroyTexture(texture);
 	texture = nullptr;
 }
 
-bool Tileset::load(GRY_Game* game) {
+bool Tile::Tileset::load(GRY_Game* game) {
     if (tileWidth != 0.0f) { return true; }
 
 	/* Open the tileset file */
@@ -60,15 +60,15 @@ bool Tileset::load(GRY_Game* game) {
 			TileId id = tile["id"].GetUint() + 1; /* Add 1 because it's 1-based indexing */
 			/* Load animations */
 			if (tile.HasMember("animation")) {
-				std::vector<TileAnimation::Frame> frames;
+				std::vector<Animation::Frame> frames;
 				for (auto& frame : tile["animation"].GetArray()) {
-					frames.push_back(TileAnimation::Frame {
+					frames.push_back(Animation::Frame {
 							frame["duration"].GetDouble() / 1000.0,
 							(TileId)(frame["tileid"].GetUint() + 1) /* Add 1 here too */
 						}
 					);
 				}
-				tileAnimations.push_back(TileAnimation{frames, 0, frames.at(0).duration, id});
+				tileAnimations.push_back(Animation{frames, 0, frames.at(0).duration, id});
 			}
 			/* Change textureIdx */
 			/* TODO: Find a way to make this better until Tiled finally adds arrays >:( */
@@ -87,13 +87,13 @@ bool Tileset::load(GRY_Game* game) {
     return false;
 }
 
-void Tileset::processAnimations(double delta) {
+void Tile::Tileset::processAnimations(double delta) {
 	for (auto& anim : tileAnimations) {
 		anim.timer -= delta;
 		if (anim.timer > 0.0) { continue; }
 		
 		if (++anim.currentFrame >= anim.frames.size()) { anim.currentFrame = 0; }
-		const TileAnimation::Frame& newFrame = anim.frames[anim.currentFrame];
+		const Animation::Frame& newFrame = anim.frames[anim.currentFrame];
 		textureIdx[anim.tile] = newFrame.index;
 		anim.timer = newFrame.duration;
 	}

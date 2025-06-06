@@ -1,9 +1,14 @@
+/**
+ * @file TileMapInput.cpp
+ * @author Grayedsol (grayedsol@gmail.com)
+ * @copyright Copyright (c) 2025
+ */
 #include "TileMapInput.hpp"
 #include "../scenes/TileMapScene.hpp"
 
 static const float INV_SQRT_TWO = 0.7071f;
 
-static Velocity2 dirVecs[Actor::Direction::SIZE] = {
+static Velocity2 dirVecs[Tile::Direction::DirectionSize] = {
 	Velocity2{0,0},
 	Velocity2{0,1},
 	Velocity2{0,-1},
@@ -15,54 +20,54 @@ static Velocity2 dirVecs[Actor::Direction::SIZE] = {
 	Velocity2{INV_SQRT_TWO,-INV_SQRT_TWO}
 };
 
-static Actor::Direction invDirs[Actor::Direction::SIZE] {
-	Actor::Direction::NONE,
-	Actor::Direction::Up,
-	Actor::Direction::Down,
-	Actor::Direction::Right,
-	Actor::Direction::RightUp,
-	Actor::Direction::RightDown,
-	Actor::Direction::Left,
-	Actor::Direction::LeftUp,
-	Actor::Direction::LeftDown
+static Tile::Direction invDirs[Tile::Direction::DirectionSize] {
+	Tile::Direction::DirectionNone,
+	Tile::Direction::Up,
+	Tile::Direction::Down,
+	Tile::Direction::Right,
+	Tile::Direction::RightUp,
+	Tile::Direction::RightDown,
+	Tile::Direction::Left,
+	Tile::Direction::LeftUp,
+	Tile::Direction::LeftDown
 };
 
-TileMapInput::TileMapInput(TileMapScene* scene) :
+Tile::MapInput::MapInput(MapScene* scene) :
 	scene(scene),
 	hitboxes(&scene->getECSReadOnly().getComponentReadOnly<Hitbox>()),
 	actors(&scene->getECS().getComponent<Actor>()),
 	players(&scene->getECS().getComponentReadOnly<Player>()),
-	actions(&scene->getECSReadOnly().getComponentReadOnly<TileMapAction>()) {
+	actions(&scene->getECSReadOnly().getComponentReadOnly<MapAction>()) {
 }
 
 /**
  * @details
  * The movement direction is calculated by adding the vertical and
- * horizontal inputs together. For example, since Actor::Direction::Down
- * is 2 and Actor::Direction::Right is 6, add 2 and 6 to get 8, which is
- * the value of Actor::Direction::RightDown.
+ * horizontal inputs together. For example, since Tile::Direction::Down
+ * is 2 and Tile::Direction::Right is 6, add 2 and 6 to get 8, which is
+ * the value of Tile::Direction::RightDown.
  * If both up and down are input, they cancel each other out; the same
  * goes for left and right.
  * 
  * The bit shifting is an over-engineered branchless version of this code:
  * @code{.cpp}
  * 	if (scene->isPressing(GCmd::MapDown) && !scene->isPressing(GCmd::MapUp)) {
- * 		direction += static_cast<uint8_t>(Actor::Direction::Down);
+ * 		direction += static_cast<uint8_t>(Tile::Direction::Down);
  * 	}
  * 	else if (scene->isPressing(GCmd::MapUp) && !scene->isPressing(GCmd::MapDown)) {
- * 		direction += static_cast<uint8_t>(Actor::Direction::Up);
+ * 		direction += static_cast<uint8_t>(Tile::Direction::Up);
  * 	}
  * 
  * 	if (scene->isPressing(GCmd::MapLeft) && !scene->isPressing(GCmd::MapRight)) {
- * 		direction += static_cast<uint8_t>(Actor::Direction::Left);
+ * 		direction += static_cast<uint8_t>(Tile::Direction::Left);
  * 	}
  * 	else if (scene->isPressing(GCmd::MapRight) && !scene->isPressing(GCmd::MapLeft)) {
- * 		direction += static_cast<uint8_t>(Actor::Direction::Right);
+ * 		direction += static_cast<uint8_t>(Tile::Direction::Right);
  * 	}
  * @endcode
- * @sa Actor::Direction
+ * @sa Tile::Direction
  */
-void TileMapInput::process() {
+void Tile::MapInput::process() {
 	GRY_Assert(players->size() > 0, "[TileMapInput] There were no players.");
 	ECS::entity player = players->getEntity(0);
 
@@ -80,7 +85,7 @@ void TileMapInput::process() {
 	actors->get(player).moving = (bool)direction;
 	actors->get(player).sprinting = scene->isPressing(GCmd::MapSprint);
 	if (direction) {
-		actors->get(player).direction = static_cast<Actor::Direction>(direction);
+		actors->get(player).direction = static_cast<Direction>(direction);
 	}
 
 	if (scene->readSingleInput() == GCmd::MapInteract) {
@@ -88,7 +93,7 @@ void TileMapInput::process() {
 	}
 }
 
-bool TileMapInput::interact() {
+bool Tile::MapInput::interact() {
 	ECS::entity player = players->getEntity(0);
 	/* Create a hitbox in front of the player */
 	Hitbox searchBox = hitboxes->get(player);
@@ -118,7 +123,7 @@ bool TileMapInput::interact() {
 	/* If they have an action, invoke it */
 	if (actions->contains(target)) {
 		switch (actions->get(target).type) {
-		case TileMapAction::Speak:
+		case MapAction::Speak:
 			if (actors->contains(target)) {
 				actors->get(target).direction = invDirs[actors->get(player).direction];
 			}

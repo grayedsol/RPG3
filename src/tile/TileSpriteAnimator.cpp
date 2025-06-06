@@ -1,23 +1,28 @@
+/**
+ * @file TileSpriteAnimator.cpp
+ * @author Grayedsol (grayedsol@gmail.com)
+ * @copyright Copyright (c) 2025
+ */
 #include "TileSpriteAnimator.hpp"
 #include "../scenes/TileMapScene.hpp"
 
-TileSpriteAnimator::TileSpriteAnimator(TileMapScene *scene) :
+Tile::SpriteAnimator::SpriteAnimator(MapScene *scene) :
 	sprites(&scene->getECS().getComponent<ActorSprite>()),
 	actors(&scene->getECS().getComponentReadOnly<Actor>()),
 	actorAnimations(&scene->getECS().getComponent<ActorSpriteAnims>()) {
 }
 
-void TileSpriteAnimator::process(double delta) {
+void Tile::SpriteAnimator::process(double delta) {
 	for (auto e : *actorAnimations) {
 		ActorSpriteAnims& animations = actorAnimations->get(e);
 		if (!actors->get(e).moving) {
-			sprites->get(e).index = actors->get(e).direction;
+			sprites->get(e).index = static_cast<uint8_t>(actors->get(e).direction);
 			animations.timer = 0;
 			animations.index = 0;
 			continue;
 		}
 
-		std::vector<Tile::TileId> animation = actors->get(e).sprinting ?
+		std::vector<TileId> animation = actors->get(e).sprinting ?
 		animations.sprint[actors->get(e).direction] :
 		animations.walk[actors->get(e).direction];
 

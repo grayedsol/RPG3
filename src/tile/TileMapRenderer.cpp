@@ -8,7 +8,7 @@
 #include "SDL_RectOps.hpp"
 #include "SDL3/SDL_render.h"
 
-TileMapRenderer::TileMapRenderer(const TileMapScene *scene) :
+Tile::MapRenderer::MapRenderer(const MapScene *scene) :
 	scene(scene),
 	renderer(scene->getGame()->getSDL().getRenderer()),
 	tileMap(&scene->getTileMap()),
@@ -19,11 +19,11 @@ TileMapRenderer::TileMapRenderer(const TileMapScene *scene) :
 	hitboxes(&scene->getECSReadOnly().getComponentReadOnly<Hitbox>()) {
 }
 
-void TileMapRenderer::renderTile(const Tileset &tileset, const TileId textureIndex, const SDL_FRect *dstRect) {
+void Tile::MapRenderer::renderTile(const Tileset &tileset, const TileId textureIndex, const SDL_FRect *dstRect) {
 	SDL_RenderTexture(renderer, tileset.texture, &tileset.sourceRects[textureIndex], dstRect);
 }
 
-void TileMapRenderer::renderSprite(ECS::entity e) {
+void Tile::MapRenderer::renderSprite(ECS::entity e) {
 	const Tileset& tileset = entityMap->tilesets[sprites->get(e).tileset];
 	SDL_FRect dstRect {
 		floorf((positions->get(e)[0] + sprites->get(e).offsetX + offsetX) * *pixelScaling),
@@ -38,7 +38,7 @@ void TileMapRenderer::renderSprite(ECS::entity e) {
  * @details
  * For efficiency, this renderer assumes the map uses only one tileset.
  */
-void TileMapRenderer::process() {
+void Tile::MapRenderer::process() {
 	GRY_VecTD<uint32_t, 2, void> tileViewport{
 		scene->getPixelGame()->getScreenWidthPixels() / scene->getNormalTileSize(),
 		scene->getPixelGame()->getScreenHeightPixels() / scene->getNormalTileSize()

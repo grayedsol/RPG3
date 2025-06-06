@@ -19,18 +19,18 @@
  * GAME_B: Quit
  * GAME_UP: Highlight tile collision boxes
 */
-void TilesetScene::setControls() {
+void Tile::TilesetScene::setControls() {
 	controls.mapCmd(GCmd::GameMenu, VirtualButton::GAME_A);
 	controls.mapCmd(GCmd::GameUp, VirtualButton::GAME_UP);
 	controls.mapCmd(GCmd::GameQuit, VirtualButton::GAME_B);
 }
 
-TilesetScene::TilesetScene(GRY_Game *game, const char *tilesetPath) :
+Tile::TilesetScene::TilesetScene(GRY_Game *game, const char *tilesetPath) :
 	Scene(game, tilesetPath),
 	renderer(game->getSDL().getRenderer()) {
 }
 
-void TilesetScene::process() {
+void Tile::TilesetScene::process() {
 	/* Determines if collision will be highlighted */
 	bool highlightCollisions = false;
 
@@ -61,7 +61,7 @@ void TilesetScene::process() {
 	/* Destination rectangle for rendering */
 	SDL_FRect dstRect{ 0, 0, tileset.tileWidth, tileset.tileHeight };
 	/* Display the tileset with a spacing between tiles. Tilesets use 1-based indexing. */
-	for (Tile::TileId i = 1; i < tileset.sourceRects.size(); i++) {
+	for (TileId i = 1; i < tileset.sourceRects.size(); i++) {
 		const SDL_FRect* srcRect = tileset.getSourceRect(i);
 		SDL_RenderTexture(renderer, tileset.texture, srcRect, &dstRect);
 
@@ -89,7 +89,7 @@ void TilesetScene::process() {
 	#endif
 }
 
-bool TilesetScene::load() {
+bool Tile::TilesetScene::load() {
 	if (tileset.path && collisions.path) {
 		return
 		tileset.load(game) &&

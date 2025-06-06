@@ -9,18 +9,20 @@
 #include "Components.hpp"
 #include "TileComponents.hpp"
 
-/**
- * @copybrief GRY_ECS
- * 
- */
-using TileMapECS = GRY_ECS<
-	Position2,
-	Velocity2,
-	Hitbox,
-	Actor,
-	ActorSprite,
-	ActorSpriteAnims,
-	Player,
-	NPC,
-	TileMapAction
->;
+namespace Tile {
+	/**
+	 * @copybrief GRY_ECS
+	 * 
+	 */
+	using MapECS = GRY_ECS<
+		Position2,
+		Velocity2,
+		Hitbox,
+		Actor,
+		ActorSprite,
+		ActorSpriteAnims,
+		Player,
+		NPC,
+		MapAction
+	>;
+};
