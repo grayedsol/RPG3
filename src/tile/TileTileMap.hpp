@@ -1,5 +1,5 @@
 /**
- * @file TileMap.hpp
+ * @file TileTileMap.hpp
  * @author Grayedsol (grayedsol@gmail.com)
  * @brief @copybrief Tile::TileMap
  * @copyright Copyright (c) 2024

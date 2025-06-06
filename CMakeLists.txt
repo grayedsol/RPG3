@@ -35,7 +35,7 @@ set(SOURCES
 	src/DialogueResource.cpp
 	src/tile/Tileset.cpp
 	src/tile/TileCollision.cpp
-	src/tile/TileMap.cpp
+	src/tile/TileTileMap.cpp
 	src/tile/TileEntityMap.cpp
 	src/scenes/ExampleScene.cpp
 	src/scenes/TilesetScene.cpp

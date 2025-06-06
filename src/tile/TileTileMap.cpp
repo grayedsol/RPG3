@@ -1,9 +1,9 @@
 /**
- * @file TileMap.cpp
+ * @file TileTileMap.cpp
  * @author Grayedsol (grayedsol@gmail.com) 
  * @copyright Copyright (c) 2024
  */
-#include "TileMap.hpp"
+#include "TileTileMap.hpp"
 #include "GRY_Tiled.hpp"
 #include "GRY_Game.hpp"
 #include <limits>
