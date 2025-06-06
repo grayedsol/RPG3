@@ -122,7 +122,7 @@ void InputHandler::process(bool& gameRunning) {
 		ImGui_ImplSDL3_ProcessEvent(&event);
 		switch (event.window.type) {
 		case SDL_EVENT_WINDOW_RESIZED:
-			GRY_Log("Resized window.");
+			GRY_Log("Resized window.\n");
 			break;
 		default:
 			break;
