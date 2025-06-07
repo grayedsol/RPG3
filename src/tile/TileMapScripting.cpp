@@ -25,20 +25,75 @@ static Tile::Direction vecToDir(Velocity2 vec) {
 Tile::MapScripting::MapScripting(MapScene *scene) :
 	scene(scene),
 	ecs(&scene->getECS()) {
-	TMC_MoveActorPos moveGirl;
-	moveGirl.targetPos = Position2{ 300, 200 };
-	moveGirl.e = 1;
-	MapCommand moveGirlU{ .moveActorPos = moveGirl };
-	currentCommands.push_back(moveGirlU);
 }
 
 void Tile::MapScripting::process(double delta) {
+	switch (mode) {
+		case GAMEPLAY:
+			processGameplay(delta);
+			break;
+		case CUTSCENE:
+			processCutscene(delta);
+			break;
+		default:
+			break;
+	}
+}
+
+void Tile::MapScripting::processGameplay(double delta) {
+	for (auto e : ecs->getComponent<MapCommandList>()) {
+		MapCommandList& commandList = ecs->getComponent<MapCommandList>().get(e);
+		MapCommand& command = commandList.commands[commandList.index];
+	
+		switch (command.type) {
+			case MAP_CMD_NONE:
+				break;
+			case MAP_CMD_MOVE_ACTOR_POS:
+				if (processMoveActorPos(command.moveActorPos)) {
+					commandList.index++;
+				}
+				break;
+			case MAP_CMD_SET_ACTOR_DIRECTION:
+				if (processSetActorDirection(command.setActorDirection)) {
+					commandList.index++;
+				}
+				break;
+			case MAP_CMD_WAIT_ACTOR:
+				if (processWaitActor(command.waitActor, delta)) {
+					commandList.index++;
+				}
+				break;
+			default:
+				break;
+		}
+
+		if (commandList.index >= commandList.commands.size()) {
+			commandList.index = 0;
+		}
+	}
+}
+
+void Tile::MapScripting::processCutscene(double delta) {
 	for (int i = 0; i < currentCommands.size(); i++) {
 		MapCommand& command = currentCommands[i];
 
 		switch (command.type) {
+			case MAP_CMD_NONE:
+				break;
 			case MAP_CMD_MOVE_ACTOR_POS:
 				if (processMoveActorPos(command.moveActorPos)) {
+					removeCommand(i);
+					i--;
+				}
+				break;
+			case MAP_CMD_SET_ACTOR_DIRECTION:
+				if (processSetActorDirection(command.setActorDirection)) {
+					removeCommand(i);
+					i--;
+				}
+				break;
+			case MAP_CMD_WAIT_ACTOR:
+				if (processWaitActor(command.waitActor, delta)) {
 					removeCommand(i);
 					i--;
 				}
@@ -56,6 +111,7 @@ void Tile::MapScripting::removeCommand(size_t index) {
 
 bool Tile::MapScripting::processMoveActorPos(TMC_MoveActorPos& args) {
 	static int sign[2] = { -1, 1 };
+	if (args.e == ecs->getComponent<Player>().value[0].speakingTo) { return false; }
 	Position2& pos = ecs->getComponent<Position2>().get(args.e);
 	if (pos == args.targetPos) { return true; }
 	if (args.startPos == Position2{ 0, 0 }) { args.startPos = pos; }
@@ -82,5 +138,21 @@ bool Tile::MapScripting::processMoveActorPos(TMC_MoveActorPos& args) {
 
 	ecs->getComponent<Actor>().get(args.e).direction = vecToDir(vel);
 	ecs->getComponent<Actor>().get(args.e).moving = true;
+	return false;
+}
+
+bool Tile::MapScripting::processSetActorDirection(TMC_SetActorDirection& args) {
+	if (args.direction != Direction::DirectionNone && args.direction != Direction::DirectionSize) {
+		ecs->getComponent<Actor>().get(args.e).direction = args.direction;
+	}
+	return true;
+}
+
+bool Tile::MapScripting::processWaitActor(TMC_WaitActor& args, double delta) {
+	args.timer -= delta;
+	if (args.timer <= 0.f) {
+		args.timer = args.time;
+		return true;
+	}
 	return false;
 }

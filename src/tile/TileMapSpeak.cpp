@@ -17,6 +17,7 @@ void Tile::MapSpeak::process() {
 		textbox->close();
 		currentDialogue = nullptr;
 		index = 0;
+		scene->getECS().getComponent<Player>().value.at(0).speakingTo = ECS::NONE;
 	}
 	else {
 		textbox->printLine(currentDialogue->at(index));

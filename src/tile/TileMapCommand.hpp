@@ -6,12 +6,17 @@
  */
 #pragma once
 #include <stdint.h>
+#include <tuple>
 #include "ECS.hpp"
 #include "Components.hpp"
+#include "TileComponents.hpp"
 
 namespace Tile {
 	enum MapCommandType : uint32_t {
-		MAP_CMD_MOVE_ACTOR_POS
+		MAP_CMD_NONE,
+		MAP_CMD_MOVE_ACTOR_POS,
+		MAP_CMD_SET_ACTOR_DIRECTION,
+		MAP_CMD_WAIT_ACTOR
 	};
 
 	struct TMC_MoveActorPos {
@@ -21,6 +26,19 @@ namespace Tile {
 		ECS::entity e;
 	};
 
+	struct TMC_SetActorDirection {
+		MapCommandType type = MAP_CMD_SET_ACTOR_DIRECTION;
+		ECS::entity e;
+		Direction direction;
+	};
+
+	struct TMC_WaitActor {
+		MapCommandType type = MAP_CMD_WAIT_ACTOR;
+		ECS::entity e;
+		double time;
+		double timer = time;
+	};
+
 	/**
 	 * @brief Defines commands that can be used for MapScene scripting.
 	 * 
@@ -28,5 +46,28 @@ namespace Tile {
 	union MapCommand {
 		MapCommandType type;
 		TMC_MoveActorPos moveActorPos;
+		TMC_SetActorDirection setActorDirection;
+		TMC_WaitActor waitActor;
 	};
+
+	struct MapCommandList {
+		std::vector<MapCommand> commands;
+		uint32_t index = 0;
+	};
+
+	using MapCommandTypeList = std::tuple<
+		MapCommandType,
+		TMC_MoveActorPos,
+		TMC_SetActorDirection,
+		TMC_WaitActor
+	>;
+	
+	static const char* MapCommandNames[std::tuple_size<MapCommandTypeList>::value] = {
+		"None",
+		"MoveActorPos",
+		"SetActorDirection",
+		"WaitActor"
+	};
+
+
 };

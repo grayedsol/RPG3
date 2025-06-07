@@ -6,6 +6,7 @@
 #include "TileEntityMap.hpp"
 #include "GRY_JSON.hpp"
 #include "TileComponents.hpp"
+#include "TileRegisterMapCommandFuncs.hpp"
 
 using TileId = Tile::TileId;
 using TilesetId = Tile::TilesetId;
@@ -20,7 +21,8 @@ static void registerActorSpriteAnimations(Tile::EntityMap& eMap, entity e, const
 static void registerPlayer(Tile::EntityMap& eMap, entity e);
 static void registerNPC(Tile::EntityMap& eMap, entity e);
 static void registerHitbox(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& hitbox);
-static void registerTileMapAction(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actionData);
+static void registerMapAction(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actionData);
+static void registerMapCommands(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& commandData);
 static void sortEntityLayer(ComponentSet<Position2>& positions, std::vector<entity>& layer);
 
 bool Tile::EntityMap::load(GRY_Game *game) {
@@ -86,7 +88,8 @@ entity registerEntity(Tile::EntityMap& eMap, const GRY_JSON::Value& entityData, 
 	if (entityData.HasMember("player")) { registerPlayer(eMap, e); }
 	if (entityData.HasMember("npc")) { registerNPC(eMap, e); }
 	if (entityData.HasMember("hitbox")) { registerHitbox(eMap, e, entityData["hitbox"]); }
-	if (entityData.HasMember("action")) { registerTileMapAction(eMap, e, entityData["action"]); }
+	if (entityData.HasMember("action")) { registerMapAction(eMap, e, entityData["action"]); }
+	if (entityData.HasMember("commands")) { registerMapCommands(eMap, e, entityData["commands"]); }
 
 	return e;
 }
@@ -149,7 +152,7 @@ void registerHitbox(Tile::EntityMap &eMap, entity e, const GRY_JSON::Value& hitb
 	eMap.ecs->getComponent<Hitbox>().add(e, box);
 }
 
-void registerTileMapAction(Tile::EntityMap &eMap, entity e, const GRY_JSON::Value &actionData) {
+void registerMapAction(Tile::EntityMap &eMap, entity e, const GRY_JSON::Value &actionData) {
 	Tile::MapAction action;
 	const char* type = actionData["type"].GetString();
 	if (strcmp("Speak", type) == 0) {
@@ -160,6 +163,20 @@ void registerTileMapAction(Tile::EntityMap &eMap, entity e, const GRY_JSON::Valu
 	}
 	action.id = actionData["id"].GetUint();
 	eMap.ecs->getComponent<Tile::MapAction>().add(e, action);
+}
+
+void registerMapCommands(Tile::EntityMap &eMap, entity e, const GRY_JSON::Value &commandData) {
+	Tile::MapCommandList commandList;
+
+	for (auto& command : commandData.GetArray()) {
+		for (int i = 0; i < std::tuple_size<Tile::MapCommandTypeList>::value; i++) {
+			if (strcmp(command["type"].GetString(), Tile::MapCommandNames[i]) == 0) {
+				commandList.commands.push_back(registerTMC_Funcs[i](eMap, e, command));
+			}
+		}
+	}
+
+	eMap.ecs->getComponent<Tile::MapCommandList>().add(e, commandList);
 }
 
 void registerActorSpriteAnimations(Tile::EntityMap &eMap, entity e, const GRY_JSON::Value& actorAnimations) {

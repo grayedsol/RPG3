@@ -36,7 +36,7 @@ Tile::MapInput::MapInput(MapScene* scene) :
 	scene(scene),
 	hitboxes(&scene->getECSReadOnly().getComponentReadOnly<Hitbox>()),
 	actors(&scene->getECS().getComponent<Actor>()),
-	players(&scene->getECS().getComponentReadOnly<Player>()),
+	players(&scene->getECS().getComponent<Player>()),
 	actions(&scene->getECSReadOnly().getComponentReadOnly<MapAction>()) {
 }
 
@@ -126,7 +126,9 @@ bool Tile::MapInput::interact() {
 		case MapAction::Speak:
 			if (actors->contains(target)) {
 				actors->get(target).direction = invDirs[actors->get(player).direction];
+				actors->get(target).moving = false;
 			}
+			players->get(player).speakingTo = target;
 			scene->getTileMapSpeak().speak(actions->get(target).id);
 			break;
 		default:

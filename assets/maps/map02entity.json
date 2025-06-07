@@ -50,7 +50,21 @@
 				},
 				"hitbox" : {
 					"radius" : 8
-				}
+				},
+				"commands" : [
+					{ "type" : "MoveActorPos", "x" : 300, "y" : 200 },
+					{ "type" : "WaitActor", "time" : 1 },
+					{ "type" : "SetActorDirection", "direction" : 1 },
+					{ "type" : "WaitActor", "time" : 1 },
+					{ "type" : "MoveActorPos", "x" : 200, "y" : 200 },
+					{ "type" : "WaitActor", "time" : 1 },
+					{ "type" : "SetActorDirection", "direction" : 1 },
+					{ "type" : "WaitActor", "time" : 1 },
+					{ "type" : "MoveActorPos", "x" : 250, "y" : 125 },
+					{ "type" : "WaitActor", "time" : 1 },
+					{ "type" : "SetActorDirection", "direction" : 1 },
+					{ "type" : "WaitActor", "time" : 1 }
+				]
 			}
 		]
 	],

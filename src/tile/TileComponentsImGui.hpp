@@ -74,7 +74,12 @@ void componentImGui(Tile::ActorSpriteAnims& anims) {
 
 template<>
 void componentImGui(Tile::Player& player) {
-	ImGui::Text("Entity is a player");
+	if (player.speakingTo == ECS::NONE) {
+		ImGui::Text("speakingTo: None");
+	}
+	else {
+		ImGui::Text("speakingTo: %d", player.speakingTo);
+	}
 }
 
 template<>
@@ -94,3 +99,8 @@ void componentImGui(Tile::MapAction& action) {
 	}
 	ImGui::Text("id: %d", action.id);
 }
+
+// template<>
+// void componentImGui(Tile::MapCommandList& list) {
+
+// }

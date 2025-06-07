@@ -39,7 +39,7 @@ namespace Tile {
 		 * @brief Set of entities that are players.
 		 * 
 		 */
-		const ComponentSet<Player>* players;
+		ComponentSet<Player>* players;
 
 		const ComponentSet<NPC>* npcs;
 

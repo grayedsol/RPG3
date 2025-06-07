@@ -6,8 +6,7 @@
  */
 #pragma once
 #include "GRY_ECS.hpp"
-#include "Components.hpp"
-#include "TileComponents.hpp"
+#include "TileMapCommand.hpp"
 
 namespace Tile {
 	/**
@@ -23,6 +22,7 @@ namespace Tile {
 		ActorSpriteAnims,
 		Player,
 		NPC,
-		MapAction
+		MapAction,
+		MapCommandList
 	>;
 };

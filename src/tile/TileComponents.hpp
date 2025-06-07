@@ -91,7 +91,9 @@ namespace Tile {
 		double timer = 0;
 	};
 
-	struct Player {};
+	struct Player {
+		entity speakingTo = ECS::NONE;
+	};
 
 	struct NPC {};
 
