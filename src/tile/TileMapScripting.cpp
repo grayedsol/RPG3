@@ -47,6 +47,7 @@ void Tile::MapScripting::processGameplay(double delta) {
 	
 		switch (command.type) {
 			case MAP_CMD_NONE:
+				GRY_Assert(false, "\"MAP_CMD_NONE\" was assigned in entity %d's MapCommandList at index %d.\n", e, commandList.index);
 				break;
 			case MAP_CMD_MOVE_ACTOR_POS:
 				if (processMoveActorPos(command.moveActorPos)) {
@@ -64,6 +65,7 @@ void Tile::MapScripting::processGameplay(double delta) {
 				}
 				break;
 			default:
+				GRY_Assert(false, "An unknown MapCommand was assigned in entity %d's MapCommandList at index %d.\n", e, commandList.index);
 				break;
 		}
 
@@ -79,6 +81,7 @@ void Tile::MapScripting::processCutscene(double delta) {
 
 		switch (command.type) {
 			case MAP_CMD_NONE:
+				GRY_Assert(false, "\"MAP_CMD_NONE\" was assigned to a cutscene MapCommand.\n");
 				break;
 			case MAP_CMD_MOVE_ACTOR_POS:
 				if (processMoveActorPos(command.moveActorPos)) {
@@ -99,6 +102,7 @@ void Tile::MapScripting::processCutscene(double delta) {
 				}
 				break;
 			default:
+				GRY_Assert(false, "An unknown MapCommand was used in a cutscene.\n");
 				break;
 		}
 	}

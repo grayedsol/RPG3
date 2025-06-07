@@ -3,6 +3,7 @@
 #include "GRY_JSON.hpp"
 
 static Tile::MapCommand registerTMC_None(Tile::EntityMap& eMap, ECS::entity e, const GRY_JSON::Value& args) {
+	GRY_Assert(false, "[Tile::EntityMap] \"%s\" is not a valid MapCommand type.\n", Tile::MapCommandNames[0]);
 	Tile::MapCommand command = { .type = Tile::MapCommandType::MAP_CMD_NONE };
 	return command;
 }

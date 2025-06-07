@@ -169,11 +169,15 @@ void registerMapCommands(Tile::EntityMap &eMap, entity e, const GRY_JSON::Value 
 	Tile::MapCommandList commandList;
 
 	for (auto& command : commandData.GetArray()) {
+		bool found = false;
 		for (int i = 0; i < std::tuple_size<Tile::MapCommandTypeList>::value; i++) {
 			if (strcmp(command["type"].GetString(), Tile::MapCommandNames[i]) == 0) {
 				commandList.commands.push_back(registerTMC_Funcs[i](eMap, e, command));
+				found = true;
+				break;
 			}
 		}
+		GRY_Assert(found, "[Tile::EntityMap] Unknown MapCommand \"%s\".\n", command["type"].GetString());
 	}
 
 	eMap.ecs->getComponent<Tile::MapCommandList>().add(e, commandList);
