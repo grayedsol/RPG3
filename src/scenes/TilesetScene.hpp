@@ -1,7 +1,7 @@
 /**
  * @file TilesetScene.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @brief @copybrief TilesetScene
+ * @brief @copybrief Tile::TilesetScene
  * @copyright Copyright (c) 2024
  */
 #pragma once

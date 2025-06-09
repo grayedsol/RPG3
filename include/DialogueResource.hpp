@@ -8,9 +8,17 @@
 #include "FileResource.hpp"
 #include <vector>
 
+struct Dialogue {
+	std::vector<const char*> lines;
+	unsigned path1 = 0;
+	unsigned path2 = 0;
+	bool branching = false;
+};
+
 struct DialogueResource : public FileResource {
-	using Dialogue = std::vector<const char*>;
-	std::vector<Dialogue> dialogues;
+	using PlainDialogue = std::vector<const char*>;
+	std::vector<PlainDialogue> dialogues;
+	std::vector<Dialogue> dialogues2;
 
 	DialogueResource() = default;
 

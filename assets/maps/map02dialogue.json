@@ -9,7 +9,6 @@
         },
         {
             "id" : 1,
-            "next" : 0,
             "message" : ["Hello."]
         },
         {
@@ -32,6 +31,27 @@
                 "On your mark, get ready,",
                 "start."
             ]
-        }
+        },
+		{
+			"id" : 4,
+			"message" : [
+				"Sheesh, I'm really hungry.",
+				"Are you hungry too?"
+			],
+			"branch" : [5, 6]
+		},
+		{
+			"id" : 5,
+			"message" : [
+				"Then we should go get some food together!"
+			]
+		},
+		{
+			"id" : 6,
+			"message" : [
+				"Oh, really?",
+				"I'll just find something to eat on my own, then."
+			]
+		}
     ]
 }

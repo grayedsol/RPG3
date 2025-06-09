@@ -14,9 +14,9 @@ namespace Tile {
 
 	class MapSpeak {
 	private:
-		using Dialogue = DialogueResource::Dialogue;
+		using PlainDialogue = DialogueResource::PlainDialogue;
 
-		const Dialogue* currentDialogue = nullptr;
+		const PlainDialogue* currentDialogue = nullptr;
 
 		TextBoxScene* textbox;
 
