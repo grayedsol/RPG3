@@ -8,6 +8,7 @@
 #include "QuadTree.hpp"
 
 static const float INV_SQRT_TWO = 0.7071f;
+static const unsigned MAX_COLLISION_RESOLUTION_ATTEMPTS = 6;
 
 static Velocity2 dirVecs[Tile::Direction::DirectionSize] = {
 	Velocity2{0,0},
@@ -76,13 +77,14 @@ static Velocity2 AABBMTV(const Hitbox& lhs, const Hitbox& rhs) {
 	return returnVec;
 }
 
-Hitbox Tile::MapMovement::handleEntityCollisions(Hitbox box, ECS::entity e, int layer) {
+Hitbox Tile::MapMovement::handleEntityCollisions(Hitbox box, ECS::entity e, int layer, unsigned attempts) {
 	std::vector<Hitbox> eCollisions;
 	scene->getQuadTrees().at(layer).query(box, e, eCollisions);
 	if (eCollisions.empty()) { return box; }
 	*((Position2*)&box) += AABBMTV(box, eCollisions.back());
 
-	return handleEntityCollisions(box, e, layer);
+	if (attempts >= MAX_COLLISION_RESOLUTION_ATTEMPTS) { return box; }
+	return handleEntityCollisions(box, e, layer, attempts + 1);
 }
 
 Hitbox Tile::MapMovement::handleTileCollisions(Hitbox box, int layer) {

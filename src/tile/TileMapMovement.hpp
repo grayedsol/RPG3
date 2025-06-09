@@ -76,9 +76,10 @@ namespace Tile {
 		 * @param box The new hitbox of the entity
 		 * @param e The id of the entity to check
 		 * @param layer Layer that the entity is on
+		 * @param attempts Number of attempts at recursively resolving the collison
 		 * @return The resulting hitbox that has no conflicting collisions
 		 */
-		Hitbox handleEntityCollisions(Hitbox box, ECS::entity e, int layer);
+		Hitbox handleEntityCollisions(Hitbox box, ECS::entity e, int layer, unsigned attempts = 0);
 
 		/**
 		 * @brief Recursively resolve collisions for an entity against tiles.
