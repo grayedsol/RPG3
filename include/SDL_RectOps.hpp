@@ -1,5 +1,5 @@
 /**
- * @file SDL_FRectOps.hpp
+ * @file SDL_RectOps.hpp
  * @author Grayedsol (grayedsol@gmail.com)
  * @brief Operator overloads for SDL_FRect
  * @copyright Copyright (c) 2025

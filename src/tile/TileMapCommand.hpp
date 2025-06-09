@@ -1,7 +1,7 @@
 /**
  * @file TileMapCommand.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @copybrief Tile::MapCommand
+ * @brief @copybrief Tile::MapCommand
  * @copyright Copyright (c) 2025
  */
 #pragma once
