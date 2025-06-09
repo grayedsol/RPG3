@@ -3,35 +3,34 @@
 #include "GRY_JSON.hpp"
 
 static Tile::MapCommand registerTMC_None(Tile::EntityMap& eMap, ECS::entity e, const GRY_JSON::Value& args) {
-	GRY_Assert(false, "[Tile::EntityMap] \"%s\" is not a valid MapCommand type.\n", Tile::MapCommandNames[0]);
 	Tile::MapCommand command = { .type = Tile::MapCommandType::MAP_CMD_NONE };
 	return command;
 }
 
-static Tile::MapCommand registerTMC_MoveActorPos(Tile::EntityMap& eMap, ECS::entity e, const GRY_JSON::Value& args) {
-	Tile::TMC_MoveActorPos moveActorPos;
-	moveActorPos.e = e;
-	moveActorPos.targetPos.x = args["x"].GetFloat();
-	moveActorPos.targetPos.y = args["y"].GetFloat();
-	Tile::MapCommand command = { .moveActorPos = moveActorPos };
+static Tile::MapCommand registerTMC_ActorMovePos(Tile::EntityMap& eMap, ECS::entity e, const GRY_JSON::Value& args) {
+	Tile::TMC_ActorMovePos actorMovePos;
+	actorMovePos.e = e;
+	actorMovePos.targetPos.x = args["x"].GetFloat();
+	actorMovePos.targetPos.y = args["y"].GetFloat();
+	Tile::MapCommand command = { .actorMovePos = actorMovePos };
 	return command;
 }
 
-static Tile::MapCommand registerTMC_SetActorDirection(Tile::EntityMap& eMap, ECS::entity e, const GRY_JSON::Value& args) {
-	Tile::TMC_SetActorDirection setActorDirection;
-	setActorDirection.e = e;
-	setActorDirection.direction = static_cast<Tile::Direction>(args["direction"].GetInt());
-	GRY_Assert(static_cast<Tile::Direction>(setActorDirection.direction) > 0 &&
-		static_cast<Tile::Direction>(setActorDirection.direction) < 9,
+static Tile::MapCommand registerTMC_ActorSetDirection(Tile::EntityMap& eMap, ECS::entity e, const GRY_JSON::Value& args) {
+	Tile::TMC_ActorSetDirection actorSetDirection;
+	actorSetDirection.e = e;
+	actorSetDirection.direction = static_cast<Tile::Direction>(args["direction"].GetInt());
+	GRY_Assert(static_cast<Tile::Direction>(actorSetDirection.direction) > 0 &&
+		static_cast<Tile::Direction>(actorSetDirection.direction) < 9,
 		"[Tile::EntityMap] SetActorDirection direction must be between 1 and 8 inclusive.\n"
 	);
-	Tile::MapCommand command = { .setActorDirection = setActorDirection };
+	Tile::MapCommand command = { .actorSetDirection = actorSetDirection };
 	return command;
 }
 
-static Tile::MapCommand registerTMC_WaitActor(Tile::EntityMap& eMap, ECS::entity e, const GRY_JSON::Value& args) {
-	Tile::TMC_WaitActor waitActor { .e = e, .time = args["time"].GetFloat() };
-	GRY_Assert(waitActor.time >= 0.f, "[Tile::EntityMap] WaitActor time cannot be negative.\n");
-	Tile::MapCommand command = { .waitActor = waitActor };
+static Tile::MapCommand registerTMC_ActorWait(Tile::EntityMap& eMap, ECS::entity e, const GRY_JSON::Value& args) {
+	Tile::TMC_ActorWait actorWait { .e = e, .time = args["time"].GetFloat() };
+	GRY_Assert(actorWait.time >= 0.f, "[Tile::EntityMap] WaitActor time cannot be negative.\n");
+	Tile::MapCommand command = { .actorWait = actorWait };
 	return command;
 }

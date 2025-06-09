@@ -37,10 +37,10 @@ namespace Tile {
 
 		void removeCommand(size_t index);
 
-		bool processMoveActorPos(TMC_MoveActorPos& args);
+		bool processActorMovePos(TMC_ActorMovePos& args);
 
-		bool processSetActorDirection(TMC_SetActorDirection& args);
+		bool processActorSetDirection(TMC_ActorSetDirection& args);
 
-		bool processWaitActor(TMC_WaitActor& args, double delta);
+		bool processActorWait(TMC_ActorWait& args, double delta);
 	};
 };

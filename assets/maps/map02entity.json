@@ -52,18 +52,18 @@
 					"radius" : 8
 				},
 				"commands" : [
-					{ "type" : "MoveActorPos", "x" : 300, "y" : 200 },
-					{ "type" : "WaitActor", "time" : 1 },
-					{ "type" : "SetActorDirection", "direction" : 1 },
-					{ "type" : "WaitActor", "time" : 1 },
-					{ "type" : "MoveActorPos", "x" : 200, "y" : 200 },
-					{ "type" : "WaitActor", "time" : 1 },
-					{ "type" : "SetActorDirection", "direction" : 1 },
-					{ "type" : "WaitActor", "time" : 1 },
-					{ "type" : "MoveActorPos", "x" : 250, "y" : 125 },
-					{ "type" : "WaitActor", "time" : 1 },
-					{ "type" : "SetActorDirection", "direction" : 1 },
-					{ "type" : "WaitActor", "time" : 1 }
+					{ "type" : "ActorMovePos", "x" : 300, "y" : 200 },
+					{ "type" : "ActorWait", "time" : 1 },
+					{ "type" : "ActorSetDirection", "direction" : 1 },
+					{ "type" : "ActorWait", "time" : 1 },
+					{ "type" : "ActorMovePos", "x" : 200, "y" : 200 },
+					{ "type" : "ActorWait", "time" : 1 },
+					{ "type" : "ActorSetDirection", "direction" : 1 },
+					{ "type" : "ActorWait", "time" : 1 },
+					{ "type" : "ActorMovePos", "x" : 250, "y" : 125 },
+					{ "type" : "ActorWait", "time" : 1 },
+					{ "type" : "ActorSetDirection", "direction" : 1 },
+					{ "type" : "ActorWait", "time" : 1 }
 				]
 			},
 			{
@@ -92,18 +92,18 @@
 					"radius" : 8
 				},
 				"commands" : [
-					{ "type" : "MoveActorPos", "x" : 250, "y" : 125 },
-					{ "type" : "WaitActor", "time" : 1 },
-					{ "type" : "SetActorDirection", "direction" : 1 },
-					{ "type" : "WaitActor", "time" : 1 },
-					{ "type" : "MoveActorPos", "x" : 300, "y" : 200 },
-					{ "type" : "WaitActor", "time" : 1 },
-					{ "type" : "SetActorDirection", "direction" : 1 },
-					{ "type" : "WaitActor", "time" : 1 },
-					{ "type" : "MoveActorPos", "x" : 200, "y" : 200 },
-					{ "type" : "WaitActor", "time" : 1 },
-					{ "type" : "SetActorDirection", "direction" : 1 },
-					{ "type" : "WaitActor", "time" : 1 }
+					{ "type" : "ActorMovePos", "x" : 250, "y" : 125 },
+					{ "type" : "ActorWait", "time" : 1 },
+					{ "type" : "ActorSetDirection", "direction" : 1 },
+					{ "type" : "ActorWait", "time" : 1 },
+					{ "type" : "ActorMovePos", "x" : 300, "y" : 200 },
+					{ "type" : "ActorWait", "time" : 1 },
+					{ "type" : "ActorSetDirection", "direction" : 1 },
+					{ "type" : "ActorWait", "time" : 1 },
+					{ "type" : "ActorMovePos", "x" : 200, "y" : 200 },
+					{ "type" : "ActorWait", "time" : 1 },
+					{ "type" : "ActorSetDirection", "direction" : 1 },
+					{ "type" : "ActorWait", "time" : 1 }
 				]
 			},
 			{
@@ -128,18 +128,18 @@
 					"radius" : 8
 				},
 				"commands" : [
-					{ "type" : "MoveActorPos", "x" : 350, "y" : 125 },
-					{ "type" : "WaitActor", "time" : 1 },
-					{ "type" : "SetActorDirection", "direction" : 1 },
-					{ "type" : "WaitActor", "time" : 1 },
-					{ "type" : "MoveActorPos", "x" : 400, "y" : 200 },
-					{ "type" : "WaitActor", "time" : 1 },
-					{ "type" : "SetActorDirection", "direction" : 1 },
-					{ "type" : "WaitActor", "time" : 1 },
-					{ "type" : "MoveActorPos", "x" : 300, "y" : 200 },
-					{ "type" : "WaitActor", "time" : 1 },
-					{ "type" : "SetActorDirection", "direction" : 1 },
-					{ "type" : "WaitActor", "time" : 1 }
+					{ "type" : "ActorMovePos", "x" : 350, "y" : 125 },
+					{ "type" : "ActorWait", "time" : 1 },
+					{ "type" : "ActorSetDirection", "direction" : 1 },
+					{ "type" : "ActorWait", "time" : 1 },
+					{ "type" : "ActorMovePos", "x" : 400, "y" : 200 },
+					{ "type" : "ActorWait", "time" : 1 },
+					{ "type" : "ActorSetDirection", "direction" : 1 },
+					{ "type" : "ActorWait", "time" : 1 },
+					{ "type" : "ActorMovePos", "x" : 300, "y" : 200 },
+					{ "type" : "ActorWait", "time" : 1 },
+					{ "type" : "ActorSetDirection", "direction" : 1 },
+					{ "type" : "ActorWait", "time" : 1 }
 				]
 			},
 			{
@@ -164,26 +164,26 @@
 					"radius" : 8
 				},
 				"commands" : [
-					{ "type" : "MoveActorPos", "x" : 200, "y" : 150 },
-					{ "type" : "WaitActor", "time" : 0.25 },
-					{ "type" : "SetActorDirection", "direction" : 1 },
-					{ "type" : "WaitActor", "time" : 0.25 },
-					{ "type" : "SetActorDirection", "direction" : 3 },
-					{ "type" : "WaitActor", "time" : 0.25 },
-					{ "type" : "SetActorDirection", "direction" : 2 },
-					{ "type" : "WaitActor", "time" : 0.25 },
-					{ "type" : "SetActorDirection", "direction" : 6 },
-					{ "type" : "WaitActor", "time" : 1 },
-					{ "type" : "MoveActorPos", "x" : 450, "y" : 150 },
-					{ "type" : "WaitActor", "time" : 0.25 },
-					{ "type" : "SetActorDirection", "direction" : 1 },
-					{ "type" : "WaitActor", "time" : 0.25 },
-					{ "type" : "SetActorDirection", "direction" : 3 },
-					{ "type" : "WaitActor", "time" : 0.25 },
-					{ "type" : "SetActorDirection", "direction" : 2 },
-					{ "type" : "WaitActor", "time" : 0.25 },
-					{ "type" : "SetActorDirection", "direction" : 6 },
-					{ "type" : "WaitActor", "time" : 0.25 }
+					{ "type" : "ActorMovePos", "x" : 200, "y" : 150 },
+					{ "type" : "ActorWait", "time" : 0.25 },
+					{ "type" : "ActorSetDirection", "direction" : 1 },
+					{ "type" : "ActorWait", "time" : 0.25 },
+					{ "type" : "ActorSetDirection", "direction" : 3 },
+					{ "type" : "ActorWait", "time" : 0.25 },
+					{ "type" : "ActorSetDirection", "direction" : 2 },
+					{ "type" : "ActorWait", "time" : 0.25 },
+					{ "type" : "ActorSetDirection", "direction" : 6 },
+					{ "type" : "ActorWait", "time" : 1 },
+					{ "type" : "ActorMovePos", "x" : 450, "y" : 150 },
+					{ "type" : "ActorWait", "time" : 0.25 },
+					{ "type" : "ActorSetDirection", "direction" : 1 },
+					{ "type" : "ActorWait", "time" : 0.25 },
+					{ "type" : "ActorSetDirection", "direction" : 3 },
+					{ "type" : "ActorWait", "time" : 0.25 },
+					{ "type" : "ActorSetDirection", "direction" : 2 },
+					{ "type" : "ActorWait", "time" : 0.25 },
+					{ "type" : "ActorSetDirection", "direction" : 6 },
+					{ "type" : "ActorWait", "time" : 0.25 }
 				]
 			}
 		]

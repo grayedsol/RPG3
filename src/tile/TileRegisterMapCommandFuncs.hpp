@@ -3,7 +3,7 @@
 
 static Tile::MapCommand (*const registerTMC_Funcs[])(Tile::EntityMap&, ECS::entity, const GRY_JSON::Value&) = {
 	registerTMC_None,
-	registerTMC_MoveActorPos,
-	registerTMC_SetActorDirection,
-	registerTMC_WaitActor
+	registerTMC_ActorMovePos,
+	registerTMC_ActorSetDirection,
+	registerTMC_ActorWait
 };

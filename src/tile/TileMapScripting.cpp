@@ -48,14 +48,14 @@ void Tile::MapScripting::processEntities(double delta) {
 		switch (command.type) {
 			case MAP_CMD_NONE:
 				break;
-			case MAP_CMD_MOVE_ACTOR_POS:
-				reset = processMoveActorPos(command.moveActorPos);
+			case MAP_CMD_ACTOR_MOVE_POS:
+				reset = processActorMovePos(command.actorMovePos);
 				break;
-			case MAP_CMD_SET_ACTOR_DIRECTION:
-				reset = processSetActorDirection(command.setActorDirection);
+			case MAP_CMD_ACTOR_SET_DIRECTION:
+				reset = processActorSetDirection(command.actorSetDirection);
 				break;
-			case MAP_CMD_WAIT_ACTOR:
-				reset = processWaitActor(command.waitActor, delta);
+			case MAP_CMD_ACTOR_WAIT:
+				reset = processActorWait(command.actorWait, delta);
 				break;
 			default:
 				GRY_Assert(false, "An unknown MapCommand was assigned to entity %d.\n", e);
@@ -100,7 +100,7 @@ void Tile::MapScripting::removeCommand(size_t index) {
 	currentCommands.pop_back();
 }
 
-bool Tile::MapScripting::processMoveActorPos(TMC_MoveActorPos& args) {
+bool Tile::MapScripting::processActorMovePos(TMC_ActorMovePos& args) {
 	static int sign[2] = { -1, 1 };
 	if (args.e == ecs->getComponent<Player>().value[0].speakingTo) { return false; }
 	Position2& pos = ecs->getComponent<Position2>().get(args.e);
@@ -132,13 +132,13 @@ bool Tile::MapScripting::processMoveActorPos(TMC_MoveActorPos& args) {
 	return false;
 }
 
-bool Tile::MapScripting::processSetActorDirection(TMC_SetActorDirection& args) {
+bool Tile::MapScripting::processActorSetDirection(TMC_ActorSetDirection& args) {
 	if (args.direction != Direction::DirectionNone && args.direction != Direction::DirectionSize) {
 		ecs->getComponent<Actor>().get(args.e).direction = args.direction;
 	}
 	return true;
 }
 
-bool Tile::MapScripting::processWaitActor(TMC_WaitActor& args, double delta) {
+bool Tile::MapScripting::processActorWait(TMC_ActorWait& args, double delta) {
 	return (args.time -= delta) <= 0.f;
 }
