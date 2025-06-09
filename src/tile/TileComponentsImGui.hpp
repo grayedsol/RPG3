@@ -101,6 +101,11 @@ void componentImGui(Tile::MapAction& action) {
 }
 
 // template<>
+// void componentImGui(Tile::MapCommand& command) {
+
+// }
+
+// template<>
 // void componentImGui(Tile::MapCommandList& list) {
 
 // }

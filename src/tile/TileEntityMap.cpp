@@ -116,6 +116,7 @@ void registerActor(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actor
 	);
 
 	eMap.ecs->getComponent<Tile::Actor>().add(e, data);
+	eMap.ecs->getComponent<Tile::MapCommand>().add(e, Tile::MapCommand{ .type = Tile::MAP_CMD_NONE });
 }
 
 void registerActorSprite(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actorSprite) {

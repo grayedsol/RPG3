@@ -21,9 +21,9 @@ namespace Tile {
 
 	struct TMC_MoveActorPos {
 		MapCommandType type = MAP_CMD_MOVE_ACTOR_POS;
+		ECS::entity e;
 		Position2 startPos = Position2{ 0, 0 };
 		Position2 targetPos;
-		ECS::entity e;
 	};
 
 	struct TMC_SetActorDirection {
@@ -36,7 +36,6 @@ namespace Tile {
 		MapCommandType type = MAP_CMD_WAIT_ACTOR;
 		ECS::entity e;
 		double time;
-		double timer = time;
 	};
 
 	/**
@@ -45,6 +44,7 @@ namespace Tile {
 	 */
 	union MapCommand {
 		MapCommandType type;
+		ECS::entity e;
 		TMC_MoveActorPos moveActorPos;
 		TMC_SetActorDirection setActorDirection;
 		TMC_WaitActor waitActor;
@@ -68,6 +68,4 @@ namespace Tile {
 		"SetActorDirection",
 		"WaitActor"
 	};
-
-
 };

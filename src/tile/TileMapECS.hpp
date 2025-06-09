@@ -23,6 +23,7 @@ namespace Tile {
 		Player,
 		NPC,
 		MapAction,
+		MapCommand,
 		MapCommandList
 	>;
 };

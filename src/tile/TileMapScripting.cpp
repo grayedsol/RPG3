@@ -38,39 +38,44 @@ void Tile::MapScripting::process(double delta) {
 		default:
 			break;
 	}
+	processEntities(delta);
+}
+
+void Tile::MapScripting::processEntities(double delta) {
+	for (auto e : ecs->getComponent<MapCommand>()) {
+		MapCommand& command = ecs->getComponent<MapCommand>().get(e);
+		bool reset = false;
+		switch (command.type) {
+			case MAP_CMD_NONE:
+				break;
+			case MAP_CMD_MOVE_ACTOR_POS:
+				reset = processMoveActorPos(command.moveActorPos);
+				break;
+			case MAP_CMD_SET_ACTOR_DIRECTION:
+				reset = processSetActorDirection(command.setActorDirection);
+				break;
+			case MAP_CMD_WAIT_ACTOR:
+				reset = processWaitActor(command.waitActor, delta);
+				break;
+			default:
+				GRY_Assert(false, "An unknown MapCommand was assigned to entity %d.\n", e);
+				break;
+		}
+		if (reset) { command = MapCommand{ .type = MAP_CMD_NONE }; }
+	}
 }
 
 void Tile::MapScripting::processGameplay(double delta) {
 	for (auto e : ecs->getComponent<MapCommandList>()) {
 		MapCommandList& commandList = ecs->getComponent<MapCommandList>().get(e);
-		MapCommand& command = commandList.commands[commandList.index];
-	
-		switch (command.type) {
-			case MAP_CMD_NONE:
-				GRY_Assert(false, "\"MAP_CMD_NONE\" was assigned in entity %d's MapCommandList at index %d.\n", e, commandList.index);
-				break;
-			case MAP_CMD_MOVE_ACTOR_POS:
-				if (processMoveActorPos(command.moveActorPos)) {
-					commandList.index++;
-				}
-				break;
-			case MAP_CMD_SET_ACTOR_DIRECTION:
-				if (processSetActorDirection(command.setActorDirection)) {
-					commandList.index++;
-				}
-				break;
-			case MAP_CMD_WAIT_ACTOR:
-				if (processWaitActor(command.waitActor, delta)) {
-					commandList.index++;
-				}
-				break;
-			default:
-				GRY_Assert(false, "An unknown MapCommand was assigned in entity %d's MapCommandList at index %d.\n", e, commandList.index);
-				break;
-		}
+		GRY_Assert(ecs->getComponent<MapCommand>().contains(e),
+		"[Tile::MapScripting] An entity had a MapCommandList component, but no MapCommand component.\n");
 
-		if (commandList.index >= commandList.commands.size()) {
-			commandList.index = 0;
+		if (ecs->getComponent<MapCommand>().get(e).type == MAP_CMD_NONE) {
+			ecs->getComponent<MapCommand>().get(e) = commandList.commands[commandList.index];
+			if (++commandList.index >= commandList.commands.size()) {
+				commandList.index = 0;
+			}
 		}
 	}
 }
@@ -78,32 +83,14 @@ void Tile::MapScripting::processGameplay(double delta) {
 void Tile::MapScripting::processCutscene(double delta) {
 	for (int i = 0; i < currentCommands.size(); i++) {
 		MapCommand& command = currentCommands[i];
+		GRY_Assert(ecs->getComponent<MapCommand>().contains(command.e),
+		"[Tile::MapScripting] An entity in the script had no MapCommand component.\n");
 
-		switch (command.type) {
-			case MAP_CMD_NONE:
-				GRY_Assert(false, "\"MAP_CMD_NONE\" was assigned to a cutscene MapCommand.\n");
-				break;
-			case MAP_CMD_MOVE_ACTOR_POS:
-				if (processMoveActorPos(command.moveActorPos)) {
-					removeCommand(i);
-					i--;
-				}
-				break;
-			case MAP_CMD_SET_ACTOR_DIRECTION:
-				if (processSetActorDirection(command.setActorDirection)) {
-					removeCommand(i);
-					i--;
-				}
-				break;
-			case MAP_CMD_WAIT_ACTOR:
-				if (processWaitActor(command.waitActor, delta)) {
-					removeCommand(i);
-					i--;
-				}
-				break;
-			default:
-				GRY_Assert(false, "An unknown MapCommand was used in a cutscene.\n");
-				break;
+		if (ecs->getComponent<MapCommand>().get(command.e).type == MAP_CMD_NONE) {
+			ecs->getComponent<MapCommand>().get(command.e) = command;
+			currentCommands[i] = currentCommands.back();
+			currentCommands.pop_back();
+			i--;
 		}
 	}
 }
@@ -153,10 +140,5 @@ bool Tile::MapScripting::processSetActorDirection(TMC_SetActorDirection& args) {
 }
 
 bool Tile::MapScripting::processWaitActor(TMC_WaitActor& args, double delta) {
-	args.timer -= delta;
-	if (args.timer <= 0.f) {
-		args.timer = args.time;
-		return true;
-	}
-	return false;
+	return (args.time -= delta) <= 0.f;
 }

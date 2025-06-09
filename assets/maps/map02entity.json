@@ -65,6 +65,126 @@
 					{ "type" : "SetActorDirection", "direction" : 1 },
 					{ "type" : "WaitActor", "time" : 1 }
 				]
+			},
+			{
+				"position" : [10,10],
+				"npc" : 0,
+				"action" : {
+					"type" : "Speak",
+					"id" : 1
+				},
+				"actor" : {
+					"speed" : 60,
+					"direction" : 1
+				},
+				"actorSprite" : {
+					"offsetX" : -23,
+					"offsetY" : -29,
+					"index" : 1,
+					"tileset" : 1
+				},
+				"actorAnimations" : {
+					"walk" : [32,40,56,56,56,48,48,48],
+					"sprint" : [38,46,62,62,62,54,54,54],
+					"duration" : 117
+				},
+				"hitbox" : {
+					"radius" : 8
+				},
+				"commands" : [
+					{ "type" : "MoveActorPos", "x" : 250, "y" : 125 },
+					{ "type" : "WaitActor", "time" : 1 },
+					{ "type" : "SetActorDirection", "direction" : 1 },
+					{ "type" : "WaitActor", "time" : 1 },
+					{ "type" : "MoveActorPos", "x" : 300, "y" : 200 },
+					{ "type" : "WaitActor", "time" : 1 },
+					{ "type" : "SetActorDirection", "direction" : 1 },
+					{ "type" : "WaitActor", "time" : 1 },
+					{ "type" : "MoveActorPos", "x" : 200, "y" : 200 },
+					{ "type" : "WaitActor", "time" : 1 },
+					{ "type" : "SetActorDirection", "direction" : 1 },
+					{ "type" : "WaitActor", "time" : 1 }
+				]
+			},
+			{
+				"position" : [20,12],
+				"npc" : 0,
+				"actor" : {
+					"speed" : 60,
+					"direction" : 1
+				},
+				"actorSprite" : {
+					"offsetX" : -23,
+					"offsetY" : -29,
+					"index" : 1,
+					"tileset" : 1
+				},
+				"actorAnimations" : {
+					"walk" : [32,40,56,56,56,48,48,48],
+					"sprint" : [38,46,62,62,62,54,54,54],
+					"duration" : 117
+				},
+				"hitbox" : {
+					"radius" : 8
+				},
+				"commands" : [
+					{ "type" : "MoveActorPos", "x" : 350, "y" : 125 },
+					{ "type" : "WaitActor", "time" : 1 },
+					{ "type" : "SetActorDirection", "direction" : 1 },
+					{ "type" : "WaitActor", "time" : 1 },
+					{ "type" : "MoveActorPos", "x" : 400, "y" : 200 },
+					{ "type" : "WaitActor", "time" : 1 },
+					{ "type" : "SetActorDirection", "direction" : 1 },
+					{ "type" : "WaitActor", "time" : 1 },
+					{ "type" : "MoveActorPos", "x" : 300, "y" : 200 },
+					{ "type" : "WaitActor", "time" : 1 },
+					{ "type" : "SetActorDirection", "direction" : 1 },
+					{ "type" : "WaitActor", "time" : 1 }
+				]
+			},
+			{
+				"position" : [5,10],
+				"npc" : 0,
+				"actor" : {
+					"speed" : 60,
+					"direction" : 1
+				},
+				"actorSprite" : {
+					"offsetX" : -23,
+					"offsetY" : -29,
+					"index" : 1,
+					"tileset" : 1
+				},
+				"actorAnimations" : {
+					"walk" : [32,40,56,56,56,48,48,48],
+					"sprint" : [38,46,62,62,62,54,54,54],
+					"duration" : 117
+				},
+				"hitbox" : {
+					"radius" : 8
+				},
+				"commands" : [
+					{ "type" : "MoveActorPos", "x" : 200, "y" : 150 },
+					{ "type" : "WaitActor", "time" : 0.25 },
+					{ "type" : "SetActorDirection", "direction" : 1 },
+					{ "type" : "WaitActor", "time" : 0.25 },
+					{ "type" : "SetActorDirection", "direction" : 3 },
+					{ "type" : "WaitActor", "time" : 0.25 },
+					{ "type" : "SetActorDirection", "direction" : 2 },
+					{ "type" : "WaitActor", "time" : 0.25 },
+					{ "type" : "SetActorDirection", "direction" : 6 },
+					{ "type" : "WaitActor", "time" : 1 },
+					{ "type" : "MoveActorPos", "x" : 450, "y" : 150 },
+					{ "type" : "WaitActor", "time" : 0.25 },
+					{ "type" : "SetActorDirection", "direction" : 1 },
+					{ "type" : "WaitActor", "time" : 0.25 },
+					{ "type" : "SetActorDirection", "direction" : 3 },
+					{ "type" : "WaitActor", "time" : 0.25 },
+					{ "type" : "SetActorDirection", "direction" : 2 },
+					{ "type" : "WaitActor", "time" : 0.25 },
+					{ "type" : "SetActorDirection", "direction" : 6 },
+					{ "type" : "WaitActor", "time" : 0.25 }
+				]
 			}
 		]
 	],

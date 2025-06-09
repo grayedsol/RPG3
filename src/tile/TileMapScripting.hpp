@@ -29,6 +29,8 @@ namespace Tile {
 
 		void process(double delta);
 	private:
+		void processEntities(double delta);
+		
 		void processGameplay(double delta);
 
 		void processCutscene(double delta);
