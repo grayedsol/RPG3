@@ -3,6 +3,8 @@ RPG game using SDL.
 
 Texture assets are from [Seliel the Shaper's](https://seliel-the-shaper.itch.io/) Mana Seed collection.
 
+https://github.com/user-attachments/assets/4c027998-0c2e-4dad-ad1f-22cf251e3613
+
 ## Building
 ### Dependencies
 - SDL3
