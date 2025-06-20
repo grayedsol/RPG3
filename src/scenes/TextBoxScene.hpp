@@ -7,6 +7,7 @@
 #pragma once
 #include "Scene.hpp"
 #include "GRY_Texture.hpp"
+#include "TextDecisionScene.hpp"
 #include "../textbox/Fontset.hpp"
 #include "../textbox/TextBoxRenderer.hpp"
 
@@ -23,6 +24,9 @@ public:
 	static const unsigned MAX_LINE_LENGTH = 256;
 private:
 	Scene* parentScene;
+
+	TextDecisionScene decisionScene;
+
 	/**
 	 * @brief Texture of the message box.
 	 * 
@@ -78,7 +82,8 @@ public:
 	 * @param parentScene Scene to activate when done
 	 */
 	TextBoxScene(GRY_PixelGame *pGame, const char *scenePath, Scene* parentScene) :
-		Scene((GRY_Game *)pGame, scenePath),
+		Scene((GRY_Game*)pGame, scenePath),
+		decisionScene(pGame, "assets/textboxscene/decisionscene/scene.json", this),
 		parentScene(parentScene),
 		textBoxRenderer(this) {
 	}
@@ -126,6 +131,16 @@ public:
 	 * 
 	 */
 	void close();
+
+	void openDecisionBox();
+
+	void closeDecisionBox();
+
+	bool decisionBoxIsOpen();
+
+	bool decisionIsMade();
+
+	unsigned getDecision();
 
 	/**
 	 * @brief Print a line to the text box.

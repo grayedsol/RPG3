@@ -16,7 +16,8 @@ namespace Tile {
 	private:
 		using PlainDialogue = DialogueResource::PlainDialogue;
 
-		const PlainDialogue* currentDialogue = nullptr;
+		const PlainDialogue* currentPlainDialogue = nullptr;
+		const Dialogue* currentDialogue = nullptr;
 
 		TextBoxScene* textbox;
 

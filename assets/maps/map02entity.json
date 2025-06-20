@@ -145,6 +145,10 @@
 			{
 				"position" : [5,10],
 				"npc" : 0,
+				"action" : {
+					"type" : "Speak",
+					"id" : 4
+				},
 				"actor" : {
 					"speed" : 60,
 					"direction" : 1

@@ -13,20 +13,35 @@ Tile::MapSpeak::MapSpeak(MapScene* scene) : scene(scene), textbox(&scene->getTex
 void Tile::MapSpeak::process() {
 	if (!currentDialogue || !textbox->isReady()) { return; }
 
-	if (index >= currentDialogue->size()) {
-		textbox->close();
-		currentDialogue = nullptr;
-		index = 0;
-		scene->getECS().getComponent<Player>().value.at(0).speakingTo = ECS::NONE;
+	if (index >= currentDialogue->lines.size()) {
+		if (currentDialogue->branching) {
+			if (!textbox->decisionBoxIsOpen()) {
+				textbox->openDecisionBox();
+			}
+			else {
+				if (textbox->decisionIsMade()) {
+					unsigned int dialogueId = textbox->getDecision() == 1 ? currentDialogue->path1 : currentDialogue->path2;
+					currentDialogue = &scene->getDialogueResource().dialogues2.at(dialogueId);
+					index = 0;
+					textbox->closeDecisionBox();
+				}
+			}
+		}
+		else {
+			textbox->close();
+			currentDialogue = nullptr;
+			index = 0;
+			scene->getECS().getComponent<Player>().value.at(0).speakingTo = ECS::NONE;
+		}
 	}
 	else {
-		textbox->printLine(currentDialogue->at(index));
+		textbox->printLine(currentDialogue->lines.at(index));
 		index++;
 	}
 }
 
 void Tile::MapSpeak::speak(unsigned dialogueId) {
 	if (textbox->isOpen()) { return; }
-	currentDialogue = &scene->getDialogueResource().dialogues.at(dialogueId);
+	currentDialogue = &scene->getDialogueResource().dialogues2.at(dialogueId);
 	textbox->open();
 }

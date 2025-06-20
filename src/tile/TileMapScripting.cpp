@@ -133,6 +133,7 @@ bool Tile::MapScripting::processActorMovePos(TMC_ActorMovePos& args) {
 }
 
 bool Tile::MapScripting::processActorSetDirection(TMC_ActorSetDirection& args) {
+	if (args.e == ecs->getComponent<Player>().value[0].speakingTo) { return false; }
 	if (args.direction != Direction::DirectionNone && args.direction != Direction::DirectionSize) {
 		ecs->getComponent<Actor>().get(args.e).direction = args.direction;
 	}
@@ -140,5 +141,6 @@ bool Tile::MapScripting::processActorSetDirection(TMC_ActorSetDirection& args) {
 }
 
 bool Tile::MapScripting::processActorWait(TMC_ActorWait& args, double delta) {
+	if (args.e == ecs->getComponent<Player>().value[0].speakingTo) { return false; }
 	return (args.time -= delta) <= 0.f;
 }

@@ -30,6 +30,10 @@ enum GCmd {
 	MessageUp,
 	MessageDown,
 
+	DecisionOk,
+	DecisionNo,
+	DecisionSwitch,
+
 	NONE,
 	GCMD_SIZE
 };

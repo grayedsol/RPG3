@@ -65,6 +65,8 @@ void TextBoxScene::init() {
 	/* Now we can set the actual width and height */
 	textArea.w = (int)boxTextureArea.w - (2 * textArea.w);
 	textArea.h = (int)boxTextureArea.h - (2 * textArea.h);
+
+	decisionScene.init();
 }
 
 void TextBoxScene::process() {
@@ -107,11 +109,12 @@ void TextBoxScene::process() {
 	}
 
 	textBoxRenderer.endRender();
+	decisionScene.process();
 }
 
 bool TextBoxScene::load() {
 	if (boxTexture.path && font.path) {
-		return boxTexture.load(game) && font.load(game);
+		return boxTexture.load(game) && font.load(game) && decisionScene.load();
 	}
 
 	/* Open scene document */
@@ -145,6 +148,26 @@ void TextBoxScene::close() {
 	*incomingLine = 0;
 	parentScene->activateControlScheme();
 	active = false;
+}
+
+void TextBoxScene::openDecisionBox() {
+	decisionScene.open();
+}
+
+bool TextBoxScene::decisionBoxIsOpen() {
+	return decisionScene.isOpen();
+}
+
+bool TextBoxScene::decisionIsMade() {
+	return decisionScene.decisionIsMade();
+}
+
+unsigned TextBoxScene::getDecision() {
+	return decisionScene.getDecision();
+}
+
+void TextBoxScene::closeDecisionBox() {
+	decisionScene.close();
 }
 
 void TextBoxScene::printLine(const char *line) {

@@ -53,6 +53,7 @@ set(SOURCES
 	src/scenes/TextBoxScene.cpp
 	src/textbox/Fontset.cpp
 	src/textbox/TextBoxRenderer.cpp
+	src/scenes/TextDecisionScene.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
