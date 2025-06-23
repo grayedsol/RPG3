@@ -88,22 +88,14 @@ void componentImGui(Tile::NPC& npc) {
 }
 
 template<>
-void componentImGui(Tile::MapAction& action) {
-	switch (action.type) {
-	case Tile::MapAction::Speak:
-		ImGui::Text("Speak");
-		break;
-	default:
-		ImGui::Text("Unknown");
-		break;
-	}
-	ImGui::Text("id: %d", action.id);
+void componentImGui(Tile::MapInteraction& action) {
+	ImGui::Text(Tile::MapCommandNames[action.command.type]);
 }
 
-// template<>
-// void componentImGui(Tile::MapCommand& command) {
-
-// }
+template<>
+void componentImGui(Tile::MapCommand& command) {
+	ImGui::Text(Tile::MapCommandNames[command.type]);
+}
 
 // template<>
 // void componentImGui(Tile::MapCommandList& list) {

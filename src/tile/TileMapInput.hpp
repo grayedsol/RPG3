@@ -43,7 +43,7 @@ namespace Tile {
 
 		const ComponentSet<NPC>* npcs;
 
-		const ComponentSet<MapAction>* actions;
+		const ComponentSet<MapInteraction>* interactions;
 
 		bool interact();
 	public:

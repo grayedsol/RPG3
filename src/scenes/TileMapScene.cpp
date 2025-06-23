@@ -124,3 +124,7 @@ std::vector<SDL_FRect> Tile::MapScene::queryCollisions(const SDL_FRect rect, std
 	}
 	return returnVec;
 }
+
+bool Tile::MapScene::executeCommand(MapCommand &command) {
+	return mapScripting.executeCommand(command, game->getDelta());
+}

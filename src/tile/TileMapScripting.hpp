@@ -28,6 +28,8 @@ namespace Tile {
 		MapScripting(MapScene* scene);
 
 		void process(double delta);
+
+		bool executeCommand(MapCommand& command, double delta);
 	private:
 		void processEntities(double delta);
 		
@@ -42,5 +44,7 @@ namespace Tile {
 		bool processActorSetDirection(TMC_ActorSetDirection& args);
 
 		bool processActorWait(TMC_ActorWait& args, double delta);
+
+		bool processPlayerSpeak(TMC_PlayerSpeak& args);
 	};
 };

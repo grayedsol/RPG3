@@ -15,18 +15,14 @@ void Tile::MapSpeak::process() {
 
 	if (index >= currentDialogue->lines.size()) {
 		if (currentDialogue->branching) {
-			if (!textbox->decisionBoxIsOpen()) {
-				textbox->openDecisionBox();
-			}
-			else {
-				if (textbox->decisionIsMade()) {
-					textbox->closeDecisionBox();
-					unsigned int dialogueId = textbox->getDecision() == 1 ? currentDialogue->path1 : currentDialogue->path2;
-					currentDialogue = &scene->getDialogueResource().dialogues.at(dialogueId);
-					index = 0;
-					textbox->printLine(currentDialogue->lines.at(index));
-					index++;
-				}
+			if (!textbox->decisionBoxIsOpen()) { textbox->openDecisionBox(); }
+			else if (textbox->decisionIsMade()) {
+				textbox->closeDecisionBox();
+				unsigned int dialogueId = textbox->getDecision() == 1 ? currentDialogue->path1 : currentDialogue->path2;
+				currentDialogue = &scene->getDialogueResource().dialogues.at(dialogueId);
+				index = 0;
+				textbox->printLine(currentDialogue->lines.at(index));
+				index++;
 			}
 		}
 		else if (scene->readSingleInput() == GCmd::MessageOk) {

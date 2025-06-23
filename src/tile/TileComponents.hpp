@@ -96,12 +96,4 @@ namespace Tile {
 	};
 
 	struct NPC {};
-
-	struct MapAction {
-		enum {
-			Speak
-		} type = Speak;
-
-		unsigned id;
-	};
 };

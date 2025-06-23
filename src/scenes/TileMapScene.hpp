@@ -28,8 +28,8 @@ namespace Tile {
 	 * Controls:
 	 * Directional inputs: Move
 	 * GAME_A: Interact
-	 * GAME_LT: Sprint
-	 * GAME_B: Quit
+	 * GAME_B: Sprint
+	 * GAME_LT: Quit
 	 */
 	class MapScene : public Scene {
 	private:
@@ -202,6 +202,8 @@ namespace Tile {
 
 		MapSpeak& getTileMapSpeak() { return tileMapSpeak; }
 
+		MapScripting& getTileMapScripting() { return mapScripting; }
+
 		const DialogueResource& getDialogueResource() { return mapDialogues; }
 
 		/**
@@ -231,6 +233,6 @@ namespace Tile {
 		 */
 		std::vector<SDL_FRect> queryCollisions(const SDL_FRect rect, std::size_t layer) const;
 
-		void activateTextBox() { textBoxScene.activateControlScheme(); }
+		bool executeCommand(MapCommand& command);
 	};
 };

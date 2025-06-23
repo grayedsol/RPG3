@@ -18,6 +18,18 @@ static Tile::Direction vecDirs[Tile::Direction::DirectionSize] {
 	Tile::Direction::RightDown
 };
 
+static Tile::Direction invDirs[Tile::Direction::DirectionSize] {
+	Tile::Direction::DirectionNone,
+	Tile::Direction::Up,
+	Tile::Direction::Down,
+	Tile::Direction::Right,
+	Tile::Direction::RightUp,
+	Tile::Direction::RightDown,
+	Tile::Direction::Left,
+	Tile::Direction::LeftUp,
+	Tile::Direction::LeftDown
+};
+
 static Tile::Direction vecToDir(Velocity2 vec) {
 	return vecDirs[(int)((vec[0]+1)*3+vec[1]+1)];
 }
@@ -44,24 +56,9 @@ void Tile::MapScripting::process(double delta) {
 void Tile::MapScripting::processEntities(double delta) {
 	for (auto e : ecs->getComponent<MapCommand>()) {
 		MapCommand& command = ecs->getComponent<MapCommand>().get(e);
-		bool reset = false;
-		switch (command.type) {
-			case MAP_CMD_NONE:
-				break;
-			case MAP_CMD_ACTOR_MOVE_POS:
-				reset = processActorMovePos(command.actorMovePos);
-				break;
-			case MAP_CMD_ACTOR_SET_DIRECTION:
-				reset = processActorSetDirection(command.actorSetDirection);
-				break;
-			case MAP_CMD_ACTOR_WAIT:
-				reset = processActorWait(command.actorWait, delta);
-				break;
-			default:
-				GRY_Assert(false, "An unknown MapCommand was assigned to entity %d.\n", e);
-				break;
+		if (executeCommand(command, delta)) {
+			command = MapCommand{ .type = MAP_CMD_NONE };
 		}
-		if (reset) { command = MapCommand{ .type = MAP_CMD_NONE }; }
 	}
 }
 
@@ -92,6 +89,24 @@ void Tile::MapScripting::processCutscene(double delta) {
 			currentCommands.pop_back();
 			i--;
 		}
+	}
+}
+
+bool Tile::MapScripting::executeCommand(MapCommand& command, double delta) {
+	switch (command.type) {
+		case MAP_CMD_NONE:
+			return false;
+		case MAP_CMD_ACTOR_MOVE_POS:
+			return processActorMovePos(command.actorMovePos);
+		case MAP_CMD_ACTOR_SET_DIRECTION:
+			return processActorSetDirection(command.actorSetDirection);
+		case MAP_CMD_ACTOR_WAIT:
+			return processActorWait(command.actorWait, delta);
+		case MAP_CMD_PLAYER_SPEAK:
+			return processPlayerSpeak(command.playerSpeak);
+		default:
+			GRY_Assert(false, "There was an attempt to execute an unknown MapCommand.\n");
+			return false;
 	}
 }
 
@@ -143,4 +158,16 @@ bool Tile::MapScripting::processActorSetDirection(TMC_ActorSetDirection& args) {
 bool Tile::MapScripting::processActorWait(TMC_ActorWait& args, double delta) {
 	if (args.e == ecs->getComponent<Player>().value[0].speakingTo) { return false; }
 	return (args.time -= delta) <= 0.f;
+}
+
+bool Tile::MapScripting::processPlayerSpeak(TMC_PlayerSpeak &args) {
+	auto& actors = ecs->getComponent<Actor>();
+	auto& players = ecs->getComponent<Player>();
+	if (actors.contains(args.e)) {
+		actors.get(args.e).direction = invDirs[actors.get(players.getEntity(0)).direction];
+		actors.get(args.e).moving = false;
+	}
+	players.get(players.getEntity(0)).speakingTo = args.e;
+	scene->getTileMapSpeak().speak(args.dialogueId);
+	return true;
 }

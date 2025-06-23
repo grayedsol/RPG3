@@ -20,24 +20,12 @@ static Velocity2 dirVecs[Tile::Direction::DirectionSize] = {
 	Velocity2{INV_SQRT_TWO,-INV_SQRT_TWO}
 };
 
-static Tile::Direction invDirs[Tile::Direction::DirectionSize] {
-	Tile::Direction::DirectionNone,
-	Tile::Direction::Up,
-	Tile::Direction::Down,
-	Tile::Direction::Right,
-	Tile::Direction::RightUp,
-	Tile::Direction::RightDown,
-	Tile::Direction::Left,
-	Tile::Direction::LeftUp,
-	Tile::Direction::LeftDown
-};
-
 Tile::MapInput::MapInput(MapScene* scene) :
 	scene(scene),
 	hitboxes(&scene->getECSReadOnly().getComponentReadOnly<Hitbox>()),
 	actors(&scene->getECS().getComponent<Actor>()),
 	players(&scene->getECS().getComponent<Player>()),
-	actions(&scene->getECSReadOnly().getComponentReadOnly<MapAction>()) {
+	interactions(&scene->getECSReadOnly().getComponentReadOnly<MapInteraction>()) {
 }
 
 /**
@@ -121,22 +109,9 @@ bool Tile::MapInput::interact() {
 	}
 
 	/* If they have an action, invoke it */
-	if (actions->contains(target)) {
-		switch (actions->get(target).type) {
-		case MapAction::Speak:
-			if (actors->contains(target)) {
-				actors->get(target).direction = invDirs[actors->get(player).direction];
-				actors->get(target).moving = false;
-			}
-			players->get(player).speakingTo = target;
-			scene->getTileMapSpeak().speak(actions->get(target).id);
-			break;
-		default:
-			GRY_Log("Entity %d had an unknown action.", target);
-			break;
-		}
-
-		return true;
+	if (interactions->contains(target)) {
+		MapInteraction interaction = interactions->get(target);
+		return scene->getTileMapScripting().executeCommand(interaction.command, scene->getGame()->getDelta());
 	}
 	return false;
 }

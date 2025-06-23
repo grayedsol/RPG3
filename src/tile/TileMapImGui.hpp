@@ -19,7 +19,7 @@ static const char* TileMapECSComponentStrings[std::tuple_size_v<Tile::MapECS::Tu
 	"ActorSpriteAnims",
 	"Player",
 	"NPC",
-	"TileMapAction",
+	"TileMapInteraction",
 	"MapCommand",
 	"MapCommandList"
 };

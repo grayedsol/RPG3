@@ -21,7 +21,7 @@ static void registerActorSpriteAnimations(Tile::EntityMap& eMap, entity e, const
 static void registerPlayer(Tile::EntityMap& eMap, entity e);
 static void registerNPC(Tile::EntityMap& eMap, entity e);
 static void registerHitbox(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& hitbox);
-static void registerMapAction(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actionData);
+static void registerMapInteraction(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& interactionData);
 static void registerMapCommands(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& commandData);
 static void sortEntityLayer(ComponentSet<Position2>& positions, std::vector<entity>& layer);
 
@@ -88,7 +88,7 @@ entity registerEntity(Tile::EntityMap& eMap, const GRY_JSON::Value& entityData, 
 	if (entityData.HasMember("player")) { registerPlayer(eMap, e); }
 	if (entityData.HasMember("npc")) { registerNPC(eMap, e); }
 	if (entityData.HasMember("hitbox")) { registerHitbox(eMap, e, entityData["hitbox"]); }
-	if (entityData.HasMember("action")) { registerMapAction(eMap, e, entityData["action"]); }
+	if (entityData.HasMember("interaction")) { registerMapInteraction(eMap, e, entityData["interaction"]); }
 	if (entityData.HasMember("commands")) { registerMapCommands(eMap, e, entityData["commands"]); }
 
 	return e;
@@ -153,17 +153,15 @@ void registerHitbox(Tile::EntityMap &eMap, entity e, const GRY_JSON::Value& hitb
 	eMap.ecs->getComponent<Hitbox>().add(e, box);
 }
 
-void registerMapAction(Tile::EntityMap &eMap, entity e, const GRY_JSON::Value &actionData) {
-	Tile::MapAction action;
-	const char* type = actionData["type"].GetString();
-	if (strcmp("Speak", type) == 0) {
-		action.type = Tile::MapAction::Speak;
+void registerMapInteraction(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& interactionData) {
+	for (int i = 0; i < std::tuple_size<Tile::MapCommandTypeList>::value; i++) {
+		if (strcmp(interactionData["type"].GetString(), Tile::MapCommandNames[i]) == 0) {
+			Tile::MapCommand command = registerTMC_Funcs[i](eMap, e, interactionData);
+			eMap.ecs->getComponent<Tile::MapInteraction>().add(e, Tile::MapInteraction{command});
+			return;
+		}
 	}
-	else {
-		GRY_Assert(false, "[Tile::EntityMap] Unknown action type for entity %d", e);
-	}
-	action.id = actionData["id"].GetUint();
-	eMap.ecs->getComponent<Tile::MapAction>().add(e, action);
+	GRY_Assert(false, "[Tile::EntityMap] Unknown map interaction command type for entity %d", e);
 }
 
 void registerMapCommands(Tile::EntityMap &eMap, entity e, const GRY_JSON::Value &commandData) {

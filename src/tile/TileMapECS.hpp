@@ -22,7 +22,7 @@ namespace Tile {
 		ActorSpriteAnims,
 		Player,
 		NPC,
-		MapAction,
+		MapInteraction,
 		MapCommand,
 		MapCommandList
 	>;

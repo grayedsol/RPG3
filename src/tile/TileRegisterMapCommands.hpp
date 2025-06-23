@@ -34,3 +34,9 @@ static Tile::MapCommand registerTMC_ActorWait(Tile::EntityMap& eMap, ECS::entity
 	Tile::MapCommand command = { .actorWait = actorWait };
 	return command;
 }
+
+static Tile::MapCommand registerTMC_PlayerSpeak(Tile::EntityMap& eMap, ECS::entity e, const GRY_JSON::Value& args) {
+	Tile::TMC_PlayerSpeak playerSpeak { .e = e, .dialogueId = args["dialogueId"].GetUint() };
+	Tile::MapCommand command = { .playerSpeak = playerSpeak };
+	return command;
+}
