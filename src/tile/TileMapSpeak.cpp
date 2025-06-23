@@ -21,7 +21,7 @@ void Tile::MapSpeak::process() {
 			else {
 				if (textbox->decisionIsMade()) {
 					unsigned int dialogueId = textbox->getDecision() == 1 ? currentDialogue->path1 : currentDialogue->path2;
-					currentDialogue = &scene->getDialogueResource().dialogues2.at(dialogueId);
+					currentDialogue = &scene->getDialogueResource().dialogues.at(dialogueId);
 					index = 0;
 					textbox->closeDecisionBox();
 				}
@@ -42,6 +42,6 @@ void Tile::MapSpeak::process() {
 
 void Tile::MapSpeak::speak(unsigned dialogueId) {
 	if (textbox->isOpen()) { return; }
-	currentDialogue = &scene->getDialogueResource().dialogues2.at(dialogueId);
+	currentDialogue = &scene->getDialogueResource().dialogues.at(dialogueId);
 	textbox->open();
 }

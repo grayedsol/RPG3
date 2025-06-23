@@ -16,9 +16,7 @@ struct Dialogue {
 };
 
 struct DialogueResource : public FileResource {
-	using PlainDialogue = std::vector<const char*>;
-	std::vector<PlainDialogue> dialogues;
-	std::vector<Dialogue> dialogues2;
+	std::vector<Dialogue> dialogues;
 
 	DialogueResource() = default;
 
@@ -26,7 +24,7 @@ struct DialogueResource : public FileResource {
 
 	~DialogueResource() {
 		for (auto& dialogue : dialogues) {
-			for (auto line : dialogue) { delete[] line; }
+			for (auto line : dialogue.lines) { delete[] line; }
 		}
 	}
 
