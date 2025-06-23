@@ -24,17 +24,19 @@ void Tile::MapSpeak::process() {
 					currentDialogue = &scene->getDialogueResource().dialogues.at(dialogueId);
 					index = 0;
 					textbox->closeDecisionBox();
+					textbox->printLine(currentDialogue->lines.at(index));
+					index++;
 				}
 			}
 		}
-		else {
+		else if (scene->readSingleInput() == GCmd::MessageOk) {
 			textbox->close();
 			currentDialogue = nullptr;
 			index = 0;
 			scene->getECS().getComponent<Player>().value.at(0).speakingTo = ECS::NONE;
 		}
 	}
-	else {
+	else if (scene->readSingleInput() == GCmd::MessageOk) {
 		textbox->printLine(currentDialogue->lines.at(index));
 		index++;
 	}

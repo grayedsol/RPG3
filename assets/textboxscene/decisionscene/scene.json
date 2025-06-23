@@ -1,5 +1,5 @@
 {
 	"boxTexturePath" : "assets/textures/image/decisionbox.png",
-	"marginX" : 10,
-	"marginY" : 8
+	"marginX" : 6,
+	"marginY" : 9
 }

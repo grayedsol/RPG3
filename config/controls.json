@@ -5,7 +5,7 @@
     },
 
     "GAME_B" : {
-        "Primary" : { "code" : 43 }
+        "Primary" : { "code" : 225 }
     },
 
     "GAME_X" : {
@@ -41,6 +41,6 @@
     },
 
 	"GAME_LT" : {
-		"Primary" : { "code": 225 }
+		"Primary" : { "code": 43 }
 	}
 }

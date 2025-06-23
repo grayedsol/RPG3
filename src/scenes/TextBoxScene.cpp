@@ -133,7 +133,7 @@ bool TextBoxScene::load() {
 
 bool TextBoxScene::isReady() {
 	GRY_Assert(active, "[TextBoxScene] You must open the text box before calling isReady()!");
-	return readSingleInput() == GCmd::MessageOk && !*incomingLine;
+	return !*incomingLine;
 }
 
 void TextBoxScene::open() {

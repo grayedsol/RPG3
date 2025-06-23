@@ -6,9 +6,16 @@
 #include "SDL3/SDL_render.h"
 
 static const float LINE_SPACING = 2.f;
+static const float SPACE_FROM_TEXTBOX = 2.f;
+
+void TextDecisionScene::setSelection(Selection selectionValue) {
+	yesNo[selection][0] = ' ';
+	selection = selectionValue;
+	yesNo[selection][0] = '>';
+}
 
 void TextDecisionScene::setControls() {
-	controls.mapCmd(GCmd::MessageOk, VirtualButton::GAME_A);
+	controls.mapCmd(GCmd::DecisionOk, VirtualButton::GAME_A);
 	controls.mapCmd(GCmd::DecisionNo, VirtualButton::GAME_B);
 	controls.mapCmd(GCmd::DecisionSwitch, VirtualButton::GAME_UP);
 	controls.mapCmd(GCmd::DecisionSwitch, VirtualButton::GAME_DOWN);
@@ -29,8 +36,11 @@ void TextDecisionScene::init() {
 	SDL_GetTextureSize(boxTexture.texture, &textureWidth, &textureHeight);
 
 	boxTextureArea = scene->getBoxTextureArea();
+	boxTextureArea.x += boxTextureArea.w - textureWidth;
+	boxTextureArea.y -= textureHeight + SPACE_FROM_TEXTBOX;
 	boxTextureArea.w = textureWidth;
 	boxTextureArea.h = textureHeight;
+	
 
 	/* Recall that textArea width and height have the margins stored in them right now */
 	textArea.x = (int)boxTextureArea.x + textArea.w;
@@ -44,23 +54,15 @@ void TextDecisionScene::process() {
 	if (!active) { return; }
 	GCmd cmd = readSingleInput();
 	switch (cmd) {
-		case GCmd::MessageOk:
-			if (selection == NONE) {
-				yesNo[selection][0] = ' ';
-				selection = YES;
-				yesNo[selection][0] = '>';
-			}
+		case GCmd::DecisionOk:
+			if (selection == NONE) { setSelection(Selection::YES); }
 			else { decisionMade = true; }
 			break;
 		case GCmd::DecisionNo:
-			yesNo[selection][0] = ' ';
-			selection = NO;
-			yesNo[selection][0] = '>';
+			setSelection(Selection::NO);
 			break;
 		case GCmd::DecisionSwitch:
-			yesNo[selection][0] = ' ';
-			selection = selection == YES ? NO : YES;
-			yesNo[selection][0] = '>';
+			setSelection(selection == Selection::YES ? Selection::NO : Selection::YES);
 			break;
 		default:
 			break;
@@ -112,6 +114,7 @@ void TextDecisionScene::open() {
 	activateControlScheme();
 	active = true;
 	decisionMade = false;
+	setSelection(Selection::NONE);
 }
 
 void TextDecisionScene::close() {
