@@ -20,10 +20,10 @@ void Tile::MapSpeak::process() {
 			}
 			else {
 				if (textbox->decisionIsMade()) {
+					textbox->closeDecisionBox();
 					unsigned int dialogueId = textbox->getDecision() == 1 ? currentDialogue->path1 : currentDialogue->path2;
 					currentDialogue = &scene->getDialogueResource().dialogues.at(dialogueId);
 					index = 0;
-					textbox->closeDecisionBox();
 					textbox->printLine(currentDialogue->lines.at(index));
 					index++;
 				}
