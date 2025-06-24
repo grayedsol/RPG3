@@ -7,6 +7,7 @@
 #pragma once
 #include "QuadTree.hpp"
 #include "Components.hpp"
+#include "TileComponents.hpp"
 #include "ECS.hpp"
 
 namespace Tile {
@@ -15,8 +16,10 @@ namespace Tile {
 	class MapQuadTrees {
 	private:
 		std::vector<QuadTree> quadtrees;
+		std::vector<QuadTree> softQuadtrees;
 		MapScene* scene;
 		const ComponentSet<Hitbox>* hitboxes;
+		const ComponentSet<Collides>* collides;
 	public:
 		MapQuadTrees(MapScene* scene);
 
@@ -29,5 +32,7 @@ namespace Tile {
 		void init();
 
 		const std::vector<QuadTree>& getQuadTrees() { return quadtrees; }
+
+		const std::vector<QuadTree>& getSoftQuadTrees() { return softQuadtrees; }
 	};
 };

@@ -43,6 +43,8 @@ namespace Tile {
 		 */
 		ComponentSet<Hitbox>* hitboxes;
 
+		const ComponentSet<MapEntity>* mapEntities;
+
 		/**
 		 * @brief Actor data of entities.
 		 * 
@@ -60,6 +62,8 @@ namespace Tile {
 		 * 
 		 */
 		const ComponentSet<Player>* players;
+
+		ComponentSet<MapCollisionInteraction>* collisionInteractions;
 
 		/**
 		 * @brief Attempt to glide an entity so that it aligns to the nearest pixel.
@@ -89,6 +93,8 @@ namespace Tile {
 		 * @return The resulting Hitbox that has no conflicting collisions
 		 */
 		Hitbox handleTileCollisions(Hitbox box, int layer);
+
+		void handleSoftEntityCollisions(Hitbox box, ECS::entity e, int layer);
 	public:
 		/**
 		 * @brief Constructor.

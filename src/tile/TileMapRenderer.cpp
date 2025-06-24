@@ -90,6 +90,10 @@ void Tile::MapRenderer::process() {
 
 			/* Render any entities in the row */
 			while (entityRow == y && entityIndex < entityLayer.size()) {
+				if (!sprites->contains(entityLayer[entityIndex])) {
+					entityIndex++;
+					continue;
+				}
 				renderSprite(entityLayer[entityIndex]);
 				entityIndex++;
 				if (entityIndex < entityLayer.size()) {

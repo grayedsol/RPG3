@@ -93,11 +93,19 @@ void componentImGui(Tile::MapInteraction& action) {
 }
 
 template<>
+void componentImGui(Tile::MapCollisionInteraction& collisionAction) {
+	ImGui::Text(Tile::MapCommandNames[collisionAction.command.type]);
+	ImGui::Text("%d", collisionAction.mode);
+}
+
+template<>
 void componentImGui(Tile::MapCommand& command) {
 	ImGui::Text(Tile::MapCommandNames[command.type]);
 }
 
-// template<>
-// void componentImGui(Tile::MapCommandList& list) {
-
-// }
+template<>
+void componentImGui(Tile::MapCommandList& list) {
+	for (int i = 0; i < list.commands.size(); i++) {
+		ImGui::Text("%d: %s", i, Tile::MapCommandNames[list.commands.at(i).type]);
+	}
+}

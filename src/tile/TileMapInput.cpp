@@ -23,6 +23,7 @@ static Velocity2 dirVecs[Tile::Direction::DirectionSize] = {
 Tile::MapInput::MapInput(MapScene* scene) :
 	scene(scene),
 	hitboxes(&scene->getECSReadOnly().getComponentReadOnly<Hitbox>()),
+	mapEntities(&scene->getECSReadOnly().getComponentReadOnly<MapEntity>()),
 	actors(&scene->getECS().getComponent<Actor>()),
 	players(&scene->getECS().getComponent<Player>()),
 	interactions(&scene->getECSReadOnly().getComponentReadOnly<MapInteraction>()) {
@@ -92,7 +93,7 @@ bool Tile::MapInput::interact() {
 
 	/* Query for collisions */
 	std::vector<ECS::entity> collisions;
-	scene->getQuadTrees().at(actors->get(player).layer).query(searchBox, player, collisions);
+	scene->getQuadTrees().at(mapEntities->get(player).layer).query(searchBox, player, collisions);
 	if (collisions.empty()) { return false; }
 
 	/* Find the closest collision */

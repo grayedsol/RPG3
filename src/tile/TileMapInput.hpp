@@ -29,6 +29,8 @@ namespace Tile {
 		 */
 		const ComponentSet<Hitbox>* hitboxes;
 
+		const ComponentSet<MapEntity>* mapEntities;
+
 		/**
 		 * @brief Actor data of entities.
 		 * 
@@ -40,8 +42,6 @@ namespace Tile {
 		 * 
 		 */
 		ComponentSet<Player>* players;
-
-		const ComponentSet<NPC>* npcs;
 
 		const ComponentSet<MapInteraction>* interactions;
 

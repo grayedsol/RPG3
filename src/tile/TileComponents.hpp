@@ -24,6 +24,14 @@ namespace Tile {
 		DirectionSize = 9
 	};
 
+	struct MapEntity {
+		/**
+		 * @brief The map layer that the entity is on.
+		 * 
+		 */
+		uint8_t layer = 0;
+	};
+
 	struct Actor {
 		/**
 		 * @brief Movement speed.
@@ -36,12 +44,6 @@ namespace Tile {
 		 *
 		 */
 		Direction direction = Direction::Down;
-
-		/**
-		 * @brief The map layer the actor is on.
-		 * 
-		 */
-		uint8_t layer = 0;
 
 		/**
 		 * @brief Whether the actor is moving or not.
@@ -96,4 +98,6 @@ namespace Tile {
 	};
 
 	struct NPC {};
+
+	struct Collides {};
 };

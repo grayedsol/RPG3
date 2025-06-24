@@ -96,7 +96,7 @@ bool Tile::MapScene::load() {
 	return false;
 }
 
-std::vector<SDL_FRect> Tile::MapScene::queryCollisions(const SDL_FRect rect, std::size_t layer) const {
+std::vector<SDL_FRect> Tile::MapScene::queryTileCollisions(const SDL_FRect rect, std::size_t layer) const {
 	auto collides = [rect](const SDL_FRect other) {
 		return
 			rect.x + rect.w > other.x &&

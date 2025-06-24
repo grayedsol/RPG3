@@ -17,12 +17,15 @@ namespace Tile {
 		Position2,
 		Velocity2,
 		Hitbox,
+		Collides,
+		MapEntity,
 		Actor,
 		ActorSprite,
 		ActorSpriteAnims,
 		Player,
 		NPC,
 		MapInteraction,
+		MapCollisionInteraction,
 		MapCommand,
 		MapCommandList
 	>;

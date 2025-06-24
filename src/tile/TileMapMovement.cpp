@@ -89,11 +89,29 @@ Hitbox Tile::MapMovement::handleEntityCollisions(Hitbox box, ECS::entity e, int 
 
 Hitbox Tile::MapMovement::handleTileCollisions(Hitbox box, int layer) {
 	SDL_FRect* rect = reinterpret_cast<SDL_FRect*>(&box);
-	std::vector<SDL_FRect> collisions = scene->queryCollisions(*rect, layer);
+	std::vector<SDL_FRect> collisions = scene->queryTileCollisions(*rect, layer);
 	if (collisions.empty()) { return box; }
 	SDL_FRect f = collisions.back();
 	*((Position2*)&box) += AABBMTV(box, *(Hitbox*)&f);
 	return handleTileCollisions(box, layer);
+}
+
+void Tile::MapMovement::handleSoftEntityCollisions(Hitbox box, ECS::entity e, int layer) {
+	std::vector<entity> eCollisions;
+	scene->getSoftQuadTrees().at(layer).query(box, e, eCollisions);
+	for (auto e : eCollisions) {
+		if (collisionInteractions->contains(e)) {
+			MapCollisionInteraction& interaction = collisionInteractions->get(e);
+			interaction.beingPressed = true;
+			if (!interaction.active) { scene->executeCommand(interaction.command); }
+			if (interaction.mode == MapCollisionInteraction::Mode::Fleeting) {
+				collisionInteractions->remove(e);
+			}
+			else if (interaction.mode == MapCollisionInteraction::Mode::PressurePlate) {
+				interaction.active = true;
+			}
+		}
+	}
 }
 
 Tile::MapMovement::MapMovement(MapScene *scene) :
@@ -101,9 +119,11 @@ Tile::MapMovement::MapMovement(MapScene *scene) :
 	positions(&scene->getECS().getComponent<Position2>()),
 	velocities(&scene->getECS().getComponent<Velocity2>()),
 	hitboxes(&scene->getECS().getComponent<Hitbox>()),
+	mapEntities(&scene->getECS().getComponentReadOnly<MapEntity>()),
 	actors(&scene->getECS().getComponent<Actor>()),
 	sprites(&scene->getECS().getComponent<ActorSprite>()),
-	players(&scene->getECSReadOnly().getComponentReadOnly<Player>()) {
+	players(&scene->getECSReadOnly().getComponentReadOnly<Player>()),
+	collisionInteractions(&scene->getECS().getComponent<MapCollisionInteraction>()) {
 }
 
 /**
@@ -124,7 +144,7 @@ void Tile::MapMovement::process(double delta) {
 		/* Try gliding */
 		glide(delta, prevVelocity, e);
 
-		unsigned layer = actors->get(e).layer;
+		unsigned layer = mapEntities->get(e).layer;
 		if (!velocities->contains(e)) { continue; }
 		if (hitboxes->contains(e)) {
 			Hitbox box = hitboxes->get(e);
@@ -134,6 +154,7 @@ void Tile::MapMovement::process(double delta) {
 
 			box = handleEntityCollisions(box, e, layer);
 			box = handleTileCollisions(box, layer);
+			handleSoftEntityCollisions(box, e, layer);
 
 			positions->get(e) = *pos;
 			hitboxes->get(e) = box;
@@ -143,5 +164,11 @@ void Tile::MapMovement::process(double delta) {
 			positions->get(e) += velocities->get(e) * actors->get(e).speed * (1 + actors->get(e).sprinting) * delta;
 			EntityMap::sortLayer(&scene->getTileEntityMap(), layer);
 		}
+	}
+	for (auto& interaction : collisionInteractions->value) {
+		if (interaction.beingPressed == false) {
+			interaction.active = false;
+		}
+		interaction.beingPressed = false;
 	}
 }

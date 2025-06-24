@@ -14,14 +14,17 @@ static const char* TileMapECSComponentStrings[std::tuple_size_v<Tile::MapECS::Tu
 	"Position2",
 	"Velocity2",
 	"Hitbox",
+	"Collides",
+	"MapEntity",
 	"Actor",
 	"ActorSprite",
 	"ActorSpriteAnims",
 	"Player",
 	"NPC",
-	"TileMapInteraction",
+	"MapInteraction",
+	"MapCollisionInteraction",
 	"MapCommand",
-	"MapCommandList"
+	"MapCommandList",
 };
 
 template<>

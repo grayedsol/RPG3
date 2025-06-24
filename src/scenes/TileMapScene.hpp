@@ -224,6 +224,8 @@ namespace Tile {
 
 		const std::vector<QuadTree>& getQuadTrees() { return tileMapQuadTrees.getQuadTrees(); }
 
+		const std::vector<QuadTree>& getSoftQuadTrees() { return tileMapQuadTrees.getSoftQuadTrees(); }
+
 		/**
 		 * @brief Get a vector of collision rectangles that collide with `rect`.
 		 * 
@@ -231,7 +233,7 @@ namespace Tile {
 		 * @param layer Which collision layer to test within
 		 * @return Vector of rectangles colliding with `rect`
 		 */
-		std::vector<SDL_FRect> queryCollisions(const SDL_FRect rect, std::size_t layer) const;
+		std::vector<SDL_FRect> queryTileCollisions(const SDL_FRect rect, std::size_t layer) const;
 
 		bool executeCommand(MapCommand& command);
 	};

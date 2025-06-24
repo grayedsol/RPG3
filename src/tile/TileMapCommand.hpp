@@ -85,5 +85,10 @@ namespace Tile {
 
 	struct MapCollisionInteraction {
 		MapCommand command;
+		enum Mode : uint8_t {
+			Continuous, Fleeting, PressurePlate
+		} mode;
+		bool beingPressed = false;
+		bool active = false;
 	};
 };
