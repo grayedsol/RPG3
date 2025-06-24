@@ -40,3 +40,12 @@ static Tile::MapCommand registerTMC_PlayerSpeak(Tile::EntityMap& eMap, ECS::enti
 	Tile::MapCommand command = { .playerSpeak = playerSpeak };
 	return command;
 }
+
+static Tile::MapCommand registerTMC_PlayerTeleport(Tile::EntityMap& eMap, ECS::entity e, const GRY_JSON::Value& args) {
+	Tile::TMC_PlayerTeleport playerTeleport { .e = e };
+	playerTeleport.position = Position2 {
+		args["position"].GetArray()[0].GetFloat(),
+		args["position"].GetArray()[1].GetFloat()
+	};
+	return Tile::MapCommand { .playerTeleport = playerTeleport };
+}

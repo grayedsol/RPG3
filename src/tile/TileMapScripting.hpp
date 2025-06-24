@@ -46,5 +46,7 @@ namespace Tile {
 		bool processActorWait(TMC_ActorWait& args, double delta);
 
 		bool processPlayerSpeak(TMC_PlayerSpeak& args);
+
+		bool processPlayerTeleport(TMC_PlayerTeleport& args);
 	};
 };

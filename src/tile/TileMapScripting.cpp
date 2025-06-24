@@ -104,6 +104,8 @@ bool Tile::MapScripting::executeCommand(MapCommand& command, double delta) {
 			return processActorWait(command.actorWait, delta);
 		case MAP_CMD_PLAYER_SPEAK:
 			return processPlayerSpeak(command.playerSpeak);
+		case MAP_CMD_PLAYER_TELEPORT:
+			return processPlayerTeleport(command.playerTeleport);
 		default:
 			GRY_Assert(false, "There was an attempt to execute an unknown MapCommand.\n");
 			return false;
@@ -169,5 +171,11 @@ bool Tile::MapScripting::processPlayerSpeak(TMC_PlayerSpeak &args) {
 	}
 	players.get(players.getEntity(0)).speakingTo = args.e;
 	scene->getTileMapSpeak().speak(args.dialogueId);
+	return true;
+}
+
+bool Tile::MapScripting::processPlayerTeleport(TMC_PlayerTeleport &args) {
+	entity player = ecs->getComponent<Player>().getEntity(0);
+	ecs->getComponent<Position2>().get(player) = args.position;
 	return true;
 }

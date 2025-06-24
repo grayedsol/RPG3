@@ -154,10 +154,12 @@ void Tile::MapMovement::process(double delta) {
 
 			box = handleEntityCollisions(box, e, layer);
 			box = handleTileCollisions(box, layer);
-			handleSoftEntityCollisions(box, e, layer);
 
 			positions->get(e) = *pos;
 			hitboxes->get(e) = box;
+			
+			handleSoftEntityCollisions(box, e, layer);
+
 			EntityMap::sortLayer(&scene->getTileEntityMap(), layer);
 		}
 		else {
