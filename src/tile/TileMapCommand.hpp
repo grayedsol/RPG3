@@ -57,6 +57,8 @@ namespace Tile {
 		static const unsigned MAX_PATH_LEN = 127;
 		MapCommandType type = MAP_CMD_SWITCH_MAP;
 		ECS::entity e;
+		Position2 spawnPosition = Position2{ -1, -1 };
+		Direction spawnDirection = Direction::DirectionNone;
 		char mapScenePath[MAX_PATH_LEN + 1] = { 0 };
 	};
 

@@ -44,6 +44,14 @@ void Tile::MapScene::init() {
 
 	tileMapQuadTrees.init();
 	textBoxScene.init();
+
+	entity player = ecs.getComponent<Player>().getEntity(0);
+	if (sceneInfo.spawnPosition.x >= 0 && sceneInfo.spawnPosition.y >= 0) {
+		ecs.getComponent<Position2>().get(player) = sceneInfo.spawnPosition;
+	}
+	if (sceneInfo.spawnDirection != Direction::DirectionNone) {
+		ecs.getComponent<Actor>().get(player).direction = sceneInfo.spawnDirection;
+	}
 }
 
 void Tile::MapScene::process() {
@@ -63,6 +71,7 @@ void Tile::MapScene::process() {
 	mapScripting.process(game->getDelta());
 	tileSpriteAnimator.process(game->getDelta());
 	tileMapCamera.process();
+	tileMap.tileset.processAnimations(game->getDelta());
 	tileMapRenderer.process();
 	
 	textBoxScene.process();
@@ -130,7 +139,7 @@ bool Tile::MapScene::executeCommand(MapCommand &command) {
 	return mapScripting.executeCommand(command, game->getDelta());
 }
 
-void Tile::MapScene::switchMap(const char *mapScenePath) {
-	MapScene* newMapScene = new MapScene((GRY_PixelGame*)game, mapScenePath);
+void Tile::MapScene::switchMap(const char *mapScenePath, MapSceneInfo sceneInfo) {
+	MapScene* newMapScene = new MapScene((GRY_PixelGame*)game, mapScenePath, sceneInfo);
 	game->switchScene(newMapScene, new FadeToBlack(game));
 }

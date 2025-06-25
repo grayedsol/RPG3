@@ -21,6 +21,10 @@
 class GRY_PixelGame;
 
 namespace Tile {
+	struct MapSceneInfo {
+		Position2 spawnPosition = Position2{ -1, -1 };
+		Direction spawnDirection = Direction::DirectionNone;
+	};
 	/**
 	 * @brief Loads a TileMap and TileEntityMap into a playable scene.
 	 * 
@@ -103,6 +107,8 @@ namespace Tile {
 
 		MapScripting mapScripting;
 
+		MapSceneInfo sceneInfo;
+
 		/**
 		 * @brief Width and height of a normal square tile, in pixels.
 		 *
@@ -126,7 +132,7 @@ namespace Tile {
 		 * @param game Associated game class.
 		 * @param tileMapPath File path to the tilemap scene.
 		 */
-		MapScene(GRY_PixelGame *pGame, const char *tileMapPath) :
+		MapScene(GRY_PixelGame *pGame, const char *tileMapPath, MapSceneInfo sceneInfo = MapSceneInfo{}) :
 			Scene((GRY_Game *)pGame, tileMapPath),
 			entityMap(ecs),
 			tileMapRenderer(this),
@@ -137,7 +143,8 @@ namespace Tile {
 			tileMapInput(this),
 			textBoxScene(pGame, "assets/textboxscene/scene.json", this),
 			tileMapSpeak(this),
-			mapScripting(this) {
+			mapScripting(this),
+			sceneInfo(sceneInfo) {
 		}
 
 		/**
@@ -235,6 +242,6 @@ namespace Tile {
 
 		bool executeCommand(MapCommand& command);
 
-		void switchMap(const char* mapScenePath);
+		void switchMap(const char* mapScenePath, MapSceneInfo sceneInfo = MapSceneInfo{});
 	};
 };

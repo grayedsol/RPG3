@@ -2,12 +2,12 @@
 #include "TileEntityMap.hpp"
 #include "GRY_JSON.hpp"
 
-static Tile::MapCommand registerTMC_None(Tile::EntityMap& eMap, ECS::entity e, const GRY_JSON::Value& args) {
+static Tile::MapCommand registerTMC_None(Tile::EntityMap& eMap, ECS::entity e, float normalTileSize, const GRY_JSON::Value& args) {
 	Tile::MapCommand command = { .type = Tile::MapCommandType::MAP_CMD_NONE };
 	return command;
 }
 
-static Tile::MapCommand registerTMC_ActorMovePos(Tile::EntityMap& eMap, ECS::entity e, const GRY_JSON::Value& args) {
+static Tile::MapCommand registerTMC_ActorMovePos(Tile::EntityMap& eMap, ECS::entity e, float normalTileSize, const GRY_JSON::Value& args) {
 	Tile::TMC_ActorMovePos actorMovePos;
 	actorMovePos.e = e;
 	actorMovePos.targetPos.x = args["x"].GetFloat();
@@ -16,7 +16,7 @@ static Tile::MapCommand registerTMC_ActorMovePos(Tile::EntityMap& eMap, ECS::ent
 	return command;
 }
 
-static Tile::MapCommand registerTMC_ActorSetDirection(Tile::EntityMap& eMap, ECS::entity e, const GRY_JSON::Value& args) {
+static Tile::MapCommand registerTMC_ActorSetDirection(Tile::EntityMap& eMap, ECS::entity e, float normalTileSize, const GRY_JSON::Value& args) {
 	Tile::TMC_ActorSetDirection actorSetDirection;
 	actorSetDirection.e = e;
 	actorSetDirection.direction = static_cast<Tile::Direction>(args["direction"].GetInt());
@@ -28,20 +28,20 @@ static Tile::MapCommand registerTMC_ActorSetDirection(Tile::EntityMap& eMap, ECS
 	return command;
 }
 
-static Tile::MapCommand registerTMC_ActorWait(Tile::EntityMap& eMap, ECS::entity e, const GRY_JSON::Value& args) {
+static Tile::MapCommand registerTMC_ActorWait(Tile::EntityMap& eMap, ECS::entity e, float normalTileSize, const GRY_JSON::Value& args) {
 	Tile::TMC_ActorWait actorWait { .e = e, .time = args["time"].GetFloat() };
 	GRY_Assert(actorWait.time >= 0.f, "[Tile::EntityMap] WaitActor time cannot be negative.\n");
 	Tile::MapCommand command = { .actorWait = actorWait };
 	return command;
 }
 
-static Tile::MapCommand registerTMC_PlayerSpeak(Tile::EntityMap& eMap, ECS::entity e, const GRY_JSON::Value& args) {
+static Tile::MapCommand registerTMC_PlayerSpeak(Tile::EntityMap& eMap, ECS::entity e, float normalTileSize, const GRY_JSON::Value& args) {
 	Tile::TMC_PlayerSpeak playerSpeak { .e = e, .dialogueId = args["dialogueId"].GetUint() };
 	Tile::MapCommand command = { .playerSpeak = playerSpeak };
 	return command;
 }
 
-static Tile::MapCommand registerTMC_PlayerTeleport(Tile::EntityMap& eMap, ECS::entity e, const GRY_JSON::Value& args) {
+static Tile::MapCommand registerTMC_PlayerTeleport(Tile::EntityMap& eMap, ECS::entity e, float normalTileSize, const GRY_JSON::Value& args) {
 	Tile::TMC_PlayerTeleport playerTeleport { .e = e };
 	playerTeleport.position = Position2 {
 		args["position"].GetArray()[0].GetFloat(),
@@ -50,11 +50,20 @@ static Tile::MapCommand registerTMC_PlayerTeleport(Tile::EntityMap& eMap, ECS::e
 	return Tile::MapCommand { .playerTeleport = playerTeleport };
 }
 
-static Tile::MapCommand registerTMC_SwitchMap(Tile::EntityMap& eMap, ECS::entity e, const GRY_JSON::Value& args) {
+static Tile::MapCommand registerTMC_SwitchMap(Tile::EntityMap& eMap, ECS::entity e, float normalTileSize, const GRY_JSON::Value& args) {
 	Tile::TMC_SwitchMap switchMap { .e = e };
 	GRY_Assert(args["mapScenePath"].GetStringLength() <= Tile::TMC_SwitchMap::MAX_PATH_LEN,
 		"[Tile::EntityMap] SwitchMap mapScenePath was too long (max %d)", Tile::TMC_SwitchMap::MAX_PATH_LEN
 	);
+	if (args.HasMember("spawnPosition")) {
+		switchMap.spawnPosition = Position2 {
+			args["spawnPosition"].GetArray()[0].GetFloat() * normalTileSize,
+			args["spawnPosition"].GetArray()[1].GetFloat() * normalTileSize
+		};
+	}
+	if (args.HasMember("spawnDirection")) {
+		switchMap.spawnDirection = static_cast<Tile::Direction>(args["spawnDirection"].GetUint());
+	}
 	strcpy(switchMap.mapScenePath, args["mapScenePath"].GetString());
 	return Tile::MapCommand { .switchMap = switchMap };
 }

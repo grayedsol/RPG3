@@ -25,6 +25,22 @@
 				"hitbox" : {
 					"radius" : 8
 				}
+			},
+						{
+				"position" : [19.875, 1],
+				"hitbox" : {
+					"width" : 2,
+					"height" : 48
+				},
+				"collisionInteraction" : {
+					"command" : {
+						"type" : "SwitchMap",
+						"mapScenePath" : "assets\/tilemapscene\/map02\/scene.json",
+						"spawnPosition" : [0.125, 17],
+						"spawnDirection" : 6
+					},
+					"mode" : "PressurePlate"
+				}
 			}
 		]
 	],

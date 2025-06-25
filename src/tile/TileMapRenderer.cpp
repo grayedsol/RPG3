@@ -20,7 +20,7 @@ Tile::MapRenderer::MapRenderer(const MapScene *scene) :
 }
 
 void Tile::MapRenderer::renderTile(const Tileset &tileset, const TileId textureIndex, const SDL_FRect *dstRect) {
-	SDL_RenderTexture(renderer, tileset.texture, &tileset.sourceRects[textureIndex], dstRect);
+	SDL_RenderTexture(renderer, tileset.texture, tileset.getSourceRect(textureIndex), dstRect);
 }
 
 void Tile::MapRenderer::renderSprite(ECS::entity e) {

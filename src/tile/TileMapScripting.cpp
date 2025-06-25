@@ -183,6 +183,9 @@ bool Tile::MapScripting::processPlayerTeleport(TMC_PlayerTeleport& args) {
 }
 
 bool Tile::MapScripting::processSwitchMap(TMC_SwitchMap& args) {
-	scene->switchMap(args.mapScenePath);
+	MapSceneInfo mapSceneInfo;
+	mapSceneInfo.spawnPosition = args.spawnPosition;
+	mapSceneInfo.spawnDirection = args.spawnDirection;
+	scene->switchMap(args.mapScenePath, mapSceneInfo);
 	return true;
 }

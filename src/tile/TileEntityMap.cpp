@@ -21,9 +21,9 @@ static void registerActorSprite(Tile::EntityMap& eMap, entity e, const GRY_JSON:
 static void registerActorSpriteAnimations(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actorAnimations);
 static void registerPlayer(Tile::EntityMap& eMap, entity e);
 static void registerNPC(Tile::EntityMap& eMap, entity e);
-static void registerMapInteraction(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& interactionData);
-static void registerMapCommands(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& commandData);
-static void registerCollisionInteraction(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& collisionInteractionData);
+static void registerMapInteraction(Tile::EntityMap& eMap, entity e, float normalTileSize, const GRY_JSON::Value& interactionData);
+static void registerMapCommands(Tile::EntityMap& eMap, entity e, float normalTileSize, const GRY_JSON::Value& commandData);
+static void registerCollisionInteraction(Tile::EntityMap& eMap, entity e, float normalTileSize, const GRY_JSON::Value& collisionInteractionData);
 static void sortEntityLayer(ComponentSet<Position2>& positions, std::vector<entity>& layer);
 
 bool Tile::EntityMap::load(GRY_Game *game) {
@@ -90,9 +90,9 @@ entity registerEntity(Tile::EntityMap& eMap, const GRY_JSON::Value& entityData, 
 	if (entityData.HasMember("actorAnimations")) { registerActorSpriteAnimations(eMap, e, entityData["actorAnimations"]); }
 	if (entityData.HasMember("player")) { registerPlayer(eMap, e); }
 	if (entityData.HasMember("npc")) { registerNPC(eMap, e); }
-	if (entityData.HasMember("interaction")) { registerMapInteraction(eMap, e, entityData["interaction"]); }
-	if (entityData.HasMember("commands")) { registerMapCommands(eMap, e, entityData["commands"]); }
-	if (entityData.HasMember("collisionInteraction")) { registerCollisionInteraction(eMap, e, entityData["collisionInteraction"]); }
+	if (entityData.HasMember("interaction")) { registerMapInteraction(eMap, e, normalTileSize, entityData["interaction"]); }
+	if (entityData.HasMember("commands")) { registerMapCommands(eMap, e, normalTileSize, entityData["commands"]); }
+	if (entityData.HasMember("collisionInteraction")) { registerCollisionInteraction(eMap, e, normalTileSize, entityData["collisionInteraction"]); }
 
 	Tile::MapEntity mapEntity{ layer };
 	eMap.ecs->getComponent<Tile::MapEntity>().add(e, mapEntity);
@@ -176,10 +176,10 @@ void registerNPC(Tile::EntityMap &eMap, entity e) {
 	eMap.ecs->getComponent<Tile::NPC>().add(e, Tile::NPC{});
 }
 
-void registerMapInteraction(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& interactionData) {
+void registerMapInteraction(Tile::EntityMap& eMap, entity e, float normalTileSize, const GRY_JSON::Value& interactionData) {
 	for (int i = 0; i < std::tuple_size<Tile::MapCommandTypeList>::value; i++) {
 		if (strcmp(interactionData["type"].GetString(), Tile::MapCommandNames[i]) == 0) {
-			Tile::MapCommand command = registerTMC_Funcs[i](eMap, e, interactionData);
+			Tile::MapCommand command = registerTMC_Funcs[i](eMap, e, normalTileSize, interactionData);
 			eMap.ecs->getComponent<Tile::MapInteraction>().add(e, Tile::MapInteraction{command});
 			return;
 		}
@@ -187,14 +187,14 @@ void registerMapInteraction(Tile::EntityMap& eMap, entity e, const GRY_JSON::Val
 	GRY_Assert(false, "[Tile::EntityMap] Unknown map interaction command type for entity %d", e);
 }
 
-void registerMapCommands(Tile::EntityMap &eMap, entity e, const GRY_JSON::Value &commandData) {
+void registerMapCommands(Tile::EntityMap &eMap, entity e, float normalTileSize, const GRY_JSON::Value &commandData) {
 	Tile::MapCommandList commandList;
 
 	for (auto& command : commandData.GetArray()) {
 		bool found = false;
 		for (int i = 0; i < std::tuple_size<Tile::MapCommandTypeList>::value; i++) {
 			if (strcmp(command["type"].GetString(), Tile::MapCommandNames[i]) == 0) {
-				commandList.commands.push_back(registerTMC_Funcs[i](eMap, e, command));
+				commandList.commands.push_back(registerTMC_Funcs[i](eMap, e, normalTileSize, command));
 				found = true;
 				break;
 			}
@@ -205,11 +205,11 @@ void registerMapCommands(Tile::EntityMap &eMap, entity e, const GRY_JSON::Value 
 	eMap.ecs->getComponent<Tile::MapCommandList>().add(e, commandList);
 }
 
-void registerCollisionInteraction(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& collisionInteractionData) {
+void registerCollisionInteraction(Tile::EntityMap& eMap, entity e, float normalTileSize, const GRY_JSON::Value& collisionInteractionData) {
 	const GRY_JSON::Value& command = collisionInteractionData["command"].GetObject();
 	for (int i = 0; i < std::tuple_size<Tile::MapCommandTypeList>::value; i++) {
 		if (strcmp(command["type"].GetString(), Tile::MapCommandNames[i]) == 0) {
-			Tile::MapCommand cmd = registerTMC_Funcs[i](eMap, e, command);
+			Tile::MapCommand cmd = registerTMC_Funcs[i](eMap, e, normalTileSize, command);
 			Tile::MapCollisionInteraction::Mode mode = Tile::MapCollisionInteraction::Mode::PressurePlate;
 			const char* modeStr = collisionInteractionData["mode"].GetString();
 			if (strcmp(modeStr, "Continuous") == 0) { mode = Tile::MapCollisionInteraction::Mode::Continuous; }
