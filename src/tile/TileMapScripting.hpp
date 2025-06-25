@@ -48,5 +48,7 @@ namespace Tile {
 		bool processPlayerSpeak(TMC_PlayerSpeak& args);
 
 		bool processPlayerTeleport(TMC_PlayerTeleport& args);
+
+		bool processSwitchMap(TMC_SwitchMap& args);
 	};
 };

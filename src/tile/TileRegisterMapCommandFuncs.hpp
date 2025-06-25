@@ -7,5 +7,6 @@ static Tile::MapCommand (*const registerTMC_Funcs[])(Tile::EntityMap&, ECS::enti
 	registerTMC_ActorSetDirection,
 	registerTMC_ActorWait,
 	registerTMC_PlayerSpeak,
-	registerTMC_PlayerTeleport
+	registerTMC_PlayerTeleport,
+	registerTMC_SwitchMap
 };

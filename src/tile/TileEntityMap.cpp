@@ -15,12 +15,12 @@ using entity = ECS::entity;
 static entity registerEntity(Tile::EntityMap& eMap, const GRY_JSON::Value& entityData, float normalTileSize, uint8_t layer);
 
 static void registerPosition(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& pos, float normalTileSize);
+static void registerHitbox(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& hitbox);
 static void registerActor(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actor);
 static void registerActorSprite(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actorSprite);
 static void registerActorSpriteAnimations(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actorAnimations);
 static void registerPlayer(Tile::EntityMap& eMap, entity e);
 static void registerNPC(Tile::EntityMap& eMap, entity e);
-static void registerHitbox(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& hitbox);
 static void registerMapInteraction(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& interactionData);
 static void registerMapCommands(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& commandData);
 static void registerCollisionInteraction(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& collisionInteractionData);
@@ -84,12 +84,12 @@ entity registerEntity(Tile::EntityMap& eMap, const GRY_JSON::Value& entityData, 
 		"[Tile::EntityMap] An entity did not have a position component.\n"
 	);
 	registerPosition(eMap, e, entityData["position"], normalTileSize);
+	if (entityData.HasMember("hitbox")) { registerHitbox(eMap, e, entityData["hitbox"]); }
 	if (entityData.HasMember("actor")) { registerActor(eMap, e, entityData["actor"]); }
 	if (entityData.HasMember("actorSprite")) { registerActorSprite(eMap, e, entityData["actorSprite"]); }
 	if (entityData.HasMember("actorAnimations")) { registerActorSpriteAnimations(eMap, e, entityData["actorAnimations"]); }
 	if (entityData.HasMember("player")) { registerPlayer(eMap, e); }
 	if (entityData.HasMember("npc")) { registerNPC(eMap, e); }
-	if (entityData.HasMember("hitbox")) { registerHitbox(eMap, e, entityData["hitbox"]); }
 	if (entityData.HasMember("interaction")) { registerMapInteraction(eMap, e, entityData["interaction"]); }
 	if (entityData.HasMember("commands")) { registerMapCommands(eMap, e, entityData["commands"]); }
 	if (entityData.HasMember("collisionInteraction")) { registerCollisionInteraction(eMap, e, entityData["collisionInteraction"]); }
@@ -110,6 +110,32 @@ void registerPosition(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& po
 	eMap.ecs->getComponent<Velocity2>().add(e, Velocity2(0,0));
 }
 
+void registerHitbox(Tile::EntityMap &eMap, entity e, const GRY_JSON::Value& hitbox) {
+	GRY_Assert(eMap.ecs->getComponent<Position2>().contains(e),
+		"[Tile::EntityMap] Entity with 'hitbox' must have a position."
+	);
+	Hitbox box;
+	Position2 pos = eMap.ecs->getComponent<Position2>().get(e);
+	box.x = pos.x; box.y = pos.y;
+	if (hitbox.HasMember("radius")) {
+		box.h = 2 * hitbox["radius"].GetFloat();
+		box.w = box.h;
+	}
+	else if (hitbox.HasMember("width") && hitbox.HasMember("height")) {
+		box.w = hitbox["width"].GetFloat();
+		box.h = hitbox["height"].GetFloat();
+	}
+	else {
+		GRY_Assert(false,
+			"[Tile::EntityMap] Entity 'hitbox' did not have either a radius or a width and height."
+		);
+	}
+	eMap.ecs->getComponent<Hitbox>().add(e, box);
+	if (hitbox.HasMember("collides") && (hitbox["collides"].GetBool() == true)) {
+		eMap.ecs->getComponent<Tile::Collides>().add(e, Tile::Collides{});
+	}
+}
+
 void registerActor(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actor) {
 	Tile::Actor data;
 
@@ -126,6 +152,9 @@ void registerActor(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actor
 }
 
 void registerActorSprite(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actorSprite) {
+	GRY_Assert(eMap.ecs->getComponent<Hitbox>().contains(e),
+		"[Tile::EntityMap] ActorSprite must have a hitbox."
+	);
 	Tile::ActorSprite sprite;
 
 	sprite.offsetX = 0;
@@ -145,21 +174,6 @@ void registerPlayer(Tile::EntityMap& eMap, entity e) {
 
 void registerNPC(Tile::EntityMap &eMap, entity e) {
 	eMap.ecs->getComponent<Tile::NPC>().add(e, Tile::NPC{});
-}
-
-void registerHitbox(Tile::EntityMap &eMap, entity e, const GRY_JSON::Value& hitbox) {
-	GRY_Assert(eMap.ecs->getComponent<Position2>().contains(e),
-		"[Tile::EntityMap] Entity with 'hitbox' must have a position."
-	);
-	Hitbox box;
-	Position2 pos = eMap.ecs->getComponent<Position2>().get(e);
-	box.x = pos.x; box.y = pos.y;
-	box.h = 2 * hitbox["radius"].GetFloat();
-	box.w = box.h;
-	eMap.ecs->getComponent<Hitbox>().add(e, box);
-	if (hitbox.HasMember("collides") && (hitbox["collides"].GetBool() == true)) {
-		eMap.ecs->getComponent<Tile::Collides>().add(e, Tile::Collides{});
-	}
 }
 
 void registerMapInteraction(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& interactionData) {

@@ -15,7 +15,7 @@ bool USE_VSYNC = true;
 
 static GRY_PixelGame game(WINDOW_WIDTH, WINDOW_HEIGHT, MAX_FPS, USE_VSYNC);
 
-const char* scenePath = "assets/tilemapscene/scene.json";
+const char* scenePath = "assets/tilemapscene/map02/scene.json";
 
 Tile::MapScene* scene = new Tile::MapScene(&game, scenePath);
 

@@ -1,5 +1,6 @@
 #include "TileMapScene.hpp"
 #include "GRY_JSON.hpp"
+#include "../transitions/FadeToBlack.hpp"
 #ifndef NDEBUG
 #include "../tile/TileMapImGui.hpp"
 #endif
@@ -127,4 +128,9 @@ std::vector<SDL_FRect> Tile::MapScene::queryTileCollisions(const SDL_FRect rect,
 
 bool Tile::MapScene::executeCommand(MapCommand &command) {
 	return mapScripting.executeCommand(command, game->getDelta());
+}
+
+void Tile::MapScene::switchMap(const char *mapScenePath) {
+	MapScene* newMapScene = new MapScene((GRY_PixelGame*)game, mapScenePath);
+	game->switchScene(newMapScene, new FadeToBlack(game));
 }

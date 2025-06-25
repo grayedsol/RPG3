@@ -202,8 +202,6 @@ namespace Tile {
 
 		MapSpeak& getTileMapSpeak() { return tileMapSpeak; }
 
-		MapScripting& getTileMapScripting() { return mapScripting; }
-
 		const DialogueResource& getDialogueResource() { return mapDialogues; }
 
 		/**
@@ -236,5 +234,7 @@ namespace Tile {
 		std::vector<SDL_FRect> queryTileCollisions(const SDL_FRect rect, std::size_t layer) const;
 
 		bool executeCommand(MapCommand& command);
+
+		void switchMap(const char* mapScenePath);
 	};
 };

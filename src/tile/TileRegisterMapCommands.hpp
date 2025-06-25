@@ -49,3 +49,12 @@ static Tile::MapCommand registerTMC_PlayerTeleport(Tile::EntityMap& eMap, ECS::e
 	};
 	return Tile::MapCommand { .playerTeleport = playerTeleport };
 }
+
+static Tile::MapCommand registerTMC_SwitchMap(Tile::EntityMap& eMap, ECS::entity e, const GRY_JSON::Value& args) {
+	Tile::TMC_SwitchMap switchMap { .e = e };
+	GRY_Assert(args["mapScenePath"].GetStringLength() <= Tile::TMC_SwitchMap::MAX_PATH_LEN,
+		"[Tile::EntityMap] SwitchMap mapScenePath was too long (max %d)", Tile::TMC_SwitchMap::MAX_PATH_LEN
+	);
+	strcpy(switchMap.mapScenePath, args["mapScenePath"].GetString());
+	return Tile::MapCommand { .switchMap = switchMap };
+}

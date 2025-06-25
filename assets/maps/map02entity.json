@@ -204,6 +204,17 @@
 					"command" : { "type" : "PlayerTeleport", "position" : [500, 250] },
 					"mode" : "PressurePlate"
 				}
+			},
+			{
+				"position" : [0, 17],
+				"hitbox" : {
+					"width" : 2,
+					"height" : 48
+				},
+				"collisionInteraction" : {
+					"command" : { "type" : "SwitchMap", "mapScenePath" : "assets\/tilemapscene\/map01\/scene.json" },
+					"mode" : "PressurePlate"
+				}
 			}
 		]
 	],

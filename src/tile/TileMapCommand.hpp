@@ -18,7 +18,8 @@ namespace Tile {
 		MAP_CMD_ACTOR_SET_DIRECTION,
 		MAP_CMD_ACTOR_WAIT,
 		MAP_CMD_PLAYER_SPEAK,
-		MAP_CMD_PLAYER_TELEPORT
+		MAP_CMD_PLAYER_TELEPORT,
+		MAP_CMD_SWITCH_MAP,
 	};
 
 	struct TMC_ActorMovePos {
@@ -51,6 +52,13 @@ namespace Tile {
 		ECS::entity e;
 		Position2 position;
 	};
+	
+	struct TMC_SwitchMap {
+		static const unsigned MAX_PATH_LEN = 127;
+		MapCommandType type = MAP_CMD_SWITCH_MAP;
+		ECS::entity e;
+		char mapScenePath[MAX_PATH_LEN + 1] = { 0 };
+	};
 
 	/**
 	 * @brief Defines commands that can be used for MapScene scripting.
@@ -64,6 +72,7 @@ namespace Tile {
 		TMC_ActorWait actorWait;
 		TMC_PlayerSpeak playerSpeak;
 		TMC_PlayerTeleport playerTeleport;
+		TMC_SwitchMap switchMap;
 	};
 
 	struct MapCommandList {
@@ -77,7 +86,8 @@ namespace Tile {
 		TMC_ActorSetDirection,
 		TMC_ActorWait,
 		TMC_PlayerSpeak,
-		TMC_PlayerTeleport
+		TMC_PlayerTeleport,
+		TMC_SwitchMap
 	>;
 	
 	static const char* MapCommandNames[std::tuple_size<MapCommandTypeList>::value] = {
@@ -86,7 +96,8 @@ namespace Tile {
 		"ActorSetDirection",
 		"ActorWait",
 		"PlayerSpeak",
-		"PlayerTeleport"
+		"PlayerTeleport",
+		"SwitchMap"
 	};
 
 	struct MapInteraction {

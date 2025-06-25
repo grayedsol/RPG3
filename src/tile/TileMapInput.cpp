@@ -112,7 +112,7 @@ bool Tile::MapInput::interact() {
 	/* If they have an action, invoke it */
 	if (interactions->contains(target)) {
 		MapInteraction interaction = interactions->get(target);
-		return scene->getTileMapScripting().executeCommand(interaction.command, scene->getGame()->getDelta());
+		return scene->executeCommand(interaction.command);
 	}
 	return false;
 }

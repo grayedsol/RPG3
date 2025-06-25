@@ -70,6 +70,7 @@ void Tile::MapRenderer::process() {
 		unsigned entityIndex = 0;
 		uint32_t entityRow = 0;
 		for (; entityIndex < entityLayer.size(); entityIndex++) {
+			if (!sprites->contains(entityLayer[entityIndex])) { continue; }
 			Hitbox box = hitboxes->get(entityLayer[entityIndex]);
 			entityRow = (uint32_t)((box.y + box.h) / tileset.tileHeight);
 			if (entityRow >= startY) { break; }

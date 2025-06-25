@@ -106,6 +106,8 @@ bool Tile::MapScripting::executeCommand(MapCommand& command, double delta) {
 			return processPlayerSpeak(command.playerSpeak);
 		case MAP_CMD_PLAYER_TELEPORT:
 			return processPlayerTeleport(command.playerTeleport);
+		case MAP_CMD_SWITCH_MAP:
+			return processSwitchMap(command.switchMap);
 		default:
 			GRY_Assert(false, "There was an attempt to execute an unknown MapCommand.\n");
 			return false;
@@ -162,7 +164,7 @@ bool Tile::MapScripting::processActorWait(TMC_ActorWait& args, double delta) {
 	return (args.time -= delta) <= 0.f;
 }
 
-bool Tile::MapScripting::processPlayerSpeak(TMC_PlayerSpeak &args) {
+bool Tile::MapScripting::processPlayerSpeak(TMC_PlayerSpeak& args) {
 	auto& actors = ecs->getComponent<Actor>();
 	auto& players = ecs->getComponent<Player>();
 	if (actors.contains(args.e)) {
@@ -174,8 +176,13 @@ bool Tile::MapScripting::processPlayerSpeak(TMC_PlayerSpeak &args) {
 	return true;
 }
 
-bool Tile::MapScripting::processPlayerTeleport(TMC_PlayerTeleport &args) {
+bool Tile::MapScripting::processPlayerTeleport(TMC_PlayerTeleport& args) {
 	entity player = ecs->getComponent<Player>().getEntity(0);
 	ecs->getComponent<Position2>().get(player) = args.position;
+	return true;
+}
+
+bool Tile::MapScripting::processSwitchMap(TMC_SwitchMap& args) {
+	scene->switchMap(args.mapScenePath);
 	return true;
 }
