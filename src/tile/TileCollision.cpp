@@ -25,7 +25,9 @@ bool Tile::Collision::load(GRY_Game* game) {
         const GRY_JSON::Value& objects = tile["objectgroup"]["objects"];
 
         /* Ensure there is a rectangle */
-        assert(objects.GetArray().Size() > 0);
+        GRY_Assert(objects.GetArray().Size() > 0,
+			"[Tile::Collision] There were no rectangle objects in the 'objects' array for TileId: %d.\n", id
+		);
         SDL_FRect collisionRect = GRY_Tiled::getRect(objects.GetArray()[0]);
 
         /* Add data to sparse set */
