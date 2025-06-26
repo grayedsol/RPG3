@@ -15,7 +15,10 @@ SceneManager::~SceneManager() {
 }
 
 void SceneManager::process() {
-    if (allScenes.empty()) { GRY_Log("No scenes in the scene manager."); return; }
+    if (allScenes.empty()) {
+		GRY_Log("No scenes in the scene manager.");
+		return;
+	}
 
 	allScenes.back()->process();
 
@@ -39,9 +42,9 @@ void SceneManager::switchScene(Scene *scene, Transition *trns) {
 	}
 
 	/* Add transition, it will start processing this frame */
-	GRY_Assert(transition == nullptr, "[SceneManager] Transition was nullptr.");
+	GRY_Assert(transition == nullptr, "[SceneManager] Transition wasn't nullptr. Only one scene can be switching at a time.");
 	transition = trns;
-	GRY_Assert(loadingScene == nullptr, "[SceneManager] Loading scene was nullptr.");
+	GRY_Assert(loadingScene == nullptr, "[SceneManager] Loading scene wasn't nullptr. Only one scene can be switching at a time.");
 	loadingScene = scene;
 
 	/* Remove player control from current scene */

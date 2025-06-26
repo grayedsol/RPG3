@@ -8,7 +8,8 @@
 #include "GRY_Tiled.hpp"
 
 bool Tile::Collision::load(GRY_Game* game) {
-    if (loaded) { return true; }
+    if (collisions.size() > 0) { return true; }
+	bool noCollisions = true;
 
     /* Open the tileset file */
     GRY_JSON::Document tilesetDoc;
@@ -19,6 +20,7 @@ bool Tile::Collision::load(GRY_Game* game) {
         TileId id = tile["id"].GetUint() + 1; /* Add 1 because it's 1-based indexing */
 
         if (!tile.HasMember("objectgroup")) { continue; }
+		noCollisions = false;
 
         const GRY_JSON::Value& objects = tile["objectgroup"]["objects"];
 
@@ -30,8 +32,8 @@ bool Tile::Collision::load(GRY_Game* game) {
         collisions.add(id, collisionRect);
     }
 
-    loaded = true;
-    return false;
+	/* Return false normally, but if there were no collisions at all, we can return true. */
+    return noCollisions;
 }
 
 const SDL_FRect* Tile::Collision::getCollision(TileId tile) {

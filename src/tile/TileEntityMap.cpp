@@ -177,7 +177,7 @@ void registerNPC(Tile::EntityMap &eMap, entity e) {
 }
 
 void registerMapInteraction(Tile::EntityMap& eMap, entity e, float normalTileSize, const GRY_JSON::Value& interactionData) {
-	for (int i = 0; i < std::tuple_size<Tile::MapCommandTypeList>::value; i++) {
+	for (int i = 0; i < Tile::MapCommandType::MAP_CMD_SIZE; i++) {
 		if (strcmp(interactionData["type"].GetString(), Tile::MapCommandNames[i]) == 0) {
 			Tile::MapCommand command = registerTMC_Funcs[i](eMap, e, normalTileSize, interactionData);
 			eMap.ecs->getComponent<Tile::MapInteraction>().add(e, Tile::MapInteraction{command});
@@ -192,7 +192,7 @@ void registerMapCommands(Tile::EntityMap &eMap, entity e, float normalTileSize, 
 
 	for (auto& command : commandData.GetArray()) {
 		bool found = false;
-		for (int i = 0; i < std::tuple_size<Tile::MapCommandTypeList>::value; i++) {
+		for (int i = 0; i < Tile::MapCommandType::MAP_CMD_SIZE; i++) {
 			if (strcmp(command["type"].GetString(), Tile::MapCommandNames[i]) == 0) {
 				commandList.commands.push_back(registerTMC_Funcs[i](eMap, e, normalTileSize, command));
 				found = true;
@@ -207,7 +207,7 @@ void registerMapCommands(Tile::EntityMap &eMap, entity e, float normalTileSize, 
 
 void registerCollisionInteraction(Tile::EntityMap& eMap, entity e, float normalTileSize, const GRY_JSON::Value& collisionInteractionData) {
 	const GRY_JSON::Value& command = collisionInteractionData["command"].GetObject();
-	for (int i = 0; i < std::tuple_size<Tile::MapCommandTypeList>::value; i++) {
+	for (int i = 0; i < Tile::MapCommandType::MAP_CMD_SIZE; i++) {
 		if (strcmp(command["type"].GetString(), Tile::MapCommandNames[i]) == 0) {
 			Tile::MapCommand cmd = registerTMC_Funcs[i](eMap, e, normalTileSize, command);
 			Tile::MapCollisionInteraction::Mode mode = Tile::MapCollisionInteraction::Mode::PressurePlate;

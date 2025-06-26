@@ -113,7 +113,7 @@ namespace Tile {
 		 * @brief Set the rendering offset.
 		 * 
 		 * @param x X offset
-		 * @param x Y offset
+		 * @param y Y offset
 		 */
 		void setOffset(float x, float y) {
 			offsetX = x;
