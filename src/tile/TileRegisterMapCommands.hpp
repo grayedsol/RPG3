@@ -10,8 +10,8 @@ static Tile::MapCommand registerTMC_None(Tile::EntityMap& eMap, ECS::entity e, f
 static Tile::MapCommand registerTMC_ActorMovePos(Tile::EntityMap& eMap, ECS::entity e, float normalTileSize, const GRY_JSON::Value& args) {
 	Tile::TMC_ActorMovePos actorMovePos;
 	actorMovePos.e = e;
-	actorMovePos.targetPos.x = args["x"].GetFloat();
-	actorMovePos.targetPos.y = args["y"].GetFloat();
+	actorMovePos.targetPos.x = args["x"].GetFloat() * normalTileSize;
+	actorMovePos.targetPos.y = args["y"].GetFloat() * normalTileSize;
 	Tile::MapCommand command = { .actorMovePos = actorMovePos };
 	return command;
 }
@@ -44,8 +44,8 @@ static Tile::MapCommand registerTMC_PlayerSpeak(Tile::EntityMap& eMap, ECS::enti
 static Tile::MapCommand registerTMC_PlayerTeleport(Tile::EntityMap& eMap, ECS::entity e, float normalTileSize, const GRY_JSON::Value& args) {
 	Tile::TMC_PlayerTeleport playerTeleport { .e = e };
 	playerTeleport.position = Position2 {
-		args["position"].GetArray()[0].GetFloat(),
-		args["position"].GetArray()[1].GetFloat()
+		args["position"].GetArray()[0].GetFloat() * normalTileSize,
+		args["position"].GetArray()[1].GetFloat() * normalTileSize
 	};
 	return Tile::MapCommand { .playerTeleport = playerTeleport };
 }

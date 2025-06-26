@@ -231,6 +231,10 @@ namespace Tile {
 
 		const std::vector<QuadTree>& getSoftQuadTrees() { return tileMapQuadTrees.getSoftQuadTrees(); }
 
+		void updateQuadTree(Hitbox oldBox, Hitbox newBox, ECS::entity e, unsigned layer) {
+			tileMapQuadTrees.updateQuadTree(oldBox, newBox, e, layer);
+		}
+		
 		/**
 		 * @brief Get a vector of collision rectangles that collide with `rect`.
 		 * 

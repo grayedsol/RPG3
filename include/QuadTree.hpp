@@ -99,6 +99,15 @@ struct QuadTree {
 	void query(Hitbox box, ECS::entity e, std::vector<ECS::entity>& out) const;
 
 	/**
+	 * @brief Update the parameters of a box in the quadtree.
+	 * 
+	 * @param oldBox The old box's data
+	 * @param newBox The new box's data
+	 * @param e Entity associated with the box
+	 */
+	void update(Hitbox oldBox, Hitbox newBox, ECS::entity e);
+
+	/**
 	 * @brief Safely resets the QuadTree to an empty state.
 	 * 
 	 */

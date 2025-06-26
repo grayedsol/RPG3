@@ -148,6 +148,7 @@ void Tile::MapMovement::process(double delta) {
 		if (!velocities->contains(e)) { continue; }
 		if (hitboxes->contains(e)) {
 			Hitbox box = hitboxes->get(e);
+			Hitbox oldBox = box;
 			Position2* pos = reinterpret_cast<Position2*>(&box);
 			*pos = positions->get(e);
 			*pos += velocities->get(e) * actors->get(e).speed * (1 + actors->get(e).sprinting) * delta;
@@ -157,8 +158,16 @@ void Tile::MapMovement::process(double delta) {
 
 			positions->get(e) = *pos;
 			hitboxes->get(e) = box;
-			
+
 			handleSoftEntityCollisions(box, e, layer);
+
+			/**
+			 * We update the quadtree here to prevent jittering that
+			 * would occur if only previous frame collision data was used.
+			 * However, this may produce collision inaccuracies that
+			 * last for one frame, especially for big/teleport movements.
+			 */
+			scene->updateQuadTree(oldBox, box, e, layer);
 
 			EntityMap::sortLayer(&scene->getTileEntityMap(), layer);
 		}

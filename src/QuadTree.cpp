@@ -7,6 +7,7 @@ static const float MIN_BOX_SIZE = 2.0f;
 
 static void query(const QuadNode* node, Hitbox box, ECS::entity e, std::vector<Hitbox>& out);
 static void query(const QuadNode* node, Hitbox box, ECS::entity e, std::vector<ECS::entity>& out);
+static bool update(QuadNode* node, Hitbox oldBox, Hitbox newBox, ECS::entity e);
 static void insert(QuadNode* node, Hitbox box, ECS::entity e);
 static void mergeLeaves(QuadNode* node);
 
@@ -26,6 +27,19 @@ void QuadTree::query(Hitbox box, ECS::entity e, std::vector<Hitbox>& out) const 
 
 void QuadTree::query(Hitbox box, ECS::entity e, std::vector<ECS::entity>& out) const {
 	::query(&node, box, e, out);
+}
+
+/**
+ * @details
+ * 
+ * This function will not rebuild the Quadtree. Therefore, any queries
+ * may become inaccurate if the new box would normally be inserted into
+ * a different node.
+ * This function is intended mainly for small movements.
+ * Larger updates may be tolerable if they are not constantly being used.
+ */
+void QuadTree::update(Hitbox oldBox, Hitbox newBox, ECS::entity e) {
+	::update(&node, oldBox, newBox, e);
 }
 
 void QuadTree::reset() {
@@ -69,6 +83,28 @@ void query(const QuadNode *node, Hitbox box, ECS::entity e, std::vector<ECS::ent
 		}
 		else { query(child, box, e, out); }
 	}
+}
+
+bool update(QuadNode* node, Hitbox oldBox, Hitbox newBox, ECS::entity e) {
+	auto collides = [oldBox](const Hitbox other) {
+		return
+			oldBox.x + oldBox.w > other.x &&
+			oldBox.x < other.x + other.w &&
+			oldBox.y + oldBox.h > other.y &&
+			oldBox.y < other.y + other.h;
+	};
+	for (auto child : node->nodes) {
+		if (!collides(child->area)) { continue; }
+
+		if (child->type == QuadNode::Leaf && child->e == e) {
+			child->area = newBox;
+			return true;
+		}
+		else if (update(child, oldBox, newBox, e)) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void insert(QuadNode *node, Hitbox box, ECS::entity e) {

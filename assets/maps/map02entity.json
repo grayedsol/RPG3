@@ -54,15 +54,15 @@
 					"collides" : true
 				},
 				"commands" : [
-					{ "type" : "ActorMovePos", "x" : 300, "y" : 200 },
+					{ "type" : "ActorMovePos", "x" : 18, "y" : 12 },
 					{ "type" : "ActorWait", "time" : 1 },
 					{ "type" : "ActorSetDirection", "direction" : 1 },
 					{ "type" : "ActorWait", "time" : 1 },
-					{ "type" : "ActorMovePos", "x" : 200, "y" : 200 },
+					{ "type" : "ActorMovePos", "x" : 12, "y" : 12 },
 					{ "type" : "ActorWait", "time" : 1 },
 					{ "type" : "ActorSetDirection", "direction" : 1 },
 					{ "type" : "ActorWait", "time" : 1 },
-					{ "type" : "ActorMovePos", "x" : 250, "y" : 125 },
+					{ "type" : "ActorMovePos", "x" : 15, "y" : 8 },
 					{ "type" : "ActorWait", "time" : 1 },
 					{ "type" : "ActorSetDirection", "direction" : 1 },
 					{ "type" : "ActorWait", "time" : 1 }
@@ -95,15 +95,15 @@
 					"collides" : true
 				},
 				"commands" : [
-					{ "type" : "ActorMovePos", "x" : 250, "y" : 125 },
+					{ "type" : "ActorMovePos", "x" : 15, "y" : 8 },
 					{ "type" : "ActorWait", "time" : 1 },
 					{ "type" : "ActorSetDirection", "direction" : 1 },
 					{ "type" : "ActorWait", "time" : 1 },
-					{ "type" : "ActorMovePos", "x" : 300, "y" : 200 },
+					{ "type" : "ActorMovePos", "x" : 18, "y" : 12 },
 					{ "type" : "ActorWait", "time" : 1 },
 					{ "type" : "ActorSetDirection", "direction" : 1 },
 					{ "type" : "ActorWait", "time" : 1 },
-					{ "type" : "ActorMovePos", "x" : 200, "y" : 200 },
+					{ "type" : "ActorMovePos", "x" : 12, "y" : 12 },
 					{ "type" : "ActorWait", "time" : 1 },
 					{ "type" : "ActorSetDirection", "direction" : 1 },
 					{ "type" : "ActorWait", "time" : 1 }
@@ -132,15 +132,15 @@
 					"collides" : true
 				},
 				"commands" : [
-					{ "type" : "ActorMovePos", "x" : 350, "y" : 125 },
+					{ "type" : "ActorMovePos", "x" : 22, "y" : 8 },
 					{ "type" : "ActorWait", "time" : 1 },
 					{ "type" : "ActorSetDirection", "direction" : 1 },
 					{ "type" : "ActorWait", "time" : 1 },
-					{ "type" : "ActorMovePos", "x" : 400, "y" : 200 },
+					{ "type" : "ActorMovePos", "x" : 25, "y" : 12 },
 					{ "type" : "ActorWait", "time" : 1 },
 					{ "type" : "ActorSetDirection", "direction" : 1 },
 					{ "type" : "ActorWait", "time" : 1 },
-					{ "type" : "ActorMovePos", "x" : 300, "y" : 200 },
+					{ "type" : "ActorMovePos", "x" : 18, "y" : 12 },
 					{ "type" : "ActorWait", "time" : 1 },
 					{ "type" : "ActorSetDirection", "direction" : 1 },
 					{ "type" : "ActorWait", "time" : 1 }
@@ -173,7 +173,7 @@
 					"collides" : true
 				},
 				"commands" : [
-					{ "type" : "ActorMovePos", "x" : 200, "y" : 150 },
+					{ "type" : "ActorMovePos", "x" : 12, "y" : 10 },
 					{ "type" : "ActorWait", "time" : 0.25 },
 					{ "type" : "ActorSetDirection", "direction" : 1 },
 					{ "type" : "ActorWait", "time" : 0.25 },
@@ -183,7 +183,7 @@
 					{ "type" : "ActorWait", "time" : 0.25 },
 					{ "type" : "ActorSetDirection", "direction" : 6 },
 					{ "type" : "ActorWait", "time" : 1 },
-					{ "type" : "ActorMovePos", "x" : 450, "y" : 150 },
+					{ "type" : "ActorMovePos", "x" : 28, "y" : 10 },
 					{ "type" : "ActorWait", "time" : 0.25 },
 					{ "type" : "ActorSetDirection", "direction" : 1 },
 					{ "type" : "ActorWait", "time" : 0.25 },
@@ -201,7 +201,7 @@
 					"radius" : 8
 				},
 				"collisionInteraction" : {
-					"command" : { "type" : "PlayerTeleport", "position" : [500, 250] },
+					"command" : { "type" : "PlayerTeleport", "position" : [32, 16] },
 					"mode" : "PressurePlate"
 				}
 			},
