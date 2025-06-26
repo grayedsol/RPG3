@@ -30,6 +30,12 @@ namespace Tile {
 		const float* pixelScaling;
 
 		/**
+		 * @brief The center coordinate of the screen used to calculate rendering offset.
+		 * 
+		 */
+		Position2 center;
+
+		/**
 		 * @brief Hitboxes of entities.
 		 * 
 		 */
@@ -42,7 +48,6 @@ namespace Tile {
 		 * There should really only be one player.
 		 */
 		const ComponentSet<Player>* players;
-
 	public:
 		/**
 		 * @brief Constructor.

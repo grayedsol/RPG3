@@ -15,12 +15,16 @@ Tile::MapCamera::MapCamera(MapScene *scene) : scene(scene),
 
 void Tile::MapCamera::process() {
 	GRY_Assert(players->size() > 0, "[TileMapCamera] There were no players.");
-	ECS::entity e = players->getEntity(0);
-	GRY_PixelGame* game = scene->getPixelGame();
-	float playerX = hitboxes->get(e).x + (hitboxes->get(e).w * 0.5f);
-	float playerY = hitboxes->get(e).y + (hitboxes->get(e).h * 0.5f);
+	
+	Hitbox playerHitbox = hitboxes->get(players->getEntity(0));
+
+	center = Position2 {
+		playerHitbox.x + (playerHitbox.w * 0.5f) - .01f, /**< Subtracting .01f takes care of some floating point errors */
+		playerHitbox.y + (playerHitbox.h * 0.5f) - .01f
+	};
+
 	scene->setRenderOffset(
-		(game->getScreenWidthPixels() * 0.5f) - playerX,
-		(game->getScreenHeightPixels() * 0.5f) - playerY
+		(scene->getPixelGame()->getScreenWidthPixels() * 0.5f) - center.x,
+		(scene->getPixelGame()->getScreenHeightPixels() * 0.5f) - center.y
 	);
 }
