@@ -148,7 +148,7 @@ void registerActor(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actor
 	);
 
 	eMap.ecs->getComponent<Tile::Actor>().add(e, data);
-	eMap.ecs->getComponent<Tile::MapCommand>().add(e, Tile::MapCommand{ .type = Tile::MAP_CMD_NONE });
+	eMap.ecs->getComponent<Tile::MapCommand>().add(e, Tile::MapCommand{ .data { Tile::MAP_CMD_NONE } });
 }
 
 void registerActorSprite(Tile::EntityMap& eMap, entity e, const GRY_JSON::Value& actorSprite) {
@@ -179,7 +179,7 @@ void registerNPC(Tile::EntityMap &eMap, entity e) {
 void registerMapInteraction(Tile::EntityMap& eMap, entity e, float normalTileSize, const GRY_JSON::Value& interactionData) {
 	for (int i = 0; i < Tile::MapCommandType::MAP_CMD_SIZE; i++) {
 		if (strcmp(interactionData["type"].GetString(), Tile::MapCommandNames[i]) == 0) {
-			Tile::MapCommand command = registerTMC_Funcs[i](eMap, e, normalTileSize, interactionData);
+			Tile::MapCommand command = registerTMC_Funcs[i](normalTileSize, interactionData, e);
 			eMap.ecs->getComponent<Tile::MapInteraction>().add(e, Tile::MapInteraction{command});
 			return;
 		}
@@ -194,7 +194,7 @@ void registerMapCommands(Tile::EntityMap &eMap, entity e, float normalTileSize, 
 		bool found = false;
 		for (int i = 0; i < Tile::MapCommandType::MAP_CMD_SIZE; i++) {
 			if (strcmp(command["type"].GetString(), Tile::MapCommandNames[i]) == 0) {
-				commandList.commands.push_back(registerTMC_Funcs[i](eMap, e, normalTileSize, command));
+				commandList.commands.push_back(registerTMC_Funcs[i](normalTileSize, command, e));
 				found = true;
 				break;
 			}
@@ -209,7 +209,7 @@ void registerCollisionInteraction(Tile::EntityMap& eMap, entity e, float normalT
 	const GRY_JSON::Value& command = collisionInteractionData["command"].GetObject();
 	for (int i = 0; i < Tile::MapCommandType::MAP_CMD_SIZE; i++) {
 		if (strcmp(command["type"].GetString(), Tile::MapCommandNames[i]) == 0) {
-			Tile::MapCommand cmd = registerTMC_Funcs[i](eMap, e, normalTileSize, command);
+			Tile::MapCommand cmd = registerTMC_Funcs[i](normalTileSize, command, e);
 			Tile::MapCollisionInteraction::Mode mode = Tile::MapCollisionInteraction::Mode::PressurePlate;
 			const char* modeStr = collisionInteractionData["mode"].GetString();
 			if (strcmp(modeStr, "Continuous") == 0) { mode = Tile::MapCollisionInteraction::Mode::Continuous; }

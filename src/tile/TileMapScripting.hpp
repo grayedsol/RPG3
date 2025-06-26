@@ -20,6 +20,10 @@ namespace Tile {
 
 		std::vector<MapCommand> currentCommands;
 
+		std::vector<std::vector<MapCommand>> currentScript;
+
+		size_t scriptIndex = 0;
+
 		enum {
 			GAMEPLAY,
 			CUTSCENE
@@ -50,5 +54,7 @@ namespace Tile {
 		bool processPlayerTeleport(TMC_PlayerTeleport& args);
 
 		bool processSwitchMap(TMC_SwitchMap& args);
+
+		bool processActivateScript(TMC_ActivateScript& args);
 	};
 };

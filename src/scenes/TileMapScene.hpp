@@ -17,6 +17,7 @@
 #include "../tile/TileMapScripting.hpp"
 #include "TextBoxScene.hpp"
 #include "DialogueResource.hpp"
+#include "../tile/TileMapScriptResource.hpp"
 
 class GRY_PixelGame;
 
@@ -60,6 +61,12 @@ namespace Tile {
 		 * 
 		 */
 		DialogueResource mapDialogues;
+
+		/**
+		 * @brief Container for script data.
+		 * 
+		 */
+		MapScriptResource mapScripts;
 
 		/**
 		 * @brief Renderer for the tile map.
@@ -210,6 +217,8 @@ namespace Tile {
 		MapSpeak& getTileMapSpeak() { return tileMapSpeak; }
 
 		const DialogueResource& getDialogueResource() { return mapDialogues; }
+
+		const MapScriptResource& getScriptResource() { return mapScripts; }
 
 		/**
 		 * @brief Get the width / height of a normal square tile, in pixels.

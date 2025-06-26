@@ -1,0 +1,39 @@
+{
+	"normalTileSize" : 16,
+	"scripts" : [
+		{
+			"script" : [
+				{
+					"commandSet" : [
+						{ "type" : "ActorMovePos", "e" : 1, "x" : 14, "y" : 5 },
+						{ "type" : "ActorMovePos", "e" : 2, "x" : 14, "y" : 7 }
+					]
+				},
+				{
+					"commandSet" : [
+						{ "type" : "ActorWait", "e" : 1, "time" : 1 },
+						{ "type" : "ActorWait", "e" : 2, "time" : 1 }
+					]
+				},
+				{
+					"commandSet" : [
+						{ "type" : "ActorSetDirection", "e" : 1, "direction" : 2 },
+						{ "type" : "ActorSetDirection", "e" : 2, "direction" : 2 }
+					]
+				},
+				{
+					"commandSet" : [
+						{ "type" : "ActorWait", "e" : 1, "time" : 1 },
+						{ "type" : "ActorWait", "e" : 2, "time" : 1 }
+					]
+				},
+				{
+					"commandSet" : [
+						{ "type" : "ActorMovePos", "e" : 1, "x" : 7, "y" : 5 },
+						{ "type" : "ActorMovePos", "e" : 2, "x" : 7, "y" : 7 }
+					]
+				}
+			]
+		}
+	]
+}

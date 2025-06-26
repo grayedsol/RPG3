@@ -23,6 +23,7 @@ namespace Tile {
 		MAP_CMD_PLAYER_SPEAK,
 		MAP_CMD_PLAYER_TELEPORT,
 		MAP_CMD_SWITCH_MAP,
+		MAP_CMD_ACTIVATE_SCRIPT,
 		MAP_CMD_SIZE
 	};
 
@@ -37,7 +38,13 @@ namespace Tile {
 		"ActorWait",
 		"PlayerSpeak",
 		"PlayerTeleport",
-		"SwitchMap"
+		"SwitchMap",
+		"ActivateScript"
+	};
+
+	struct TMC_None {
+		MapCommandType type = MAP_CMD_NONE;
+		ECS::entity e;
 	};
 
 	/**
@@ -96,12 +103,18 @@ namespace Tile {
 	 * 
 	 */
 	struct TMC_SwitchMap {
-		static const unsigned MAX_PATH_LEN = 127;
 		MapCommandType type = MAP_CMD_SWITCH_MAP;
 		ECS::entity e;
 		Position2 spawnPosition = Position2{ -1, -1 };
 		Direction spawnDirection = Direction::DirectionNone;
+		static const unsigned MAX_PATH_LEN = 127;
 		char mapScenePath[MAX_PATH_LEN + 1] = { 0 };
+	};
+
+	struct TMC_ActivateScript {
+		MapCommandType type = MAP_CMD_ACTIVATE_SCRIPT;
+		ECS::entity e;
+		size_t scriptIndex;
 	};
 
 	/**
@@ -109,14 +122,14 @@ namespace Tile {
 	 * 
 	 */
 	union MapCommand {
-		MapCommandType type;
-		ECS::entity e;
+		TMC_None data;
 		TMC_ActorMovePos actorMovePos;
 		TMC_ActorSetDirection actorSetDirection;
 		TMC_ActorWait actorWait;
 		TMC_PlayerSpeak playerSpeak;
 		TMC_PlayerTeleport playerTeleport;
 		TMC_SwitchMap switchMap;
+		TMC_ActivateScript activateScript;
 	};
 
 	/**

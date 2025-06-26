@@ -89,23 +89,23 @@ void componentImGui(Tile::NPC& npc) {
 
 template<>
 void componentImGui(Tile::MapInteraction& action) {
-	ImGui::Text(Tile::MapCommandNames[action.command.type]);
+	ImGui::Text(Tile::MapCommandNames[action.command.data.type]);
 }
 
 template<>
 void componentImGui(Tile::MapCollisionInteraction& collisionAction) {
-	ImGui::Text(Tile::MapCommandNames[collisionAction.command.type]);
+	ImGui::Text(Tile::MapCommandNames[collisionAction.command.data.type]);
 	ImGui::Text("%d", collisionAction.mode);
 }
 
 template<>
 void componentImGui(Tile::MapCommand& command) {
-	ImGui::Text(Tile::MapCommandNames[command.type]);
+	ImGui::Text(Tile::MapCommandNames[command.data.type]);
 }
 
 template<>
 void componentImGui(Tile::MapCommandList& list) {
 	for (int i = 0; i < list.commands.size(); i++) {
-		ImGui::Text("%d: %s", i, Tile::MapCommandNames[list.commands.at(i).type]);
+		ImGui::Text("%d: %s", i, Tile::MapCommandNames[list.commands.at(i).data.type]);
 	}
 }

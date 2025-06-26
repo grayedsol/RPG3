@@ -23,10 +23,75 @@
 					"duration" : 117
 				},
 				"hitbox" : {
-					"radius" : 8
+					"radius" : 8,
+					"collides" : true
 				}
 			},
-						{
+			{
+				"position" : [5,5],
+				"npc" : 0,
+				"interaction" : {
+					"type" : "PlayerSpeak",
+					"dialogueId" : 0
+				},
+				"actor" : {
+					"speed" : 60,
+					"direction" : 1
+				},
+				"actorSprite" : {
+					"offsetX" : -23,
+					"offsetY" : -29,
+					"index" : 1,
+					"tileset" : 1
+				},
+				"actorAnimations" : {
+					"walk" : [32,40,56,56,56,48,48,48],
+					"sprint" : [38,46,62,62,62,54,54,54],
+					"duration" : 117
+				},
+				"hitbox" : {
+					"radius" : 8,
+					"collides" : true
+				},
+				"commands" : [
+					{ "type" : "ActorMovePos", "x" : 5, "y" : 5 },
+					{ "type" : "ActorWait", "time" : 1 },
+					{ "type" : "ActorSetDirection", "direction" : 1 },
+					{ "type" : "ActorWait", "time" : 1 },
+					{ "type" : "ActorMovePos", "x" : 14, "y" : 5 },
+					{ "type" : "ActorWait", "time" : 1 },
+					{ "type" : "ActorSetDirection", "direction" : 1 },
+					{ "type" : "ActorWait", "time" : 1 }
+				]
+			},
+			{
+				"position" : [5,7],
+				"npc" : 0,
+				"interaction" : {
+					"type" : "PlayerSpeak",
+					"dialogueId" : 1
+				},
+				"actor" : {
+					"speed" : 60,
+					"direction" : 1
+				},
+				"actorSprite" : {
+					"offsetX" : -23,
+					"offsetY" : -29,
+					"index" : 1,
+					"tileset" : 1
+				},
+				"actorAnimations" : {
+					"walk" : [32,40,56,56,56,48,48,48],
+					"sprint" : [38,46,62,62,62,54,54,54],
+					"duration" : 117
+				},
+				"hitbox" : {
+					"radius" : 8,
+					"collides" : true
+				}
+			},
+			{
 				"position" : [19.875, 1],
 				"hitbox" : {
 					"width" : 2,
@@ -41,11 +106,26 @@
 					},
 					"mode" : "PressurePlate"
 				}
+			},
+			{
+				"position" : [1, 1],
+				"hitbox" : {
+					"width" : 8,
+					"height" : 8
+				},
+				"collisionInteraction" : {
+					"command" : {
+						"type" : "ActivateScript",
+						"scriptIndex" : 0
+					},
+					"mode" : "PressurePlate"
+				}
 			}
 		]
 	],
 	"normalTileSize" : 16,
 	"tilesets" : [
-		"assets\/textures\/data\/BoyA.json"
+		"assets\/textures\/data\/BoyA.json",
+		"assets\/textures\/data\/GirlA.json"
 	]
 }

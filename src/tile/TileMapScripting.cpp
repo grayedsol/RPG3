@@ -57,7 +57,7 @@ void Tile::MapScripting::processEntities(double delta) {
 	for (auto e : ecs->getComponent<MapCommand>()) {
 		MapCommand& command = ecs->getComponent<MapCommand>().get(e);
 		if (executeCommand(command, delta)) {
-			command = MapCommand{ .type = MAP_CMD_NONE };
+			command = MapCommand{ .data { MAP_CMD_NONE } };
 		}
 	}
 }
@@ -68,7 +68,7 @@ void Tile::MapScripting::processGameplay(double delta) {
 		GRY_Assert(ecs->getComponent<MapCommand>().contains(e),
 		"[Tile::MapScripting] An entity had a MapCommandList component, but no MapCommand component.\n");
 
-		if (ecs->getComponent<MapCommand>().get(e).type == MAP_CMD_NONE) {
+		if (ecs->getComponent<MapCommand>().get(e).data.type == MAP_CMD_NONE) {
 			ecs->getComponent<MapCommand>().get(e) = commandList.commands[commandList.index];
 			if (++commandList.index >= commandList.commands.size()) {
 				commandList.index = 0;
@@ -78,13 +78,22 @@ void Tile::MapScripting::processGameplay(double delta) {
 }
 
 void Tile::MapScripting::processCutscene(double delta) {
+	if (currentCommands.empty()) {
+		if (scriptIndex >= currentScript.size()) {
+			mode = GAMEPLAY;
+			scriptIndex = 0;
+			return;
+		}
+		currentCommands = currentScript.at(scriptIndex);
+		scriptIndex++;
+	}
 	for (int i = 0; i < currentCommands.size(); i++) {
 		MapCommand& command = currentCommands[i];
-		GRY_Assert(ecs->getComponent<MapCommand>().contains(command.e),
+		GRY_Assert(ecs->getComponent<MapCommand>().contains(command.data.e),
 		"[Tile::MapScripting] An entity in the script had no MapCommand component.\n");
 
-		if (ecs->getComponent<MapCommand>().get(command.e).type == MAP_CMD_NONE) {
-			ecs->getComponent<MapCommand>().get(command.e) = command;
+		if (ecs->getComponent<MapCommand>().get(command.data.e).data.type == MAP_CMD_NONE) {
+			ecs->getComponent<MapCommand>().get(command.data.e) = command;
 			currentCommands[i] = currentCommands.back();
 			currentCommands.pop_back();
 			i--;
@@ -93,7 +102,7 @@ void Tile::MapScripting::processCutscene(double delta) {
 }
 
 bool Tile::MapScripting::executeCommand(MapCommand& command, double delta) {
-	switch (command.type) {
+	switch (command.data.type) {
 		case MAP_CMD_NONE:
 			return false;
 		case MAP_CMD_ACTOR_MOVE_POS:
@@ -108,6 +117,8 @@ bool Tile::MapScripting::executeCommand(MapCommand& command, double delta) {
 			return processPlayerTeleport(command.playerTeleport);
 		case MAP_CMD_SWITCH_MAP:
 			return processSwitchMap(command.switchMap);
+		case MAP_CMD_ACTIVATE_SCRIPT:
+			return processActivateScript(command.activateScript);
 		default:
 			GRY_Assert(false, "There was an attempt to execute an unknown MapCommand.\n");
 			return false;
@@ -187,5 +198,17 @@ bool Tile::MapScripting::processSwitchMap(TMC_SwitchMap& args) {
 	mapSceneInfo.spawnPosition = args.spawnPosition;
 	mapSceneInfo.spawnDirection = args.spawnDirection;
 	scene->switchMap(args.mapScenePath, mapSceneInfo);
+	return true;
+}
+
+bool Tile::MapScripting::processActivateScript(TMC_ActivateScript &args) {
+	currentScript = scene->getScriptResource().scripts.at(args.scriptIndex);
+	GRY_Assert(mode != CUTSCENE,
+		"[Tile::MapScripting] Tried to activate a cutscene while one was already playing.\n"
+	);
+	mode = CUTSCENE;
+	for (auto& cmd : currentScript.at(0)) {
+		ecs->getComponent<MapCommand>().get(cmd.data.e) = cmd;
+	}
 	return true;
 }

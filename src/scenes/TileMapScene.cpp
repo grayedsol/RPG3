@@ -84,10 +84,11 @@ void Tile::MapScene::process() {
 }
 
 bool Tile::MapScene::load() {
-	if (tileMap.path && entityMap.path && mapDialogues.path) {
+	if (tileMap.path && entityMap.path && mapDialogues.path && mapScripts.path) {
 		return
 		tileMap.load(game) && entityMap.load(game) &&
-		mapDialogues.load(game) && textBoxScene.load();
+		mapDialogues.load(game) && textBoxScene.load() &&
+		mapScripts.load(game);
 	}
 
     /* Open scene document */
@@ -100,6 +101,8 @@ bool Tile::MapScene::load() {
 	entityMap.setPath(sceneDoc["tileEntityMapPath"].GetString());
 	/* Initialize the dialogue resource */
 	mapDialogues.setPath(sceneDoc["dialoguePath"].GetString());
+	/* Initialize the script resource */
+	mapScripts.setPath(sceneDoc["scriptsPath"].GetString());
 	/* Read the normal tile size */
 	normalTileSize = sceneDoc["normalTileSize"].GetUint();
 

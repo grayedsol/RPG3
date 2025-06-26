@@ -2,5 +2,6 @@
 	"tileMapPath" : "assets\/maps\/map01.json",
 	"tileEntityMapPath" : "assets\/maps\/map01entity.json",
 	"dialoguePath" : "assets\/maps\/map01dialogue.json",
+	"scriptsPath" : "assets\/maps\/map01script.json",
 	"normalTileSize" : 16
 }

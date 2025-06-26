@@ -26,6 +26,12 @@ namespace Tile {
 
 	struct MapEntity {
 		/**
+		 * @brief A unique identifier that does not change.
+		 * 
+		 */
+		uint8_t id = 0;
+		
+		/**
 		 * @brief The map layer that the entity is on.
 		 * 
 		 */
