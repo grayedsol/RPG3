@@ -20,6 +20,7 @@ namespace Tile {
 		MAP_CMD_ACTOR_MOVE_POS,
 		MAP_CMD_ACTOR_SET_DIRECTION,
 		MAP_CMD_ACTOR_WAIT,
+		MAP_CMD_ACTOR_CHANGE_DIALOGUE,
 		MAP_CMD_PLAYER_SPEAK,
 		MAP_CMD_PLAYER_TELEPORT,
 		MAP_CMD_SWITCH_MAP,
@@ -40,6 +41,7 @@ namespace Tile {
 		"ActorMovePos",
 		"ActorSetDirection",
 		"ActorWait",
+		"ActorChangeDialogue",
 		"PlayerSpeak",
 		"PlayerTeleport",
 		"SwitchMap",
@@ -84,6 +86,12 @@ namespace Tile {
 		MapCommandType type = MAP_CMD_ACTOR_WAIT;
 		ECS::entity e;
 		double time;
+	};
+
+	struct TMC_ActorChangeDialogue {
+		MapCommandType type = MAP_CMD_ACTOR_CHANGE_DIALOGUE;
+		ECS::entity e;
+		unsigned dialogueId;
 	};
 
 	/**
@@ -161,6 +169,7 @@ namespace Tile {
 		TMC_ActorMovePos actorMovePos;
 		TMC_ActorSetDirection actorSetDirection;
 		TMC_ActorWait actorWait;
+		TMC_ActorChangeDialogue actorChangeDialogue;
 		TMC_PlayerSpeak playerSpeak;
 		TMC_PlayerTeleport playerTeleport;
 		TMC_SwitchMap switchMap;

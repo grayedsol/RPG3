@@ -25,14 +25,14 @@ void Tile::MapSpeak::process() {
 				index++;
 			}
 		}
-		else if (scene->readSingleInput() == GCmd::MessageOk) {
+		else if (scene->readSingleInput() == GCmd::MessageOk || index == 0) {
 			textbox->close();
 			currentDialogue = nullptr;
 			index = 0;
 			scene->getECS().getComponent<Player>().value.at(0).speakingTo = ECS::NONE;
 		}
 	}
-	else if (scene->readSingleInput() == GCmd::MessageOk) {
+	else if (scene->readSingleInput() == GCmd::MessageOk || index == 0) {
 		textbox->printLine(currentDialogue->lines.at(index));
 		index++;
 	}

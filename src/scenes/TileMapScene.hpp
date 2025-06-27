@@ -170,6 +170,10 @@ namespace Tile {
 		 */
 		bool load() final;
 
+		void activateControls();
+
+		void deactivateControls();
+
 		/**
 		 * @brief Get a pointer to the GRY_PixelGame.
 		 *
@@ -217,6 +221,8 @@ namespace Tile {
 		MapSpeak& getTileMapSpeak() { return tileMapSpeak; }
 
 		MapCamera& getMapCamera() { return tileMapCamera; }
+
+		const MapScripting& getMapScripting() const { return mapScripting; }
 
 		const MapCamera& getMapCamera() const { return tileMapCamera; }
 

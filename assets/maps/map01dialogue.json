@@ -12,6 +12,41 @@
             "message" : [
 				"Normally I just stand still right here, but I'll move if you step on the flower in the top left."
 			]
-        }
+        },
+		{
+			"id" : 2,
+			"message" : [
+				"Yeeeeaaaahhh, now we're on the right!!",
+				"...",
+				"We're gonna go back now."
+			]
+ 		},
+		{
+			"id" : 3,
+			"message" : [
+				"Oh, and before you leave, I have just one thing to say.",
+				"...",
+				"I HATE humans!",
+				"Those foul, putrid, vile, stinking, rotten humans!",
+				"I'd get rid of them all if it were up to me!",
+				"You agree, don't you?"
+			],
+			"branch" : [4, 5]
+		},
+		{
+			"id" : 4,
+			"message" : [
+				"Good!",
+				"You can be my fellow people-hater!"
+			]
+		},
+		{
+			"id" : 5,
+			"message" : [
+				"What?",
+				"I'm a human, and so are you?",
+				"I don't believe it. You're disgusting!"
+			]
+		}
     ]
 }

@@ -22,14 +22,13 @@
 				},
 				{
 					"commandSet" : [
-						{ "type" : "ActorWait", "e" : 1, "time" : 1 },
-						{ "type" : "ActorWait", "e" : 2, "time" : 1 }
+						{ "type" : "ActorWait", "e" : 1, "time" : 0.5 },
+						{ "type" : "ActorWait", "e" : 2, "time" : 0.5 }
 					]
 				},
 				{
 					"commandSet" : [
-						{ "type" : "ActorSetDirection", "e" : 1, "direction" : 2 },
-						{ "type" : "ActorSetDirection", "e" : 2, "direction" : 2 }
+						{ "type" : "PlayerSpeak", "e" : 1, "dialogueId" : 2 }
 					]
 				},
 				{
@@ -46,7 +45,8 @@
 				},
 				{
 					"commandSet" : [
-						{ "type" : "MoveCameraToPlayer", "speed" : 60 }
+						{ "type" : "MoveCameraToPlayer", "speed" : 60 },
+						{ "type" : "ActorChangeDialogue", "e" : 1, "dialogueId" : 3 }
 					]
 				},
 				{

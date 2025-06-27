@@ -33,6 +33,13 @@ static Tile::MapCommand registerTMC_ActorWait(float normalTileSize, const GRY_JS
 	return Tile::MapCommand { .actorWait = actorWait };
 }
 
+static Tile::MapCommand registerTMC_ActorChangeDialogue(float normalTileSize, const GRY_JSON::Value& args, ECS::entity e = ECS::NONE) {
+	Tile::TMC_ActorChangeDialogue actorChangeDialogue;
+	actorChangeDialogue.e = e != ECS::NONE ? e : args["e"].GetUint();
+	actorChangeDialogue.dialogueId = args["dialogueId"].GetUint();
+	return Tile::MapCommand { .actorChangeDialogue = actorChangeDialogue };
+}
+
 static Tile::MapCommand registerTMC_PlayerSpeak(float normalTileSize, const GRY_JSON::Value& args, ECS::entity e = ECS::NONE) {
 	Tile::TMC_PlayerSpeak playerSpeak;
 	playerSpeak.e = e != ECS::NONE ? e : args["e"].GetUint();

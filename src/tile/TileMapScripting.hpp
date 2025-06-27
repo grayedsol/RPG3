@@ -34,6 +34,8 @@ namespace Tile {
 		void process(double delta);
 
 		bool executeCommand(MapCommand& command, double delta);
+
+		bool inCutscene() const { return mode == CUTSCENE; }
 	private:
 		void processEntities(double delta);
 		
@@ -48,6 +50,8 @@ namespace Tile {
 		bool processActorSetDirection(TMC_ActorSetDirection& args);
 
 		bool processActorWait(TMC_ActorWait& args, double delta);
+
+		bool processActorChangeDialogue(TMC_ActorChangeDialogue& args);
 
 		bool processPlayerSpeak(TMC_PlayerSpeak& args);
 

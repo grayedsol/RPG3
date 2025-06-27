@@ -126,6 +126,8 @@ public:
 	 */
 	void activateControlScheme();
 
+	void activateControlScheme(CommandMap controlSet);
+
     /**
      * @brief Remove player control in the scene.
      * 

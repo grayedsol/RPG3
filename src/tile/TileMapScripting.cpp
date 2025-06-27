@@ -116,6 +116,8 @@ bool Tile::MapScripting::executeCommand(MapCommand& command, double delta) {
 			return processActorSetDirection(command.actorSetDirection);
 		case MAP_CMD_ACTOR_WAIT:
 			return processActorWait(command.actorWait, delta);
+		case MAP_CMD_ACTOR_CHANGE_DIALOGUE:
+			return processActorChangeDialogue(command.actorChangeDialogue);
 		case MAP_CMD_PLAYER_SPEAK:
 			return processPlayerSpeak(command.playerSpeak);
 		case MAP_CMD_PLAYER_TELEPORT:
@@ -188,6 +190,15 @@ bool Tile::MapScripting::processActorWait(TMC_ActorWait& args, double delta) {
 	return (args.time -= delta) <= 0.f;
 }
 
+bool Tile::MapScripting::processActorChangeDialogue(TMC_ActorChangeDialogue &args) {
+	auto& cmd = ecs->getComponent<MapInteraction>().get(args.e).command.playerSpeak;
+	GRY_Assert(cmd.type == MAP_CMD_PLAYER_SPEAK,
+		"[Tile::MapScripting] Tried to change the dialogue of an NPC without a PlayerSpeak MapInteraction.\n"
+	);
+	cmd.dialogueId = args.dialogueId;
+	return true;
+}
+
 bool Tile::MapScripting::processPlayerSpeak(TMC_PlayerSpeak& args) {
 	auto& actors = ecs->getComponent<Actor>();
 	auto& players = ecs->getComponent<Player>();
@@ -241,11 +252,11 @@ bool Tile::MapScripting::processMoveCameraToPlayer(TMC_MoveCameraToPlayer &args,
 }
 
 bool Tile::MapScripting::processEnablePlayerControls(TMC_EnablePlayerControls &args) {
-	scene->activateControlScheme();
+	scene->activateControls();
 	return true;
 }
 
 bool Tile::MapScripting::processDisablePlayerControls(TMC_DisablePlayerControls &args) {
-	scene->deactivateControlScheme();
+	scene->deactivateControls();
 	return true;
 }

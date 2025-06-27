@@ -109,6 +109,16 @@ bool Tile::MapScene::load() {
 	return false;
 }
 
+void Tile::MapScene::activateControls() {
+	setControls();
+	game->setControlScheme(controls);
+}
+
+void Tile::MapScene::deactivateControls() {
+	controls.resetCmds();
+	game->setControlScheme(controls);
+}
+
 std::vector<SDL_FRect> Tile::MapScene::queryTileCollisions(const SDL_FRect rect, std::size_t layer) const {
 	auto collides = [rect](const SDL_FRect other) {
 		return

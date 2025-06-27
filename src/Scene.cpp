@@ -18,6 +18,8 @@ Scene::~Scene() {
 
 void Scene::activateControlScheme() { game->setControlScheme(controls); }
 
+void Scene::activateControlScheme(CommandMap controlSet) { game->setControlScheme(controlSet); }
+
 void Scene::deactivateControlScheme() { game->resetControlScheme(); }
 
 GCmd Scene::readInput() { return game->getInput(); }
