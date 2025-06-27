@@ -90,4 +90,6 @@ public:
 	 * @return y position of the cursor
 	 */
 	float getCursorY() { return cursor.y; }
+
+	void reset() { cursor.x = 0; cursor.y = 0; yStart = 0; }
 };

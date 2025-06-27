@@ -78,12 +78,26 @@ bool TextBoxRenderer::renderLine(const char* line, float scrollAmt, int index) {
  */
 void TextBoxRenderer::setSpacingFromLine(const char* line) {
 	const Fontset& font = scene->getFont();
+	SDL_Rect rect = scene->getTextArea();
 
+	float x = 0;
 	yStart = scene->getTextArea().h - (font.charHeight + LINE_SPACING);
 	for (; *line != '\0'; line++) {
-		if (*line == '\n') { yStart -= font.charHeight + LINE_SPACING; }
+		if (*line == '\n') {
+			yStart -= font.charHeight + LINE_SPACING;
+			x = 0;
+			continue;
+		}
+
+		const SDL_FRect* srcRect = font.getSourceRect(*line - ' ');
+		if (x + srcRect->w > rect.w) {
+			yStart -= font.charHeight + LINE_SPACING;
+			x = 0;
+			line--;
+			continue;
+		}
+		x += srcRect->w;
 	}
-	yStart -= font.charHeight + LINE_SPACING; /**< TODO: Why is this need on Linux but not Windows? */
 	yStart = std::min(0.f, yStart);
 	cursor.y = yStart;
 }

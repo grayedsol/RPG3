@@ -146,6 +146,7 @@ void TextBoxScene::close() {
 	GRY_Assert(active, "[TextBoxScene] close() called when the text box was not open!");
 	*storedLine = 0;
 	*incomingLine = 0;
+	textBoxRenderer.reset();
 	parentScene->activateControlScheme();
 	active = false;
 }
