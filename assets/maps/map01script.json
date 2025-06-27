@@ -5,6 +5,17 @@
 			"script" : [
 				{
 					"commandSet" : [
+						{ "type" : "DisablePlayerControls" }
+					]
+				},
+				{
+					"commandSet" : [
+						{ "type" : "MoveCamera", "position" : [10, 4], "speed" : 60 },
+						{ "type" : "ActorSetDirection", "e" : 0, "direction" : 1 }
+					]
+				},
+				{
+					"commandSet" : [
 						{ "type" : "ActorMovePos", "e" : 1, "x" : 14, "y" : 5 },
 						{ "type" : "ActorMovePos", "e" : 2, "x" : 14, "y" : 7 }
 					]
@@ -31,6 +42,16 @@
 					"commandSet" : [
 						{ "type" : "ActorMovePos", "e" : 1, "x" : 7, "y" : 5 },
 						{ "type" : "ActorMovePos", "e" : 2, "x" : 7, "y" : 7 }
+					]
+				},
+				{
+					"commandSet" : [
+						{ "type" : "MoveCameraToPlayer", "speed" : 60 }
+					]
+				},
+				{
+					"commandSet" : [
+						{ "type" : "EnablePlayerControls" }
 					]
 				}
 			]

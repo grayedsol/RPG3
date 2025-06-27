@@ -9,5 +9,9 @@ static Tile::MapCommand (*const registerTMC_Funcs[])(float, const GRY_JSON::Valu
 	registerTMC_PlayerSpeak,
 	registerTMC_PlayerTeleport,
 	registerTMC_SwitchMap,
-	registerTMC_ActivateScript
+	registerTMC_ActivateScript,
+	registerTMC_MoveCamera,
+	registerTMC_MoveCameraToPlayer,
+	registerTMC_EnablePlayerControls,
+	registerTMC_DisablePlayerControls
 };

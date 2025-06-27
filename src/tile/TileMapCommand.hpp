@@ -24,6 +24,10 @@ namespace Tile {
 		MAP_CMD_PLAYER_TELEPORT,
 		MAP_CMD_SWITCH_MAP,
 		MAP_CMD_ACTIVATE_SCRIPT,
+		MAP_CMD_MOVE_CAMERA,
+		MAP_CMD_MOVE_CAMERA_TO_PLAYER,
+		MAP_CMD_ENABLE_PLAYER_CONTROLS,
+		MAP_CMD_DISABLE_PLAYER_CONTROLS,
 		MAP_CMD_SIZE
 	};
 
@@ -39,7 +43,11 @@ namespace Tile {
 		"PlayerSpeak",
 		"PlayerTeleport",
 		"SwitchMap",
-		"ActivateScript"
+		"ActivateScript",
+		"MoveCamera",
+		"MoveCameraToPlayer",
+		"EnablePlayerControls",
+		"DisablePlayerControls"
 	};
 
 	struct TMC_None {
@@ -111,10 +119,37 @@ namespace Tile {
 		char mapScenePath[MAX_PATH_LEN + 1] = { 0 };
 	};
 
+	/**
+	 * @brief Activates a script.
+	 * 
+	 */
 	struct TMC_ActivateScript {
 		MapCommandType type = MAP_CMD_ACTIVATE_SCRIPT;
-		ECS::entity e;
+		ECS::entity e = ECS::NONE;
 		size_t scriptIndex;
+	};
+
+	struct TMC_MoveCamera {
+		MapCommandType type = MAP_CMD_MOVE_CAMERA;
+		ECS::entity e = ECS::NONE;
+		Position2 position;
+		float speed = 16.f;
+	};
+
+	struct TMC_MoveCameraToPlayer {
+		MapCommandType type = MAP_CMD_MOVE_CAMERA_TO_PLAYER;
+		ECS::entity e = ECS::NONE;
+		float speed = 16.f;
+	};
+
+	struct TMC_EnablePlayerControls {
+		MapCommandType type = MAP_CMD_ENABLE_PLAYER_CONTROLS;
+		ECS::entity e = ECS::NONE;
+	};
+
+	struct TMC_DisablePlayerControls{
+		MapCommandType type = MAP_CMD_DISABLE_PLAYER_CONTROLS;
+		ECS::entity e = ECS::NONE;
 	};
 
 	/**
@@ -130,6 +165,10 @@ namespace Tile {
 		TMC_PlayerTeleport playerTeleport;
 		TMC_SwitchMap switchMap;
 		TMC_ActivateScript activateScript;
+		TMC_MoveCamera moveCamera;
+		TMC_MoveCameraToPlayer moveCameraToPlayer;
+		TMC_EnablePlayerControls enablePlayerControls;
+		TMC_DisablePlayerControls disablePlayerControls;
 	};
 
 	/**

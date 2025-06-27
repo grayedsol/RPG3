@@ -78,26 +78,31 @@ void Tile::MapScripting::processGameplay(double delta) {
 }
 
 void Tile::MapScripting::processCutscene(double delta) {
-	if (currentCommands.empty()) {
-		if (scriptIndex >= currentScript.size()) {
-			mode = GAMEPLAY;
-			scriptIndex = 0;
-			return;
+	bool moveOn = true;
+	for (auto& command : currentScript.at(scriptIndex)) {
+		if (command.data.type == MAP_CMD_NONE) { continue; }
+		if (command.data.e == ECS::NONE) {
+			if (executeCommand(command, delta)) {
+				command = MapCommand { .data { MAP_CMD_NONE } };
+			}
+			moveOn = false;
+			continue;
 		}
-		currentCommands = currentScript.at(scriptIndex);
-		scriptIndex++;
+		if (ecs->getComponent<MapCommand>().get(command.data.e).data.type != MAP_CMD_NONE) {
+			moveOn = false;
+		}
 	}
-	for (int i = 0; i < currentCommands.size(); i++) {
-		MapCommand& command = currentCommands[i];
-		GRY_Assert(ecs->getComponent<MapCommand>().contains(command.data.e),
-		"[Tile::MapScripting] An entity in the script had no MapCommand component.\n");
+	if (!moveOn) { return; }
 
-		if (ecs->getComponent<MapCommand>().get(command.data.e).data.type == MAP_CMD_NONE) {
-			ecs->getComponent<MapCommand>().get(command.data.e) = command;
-			currentCommands[i] = currentCommands.back();
-			currentCommands.pop_back();
-			i--;
-		}
+	scriptIndex++;
+	if (scriptIndex >= currentScript.size()) {
+		mode = GAMEPLAY;
+		scriptIndex = 0;
+		return;
+	}
+	for (auto& cmd : currentScript.at(scriptIndex)) {
+		if (cmd.data.e == ECS::NONE) { continue; }
+		else { ecs->getComponent<MapCommand>().get(cmd.data.e) = cmd; }
 	}
 }
 
@@ -118,7 +123,15 @@ bool Tile::MapScripting::executeCommand(MapCommand& command, double delta) {
 		case MAP_CMD_SWITCH_MAP:
 			return processSwitchMap(command.switchMap);
 		case MAP_CMD_ACTIVATE_SCRIPT:
-			return processActivateScript(command.activateScript);
+			return processActivateScript(command.activateScript, delta);
+		case MAP_CMD_MOVE_CAMERA:
+			return processMoveCamera(command.moveCamera, delta);
+		case MAP_CMD_MOVE_CAMERA_TO_PLAYER:
+			return processMoveCameraToPlayer(command.moveCameraToPlayer, delta);
+		case MAP_CMD_ENABLE_PLAYER_CONTROLS:
+			return processEnablePlayerControls(command.enablePlayerControls);
+		case MAP_CMD_DISABLE_PLAYER_CONTROLS:
+			return processDisablePlayerControls(command.disablePlayerControls);
 		default:
 			GRY_Assert(false, "There was an attempt to execute an unknown MapCommand.\n");
 			return false;
@@ -201,14 +214,38 @@ bool Tile::MapScripting::processSwitchMap(TMC_SwitchMap& args) {
 	return true;
 }
 
-bool Tile::MapScripting::processActivateScript(TMC_ActivateScript &args) {
+bool Tile::MapScripting::processActivateScript(TMC_ActivateScript &args, double delta) {
 	currentScript = scene->getScriptResource().scripts.at(args.scriptIndex);
 	GRY_Assert(mode != CUTSCENE,
 		"[Tile::MapScripting] Tried to activate a cutscene while one was already playing.\n"
 	);
 	mode = CUTSCENE;
-	for (auto& cmd : currentScript.at(0)) {
-		ecs->getComponent<MapCommand>().get(cmd.data.e) = cmd;
+	for (auto& cmd : currentScript.front()) {
+		if (cmd.data.e == ECS::NONE) { continue; }
+		else { ecs->getComponent<MapCommand>().get(cmd.data.e) = cmd; }
 	}
+	return true;
+}
+
+bool Tile::MapScripting::processMoveCamera(TMC_MoveCamera &args, double delta) {
+	scene->getMapCamera().unlockCamera();
+	return scene->getMapCamera().moveCamera(args.position, args.speed, delta);
+}
+
+bool Tile::MapScripting::processMoveCameraToPlayer(TMC_MoveCameraToPlayer &args, double delta) {
+	if (scene->getMapCamera().moveCameraToPlayer(args.speed, delta)) {
+		scene->getMapCamera().lockCamera();
+		return true;
+	}
+	return false;
+}
+
+bool Tile::MapScripting::processEnablePlayerControls(TMC_EnablePlayerControls &args) {
+	scene->activateControlScheme();
+	return true;
+}
+
+bool Tile::MapScripting::processDisablePlayerControls(TMC_DisablePlayerControls &args) {
+	scene->deactivateControlScheme();
 	return true;
 }

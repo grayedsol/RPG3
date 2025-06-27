@@ -42,12 +42,20 @@ namespace Tile {
 		const ComponentSet<Hitbox>* hitboxes;
 
 		/**
+		 * @brief Positions of entities.
+		 * 
+		 */
+		const ComponentSet<Position2>* positions;
+
+		/**
 		 * @brief Set of entities that are players.
 		 * 
 		 * @details
 		 * There should really only be one player.
 		 */
 		const ComponentSet<Player>* players;
+
+		bool cameraLocked = true;
 	public:
 		/**
 		 * @brief Constructor.
@@ -61,5 +69,15 @@ namespace Tile {
 		 * 
 		 */
 		void process();
+
+		void lockCamera() { cameraLocked = true; }
+
+		void unlockCamera() { cameraLocked = false; }
+
+		bool cameraIsLocked() const { return cameraLocked; }
+
+		bool moveCamera(Position2 position, double speed, double delta);
+
+		bool moveCameraToPlayer(double speed, double delta);
 	};
 };

@@ -34,12 +34,13 @@ void Tile::MapRenderer::renderSprite(ECS::entity e) {
 	SDL_RenderTexture(renderer, tileset.texture, tileset.getSourceRect(sprites->get(e).index), &dstRect);
 
 	#ifndef NDEBUG
+	if (!scene->getMapCamera().cameraIsLocked() || scene->getECSReadOnly().getComponentReadOnly<Player>().getEntity(0) != e) { return; }
 	SDL_FRect referenceRect {
 		floorf(sprites->get(e).offsetX + (scene->getPixelGame()->getScreenWidthPixels() * 0.5f) - (hitboxes->get(e).w * 0.5f)) * *pixelScaling,
 		floorf(sprites->get(e).offsetY + (scene->getPixelGame()->getScreenHeightPixels() * 0.5f) - (hitboxes->get(e).h * 0.5f)) * *pixelScaling,
 		0, 0
 	};
-	if (scene->getECSReadOnly().getComponentReadOnly<Player>().getEntity(0) == e && (dstRect.x != referenceRect.x || dstRect.y != referenceRect.y)) {
+	if (dstRect.x != referenceRect.x || dstRect.y != referenceRect.y) {
 		GRY_Log("Floating point error when rendering player!\n");
 	}
 	#endif

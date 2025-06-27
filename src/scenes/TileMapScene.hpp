@@ -216,6 +216,10 @@ namespace Tile {
 
 		MapSpeak& getTileMapSpeak() { return tileMapSpeak; }
 
+		MapCamera& getMapCamera() { return tileMapCamera; }
+
+		const MapCamera& getMapCamera() const { return tileMapCamera; }
+
 		const DialogueResource& getDialogueResource() { return mapDialogues; }
 
 		const MapScriptResource& getScriptResource() { return mapScripts; }

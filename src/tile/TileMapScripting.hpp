@@ -55,6 +55,14 @@ namespace Tile {
 
 		bool processSwitchMap(TMC_SwitchMap& args);
 
-		bool processActivateScript(TMC_ActivateScript& args);
+		bool processActivateScript(TMC_ActivateScript& args, double delta);
+
+		bool processMoveCamera(TMC_MoveCamera& args, double delta);
+
+		bool processMoveCameraToPlayer(TMC_MoveCameraToPlayer& args, double delta);
+
+		bool processEnablePlayerControls(TMC_EnablePlayerControls& args);
+
+		bool processDisablePlayerControls(TMC_DisablePlayerControls& args);
 	};
 };

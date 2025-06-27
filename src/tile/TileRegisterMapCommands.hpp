@@ -75,3 +75,35 @@ static Tile::MapCommand registerTMC_ActivateScript(float normalTileSize, const G
 	activateScript.scriptIndex = args["scriptIndex"].GetUint();
 	return Tile::MapCommand { .activateScript = activateScript };
 }
+
+static Tile::MapCommand registerTMC_MoveCamera(float normalTileSize, const GRY_JSON::Value& args, ECS::entity e = ECS::NONE) {
+	Tile::TMC_MoveCamera moveCamera;
+	moveCamera.e = ECS::NONE;
+	moveCamera.position = Position2 {
+		args["position"].GetArray()[0].GetFloat() * normalTileSize,
+		args["position"].GetArray()[1].GetFloat() * normalTileSize
+	};
+	if (args.HasMember("speed")) {
+		moveCamera.speed = args["speed"].GetFloat();
+	}
+	return Tile::MapCommand { .moveCamera = moveCamera };
+}
+
+static Tile::MapCommand registerTMC_MoveCameraToPlayer(float normalTileSize, const GRY_JSON::Value& args, ECS::entity e = ECS::NONE) {
+	Tile::TMC_MoveCameraToPlayer moveCameraToPlayer;
+	moveCameraToPlayer.e = ECS::NONE;
+	if (args.HasMember("speed")) {
+		moveCameraToPlayer.speed = args["speed"].GetFloat();
+	}
+	return Tile::MapCommand { .moveCameraToPlayer = moveCameraToPlayer };
+}
+
+static Tile::MapCommand registerTMC_EnablePlayerControls(float normalTileSize, const GRY_JSON::Value& args, ECS::entity e =  ECS::NONE) {
+	Tile::TMC_EnablePlayerControls enablePlayerControls;
+	return Tile::MapCommand { .enablePlayerControls = enablePlayerControls };
+}
+
+static Tile::MapCommand registerTMC_DisablePlayerControls(float normalTileSize, const GRY_JSON::Value& args, ECS::entity e =  ECS::NONE) {
+	Tile::TMC_DisablePlayerControls disablePlayerControls;
+	return Tile::MapCommand { .disablePlayerControls = disablePlayerControls };
+}
