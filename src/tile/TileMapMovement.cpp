@@ -105,7 +105,7 @@ void Tile::MapMovement::handleSoftEntityCollisions(Hitbox box, ECS::entity e, in
 			interaction.beingPressed = true;
 			if (!interaction.active) { scene->executeCommand(interaction.command); }
 			if (interaction.mode == MapCollisionInteraction::Mode::Fleeting) {
-				collisionInteractions->remove(e);
+				scene->getECS().freeEntity(e);
 			}
 			else if (interaction.mode == MapCollisionInteraction::Mode::PressurePlate) {
 				interaction.active = true;

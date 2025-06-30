@@ -170,8 +170,18 @@ namespace Tile {
 		 */
 		bool load() final;
 
+		/**
+		 * @brief Activates the controls after deactivateControls has been called.
+		 * 
+		 * @sa deactivateControls
+		 */
 		void activateControls();
 
+		/**
+		 * @brief Deactivates the controls, and persists even if activateControlScheme is called.
+		 * 
+		 * @sa activateControls
+		 */
 		void deactivateControls();
 
 		/**
