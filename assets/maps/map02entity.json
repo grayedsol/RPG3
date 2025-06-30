@@ -31,7 +31,7 @@
 				"position" : [5,5],
 				"npc" : 0,
 				"interaction" : {
-					"type" : "PlayerSpeak",
+					"type" : "ActorSpeak",
 					"dialogueId" : 0
 				},
 				"actor" : {
@@ -72,7 +72,7 @@
 				"position" : [10,10],
 				"npc" : 0,
 				"interaction" : {
-					"type" : "PlayerSpeak",
+					"type" : "ActorSpeak",
 					"dialogueId" : 1
 				},
 				"actor" : {
@@ -150,7 +150,7 @@
 				"position" : [5,10],
 				"npc" : 0,
 				"interaction" : {
-					"type" : "PlayerSpeak",
+					"type" : "ActorSpeak",
 					"dialogueId" : 4
 				},
 				"actor" : {

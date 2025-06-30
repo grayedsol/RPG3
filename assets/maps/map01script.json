@@ -28,7 +28,7 @@
 				},
 				{
 					"commandSet" : [
-						{ "type" : "PlayerSpeak", "e" : 1, "dialogueId" : 2 }
+						{ "type" : "ActorSpeak", "e" : 1, "dialogueId" : 2, "direction" : 3 }
 					]
 				},
 				{

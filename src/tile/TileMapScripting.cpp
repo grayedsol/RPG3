@@ -118,8 +118,8 @@ bool Tile::MapScripting::executeCommand(MapCommand& command, double delta) {
 			return processActorWait(command.actorWait, delta);
 		case MAP_CMD_ACTOR_CHANGE_DIALOGUE:
 			return processActorChangeDialogue(command.actorChangeDialogue);
-		case MAP_CMD_PLAYER_SPEAK:
-			return processPlayerSpeak(command.playerSpeak);
+		case MAP_CMD_ACTOR_SPEAK:
+			return processActorSpeak(command.actorSpeak);
 		case MAP_CMD_PLAYER_TELEPORT:
 			return processPlayerTeleport(command.playerTeleport);
 		case MAP_CMD_SWITCH_MAP:
@@ -191,19 +191,22 @@ bool Tile::MapScripting::processActorWait(TMC_ActorWait& args, double delta) {
 }
 
 bool Tile::MapScripting::processActorChangeDialogue(TMC_ActorChangeDialogue &args) {
-	auto& cmd = ecs->getComponent<MapInteraction>().get(args.e).command.playerSpeak;
-	GRY_Assert(cmd.type == MAP_CMD_PLAYER_SPEAK,
+	auto& cmd = ecs->getComponent<MapInteraction>().get(args.e).command.actorSpeak;
+	GRY_Assert(cmd.type == MAP_CMD_ACTOR_SPEAK,
 		"[Tile::MapScripting] Tried to change the dialogue of an NPC without a PlayerSpeak MapInteraction.\n"
 	);
 	cmd.dialogueId = args.dialogueId;
 	return true;
 }
 
-bool Tile::MapScripting::processPlayerSpeak(TMC_PlayerSpeak& args) {
+bool Tile::MapScripting::processActorSpeak(TMC_ActorSpeak& args) {
 	auto& actors = ecs->getComponent<Actor>();
 	auto& players = ecs->getComponent<Player>();
 	if (actors.contains(args.e)) {
-		actors.get(args.e).direction = invDirs[actors.get(players.getEntity(0)).direction];
+		/* If the direction was specified use it, otherwise use the direction opposite the player's */
+		actors.get(args.e).direction = args.direction != Direction::DirectionNone ? 
+			args.direction :
+			invDirs[actors.get(players.getEntity(0)).direction];
 		actors.get(args.e).moving = false;
 	}
 	players.get(players.getEntity(0)).speakingTo = args.e;

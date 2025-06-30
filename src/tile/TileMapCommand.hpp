@@ -21,7 +21,7 @@ namespace Tile {
 		MAP_CMD_ACTOR_SET_DIRECTION,
 		MAP_CMD_ACTOR_WAIT,
 		MAP_CMD_ACTOR_CHANGE_DIALOGUE,
-		MAP_CMD_PLAYER_SPEAK,
+		MAP_CMD_ACTOR_SPEAK,
 		MAP_CMD_PLAYER_TELEPORT,
 		MAP_CMD_SWITCH_MAP,
 		MAP_CMD_ACTIVATE_SCRIPT,
@@ -42,7 +42,7 @@ namespace Tile {
 		"ActorSetDirection",
 		"ActorWait",
 		"ActorChangeDialogue",
-		"PlayerSpeak",
+		"ActorSpeak",
 		"PlayerTeleport",
 		"SwitchMap",
 		"ActivateScript",
@@ -98,10 +98,11 @@ namespace Tile {
 	 * @brief Initiates a text box dialogue between the player and an entity.
 	 * 
 	 */
-	struct TMC_PlayerSpeak {
-		MapCommandType type = MAP_CMD_PLAYER_SPEAK;
+	struct TMC_ActorSpeak {
+		MapCommandType type = MAP_CMD_ACTOR_SPEAK;
 		ECS::entity e;
 		unsigned dialogueId;
+		Direction direction = Direction::DirectionNone;
 	};
 
 	/**
@@ -170,7 +171,7 @@ namespace Tile {
 		TMC_ActorSetDirection actorSetDirection;
 		TMC_ActorWait actorWait;
 		TMC_ActorChangeDialogue actorChangeDialogue;
-		TMC_PlayerSpeak playerSpeak;
+		TMC_ActorSpeak actorSpeak;
 		TMC_PlayerTeleport playerTeleport;
 		TMC_SwitchMap switchMap;
 		TMC_ActivateScript activateScript;

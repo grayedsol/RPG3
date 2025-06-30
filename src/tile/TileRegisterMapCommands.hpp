@@ -40,11 +40,18 @@ static Tile::MapCommand registerTMC_ActorChangeDialogue(float normalTileSize, co
 	return Tile::MapCommand { .actorChangeDialogue = actorChangeDialogue };
 }
 
-static Tile::MapCommand registerTMC_PlayerSpeak(float normalTileSize, const GRY_JSON::Value& args, ECS::entity e = ECS::NONE) {
-	Tile::TMC_PlayerSpeak playerSpeak;
-	playerSpeak.e = e != ECS::NONE ? e : args["e"].GetUint();
-	playerSpeak.dialogueId = args["dialogueId"].GetUint();
-	return Tile::MapCommand { .playerSpeak = playerSpeak };
+static Tile::MapCommand registerTMC_ActorSpeak(float normalTileSize, const GRY_JSON::Value& args, ECS::entity e = ECS::NONE) {
+	Tile::TMC_ActorSpeak actorSpeak;
+	actorSpeak.e = e != ECS::NONE ? e : args["e"].GetUint();
+	actorSpeak.dialogueId = args["dialogueId"].GetUint();
+	if (args.HasMember("direction")) {
+		actorSpeak.direction = static_cast<Tile::Direction>(args["direction"].GetUint());
+		GRY_Assert(static_cast<Tile::Direction>(actorSpeak.direction) > 0 &&
+			static_cast<Tile::Direction>(actorSpeak.direction) < 9,
+			"[Tile::EntityMap] ActorSpeak direction must be between 1 and 8 inclusive.\n"
+		);
+	}
+	return Tile::MapCommand { .actorSpeak = actorSpeak };
 }
 
 static Tile::MapCommand registerTMC_PlayerTeleport(float normalTileSize, const GRY_JSON::Value& args, ECS::entity e = ECS::NONE) {

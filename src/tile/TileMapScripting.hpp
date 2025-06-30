@@ -53,7 +53,7 @@ namespace Tile {
 
 		bool processActorChangeDialogue(TMC_ActorChangeDialogue& args);
 
-		bool processPlayerSpeak(TMC_PlayerSpeak& args);
+		bool processActorSpeak(TMC_ActorSpeak& args);
 
 		bool processPlayerTeleport(TMC_PlayerTeleport& args);
 
