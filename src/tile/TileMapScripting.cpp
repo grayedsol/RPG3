@@ -140,11 +140,6 @@ bool Tile::MapScripting::executeCommand(MapCommand& command, double delta) {
 	}
 }
 
-void Tile::MapScripting::removeCommand(size_t index) {
-	currentCommands[index] = currentCommands.back();
-	currentCommands.pop_back();
-}
-
 bool Tile::MapScripting::processActorMovePos(TMC_ActorMovePos& args) {
 	static int sign[2] = { -1, 1 };
 	if (args.e == ecs->getComponent<Player>().value[0].speakingTo) { return false; }
