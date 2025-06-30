@@ -16,8 +16,8 @@
 				},
 				{
 					"commandSet" : [
-						{ "type" : "ActorMovePos", "e" : 1, "x" : 14, "y" : 5 },
-						{ "type" : "ActorMovePos", "e" : 2, "x" : 14, "y" : 7 }
+						{ "type" : "ActorMovePos", "e" : 1, "position" : [14,5] },
+						{ "type" : "ActorMovePos", "e" : 2, "position" : [14,7] }
 					]
 				},
 				{
@@ -39,8 +39,8 @@
 				},
 				{
 					"commandSet" : [
-						{ "type" : "ActorMovePos", "e" : 1, "x" : 7, "y" : 5 },
-						{ "type" : "ActorMovePos", "e" : 2, "x" : 7, "y" : 7 }
+						{ "type" : "ActorMovePos", "e" : 1, "position" : [7,5] },
+						{ "type" : "ActorMovePos", "e" : 2, "position" : [7,7] }
 					]
 				},
 				{

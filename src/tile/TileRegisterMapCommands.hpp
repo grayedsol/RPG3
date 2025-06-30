@@ -9,8 +9,10 @@ static Tile::MapCommand registerTMC_None(float normalTileSize, const GRY_JSON::V
 static Tile::MapCommand registerTMC_ActorMovePos(float normalTileSize, const GRY_JSON::Value& args, ECS::entity e = ECS::NONE) {
 	Tile::TMC_ActorMovePos actorMovePos;
 	actorMovePos.e = e != ECS::NONE ? e : args["e"].GetUint();
-	actorMovePos.targetPos.x = args["x"].GetFloat() * normalTileSize;
-	actorMovePos.targetPos.y = args["y"].GetFloat() * normalTileSize;
+	actorMovePos.targetPos = Position2 {
+		args["position"].GetArray()[0].GetFloat() * normalTileSize,
+		args["position"].GetArray()[1].GetFloat() * normalTileSize
+	};
 	return Tile::MapCommand { .actorMovePos = actorMovePos };
 }
 

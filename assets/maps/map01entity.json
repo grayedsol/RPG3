@@ -54,11 +54,11 @@
 					"collides" : true
 				},
 				"commands" : [
-					{ "type" : "ActorMovePos", "x" : 5, "y" : 5 },
+					{ "type" : "ActorMovePos", "position" : [5,5] },
 					{ "type" : "ActorWait", "time" : 1 },
 					{ "type" : "ActorSetDirection", "direction" : 1 },
 					{ "type" : "ActorWait", "time" : 1 },
-					{ "type" : "ActorMovePos", "x" : 14, "y" : 5 },
+					{ "type" : "ActorMovePos", "position" : [14,5] },
 					{ "type" : "ActorWait", "time" : 1 },
 					{ "type" : "ActorSetDirection", "direction" : 1 },
 					{ "type" : "ActorWait", "time" : 1 }
