@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2025
  */
 #include "DialogueResource.hpp"
+#include "tile/TileRegisterMapCommandFuncs.hpp"
 #include "GRY_Game.hpp"
 #include "GRY_JSON.hpp"
 
@@ -11,6 +12,8 @@ bool DialogueResource::load(GRY_Game* game) {
 	if (!dialogues.empty()) { return true; }
 	GRY_JSON::Document dialogueDoc;
 	GRY_JSON::loadDoc(dialogueDoc, path);
+
+	float normalTileSize = dialogueDoc["normalTileSize"].GetFloat();
 
 	for (auto& value : dialogueDoc["data"].GetArray()) {
 		Dialogue dialogue;
@@ -23,6 +26,14 @@ bool DialogueResource::load(GRY_Game* game) {
 			dialogue.branching = true;
 			dialogue.path1 = value["branch"].GetArray()[0].GetUint();
 			dialogue.path2 = value["branch"].GetArray()[1].GetUint();
+		}
+		if (value.HasMember("command")) {
+			for (int i = 0; i < Tile::MapCommandType::MAP_CMD_SIZE; i++) {
+				if (strcmp(value["command"]["type"].GetString(), Tile::MapCommandNames[i]) == 0) {
+					dialogue.command = registerTMC_Funcs[i](normalTileSize, value["command"], ECS::NONE);
+					break;
+				}
+			}
 		}
 		dialogues.push_back(dialogue);
 	}

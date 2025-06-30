@@ -6,6 +6,7 @@
  */
 #pragma once
 #include "FileResource.hpp"
+#include "../src/tile/TileMapCommand.hpp"
 #include <vector>
 
 struct Dialogue {
@@ -13,6 +14,7 @@ struct Dialogue {
 	unsigned path1 = 0;
 	unsigned path2 = 0;
 	bool branching = false;
+	Tile::MapCommand command = { .data { .type = Tile::MAP_CMD_NONE } };
 };
 
 struct DialogueResource : public FileResource {

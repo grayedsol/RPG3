@@ -1,4 +1,5 @@
 {
+	"normalTileSize" : 16,
     "data" : [
         {
             "id" : 0,

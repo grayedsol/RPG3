@@ -21,6 +21,8 @@ namespace Tile {
 		unsigned index = 0;
 
 		MapScene* scene;
+
+		void endSpeak();
 	public:
 		MapSpeak(MapScene* scene);
 

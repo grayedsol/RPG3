@@ -52,8 +52,8 @@ void Tile::MapRenderer::renderSprite(ECS::entity e) {
  */
 void Tile::MapRenderer::process() {
 	GRY_VecTD<uint32_t, 2, void> tileViewport{
-		scene->getPixelGame()->getScreenWidthPixels() / scene->getNormalTileSize(),
-		scene->getPixelGame()->getScreenHeightPixels() / scene->getNormalTileSize()
+		scene->getPixelGame()->getScreenWidthPixels() / scene->getNormalTileSize() + 1,
+		scene->getPixelGame()->getScreenHeightPixels() / scene->getNormalTileSize() + 2
 	};
 	/* Tileset that will be used */
 	const Tileset& tileset = tileMap->tileset;
@@ -66,8 +66,8 @@ void Tile::MapRenderer::process() {
 
 	uint32_t startX = std::max(0.f, -offsetX / (float)scene->getNormalTileSize());
 	uint32_t startY = std::max(0.f, -offsetY / (float)scene->getNormalTileSize());
-	uint32_t endX = std::min(tileMap->width, (uint32_t)(-offsetX / (float)scene->getNormalTileSize()) + tileViewport.x + 1);
-	uint32_t endY = (uint32_t)(-offsetY / (float)scene->getNormalTileSize()) + tileViewport.y + 2;
+	uint32_t endX = std::min(tileMap->width, (uint32_t)(-offsetX / (float)scene->getNormalTileSize()) + tileViewport.x);
+	uint32_t endY = (uint32_t)(-offsetY / (float)scene->getNormalTileSize()) + tileViewport.y;
 	/* Destination rectangle, defines position and size of rendered tile */
 	SDL_FRect dstRect {
 		floorf((offsetX + (startX * scene->getNormalTileSize())) * *pixelScaling),
@@ -81,6 +81,7 @@ void Tile::MapRenderer::process() {
 
 		unsigned entityIndex = 0;
 		uint32_t entityRow = 0;
+		/* Find the starting entityIndex and entityRow */
 		for (; entityIndex < entityLayer.size(); entityIndex++) {
 			if (!sprites->contains(entityLayer[entityIndex])) { continue; }
 			Hitbox box = hitboxes->get(entityLayer[entityIndex]);
@@ -89,7 +90,7 @@ void Tile::MapRenderer::process() {
 		}
 
 		endY = std::min((uint32_t)tileMap->tileLayers[i].size() / tileMap->width,
-						(uint32_t)(-offsetY / (float)scene->getNormalTileSize()) + tileViewport.y + 2);
+						(uint32_t)(-offsetY / (float)scene->getNormalTileSize()) + tileViewport.y);
 		/* Render by row */
 		for (uint32_t y = startY; y < endY; y++) {
 			/* Render row of tiles */

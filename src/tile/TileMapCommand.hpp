@@ -71,6 +71,8 @@ namespace Tile {
 	/**
 	 * @brief Sets an actor's direction.
 	 * 
+	 * @details
+	 * Instant.
 	 */
 	struct TMC_ActorSetDirection {
 		MapCommandType type = MAP_CMD_ACTOR_SET_DIRECTION;
@@ -81,6 +83,9 @@ namespace Tile {
 	/**
 	 * @brief Makes an actor wait for a time.
 	 * 
+	 * @details
+	 * The timer does not decrement while the actor
+	 * is currently being spoken to.
 	 */
 	struct TMC_ActorWait {
 		MapCommandType type = MAP_CMD_ACTOR_WAIT;
@@ -88,6 +93,12 @@ namespace Tile {
 		double time;
 	};
 
+	/**
+	 * @brief Switches the dialogueId of an actor.
+	 * 
+	 * @details
+	 * Instant.
+	 */
 	struct TMC_ActorChangeDialogue {
 		MapCommandType type = MAP_CMD_ACTOR_CHANGE_DIALOGUE;
 		ECS::entity e;
@@ -97,6 +108,11 @@ namespace Tile {
 	/**
 	 * @brief Initiates a text box dialogue between the player and an entity.
 	 * 
+	 * @details
+	 * Instant.
+	 * To make a script wait for the dialogue to be played out,
+	 * put an ActorWait command for the same entity directly
+	 * after this command.
 	 */
 	struct TMC_ActorSpeak {
 		MapCommandType type = MAP_CMD_ACTOR_SPEAK;
@@ -108,6 +124,8 @@ namespace Tile {
 	/**
 	 * @brief Teleports the player to a specific position.
 	 * 
+	 * @details
+	 * Instant.
 	 */
 	struct TMC_PlayerTeleport {
 		MapCommandType type = MAP_CMD_PLAYER_TELEPORT;
@@ -118,6 +136,8 @@ namespace Tile {
 	/**
 	 * @brief Switches to a new MapScene.
 	 * 
+	 * @details
+	 * Instant.
 	 */
 	struct TMC_SwitchMap {
 		MapCommandType type = MAP_CMD_SWITCH_MAP;
@@ -131,6 +151,8 @@ namespace Tile {
 	/**
 	 * @brief Activates a script.
 	 * 
+	 * @details
+	 * Instant.
 	 */
 	struct TMC_ActivateScript {
 		MapCommandType type = MAP_CMD_ACTIVATE_SCRIPT;
@@ -151,11 +173,23 @@ namespace Tile {
 		float speed = 16.f;
 	};
 
+	/**
+	 * @brief Enables player map controls.
+	 * 
+	 * @details
+	 * Instant.
+	 */
 	struct TMC_EnablePlayerControls {
 		MapCommandType type = MAP_CMD_ENABLE_PLAYER_CONTROLS;
 		ECS::entity e = ECS::NONE;
 	};
 
+	/**
+	 * @brief Disables player map controls.
+	 * 
+	 * @details
+	 * Instant.
+	 */
 	struct TMC_DisablePlayerControls{
 		MapCommandType type = MAP_CMD_DISABLE_PLAYER_CONTROLS;
 		ECS::entity e = ECS::NONE;

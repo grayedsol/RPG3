@@ -7,7 +7,19 @@
 #include "../scenes/TextBoxScene.hpp"
 #include "../scenes/TileMapScene.hpp"
 
-Tile::MapSpeak::MapSpeak(MapScene* scene) : scene(scene), textbox(&scene->getTextBox()) {
+void Tile::MapSpeak::endSpeak() {
+	index = 0;
+	scene->getECS().getComponent<Player>().value.at(0).speakingTo = ECS::NONE;
+	if (currentDialogue->command.data.type != MAP_CMD_NONE) {
+		MapCommand command = currentDialogue->command;
+		scene->executeCommand(command);
+		if (command.data.type == MAP_CMD_ACTOR_SPEAK) { return; }
+	}
+	textbox->close();
+	currentDialogue = nullptr;
+}
+
+Tile::MapSpeak::MapSpeak(MapScene *scene) : scene(scene), textbox(&scene->getTextBox()) {
 }
 
 void Tile::MapSpeak::process() {
@@ -21,15 +33,15 @@ void Tile::MapSpeak::process() {
 				unsigned int dialogueId = textbox->getDecision() == 1 ? currentDialogue->path1 : currentDialogue->path2;
 				currentDialogue = &scene->getDialogueResource().dialogues.at(dialogueId);
 				index = 0;
-				textbox->printLine(currentDialogue->lines.at(index));
-				index++;
+				if (!currentDialogue->lines.size()) { endSpeak(); }
+				else {
+					textbox->printLine(currentDialogue->lines.at(index));
+					index++;
+				}
 			}
 		}
 		else if (scene->readSingleInput() == GCmd::MessageOk || index == 0) {
-			textbox->close();
-			currentDialogue = nullptr;
-			index = 0;
-			scene->getECS().getComponent<Player>().value.at(0).speakingTo = ECS::NONE;
+			endSpeak();
 		}
 	}
 	else if (scene->readSingleInput() == GCmd::MessageOk || index == 0) {
@@ -39,7 +51,7 @@ void Tile::MapSpeak::process() {
 }
 
 void Tile::MapSpeak::speak(unsigned dialogueId) {
-	if (textbox->isOpen()) { return; }
 	currentDialogue = &scene->getDialogueResource().dialogues.at(dialogueId);
+	if (textbox->isOpen()) { return; }
 	textbox->open();
 }
