@@ -127,21 +127,27 @@ if(USE_SHARED_LIBS)
 
 	find_library(SDL3_LIB NAMES SDL3 sdl3 PATH_SUFFIXES lib)
 	find_library(SDL3_IMAGE_LIB NAMES SDL3_image sdl3_image PATH_SUFFIXES lib)
+	find_library(FMOD_LIB NAMES fmod PATH_SUFFIXES lib)
 
 	message(STATUS "SDL3 shared library: ${SDL3_LIB}")
 	message(STATUS "SDL3_image shared library: ${SDL3_IMAGE_LIB}")
+	message(STATUS "FMOD shared library:" ${FMOD_LIB})
 
 	add_library(SDL3::SDL3 SHARED IMPORTED)
 	add_library(SDL3::IMAGE SHARED IMPORTED)
+	add_library(FMOD SHARED IMPORTED)
 
 	if(WIN32)
 	set_property(TARGET SDL3::SDL3 PROPERTY IMPORTED_IMPLIB ${SDL3_LIB})
 	set_property(TARGET SDL3::IMAGE PROPERTY IMPORTED_IMPLIB ${SDL3_IMAGE_LIB})
+	set_property(TARGET FMOD PROPERTY IMPORTED_IMPLIB ${FMOD_LIB})
 	else()
 	set_property(TARGET SDL3::SDL3 PROPERTY IMPORTED_LOCATION ${SDL3_LIB})
 	set_property(TARGET SDL3::IMAGE PROPERTY IMPORTED_LOCATION ${SDL3_IMAGE_LIB})
+	set_property(TARGET FMOD PROPERTY IMPORTED_LOCATION ${FMOD_LIB})
 	endif()
 else()
+	message(STATUS "Static building currently unsupported until I have FMOD static libs")
 	message(STATUS "Building using static libs")
 	if(WIN32)
 		message(STATUS "OS: Windows")
@@ -178,17 +184,21 @@ endif()
 
 find_path(SDL3_INCLUDE_PATH NAMES SDL3)
 find_path(SDL3_IMAGE_INCLUDE_PATH NAMES SDL3_image)
+find_path(FMOD_INCLUDE_PATH NAMES fmod)
 
 message(STATUS "SDL3 include path: ${SDL3_INCLUDE_PATH}")
 message(STATUS "SDL3_image include path: ${SDL3_IMAGE_INCLUDE_PATH}")
+message(STATUS "FMOD include path:" ${FMOD_INCLUDE_PATH})
 
 target_include_directories(${PROJECT_NAME}
 	PUBLIC ${PROJECT_BINARY_DIR}
 	PUBLIC ${SDL3_INCLUDE_PATH}
 	PUBLIC ${SDL3_IMAGE_INCLUDE_PATH}
+	PUBLIC ${FMOD_INCLUDE_PATH}
 )
 
 target_link_libraries(${PROJECT_NAME} 
 	PUBLIC SDL3::SDL3
 	PUBLIC SDL3::IMAGE
+	PUBLIC FMOD
 )
