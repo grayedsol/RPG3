@@ -1,7 +1,7 @@
 /**
- * @file GRY_SDL.hpp
+ * @file GRY_Video.hpp
  * @author Grayedsol (grayedsol@gmail.com)
- * @brief @copybrief GRY_SDL
+ * @brief @copybrief GRY_Video
  * @copyright Copyright (c) 2024
  */
 #pragma once
@@ -18,7 +18,7 @@ struct SDL_Texture;
  * 
  * @sa InputHandler
  */
-class GRY_SDL {
+class GRY_Video {
 private:
 	friend class GRY_Game;
 
@@ -79,17 +79,17 @@ public:
 	 * @param WINDOW_HEIGHT Window height in pixels.
 	 * @param USE_VSYNC Whether the game will use VSync.
 	 */
-	GRY_SDL(int WINDOW_WIDTH, int WINDOW_HEIGHT, bool USE_VSYNC = true);
+	GRY_Video(int WINDOW_WIDTH, int WINDOW_HEIGHT, bool USE_VSYNC = true);
 
 	/**
 	 * @brief Destructor.
 	 * 
 	 */
-	~GRY_SDL();
+	~GRY_Video();
 
 	
-	GRY_SDL(const GRY_SDL&) = delete;
-	GRY_SDL& operator =(const GRY_SDL&) = delete;
+	GRY_Video(const GRY_Video&) = delete;
+	GRY_Video& operator =(const GRY_Video&) = delete;
 
 	/**
 	 * @brief Load a texture from an image file using SDL_image.
@@ -141,6 +141,6 @@ public:
 	 * @brief Get the SDL_Renderer* being used.
 	 * 
 	 * @return Reference to the SDL_Renderer*.
-	 */	
+	 */
 	SDL_Renderer* getRenderer() { return gameRenderer; }
 };

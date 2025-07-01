@@ -16,11 +16,11 @@ GRY_Audio::GRY_Audio() {
 }
 
 GRY_Audio::~GRY_Audio() {
-	FMOD_System_Release(system);
+	GRY_FMODCheck(FMOD_System_Release(system));
 }
 
 void GRY_Audio::process() {
-	FMOD_System_Update(system);
+	GRY_FMODCheck(FMOD_System_Update(system));
 }
 
 FMOD_SOUND* GRY_Audio::loadSound(const char* path) {
@@ -30,9 +30,9 @@ FMOD_SOUND* GRY_Audio::loadSound(const char* path) {
 }
 
 void GRY_Audio::releaseSound(FMOD_SOUND* sound) {
-	FMOD_Sound_Release(sound);
+	GRY_FMODCheck(FMOD_Sound_Release(sound));
 }
 
 void GRY_Audio::playSound(FMOD_SOUND *sound) {
-	FMOD_System_PlaySound(system, sound, NULL, false, NULL);
+	GRY_FMODCheck(FMOD_System_PlaySound(system, sound, NULL, false, NULL));
 }

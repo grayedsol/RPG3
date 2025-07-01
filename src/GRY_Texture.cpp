@@ -16,6 +16,6 @@ GRY_Texture::~GRY_Texture() {
 bool GRY_Texture::load(GRY_Game* game) {
     if (texture) { return true; }
 
-    texture = game->getSDL().loadTexture(path);
+    texture = game->getVideo().loadTexture(path);
     return false;
 }

@@ -5,7 +5,6 @@
  */
 #include "FadeToBlack.hpp"
 #include "GRY_Game.hpp"
-#include "GRY_SDL.hpp"
 #include "GRY_Log.hpp"
 #include "SDL3/SDL_render.h"
 
@@ -26,7 +25,7 @@ bool FadeToBlack::process() {
     }
 
     /* Fill screen with black at the current alpha level. */
-    SDL_SetRenderDrawColor(game->getSDL().getRenderer(), 0,0,0, (Uint8)alphaLevel);
-    SDL_RenderFillRect(game->getSDL().getRenderer(), NULL);
+    SDL_SetRenderDrawColor(game->getVideo().getRenderer(), 0,0,0, (Uint8)alphaLevel);
+    SDL_RenderFillRect(game->getVideo().getRenderer(), NULL);
     return false;
 }

@@ -8,7 +8,7 @@
 static const float LINE_SPACING = 2.f;
 
 TextBoxRenderer::TextBoxRenderer(TextBoxScene *scene) : scene(scene),
-	renderer(scene->getGame()->getSDL().getRenderer()),
+	renderer(scene->getGame()->getVideo().getRenderer()),
 	pixelScaling(&scene->getPixelGame()->getPixelScalingRef()) {
 }
 

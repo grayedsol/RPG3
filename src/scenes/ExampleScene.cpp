@@ -35,9 +35,9 @@ void ExampleScene::process() {
 
     /* Fill the window with the texture */
     int windowWidth, windowHeight;
-    game->getSDL().getWindowSize(&windowWidth, &windowHeight);
+    game->getVideo().getWindowSize(&windowWidth, &windowHeight);
     SDL_FRect dstRect { 0, 0, (float)windowWidth, (float)windowHeight };
-    SDL_RenderTexture(game->getSDL().getRenderer(), examplePng.texture, NULL, &dstRect);
+    SDL_RenderTexture(game->getVideo().getRenderer(), examplePng.texture, NULL, &dstRect);
 }
 
 bool ExampleScene::load() {

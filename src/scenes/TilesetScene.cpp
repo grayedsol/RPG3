@@ -27,7 +27,7 @@ void Tile::TilesetScene::setControls() {
 
 Tile::TilesetScene::TilesetScene(GRY_Game *game, const char *tilesetPath) :
 	Scene(game, tilesetPath),
-	renderer(game->getSDL().getRenderer()) {
+	renderer(game->getVideo().getRenderer()) {
 }
 
 void Tile::TilesetScene::process() {

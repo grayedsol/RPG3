@@ -16,10 +16,10 @@
 #endif
 
 GRY_Game::GRY_Game(int WINDOW_WIDTH, int WINDOW_HEIGHT, int MAX_FPS, bool USE_VSYNC) :
-	gsdl(WINDOW_WIDTH, WINDOW_HEIGHT, USE_VSYNC), fps(MAX_FPS), imguiDebug(this) {
+	video(WINDOW_WIDTH, WINDOW_HEIGHT, USE_VSYNC), fps(MAX_FPS), imguiDebug(this) {
 
-	if (!gsdl.init()) { 
-		GRY_Log("[Game] GRY_SDL initialization failed.\n");
+	if (!video.init()) { 
+		GRY_Log("[Game] GRY_Video initialization failed.\n");
 		gameRunning = false;
 		return;
 	}
@@ -28,7 +28,7 @@ GRY_Game::GRY_Game(int WINDOW_WIDTH, int WINDOW_HEIGHT, int MAX_FPS, bool USE_VS
 }
 
 void GRY_Game::runGame() {
-    auto& gameRenderer = gsdl.gameRenderer;
+    auto& gameRenderer = video.gameRenderer;
 	ImGuiIO& io = ImGui::GetIO();
 
     /* Game loop */
@@ -54,7 +54,7 @@ void GRY_Game::runGame() {
 		/* Output */
 		SDL_RenderPresent(gameRenderer);
 
-		if (!gsdl.USE_VSYNC) { fps.delay(); }
+		if (!video.USE_VSYNC) { fps.delay(); }
 		fps.computeDelta();
 	}
 }

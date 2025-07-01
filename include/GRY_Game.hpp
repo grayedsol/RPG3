@@ -5,7 +5,7 @@
  * @copyright Copyright (c) 2024
  */
 #pragma once
-#include "GRY_SDL.hpp"
+#include "GRY_Video.hpp"
 #include "SceneManager.hpp"
 #include "FPSHandler.hpp"
 #include "InputHandler.hpp"
@@ -21,10 +21,10 @@
 class GRY_Game {
 protected:
 	/**
-	 * @copybrief GRY_SDL
+	 * @copybrief GRY_Video
 	 * 
 	 */
-	GRY_SDL gsdl;
+	GRY_Video video;
 
 	/**
 	 * @copybrief GRY_Audio
@@ -97,11 +97,11 @@ public:
 	virtual void process();
 
 	/**
-	 * @brief Get the internal GRY_SDL.
+	 * @brief Get the internal GRY_Video.
 	 * 
 	 * @return Reference to the GRY_SDL.
 	 */
-	GRY_SDL& getSDL() { return gsdl; }
+	GRY_Video& getVideo() { return video; }
 
 	/**
 	 * @copydoc SceneManager::stackScene

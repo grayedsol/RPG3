@@ -24,7 +24,7 @@ void TextDecisionScene::setControls() {
 TextDecisionScene::TextDecisionScene(GRY_PixelGame *pGame, const char *scenePath, TextBoxScene* scene) :
 	Scene((GRY_Game*)pGame, scenePath),
 	scene(scene),
-	renderer(scene->getGame()->getSDL().getRenderer()),
+	renderer(scene->getGame()->getVideo().getRenderer()),
 	pixelScaling(&scene->getPixelGame()->getPixelScalingRef()) {
 }
 

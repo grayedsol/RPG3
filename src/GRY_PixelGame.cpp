@@ -17,7 +17,7 @@ GRY_PixelGame::GRY_PixelGame(int WINDOW_WIDTH, int WINDOW_HEIGHT, int MAX_FPS, b
 	SCREEN_HEIGHT_PIXELS = doc["SCREEN_HEIGHT_PIXELS"].GetUint();
 
 	int w;
-	gsdl.getWindowSize(&w, NULL);
+	video.getWindowSize(&w, NULL);
 	pixelScaling = w / (float)SCREEN_WIDTH_PIXELS;
 	pixelScaling = SDL_ceilf(pixelScaling);
 }
@@ -29,7 +29,7 @@ GRY_PixelGame::GRY_PixelGame(int WINDOW_WIDTH, int WINDOW_HEIGHT, int MAX_FPS, b
  */
 void GRY_PixelGame::process() {
 	int w;
-	gsdl.getWindowSize(&w, NULL);
+	video.getWindowSize(&w, NULL);
 	pixelScaling = w / (float)SCREEN_WIDTH_PIXELS;
 	pixelScaling = SDL_ceilf(pixelScaling);
 

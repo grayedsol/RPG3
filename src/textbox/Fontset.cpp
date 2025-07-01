@@ -24,7 +24,7 @@ bool Fontset::load(GRY_Game *game) {
 
 	/* Load texture */
 	if (!texture) {
-		texture = game->getSDL().loadTexture(fontDoc["texture"].GetString());
+		texture = game->getVideo().loadTexture(fontDoc["texture"].GetString());
 		return false;
 	}
 

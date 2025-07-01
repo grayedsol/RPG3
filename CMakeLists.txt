@@ -22,7 +22,7 @@ set(SOURCES
 	src/main.cpp
 	src/InputHandler.cpp
 	src/FPSHandler.cpp
-	src/GRY_SDL.cpp
+	src/GRY_Video.cpp
 	src/GRY_Audio.cpp
 	src/GRY_Game.cpp
 	src/Scene.cpp

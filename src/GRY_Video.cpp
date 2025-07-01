@@ -1,22 +1,22 @@
 /**
- * @file GRY_SDL.cpp
+ * @file GRY_Video.cpp
  * @author Grayedsol (grayedsol@gmail.com)
  * @copyright Copyright (c) 2024
  */
-#include "GRY_SDL.hpp"
+#include "GRY_Video.hpp"
 #include "GRY_Log.hpp"
 #include "SDL3/SDL.h"
 #include "SDL3_image/SDL_image.h"
 
-GRY_SDL::GRY_SDL(int WINDOW_WIDTH, int WINDOW_HEIGHT, bool USE_VSYNC) : 
+GRY_Video::GRY_Video(int WINDOW_WIDTH, int WINDOW_HEIGHT, bool USE_VSYNC) : 
 	WINDOW_WIDTH(WINDOW_WIDTH),
 	WINDOW_HEIGHT(WINDOW_HEIGHT),
 	USE_VSYNC(USE_VSYNC) {
 }
 
-GRY_SDL::~GRY_SDL() { exit(); }
+GRY_Video::~GRY_Video() { exit(); }
 
-bool GRY_SDL::init() {
+bool GRY_Video::init() {
 	/* Initialize SDL */
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		GRY_Log("Could not initialize SDL. Error: %s\n", SDL_GetError());
@@ -41,7 +41,7 @@ bool GRY_SDL::init() {
 		SDL_SetBooleanProperty(properties, SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER, true);
 		gameRenderer = SDL_CreateRendererWithProperties(properties);
 		SDL_DestroyProperties(properties);
-		GRY_Log("[GRY_SDL] Using VSync.\n");
+		GRY_Log("[GRY_Video] Using VSync.\n");
 	}
 	else { gameRenderer = SDL_CreateRenderer(gameWindow, NULL); }
 
@@ -58,7 +58,7 @@ bool GRY_SDL::init() {
 	return true;
 }
 
-void GRY_SDL::exit() {	
+void GRY_Video::exit() {	
 	/* Free renderer and window. */
 	SDL_DestroyRenderer(gameRenderer);
 	SDL_DestroyWindow(gameWindow);
@@ -69,7 +69,7 @@ void GRY_SDL::exit() {
 	SDL_Quit();
 }
 
-SDL_Texture* GRY_SDL::loadTexture(const char* path) {
+SDL_Texture* GRY_Video::loadTexture(const char* path) {
 	SDL_Texture* texture = nullptr;
 	SDL_Surface* surface = IMG_Load(path);
 
@@ -89,23 +89,23 @@ SDL_Texture* GRY_SDL::loadTexture(const char* path) {
 	return texture;
 }
 
-SDL_Texture *GRY_SDL::loadTextureIO(const char *data) {
+SDL_Texture *GRY_Video::loadTextureIO(const char *data) {
 	return nullptr;
 }
 
-void GRY_SDL::setWindowFullscreen(bool fullscreen) {
+void GRY_Video::setWindowFullscreen(bool fullscreen) {
 	SDL_SetWindowFullscreen(gameWindow, fullscreen);
 }
 
-void GRY_SDL::toggleFullscreen() {
+void GRY_Video::toggleFullscreen() {
 	gameFullscreen = !gameFullscreen;
 	SDL_SetWindowFullscreen(gameWindow, gameFullscreen);
 }
 
-void GRY_SDL::getWindowSize(int *w, int *h) {
+void GRY_Video::getWindowSize(int *w, int *h) {
 	SDL_GetWindowSize(gameWindow, w, h);	
 }
 
-void GRY_SDL::setWindowSize(int w, int h) {
+void GRY_Video::setWindowSize(int w, int h) {
 	SDL_SetWindowSize(gameWindow, w, h);
 }

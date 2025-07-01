@@ -11,7 +11,7 @@
 
 Tile::MapRenderer::MapRenderer(const MapScene *scene) :
 	scene(scene),
-	renderer(scene->getGame()->getSDL().getRenderer()),
+	renderer(scene->getGame()->getVideo().getRenderer()),
 	tileMap(&scene->getTileMap()),
 	entityMap(&scene->getTileEntityMap()),
 	pixelScaling(&scene->getPixelGame()->getPixelScalingRef()),

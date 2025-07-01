@@ -30,8 +30,8 @@ void imguiDebugger::init() {
     ImGui::StyleColorsDark();
 
     /* Setup with SDL */
-    ImGui_ImplSDL3_InitForSDLRenderer(game->getSDL().getWindow(), game->getSDL().getRenderer());
-    ImGui_ImplSDLRenderer3_Init(game->getSDL().getRenderer());
+    ImGui_ImplSDL3_InitForSDLRenderer(game->getVideo().getWindow(), game->getVideo().getRenderer());
+    ImGui_ImplSDLRenderer3_Init(game->getVideo().getRenderer());
 }
 
 void imguiDebugger::startFrame() {
@@ -46,19 +46,19 @@ void imguiDebugger::process() {
 	ImGui::Begin("Hello, world!");
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io->Framerate, io->Framerate);
 	if (ImGui::Button("480x270 Window")) {
-		game->getSDL().setWindowSize(480, 270);
+		game->getVideo().setWindowSize(480, 270);
 	}
 	else if (ImGui::Button("960x540 Window")) {
-		game->getSDL().setWindowSize(960, 540);
+		game->getVideo().setWindowSize(960, 540);
 	}
 	else if (ImGui::Button("1440x810 Window")) {
-		game->getSDL().setWindowSize(1440, 810);
+		game->getVideo().setWindowSize(1440, 810);
 	}
 	else if (ImGui::Button("1920x1080 Window")) {
-		game->getSDL().setWindowSize(1920, 1080);
+		game->getVideo().setWindowSize(1920, 1080);
 	}
 	else if (ImGui::Button("Toggle fullscreen")) {
-		game->getSDL().toggleFullscreen();
+		game->getVideo().toggleFullscreen();
 	}
 	ImGui::End();
 }

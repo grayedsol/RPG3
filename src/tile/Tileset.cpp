@@ -23,7 +23,7 @@ bool Tile::Tileset::load(GRY_Game* game) {
 	/* Load texture */
 	if (!texture) {
 		const char* imagePath = GRY_Tiled::getProperty(tilesetDoc, "imagePath").GetString();
-		texture = game->getSDL().loadTexture(imagePath);
+		texture = game->getVideo().loadTexture(imagePath);
 		return false;
 	}
 
