@@ -46,7 +46,6 @@ void TextBoxScene::setControls() {
 
 TextBoxScene::TextBoxScene(GRY_PixelGame* pGame, const char* scenePath, Scene* parentScene) :
 	Scene((GRY_Game*)pGame, scenePath),
-	sounds(&pGame->getAudio()),
 	decisionScene(pGame, "assets/textboxscene/decisionscene/scene.json", this),
 	parentScene(parentScene),
 	textBoxRenderer(this) {

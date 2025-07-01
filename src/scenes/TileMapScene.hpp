@@ -16,7 +16,7 @@
 #include "../tile/TileMapSpeak.hpp"
 #include "../tile/TileMapScripting.hpp"
 #include "TextBoxScene.hpp"
-#include "DialogueResource.hpp"
+#include "../tile/TileMapDialogueResource.hpp"
 #include "../tile/TileMapScriptResource.hpp"
 #include "SoundResource.hpp"
 
@@ -61,7 +61,7 @@ namespace Tile {
 		 * @brief Container for dialogue data.
 		 * 
 		 */
-		DialogueResource mapDialogues;
+		MapDialogueResource mapDialogues;
 
 		/**
 		 * @brief Container for script data.
@@ -230,7 +230,7 @@ namespace Tile {
 
 		const MapCamera& getMapCamera() const { return tileMapCamera; }
 
-		const DialogueResource& getDialogueResource() { return mapDialogues; }
+		const MapDialogueResource& getDialogueResource() { return mapDialogues; }
 
 		const SoundResource& getSoundResource() const { return sounds; }
 

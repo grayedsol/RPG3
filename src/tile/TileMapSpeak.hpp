@@ -5,7 +5,7 @@
  * @copyright Copyright (c) 2025
  */
 #pragma once
-#include "DialogueResource.hpp"
+#include "TileMapDialogueResource.hpp"
 
 class TextBoxScene;
 
@@ -14,7 +14,7 @@ namespace Tile {
 
 	class MapSpeak {
 	private:
-		const Dialogue* currentDialogue = nullptr;
+		const MapDialogue* currentDialogue = nullptr;
 
 		TextBoxScene* textbox;
 

@@ -29,7 +29,6 @@ Tile::MapScene::MapScene(GRY_PixelGame *pGame, const char *tileMapPath, MapScene
 	textBoxScene(pGame, "assets/textboxscene/scene.json", this),
 	tileMapSpeak(this),
 	mapScripting(this),
-	sounds(&pGame->getAudio()),
 	sceneInfo(sceneInfo) {
 }
 

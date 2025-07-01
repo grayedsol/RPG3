@@ -33,7 +33,7 @@ set(SOURCES
 	src/GRY_PixelGame.cpp
 	src/GRY_Tiled.cpp
 	src/GRY_Texture.cpp
-	src/DialogueResource.cpp
+	src/tile/TileMapDialogueResource.cpp
 	src/tile/Tileset.cpp
 	src/tile/TileCollision.cpp
 	src/tile/TileTileMap.cpp
