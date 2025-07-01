@@ -47,6 +47,7 @@ void GRY_Game::runGame() {
 		imguiDebug.process();
 		process();
 		scenes.process();
+		audio.process();
 		
 		imguiDebug.render(gameRenderer);
 

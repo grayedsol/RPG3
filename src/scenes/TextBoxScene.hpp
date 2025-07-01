@@ -7,6 +7,7 @@
 #pragma once
 #include "Scene.hpp"
 #include "GRY_Texture.hpp"
+#include "SoundResource.hpp"
 #include "TextDecisionScene.hpp"
 #include "../textbox/Fontset.hpp"
 #include "../textbox/TextBoxRenderer.hpp"
@@ -26,6 +27,8 @@ private:
 	Scene* parentScene;
 
 	TextDecisionScene decisionScene;
+
+	SoundResource sounds;
 
 	/**
 	 * @brief Texture of the message box.
@@ -63,6 +66,8 @@ private:
 	int index = 0;
 	double timer = 0;
 
+	double audioTimer = 0;
+
 	bool active = false;
 	bool speedup = false;
 
@@ -81,12 +86,7 @@ public:
 	 * @param scenePath File path to the scene data
 	 * @param parentScene Scene to activate when done
 	 */
-	TextBoxScene(GRY_PixelGame *pGame, const char *scenePath, Scene* parentScene) :
-		Scene((GRY_Game*)pGame, scenePath),
-		decisionScene(pGame, "assets/textboxscene/decisionscene/scene.json", this),
-		parentScene(parentScene),
-		textBoxRenderer(this) {
-	}
+	TextBoxScene(GRY_PixelGame *pGame, const char *scenePath, Scene* parentScene);
 
 	/**
 	 * @brief Initializes the scene.

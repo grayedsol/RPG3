@@ -7,7 +7,8 @@
 #pragma once
 #include "TileTileMap.hpp"
 #include "TileEntityMap.hpp"
-#include "GRY_PixelGame.hpp"
+
+struct SDL_Renderer;
 
 namespace Tile {
 	class MapScene;

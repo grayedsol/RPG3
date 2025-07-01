@@ -18,6 +18,7 @@
 #include "TextBoxScene.hpp"
 #include "DialogueResource.hpp"
 #include "../tile/TileMapScriptResource.hpp"
+#include "SoundResource.hpp"
 
 class GRY_PixelGame;
 
@@ -67,6 +68,12 @@ namespace Tile {
 		 * 
 		 */
 		MapScriptResource mapScripts;
+
+		/**
+		 * @brief Container for sounds.
+		 * 
+		 */
+		SoundResource sounds;
 
 		/**
 		 * @brief Renderer for the tile map.
@@ -139,20 +146,7 @@ namespace Tile {
 		 * @param game Associated game class.
 		 * @param tileMapPath File path to the tilemap scene.
 		 */
-		MapScene(GRY_PixelGame *pGame, const char *tileMapPath, MapSceneInfo sceneInfo = MapSceneInfo{}) :
-			Scene((GRY_Game *)pGame, tileMapPath),
-			entityMap(ecs),
-			tileMapRenderer(this),
-			tileMapCamera(this),
-			tileMapMovement(this),
-			tileMapQuadTrees(this),
-			tileSpriteAnimator(this),
-			tileMapInput(this),
-			textBoxScene(pGame, "assets/textboxscene/scene.json", this),
-			tileMapSpeak(this),
-			mapScripting(this),
-			sceneInfo(sceneInfo) {
-		}
+		MapScene(GRY_PixelGame *pGame, const char *tileMapPath, MapSceneInfo sceneInfo = MapSceneInfo{});
 
 		/**
 		 * @brief Initializes the scene.
@@ -237,6 +231,8 @@ namespace Tile {
 		const MapCamera& getMapCamera() const { return tileMapCamera; }
 
 		const DialogueResource& getDialogueResource() { return mapDialogues; }
+
+		const SoundResource& getSoundResource() const { return sounds; }
 
 		const MapScriptResource& getScriptResource() { return mapScripts; }
 

@@ -5,6 +5,7 @@
  */
 #include "TileMapRenderer.hpp"
 #include "../scenes/TileMapScene.hpp"
+#include "GRY_PixelGame.hpp"
 #include "SDL_RectOps.hpp"
 #include "SDL3/SDL_render.h"
 

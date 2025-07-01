@@ -1,4 +1,5 @@
 #include "TileMapScene.hpp"
+#include "GRY_PixelGame.hpp"
 #include "GRY_JSON.hpp"
 #include "../transitions/FadeToBlack.hpp"
 #ifndef NDEBUG
@@ -14,6 +15,22 @@ void Tile::MapScene::setControls() {
 	controls.mapCmd(GCmd::MapUp, VirtualButton::GAME_UP);
 	controls.mapCmd(GCmd::MapLeft, VirtualButton::GAME_LEFT);
 	controls.mapCmd(GCmd::MapRight, VirtualButton::GAME_RIGHT);
+}
+
+Tile::MapScene::MapScene(GRY_PixelGame *pGame, const char *tileMapPath, MapSceneInfo sceneInfo) :
+	Scene((GRY_Game *)pGame, tileMapPath),
+	entityMap(ecs),
+	tileMapRenderer(this),
+	tileMapCamera(this),
+	tileMapMovement(this),
+	tileMapQuadTrees(this),
+	tileSpriteAnimator(this),
+	tileMapInput(this),
+	textBoxScene(pGame, "assets/textboxscene/scene.json", this),
+	tileMapSpeak(this),
+	mapScripting(this),
+	sounds(&pGame->getAudio()),
+	sceneInfo(sceneInfo) {
 }
 
 /**
@@ -84,11 +101,11 @@ void Tile::MapScene::process() {
 }
 
 bool Tile::MapScene::load() {
-	if (tileMap.path && entityMap.path && mapDialogues.path && mapScripts.path) {
+	if (tileMap.path && entityMap.path && mapDialogues.path && sounds.path && mapScripts.path) {
 		return
 		tileMap.load(game) && entityMap.load(game) &&
 		mapDialogues.load(game) && textBoxScene.load() &&
-		mapScripts.load(game);
+		sounds.load(game) && mapScripts.load(game);
 	}
 
     /* Open scene document */
@@ -103,6 +120,8 @@ bool Tile::MapScene::load() {
 	mapDialogues.setPath(sceneDoc["dialoguePath"].GetString());
 	/* Initialize the script resource */
 	mapScripts.setPath(sceneDoc["scriptsPath"].GetString());
+	/* Initialize the sound resource */
+	sounds.setPath(sceneDoc["soundsPath"].GetString());
 	/* Read the normal tile size */
 	normalTileSize = sceneDoc["normalTileSize"].GetUint();
 

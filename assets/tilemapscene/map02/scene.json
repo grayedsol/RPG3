@@ -3,5 +3,6 @@
 	"tileEntityMapPath" : "assets\/maps\/map02entity.json",
 	"dialoguePath" : "assets\/maps\/map02dialogue.json",
 	"scriptsPath" : "assets\/maps\/map02script.json",
+	"soundsPath" : "assets\/sounds.json",
 	"normalTileSize" : 16
 }

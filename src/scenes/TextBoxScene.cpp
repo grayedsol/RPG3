@@ -9,9 +9,10 @@
 #include "SDL3/SDL_render.h"
 
 static const float BOTTOM_MARGIN = 8.f;
-static const double BASE_SCROLL_SPEED = 64.0;
+static const double BASE_SCROLL_SPEED = 96.0;
 static const double SCROLL_SPEED_MULTIPLIER = 2.0;
 static const double TIMER_LENGTH = 0.025;
+static const double AUDIO_TIMER_LENGTH = 0.075;
 
 void TextBoxScene::parseLine(char* line) {
 	char* character = line;
@@ -41,6 +42,14 @@ void TextBoxScene::parseLine(char* line) {
 
 void TextBoxScene::setControls() {
 	controls.mapCmd(GCmd::MessageOk, VirtualButton::GAME_A);
+}
+
+TextBoxScene::TextBoxScene(GRY_PixelGame* pGame, const char* scenePath, Scene* parentScene) :
+	Scene((GRY_Game*)pGame, scenePath),
+	sounds(&pGame->getAudio()),
+	decisionScene(pGame, "assets/textboxscene/decisionscene/scene.json", this),
+	parentScene(parentScene),
+	textBoxRenderer(this) {
 }
 
 void TextBoxScene::init() {
@@ -102,9 +111,14 @@ void TextBoxScene::process() {
 	/* Print incoming line. If it successfully printed up to index, increment index on a timer */
 	else if (textBoxRenderer.renderLine(incomingLine, scrollAmt, index)) {
 		timer -= game->getDelta() * (1 + speedup);
+		audioTimer -= game->getDelta();
 		while (timer <= 0.0) {
 			index++;
 			timer += TIMER_LENGTH;
+		}
+		if (audioTimer <= 0.0) {
+			game->getAudio().playSound(sounds.sounds.at(1));
+			audioTimer = AUDIO_TIMER_LENGTH;
 		}
 	}
 
@@ -113,8 +127,8 @@ void TextBoxScene::process() {
 }
 
 bool TextBoxScene::load() {
-	if (boxTexture.path && font.path) {
-		return boxTexture.load(game) && font.load(game) && decisionScene.load();
+	if (boxTexture.path && font.path && sounds.path) {
+		return boxTexture.load(game) && font.load(game) && sounds.load(game) && decisionScene.load();
 	}
 
 	/* Open scene document */
@@ -128,6 +142,8 @@ bool TextBoxScene::load() {
 	/* Store margins in textArea for now */
 	textArea.w = sceneDoc["marginX"].GetUint();
 	textArea.h = sceneDoc["marginY"].GetUint();
+	/* Initialize the sound resource */
+	sounds.setPath(sceneDoc["soundsPath"].GetString());
 	return false;
 }
 

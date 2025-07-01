@@ -6,7 +6,6 @@
  */
 #pragma once
 #include "TileEntityMap.hpp"
-#include "GRY_PixelGame.hpp"
 #include "QuadTree.hpp"
 
 namespace Tile {

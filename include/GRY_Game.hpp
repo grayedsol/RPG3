@@ -9,6 +9,7 @@
 #include "SceneManager.hpp"
 #include "FPSHandler.hpp"
 #include "InputHandler.hpp"
+#include "GRY_Audio.hpp"
 #include "imguiDebugger.hpp"
 
 /**
@@ -24,6 +25,12 @@ protected:
 	 * 
 	 */
 	GRY_SDL gsdl;
+
+	/**
+	 * @copybrief GRY_Audio
+	 * 
+	 */
+	GRY_Audio audio;
 
 	/**
 	 * @copybrief FPSHandler
@@ -141,6 +148,13 @@ public:
 	 * @copydoc InputHandler::isPressing
 	 */
 	const bool isPressing(GCmd cmd) { return input.isPressing(cmd); }
+
+	/**
+	 * @brief Get the internal GRY_Audio.
+	 * 
+	 * @return Reference to the GRY_Audio
+	 */
+	GRY_Audio& getAudio() { return audio; }
 
 	/**
 	 * @brief Determine whether the debug menu is active or not.

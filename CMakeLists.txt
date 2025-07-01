@@ -23,6 +23,7 @@ set(SOURCES
 	src/InputHandler.cpp
 	src/FPSHandler.cpp
 	src/GRY_SDL.cpp
+	src/GRY_Audio.cpp
 	src/GRY_Game.cpp
 	src/Scene.cpp
 	src/SceneManager.cpp
@@ -55,6 +56,7 @@ set(SOURCES
 	src/textbox/Fontset.cpp
 	src/textbox/TextBoxRenderer.cpp
 	src/scenes/TextDecisionScene.cpp
+	src/SoundResource.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
@@ -127,7 +129,7 @@ if(USE_SHARED_LIBS)
 
 	find_library(SDL3_LIB NAMES SDL3 sdl3 PATH_SUFFIXES lib)
 	find_library(SDL3_IMAGE_LIB NAMES SDL3_image sdl3_image PATH_SUFFIXES lib)
-	find_library(FMOD_LIB NAMES fmod PATH_SUFFIXES lib)
+	find_library(FMOD_LIB NAMES fmodL_vc PATH_SUFFIXES lib)
 
 	message(STATUS "SDL3 shared library: ${SDL3_LIB}")
 	message(STATUS "SDL3_image shared library: ${SDL3_IMAGE_LIB}")
