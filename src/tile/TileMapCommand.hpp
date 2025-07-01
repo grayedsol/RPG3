@@ -144,8 +144,7 @@ namespace Tile {
 		ECS::entity e;
 		Position2 spawnPosition = Position2{ -1, -1 };
 		Direction spawnDirection = Direction::DirectionNone;
-		static const unsigned MAX_PATH_LEN = 127;
-		char mapScenePath[MAX_PATH_LEN + 1] = { 0 };
+		unsigned mapScenePathIndex;
 	};
 
 	/**

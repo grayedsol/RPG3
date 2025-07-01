@@ -19,13 +19,15 @@ namespace Tile {
 
 		std::vector<Tileset> tilesets;
 
+		std::vector<const char*> paths;
+
 		MapECS* ecs;
 
 		EntityMap(MapECS& ecs) : ecs(&ecs) {}
 
 		EntityMap(const char* path, MapECS& ecs) : FileResource(path), ecs(&ecs) {}
 
-		~EntityMap() = default;
+		~EntityMap();
 
 		EntityMap(const EntityMap&) = delete;
 		EntityMap& operator=(const EntityMap&) = delete;

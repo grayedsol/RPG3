@@ -100,7 +100,7 @@
 				"collisionInteraction" : {
 					"command" : {
 						"type" : "SwitchMap",
-						"mapScenePath" : "assets\/tilemapscene\/map02\/scene.json",
+						"mapScenePathIndex" : 0,
 						"spawnPosition" : [0.125, 17],
 						"spawnDirection" : 6
 					},
@@ -127,5 +127,8 @@
 	"tilesets" : [
 		"assets\/textures\/data\/BoyA.json",
 		"assets\/textures\/data\/GirlA.json"
+	],
+	"paths" : [
+		"assets\/tilemapscene\/map02\/scene.json"
 	]
 }

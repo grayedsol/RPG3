@@ -219,7 +219,11 @@ bool Tile::MapScripting::processSwitchMap(TMC_SwitchMap& args) {
 	MapSceneInfo mapSceneInfo;
 	mapSceneInfo.spawnPosition = args.spawnPosition;
 	mapSceneInfo.spawnDirection = args.spawnDirection;
-	scene->switchMap(args.mapScenePath, mapSceneInfo);
+	GRY_Assert(args.mapScenePathIndex < scene->getTileEntityMap().paths.size(),
+		"[Tile::MapScripting] SwitchMap command's mapScenePathIndex (%d) was out of bounds.",
+		args.mapScenePathIndex
+	);
+	scene->switchMap(scene->getTileEntityMap().paths.at(args.mapScenePathIndex), mapSceneInfo);
 	return true;
 }
 

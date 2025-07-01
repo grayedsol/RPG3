@@ -26,6 +26,10 @@ static void registerMapCommands(Tile::EntityMap& eMap, entity e, float normalTil
 static void registerCollisionInteraction(Tile::EntityMap& eMap, entity e, float normalTileSize, const GRY_JSON::Value& collisionInteractionData);
 static void sortEntityLayer(ComponentSet<Position2>& positions, std::vector<entity>& layer);
 
+Tile::EntityMap::~EntityMap() {
+	for (auto filePath : paths) { delete[] filePath; }
+}
+
 bool Tile::EntityMap::load(GRY_Game *game) {
 	if (!entityLayers.empty()) { return true; }
 	GRY_JSON::Document doc;
@@ -44,6 +48,14 @@ bool Tile::EntityMap::load(GRY_Game *game) {
 	/* Load tilesets one by one */
 	for (auto& tileset : tilesets) {
 		if (!tileset.load(game)) { return false; }
+	}
+
+	/* Create paths */
+	if (paths.empty() && doc["paths"].GetArray().Size() > 0) {
+		for (auto& filepath : doc["paths"].GetArray()) {
+			const char* newFilePath = GRY_copyString(filepath.GetString());
+			paths.push_back(newFilePath);
+		}
 	}
 
 	/* Load entity layer data */

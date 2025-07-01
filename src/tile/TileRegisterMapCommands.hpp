@@ -69,9 +69,6 @@ static Tile::MapCommand registerTMC_PlayerTeleport(float normalTileSize, const G
 static Tile::MapCommand registerTMC_SwitchMap(float normalTileSize, const GRY_JSON::Value& args, ECS::entity e = ECS::NONE) {
 	Tile::TMC_SwitchMap switchMap;
 	switchMap.e = e != ECS::NONE ? e : args["e"].GetUint();
-	GRY_Assert(args["mapScenePath"].GetStringLength() <= Tile::TMC_SwitchMap::MAX_PATH_LEN,
-		"[Tile::EntityMap] SwitchMap mapScenePath was too long (max %d)", Tile::TMC_SwitchMap::MAX_PATH_LEN
-	);
 	if (args.HasMember("spawnPosition")) {
 		switchMap.spawnPosition = Position2 {
 			args["spawnPosition"].GetArray()[0].GetFloat() * normalTileSize,
@@ -81,7 +78,7 @@ static Tile::MapCommand registerTMC_SwitchMap(float normalTileSize, const GRY_JS
 	if (args.HasMember("spawnDirection")) {
 		switchMap.spawnDirection = static_cast<Tile::Direction>(args["spawnDirection"].GetUint());
 	}
-	strcpy(switchMap.mapScenePath, args["mapScenePath"].GetString());
+	switchMap.mapScenePathIndex = args["mapScenePathIndex"].GetUint();
 	return Tile::MapCommand { .switchMap = switchMap };
 }
 
