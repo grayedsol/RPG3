@@ -1,7 +1,7 @@
 {
 	"boxTexturePath" : "assets/textures/image/textbox.png",
 	"fontTexturePath" : "assets/textures/data/font.json",
-	"soundsPath" : "assets/sounds.json",
+	"soundsPath" : "assets/textboxscene/sounds.json",
 	"marginX" : 10,
 	"marginY" : 8
 }

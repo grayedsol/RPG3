@@ -116,7 +116,7 @@ void TextBoxScene::process() {
 			timer += TIMER_LENGTH;
 		}
 		if (audioTimer <= 0.0) {
-			game->getAudio().playSound(sounds.sounds.at(1));
+			game->getAudio().playSound(sounds.sounds.at(audioVoice));
 			audioTimer = AUDIO_TIMER_LENGTH;
 		}
 	}

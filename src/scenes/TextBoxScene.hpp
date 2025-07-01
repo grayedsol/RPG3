@@ -66,6 +66,7 @@ private:
 	int index = 0;
 	double timer = 0;
 
+	unsigned audioVoice = 0;
 	double audioTimer = 0;
 
 	bool active = false;
@@ -131,6 +132,10 @@ public:
 	 * 
 	 */
 	void close();
+
+	void setVoice(unsigned soundIndex) { audioVoice = soundIndex; }
+
+	void resetVoice() { audioVoice = 0; }
 
 	void openDecisionBox();
 
