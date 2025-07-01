@@ -1,21 +1,18 @@
 #pragma once
 #include "FileResource.hpp"
-#include "GRY_Audio.hpp"
 #include <vector>
+
+class FMOD_SOUND;
 
 struct SoundResource : public FileResource {
 	using Sound = FMOD_SOUND;
 	
 	std::vector<Sound*> sounds;
 
-	GRY_Audio* audio = nullptr;
+	SoundResource() = default;
+	SoundResource(const char* path) : FileResource(path) {}
 
-	SoundResource(GRY_Audio* audio) : audio(audio) {}
-	SoundResource(GRY_Audio* audio, const char* path) : audio(audio), FileResource(path) {}
-
-	~SoundResource() {
-		for (auto sound : sounds) { audio->releaseSound(sound); }
-	}
+	~SoundResource();
 
 	SoundResource(const SoundResource&) = delete;
 	SoundResource& operator=(const SoundResource&) = delete;

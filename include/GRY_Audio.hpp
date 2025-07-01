@@ -18,7 +18,7 @@ public:
 
 	FMOD_SOUND* loadSound(const char* path);
 
-	void releaseSound(FMOD_SOUND* sound);
+	static void releaseSound(FMOD_SOUND* sound);
 
 	void playSound(FMOD_SOUND* sound);
 };
