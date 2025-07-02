@@ -111,13 +111,13 @@ void TextBoxScene::process() {
 	else if (textBoxRenderer.renderLine(incomingLine, scrollAmt, index)) {
 		timer -= game->getDelta() * (1 + speedup);
 		audioTimer -= game->getDelta();
+		if (audioTimer <= 0.0 && index != 0) {
+			game->getAudio().playSound(sounds.sounds.at(audioVoice));
+			audioTimer = AUDIO_TIMER_LENGTH;
+		}
 		while (timer <= 0.0) {
 			index++;
 			timer += TIMER_LENGTH;
-		}
-		if (audioTimer <= 0.0) {
-			game->getAudio().playSound(sounds.sounds.at(audioVoice));
-			audioTimer = AUDIO_TIMER_LENGTH;
 		}
 	}
 

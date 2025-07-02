@@ -40,6 +40,7 @@ bool TextBoxRenderer::renderLine(const char* line, float scrollAmt, int index) {
 	for (int i = 0; i < index && line[i]; i++) {
 		if (lineSpaceAvailable < cursor.y) {
 			yStart += std::max(lineSpaceAvailable - cursor.y, -scrollAmt);
+			yStart = std::max(yStart, -font.charHeight - LINE_SPACING);
 			return false;
 		}
 		if (line[i] == '\n') {
