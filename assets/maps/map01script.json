@@ -33,6 +33,11 @@
 				},
 				{
 					"commandSet" : [
+						{ "type" : "ActorWaitForSpeak", "e" : 1 }
+					]
+				},
+				{
+					"commandSet" : [
 						{ "type" : "ActorWait", "e" : 1, "time" : 1 },
 						{ "type" : "ActorWait", "e" : 2, "time" : 1 }
 					]

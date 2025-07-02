@@ -15,7 +15,7 @@ void componentImGui(Tile::Actor& actor) {
 	ImGui::InputFloat("##0", &actor.speed, 1.f, 0);
 	
 	ImGui::Text("direction: %d", actor.direction);
-	ImGui::Text("moving: %d", actor.moving);
+	ImGui::Text("movingDirection: %d", actor.movingDirection);
 	ImGui::Text("sprinting: %d", actor.sprinting);
 }
 

@@ -5,6 +5,7 @@
  * @copyright Copyright (c) 2024
  */
 #pragma once
+#include "Components.hpp"
 #include "TileComponents.hpp"
 
 namespace Tile {
@@ -27,6 +28,12 @@ namespace Tile {
 		 * 
 		 */
 		const ComponentSet<Actor>* actors;
+
+		/**
+		 * @brief Velocities of entities.
+		 * 
+		 */
+		const ComponentSet<Velocity2>* velocities;
 
 		/**
 		 * @brief Animations of ActorSprites.

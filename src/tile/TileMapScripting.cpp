@@ -43,6 +43,7 @@ void Tile::MapScripting::process(double delta) {
 	switch (mode) {
 		case GAMEPLAY:
 			processGameplay(delta);
+			processEntities(delta);
 			break;
 		case CUTSCENE:
 			processCutscene(delta);
@@ -50,7 +51,6 @@ void Tile::MapScripting::process(double delta) {
 		default:
 			break;
 	}
-	processEntities(delta);
 }
 
 void Tile::MapScripting::processEntities(double delta) {
@@ -81,28 +81,17 @@ void Tile::MapScripting::processCutscene(double delta) {
 	bool moveOn = true;
 	for (auto& command : currentScript.at(scriptIndex)) {
 		if (command.data.type == MAP_CMD_NONE) { continue; }
-		if (command.data.e == ECS::NONE) {
-			if (executeCommand(command, delta)) {
-				command = MapCommand { .data { MAP_CMD_NONE } };
-			}
-			moveOn = false;
-			continue;
+		if (executeCommand(command, delta)) {
+			command = MapCommand { .data { MAP_CMD_NONE } };
 		}
-		if (ecs->getComponent<MapCommand>().get(command.data.e).data.type != MAP_CMD_NONE) {
-			moveOn = false;
-		}
+		moveOn = false;
+		continue;
 	}
 	if (!moveOn) { return; }
 
-	scriptIndex++;
-	if (scriptIndex >= currentScript.size()) {
+	if (++scriptIndex >= currentScript.size()) {
 		mode = GAMEPLAY;
 		scriptIndex = 0;
-		return;
-	}
-	for (auto& cmd : currentScript.at(scriptIndex)) {
-		if (cmd.data.e == ECS::NONE) { continue; }
-		else { ecs->getComponent<MapCommand>().get(cmd.data.e) = cmd; }
 	}
 }
 
@@ -120,6 +109,8 @@ bool Tile::MapScripting::executeCommand(MapCommand& command, double delta) {
 			return processActorChangeDialogue(command.actorChangeDialogue);
 		case MAP_CMD_ACTOR_SPEAK:
 			return processActorSpeak(command.actorSpeak);
+		case MAP_CMD_ACTOR_WAIT_FOR_SPEAK:
+			return processActorWaitForSpeak(command.actorWaitForSpeak);
 		case MAP_CMD_PLAYER_TELEPORT:
 			return processPlayerTeleport(command.playerTeleport);
 		case MAP_CMD_SWITCH_MAP:
@@ -141,7 +132,7 @@ bool Tile::MapScripting::executeCommand(MapCommand& command, double delta) {
 }
 
 bool Tile::MapScripting::processActorMovePos(TMC_ActorMovePos& args) {
-	static int sign[2] = { -1, 1 };
+	static const int sign[2] = { -1, 1 };
 	if (args.e == ecs->getComponent<Player>().value[0].speakingTo) { return false; }
 	Position2& pos = ecs->getComponent<Position2>().get(args.e);
 	if (pos == args.targetPos) { return true; }
@@ -162,26 +153,20 @@ bool Tile::MapScripting::processActorMovePos(TMC_ActorMovePos& args) {
 		}
 	}
 
-	if (vel == Velocity2{ 0, 0 }) {
-		ecs->getComponent<Actor>().get(args.e).moving = false;
-		return true;
-	}
+	Direction direction = vecToDir(vel);
+	ecs->getComponent<Actor>().get(args.e).movingDirection = direction;
+	if (direction) { ecs->getComponent<Actor>().get(args.e).direction = direction; }
 
-	ecs->getComponent<Actor>().get(args.e).direction = vecToDir(vel);
-	ecs->getComponent<Actor>().get(args.e).moving = true;
 	return false;
 }
 
 bool Tile::MapScripting::processActorSetDirection(TMC_ActorSetDirection& args) {
-	if (args.e == ecs->getComponent<Player>().value[0].speakingTo) { return false; }
-	if (args.direction != Direction::DirectionNone && args.direction != Direction::DirectionSize) {
-		ecs->getComponent<Actor>().get(args.e).direction = args.direction;
-	}
+	if (ecs->getComponent<Player>().value[0].speakingTo == args.e) { return false; }
+	ecs->getComponent<Actor>().get(args.e).direction = args.direction;
 	return true;
 }
 
 bool Tile::MapScripting::processActorWait(TMC_ActorWait& args, double delta) {
-	if (args.e == ecs->getComponent<Player>().value[0].speakingTo) { return false; }
 	return (args.time -= delta) <= 0.f;
 }
 
@@ -202,11 +187,14 @@ bool Tile::MapScripting::processActorSpeak(TMC_ActorSpeak& args) {
 		actors.get(args.e).direction = args.direction != Direction::DirectionNone ? 
 			args.direction :
 			invDirs[actors.get(players.getEntity(0)).direction];
-		actors.get(args.e).moving = false;
 	}
 	players.get(players.getEntity(0)).speakingTo = args.e;
 	scene->getTileMapSpeak().speak(args.dialogueId);
 	return true;
+}
+
+bool Tile::MapScripting::processActorWaitForSpeak(TMC_ActorWaitForSpeak &args) {
+	return ecs->getComponent<Player>().value[0].speakingTo != args.e;
 }
 
 bool Tile::MapScripting::processPlayerTeleport(TMC_PlayerTeleport& args) {
@@ -235,7 +223,7 @@ bool Tile::MapScripting::processActivateScript(TMC_ActivateScript &args, double 
 	mode = CUTSCENE;
 	for (auto& cmd : currentScript.front()) {
 		if (cmd.data.e == ECS::NONE) { continue; }
-		else { ecs->getComponent<MapCommand>().get(cmd.data.e) = cmd; }
+		else { ecs->getComponent<MapCommand>().get(cmd.data.e) = MapCommand { .data = { MAP_CMD_NONE } }; }
 	}
 	return true;
 }

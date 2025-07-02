@@ -22,6 +22,7 @@ namespace Tile {
 		MAP_CMD_ACTOR_WAIT,
 		MAP_CMD_ACTOR_CHANGE_DIALOGUE,
 		MAP_CMD_ACTOR_SPEAK,
+		MAP_CMD_ACTOR_WAIT_FOR_SPEAK,
 		MAP_CMD_PLAYER_TELEPORT,
 		MAP_CMD_SWITCH_MAP,
 		MAP_CMD_ACTIVATE_SCRIPT,
@@ -43,6 +44,7 @@ namespace Tile {
 		"ActorWait",
 		"ActorChangeDialogue",
 		"ActorSpeak",
+		"ActorWaitForSpeak",
 		"PlayerTeleport",
 		"SwitchMap",
 		"ActivateScript",
@@ -83,9 +85,6 @@ namespace Tile {
 	/**
 	 * @brief Makes an actor wait for a time.
 	 * 
-	 * @details
-	 * The timer does not decrement while the actor
-	 * is currently being spoken to.
 	 */
 	struct TMC_ActorWait {
 		MapCommandType type = MAP_CMD_ACTOR_WAIT;
@@ -111,7 +110,7 @@ namespace Tile {
 	 * @details
 	 * Instant.
 	 * To make a script wait for the dialogue to be played out,
-	 * put an ActorWait command for the same entity directly
+	 * put an ActorWaitForSpeak command for the same entity directly
 	 * after this command.
 	 */
 	struct TMC_ActorSpeak {
@@ -119,6 +118,15 @@ namespace Tile {
 		ECS::entity e;
 		unsigned dialogueId;
 		Direction direction = Direction::DirectionNone;
+	};
+
+	/**
+	 * @brief Waits for an actor to be done speaking.
+	 * 
+	 */
+	struct TMC_ActorWaitForSpeak {
+		MapCommandType type = MAP_CMD_ACTOR_WAIT_FOR_SPEAK;
+		ECS::entity e;
 	};
 
 	/**
@@ -205,6 +213,7 @@ namespace Tile {
 		TMC_ActorWait actorWait;
 		TMC_ActorChangeDialogue actorChangeDialogue;
 		TMC_ActorSpeak actorSpeak;
+		TMC_ActorWaitForSpeak actorWaitForSpeak;
 		TMC_PlayerTeleport playerTeleport;
 		TMC_SwitchMap switchMap;
 		TMC_ActivateScript activateScript;

@@ -52,10 +52,10 @@ namespace Tile {
 		Direction direction = Direction::Down;
 
 		/**
-		 * @brief Whether the actor is moving or not.
+		 * @brief Direction the actor is moving.
 		 * 
 		 */
-		bool moving = false;
+		Direction movingDirection = Direction::DirectionNone;
 
 		/**
 		 * @brief Whether the actor is sprinting or not.

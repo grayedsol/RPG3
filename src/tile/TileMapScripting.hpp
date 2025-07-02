@@ -93,6 +93,8 @@ namespace Tile {
 
 		bool processActorSpeak(TMC_ActorSpeak& args);
 
+		bool processActorWaitForSpeak(TMC_ActorWaitForSpeak& args);
+
 		bool processPlayerTeleport(TMC_PlayerTeleport& args);
 
 		bool processSwitchMap(TMC_SwitchMap& args);

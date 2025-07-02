@@ -71,7 +71,7 @@ void Tile::MapInput::process() {
 	direction <<= r;
 	direction += (ud << u);
 
-	actors->get(player).moving = (bool)direction;
+	actors->get(player).movingDirection = static_cast<Direction>(direction);
 	actors->get(player).sprinting = scene->isPressing(GCmd::MapSprint);
 	if (direction) {
 		actors->get(player).direction = static_cast<Direction>(direction);

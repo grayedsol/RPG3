@@ -56,6 +56,15 @@ static Tile::MapCommand registerTMC_ActorSpeak(float normalTileSize, const GRY_J
 	return Tile::MapCommand { .actorSpeak = actorSpeak };
 }
 
+static Tile::MapCommand registerTMC_ActorWaitForSpeak(float normalTileSize, const GRY_JSON::Value& args, ECS::entity e = ECS::NONE) {
+	Tile::TMC_ActorWaitForSpeak actorWaitForSpeak;
+	actorWaitForSpeak.e = e != ECS::NONE ? e : args["e"].GetUint();
+	GRY_Assert(actorWaitForSpeak.e != ECS::NONE,
+		"[Tile::EntityMap] ActorWaitForSpeak did not have an entity to wait for.\n"
+	);
+	return Tile::MapCommand { .actorWaitForSpeak = actorWaitForSpeak };
+}
+
 static Tile::MapCommand registerTMC_PlayerTeleport(float normalTileSize, const GRY_JSON::Value& args, ECS::entity e = ECS::NONE) {
 	Tile::TMC_PlayerTeleport playerTeleport;
 	playerTeleport.e = e != ECS::NONE ? e : args["e"].GetUint();

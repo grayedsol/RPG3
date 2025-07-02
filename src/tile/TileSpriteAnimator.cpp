@@ -9,13 +9,15 @@
 Tile::SpriteAnimator::SpriteAnimator(MapScene *scene) :
 	sprites(&scene->getECS().getComponent<ActorSprite>()),
 	actors(&scene->getECS().getComponentReadOnly<Actor>()),
+	velocities(&scene->getECSReadOnly().getComponentReadOnly<Velocity2>()),
 	actorAnimations(&scene->getECS().getComponent<ActorSpriteAnims>()) {
 }
 
 void Tile::SpriteAnimator::process(double delta) {
 	for (auto e : *actorAnimations) {
 		ActorSpriteAnims& animations = actorAnimations->get(e);
-		if (!actors->get(e).moving) {
+		const Velocity2& velocity = velocities->get(e);
+		if (velocity == Velocity2{ 0, 0 }) {
 			sprites->get(e).index = static_cast<uint8_t>(actors->get(e).direction);
 			animations.timer = 0;
 			animations.index = 0;
