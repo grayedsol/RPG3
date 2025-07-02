@@ -35,16 +35,17 @@ bool TextBoxRenderer::renderLine(const char* line, float scrollAmt, int index) {
 	
 	const Fontset& font = scene->getFont();
 	SDL_Rect rect = scene->getTextArea();
-	float lineSpaceAvailable = rect.h - font.charHeight - LINE_SPACING;
+	const float lineHeight = font.charHeight + LINE_SPACING;
+	float lineSpaceAvailable = rect.h - lineHeight;
 
 	for (int i = 0; i < index && line[i]; i++) {
 		if (lineSpaceAvailable < cursor.y) {
 			yStart += std::max(lineSpaceAvailable - cursor.y, -scrollAmt);
-			yStart = std::max(yStart, -font.charHeight - LINE_SPACING);
+			yStart = std::max(yStart, lineHeight * ((int)(yStart - lineHeight) / (int)lineHeight));
 			return false;
 		}
 		if (line[i] == '\n') {
-			cursor.y += font.charHeight + LINE_SPACING;
+			cursor.y += lineHeight;
 			cursor.x = 0;
 			continue;
 		}
@@ -52,7 +53,7 @@ bool TextBoxRenderer::renderLine(const char* line, float scrollAmt, int index) {
 		const SDL_FRect* srcRect = font.getSourceRect(line[i] - ' ');
 
 		if (cursor.x + srcRect->w > rect.w) {
-			cursor.y += font.charHeight + LINE_SPACING;
+			cursor.y += lineHeight;
 			cursor.x = 0;
 			i--;
 			continue;
@@ -68,7 +69,7 @@ bool TextBoxRenderer::renderLine(const char* line, float scrollAmt, int index) {
 		cursor.x += srcRect->w;
 		SDL_RenderTexture(renderer, font.texture, srcRect, &dstRect);
 	}
-	cursor.y += font.charHeight + LINE_SPACING;
+	cursor.y += lineHeight;
 	cursor.x = 0;
 	return true;
 }
@@ -79,20 +80,21 @@ bool TextBoxRenderer::renderLine(const char* line, float scrollAmt, int index) {
  */
 void TextBoxRenderer::setSpacingFromLine(const char* line) {
 	const Fontset& font = scene->getFont();
+	const float lineHeight = font.charHeight + LINE_SPACING;
 	SDL_Rect rect = scene->getTextArea();
 
 	float x = 0;
-	yStart = scene->getTextArea().h - (font.charHeight + LINE_SPACING);
+	yStart = scene->getTextArea().h - lineHeight;
 	for (; *line != '\0'; line++) {
 		if (*line == '\n') {
-			yStart -= font.charHeight + LINE_SPACING;
+			yStart -= lineHeight;
 			x = 0;
 			continue;
 		}
 
 		const SDL_FRect* srcRect = font.getSourceRect(*line - ' ');
 		if (x + srcRect->w > rect.w) {
-			yStart -= font.charHeight + LINE_SPACING;
+			yStart -= lineHeight;
 			x = 0;
 			line--;
 			continue;
