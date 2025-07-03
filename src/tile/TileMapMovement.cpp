@@ -81,7 +81,12 @@ Hitbox Tile::MapMovement::handleEntityCollisions(Hitbox box, ECS::entity e, int 
 	std::vector<Hitbox> eCollisions;
 	scene->getQuadTrees().at(layer).query(box, e, eCollisions);
 	if (eCollisions.empty()) { return box; }
-	*((Position2*)&box) += AABBMTV(box, eCollisions.back());
+	Velocity2 resolutionVector = AABBMTV(box, eCollisions.back());
+	*((Position2*)&box) += resolutionVector;
+	if (resolutionVector.x < 0) { box.x = floorf(box.x); }
+	if (resolutionVector.x > 0) { box.x = ceilf(box.x); }
+	if (resolutionVector.y < 0) { box.y = floorf(box.y); }
+	if (resolutionVector.y > 0) { box.y = ceilf(box.y); }
 
 	if (attempts >= MAX_COLLISION_RESOLUTION_ATTEMPTS) { return box; }
 	return handleEntityCollisions(box, e, layer, attempts + 1);

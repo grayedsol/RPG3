@@ -173,7 +173,7 @@ bool Tile::MapScripting::processActorMovePos(TMC_ActorMovePos& args) {
 	ecs->getComponent<Actor>().get(args.e).movingDirection = direction;
 	if (direction) { ecs->getComponent<Actor>().get(args.e).direction = direction; }
 
-	return false;
+	return !direction;
 }
 
 bool Tile::MapScripting::processActorSetDirection(TMC_ActorSetDirection& args) {
