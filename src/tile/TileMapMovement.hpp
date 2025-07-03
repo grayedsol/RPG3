@@ -108,5 +108,11 @@ namespace Tile {
 		 * @param delta Delta time for game processing, in seconds.
 		 */
 		void process(double delta);
+
+		/**
+		 * @brief Reset all actor's moving directions to DirectionNone.
+		 * 
+		 */
+		void postProcess();
 	};
 };

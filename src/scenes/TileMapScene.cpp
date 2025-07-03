@@ -90,6 +90,8 @@ void Tile::MapScene::process() {
 	tileMap.tileset.processAnimations(game->getDelta());
 	tileMapRenderer.process();
 	
+	tileMapMovement.postProcess();
+	
 	textBoxScene.process();
 
 	EntityMap::updateLayers(&entityMap);
