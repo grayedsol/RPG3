@@ -10,10 +10,10 @@
 void Tile::MapSpeak::endSpeak() {
 	index = 0;
 	scene->getECS().getComponent<Player>().value.at(0).speakingTo = ECS::NONE;
-	if (currentDialogue->command.data.type != MAP_CMD_NONE) { /* Special case */
+	if (currentDialogue->command.data.type != MAP_CMD_NONE) {
 		MapCommand command = currentDialogue->command;
 		scene->executeCommand(command);
-		if (command.data.type == MAP_CMD_ACTOR_SPEAK) { return; }
+		if (command.data.type == MAP_CMD_ACTOR_SPEAK) { return; } /* Special case */
 	}
 	textbox->close();
 	currentDialogue = nullptr;

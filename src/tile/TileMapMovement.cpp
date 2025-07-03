@@ -145,7 +145,6 @@ void Tile::MapMovement::process(double delta) {
 		glide(delta, prevVelocity, e);
 
 		unsigned layer = mapEntities->get(e).layer;
-		if (!velocities->contains(e)) { continue; }
 		if (hitboxes->contains(e)) {
 			Hitbox box = hitboxes->get(e);
 			Hitbox oldBox = box;
