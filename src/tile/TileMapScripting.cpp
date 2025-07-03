@@ -78,16 +78,17 @@ void Tile::MapScripting::processGameplay(double delta) {
 }
 
 void Tile::MapScripting::processCutscene(double delta) {
-	bool moveOn = true;
+	bool currentScriptComplete = true;
 	for (auto& command : currentScript.at(scriptIndex)) {
 		if (command.data.type == MAP_CMD_NONE) { continue; }
+
+		currentScriptComplete = false;
 		if (executeCommand(command, delta)) {
 			command = MapCommand { .data { MAP_CMD_NONE } };
 		}
-		moveOn = false;
 		continue;
 	}
-	if (!moveOn) { return; }
+	if (!currentScriptComplete) { return; }
 
 	if (++scriptIndex >= currentScript.size()) {
 		mode = GAMEPLAY;
@@ -133,26 +134,36 @@ bool Tile::MapScripting::executeCommand(MapCommand& command, double delta) {
 
 bool Tile::MapScripting::processActorMovePos(TMC_ActorMovePos& args) {
 	static const int sign[2] = { -1, 1 };
-	if (args.e == ecs->getComponent<Player>().value[0].speakingTo) { return false; }
-	Position2& pos = ecs->getComponent<Position2>().get(args.e);
-	if (pos == args.targetPos) { return true; }
-	if (args.startPos == Position2{ 0, 0 }) { args.startPos = pos; }
 
+	/* If being spoken to, don't move */
+	if (args.e == ecs->getComponent<Player>().value[0].speakingTo) { return false; }
+
+	Position2& pos = ecs->getComponent<Position2>().get(args.e);
+	/* If the target position has been reached, return true */
+	if (pos == args.targetPos) { return true; }
+	/* If the target velocity is at the default/zero value, calculate and set it */
+	if(args.targetVel == Velocity2{ 0, 0 }) {
+		Velocity2 targetVel = args.targetPos - pos;
+		targetVel.x = (bool)targetVel.x * sign[targetVel.x > 0];
+		targetVel.y = (bool)targetVel.y * sign[targetVel.y > 0];
+		args.targetVel = targetVel;
+	}
+
+	/* Construct movement vector */
 	Velocity2 vel = args.targetPos - pos;
 	vel.x = (bool)vel.x * sign[vel.x > 0];
 	vel.y = (bool)vel.y * sign[vel.y > 0];
 
-	Velocity2 vel2 = args.targetPos - args.startPos;
-	vel2.x = (bool)vel2.x * sign[vel2.x > 0];
-	vel2.y = (bool)vel2.y * sign[vel2.y > 0];
-
+	/* Check if actor has moved past the target by comparing the signs of movement and target vectors */
 	for (int i = 0; i < 2; i++) {
-		if (vel[i] * vel2[i] <= 0) {
+		if (vel[i] * args.targetVel[i] <= 0) {
+			/* If there is a mismatch, set movement to 0 and position to the target position */
 			vel[i] = 0;
 			pos[i] = args.targetPos[i];
 		}
 	}
 
+	/* Set direction for the movement system to use */
 	Direction direction = vecToDir(vel);
 	ecs->getComponent<Actor>().get(args.e).movingDirection = direction;
 	if (direction) { ecs->getComponent<Actor>().get(args.e).direction = direction; }
