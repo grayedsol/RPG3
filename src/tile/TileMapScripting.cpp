@@ -139,6 +139,8 @@ bool Tile::MapScripting::processActorMovePos(TMC_ActorMovePos& args) {
 	if (args.e == ecs->getComponent<Player>().value[0].speakingTo) { return false; }
 
 	Position2& pos = ecs->getComponent<Position2>().get(args.e);
+	Hitbox oldBox = ecs->getComponent<Hitbox>().get(args.e);
+	Hitbox& box = ecs->getComponent<Hitbox>().get(args.e);
 	/* If the target position has been reached, return true */
 	if (pos == args.targetPos) { return true; }
 	/* If the target velocity is at the default/zero value, calculate and set it */
@@ -162,6 +164,9 @@ bool Tile::MapScripting::processActorMovePos(TMC_ActorMovePos& args) {
 			pos[i] = args.targetPos[i];
 		}
 	}
+	box.x = pos.x;
+	box.y = pos.y;
+	scene->updateQuadTree(oldBox, box, args.e, ecs->getComponent<MapEntity>().get(args.e).layer);
 
 	/* Set direction for the movement system to use */
 	Direction direction = vecToDir(vel);
