@@ -117,7 +117,7 @@ void MenuScene::process() {
 			break;
 		case GCmd::MenuLeft:
 			currentSelection += currentSelection % numCols ? -1 : (numCols - 1);
-			setSelection(currentSelection);
+			setSelection((uint8_t)currentSelection);
 			break;
 		case GCmd::MenuRight:
 			currentSelection += (currentSelection + 1) % numCols ? 1 : -(numCols - 1);

@@ -1,4 +1,6 @@
 #include "TileMapMenuScene.hpp"
+#include "TileMapScene.hpp"
+#include "GRY_Game.hpp"
 
 void Tile::MapMenuScene::makeSelection() {
 	switch (static_cast<Selection>(selection)) {
@@ -30,6 +32,11 @@ void Tile::MapMenuScene::init() {
 }
 
 void Tile::MapMenuScene::process() {
+	if (!active) { return; }
+	if (readSingleInput() != GCmd::NONE) {
+		MapScene* mapScene = (MapScene*)scene;
+		mapScene->getGame()->getAudio().playSound(mapScene->getSoundResource().sounds.at(1));
+	}
 	MenuScene::process();
 	miscScene.process();
 }

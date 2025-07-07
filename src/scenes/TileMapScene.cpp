@@ -80,6 +80,7 @@ void Tile::MapScene::process() {
 			game->quit();
 			break;
 		case GCmd::MapMenu:
+			game->getAudio().playSound(sounds.sounds.at(1));
 			menuScene.open();
 			break;
 		default:

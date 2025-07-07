@@ -30,8 +30,6 @@ private:
 
 	const float* pixelScaling;
 
-	bool active = false;
-
 	Fontset font;
 
 	/**
@@ -49,6 +47,8 @@ protected:
 	Scene* scene;
 
 	MenuScene* subMenu = nullptr;
+
+	bool active = false;
 
 	uint8_t selection = 0;
 public:
