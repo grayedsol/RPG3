@@ -9,16 +9,16 @@ static const float LINE_SPACING = 2.f;
 static const float SPACE_FROM_TEXTBOX = 2.f;
 
 void TextDecisionScene::setSelection(Selection selectionValue) {
-	yesNo[selection][0] = ' ';
+	selectionStrings[selection][0] = ' ';
 	selection = selectionValue;
-	yesNo[selection][0] = '>';
+	selectionStrings[selection][0] = '>';
 }
 
 void TextDecisionScene::setControls() {
-	controls.mapCmd(GCmd::DecisionOk, VirtualButton::GAME_A);
-	controls.mapCmd(GCmd::DecisionNo, VirtualButton::GAME_B);
-	controls.mapCmd(GCmd::DecisionSwitch, VirtualButton::GAME_UP);
-	controls.mapCmd(GCmd::DecisionSwitch, VirtualButton::GAME_DOWN);
+	controls.mapCmd(GCmd::MenuOk, VirtualButton::GAME_A);
+	controls.mapCmd(GCmd::MenuBack, VirtualButton::GAME_B);
+	controls.mapCmd(GCmd::MenuUp, VirtualButton::GAME_UP);
+	controls.mapCmd(GCmd::MenuDown, VirtualButton::GAME_DOWN);
 }
 
 TextDecisionScene::TextDecisionScene(GRY_PixelGame *pGame, const char *scenePath, TextBoxScene* scene) :
@@ -54,14 +54,15 @@ void TextDecisionScene::process() {
 	if (!active) { return; }
 	GCmd cmd = readSingleInput();
 	switch (cmd) {
-		case GCmd::DecisionOk:
+		case GCmd::MenuOk:
 			if (selection == NONE) { setSelection(Selection::YES); }
 			else { decisionMade = true; }
 			break;
-		case GCmd::DecisionNo:
+		case GCmd::MenuBack:
 			setSelection(Selection::NO);
 			break;
-		case GCmd::DecisionSwitch:
+		case GCmd::MenuUp:
+		case GCmd::MenuDown:
 			setSelection(selection == Selection::YES ? Selection::NO : Selection::YES);
 			break;
 		default:
@@ -77,8 +78,8 @@ void TextDecisionScene::process() {
 	float cursorX = textArea.x;
 	float cursorY = textArea.y;
 
-	for (int i  = 1; i < 3; i++) {
-		for (char* c = yesNo[i]; *c; c++) {
+	for (int i = 1; i < 3; i++) {
+		for (char* c = selectionStrings[i]; *c; c++) {
 			const SDL_FRect* srcRect = font.getSourceRect(*c - ' ');
 			SDL_FRect dstRect { cursorX, cursorY, srcRect->w, srcRect->h };
 

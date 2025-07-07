@@ -18,6 +18,7 @@
 #include "TextBoxScene.hpp"
 #include "../tile/TileMapDialogueResource.hpp"
 #include "../tile/TileMapScriptResource.hpp"
+#include "TileMapMenuScene.hpp"
 #include "SoundResource.hpp"
 
 class GRY_PixelGame;
@@ -112,10 +113,16 @@ namespace Tile {
 		SpriteAnimator tileSpriteAnimator;
 
 		/**
-		 * @brief Text box scene.
+		 * @copybrief TextBoxScene
 		 * 
 		 */
 		TextBoxScene textBoxScene;
+
+		/**
+		 * @copybrief MapMenuScene
+		 * 
+		 */
+		MapMenuScene mapMenuScene;
 
 		MapSpeak tileMapSpeak;
 

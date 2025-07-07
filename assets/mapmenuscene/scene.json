@@ -1,0 +1,7 @@
+{
+	"boxTexturePath" : "assets/textures/image/menubox.png",
+	"fontTexturePath" : "assets/textures/data/font.json",
+	"soundsPath" : "assets/textboxscene/sounds.json",
+	"marginX" : 10,
+	"marginY" : 10
+}

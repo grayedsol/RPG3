@@ -42,7 +42,7 @@ private:
 
 	enum Selection { NONE = 0, YES = 1, NO = 2 } selection = NONE;
 
-	char yesNo[3][5] = { ">", " Yes", " No" };
+	char selectionStrings[3][5] = { ">", " Yes", " No" };
 
 	bool active = false;
 	bool decisionMade = false;

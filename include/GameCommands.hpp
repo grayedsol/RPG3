@@ -30,9 +30,12 @@ enum GCmd {
 	MessageUp,
 	MessageDown,
 
-	DecisionOk,
-	DecisionNo,
-	DecisionSwitch,
+	MenuOk,
+	MenuBack,
+	MenuUp,
+	MenuDown,
+	MenuLeft,
+	MenuRight,
 
 	NONE,
 	GCMD_SIZE
