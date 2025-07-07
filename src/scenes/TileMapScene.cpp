@@ -30,7 +30,7 @@ Tile::MapScene::MapScene(GRY_PixelGame *pGame, const char *tileMapPath, MapScene
 	textBoxScene(pGame, "assets/textboxscene/scene.json", this),
 	tileMapSpeak(this),
 	mapScripting(this),
-	mapMenuScene(pGame, "assets/mapmenuscene/scene.json", this),
+	menuScene(pGame, "assets/mapmenuscene/scene.json", this),
 	sceneInfo(sceneInfo) {
 }
 
@@ -62,7 +62,7 @@ void Tile::MapScene::init() {
 
 	tileMapQuadTrees.init();
 	textBoxScene.init();
-	mapMenuScene.init();
+	menuScene.init();
 
 	entity player = ecs.getComponent<Player>().getEntity(0);
 	if (sceneInfo.spawnPosition.x >= 0 && sceneInfo.spawnPosition.y >= 0) {
@@ -80,7 +80,7 @@ void Tile::MapScene::process() {
 			game->quit();
 			break;
 		case GCmd::MapMenu:
-			mapMenuScene.open();
+			menuScene.open();
 			break;
 		default:
 			break;
@@ -99,7 +99,7 @@ void Tile::MapScene::process() {
 	tileMapMovement.postProcess();
 	
 	textBoxScene.process();
-	mapMenuScene.process();
+	menuScene.process();
 
 	EntityMap::updateLayers(&entityMap);
 
@@ -113,7 +113,7 @@ bool Tile::MapScene::load() {
 		return
 		tileMap.load(game) && entityMap.load(game) &&
 		mapDialogues.load(game) && textBoxScene.load() &&
-		mapMenuScene.load() && sounds.load(game) &&
+		menuScene.load() && sounds.load(game) &&
 		mapScripts.load(game);
 	}
 

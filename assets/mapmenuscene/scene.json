@@ -2,6 +2,13 @@
 	"boxTexturePath" : "assets/textures/image/menubox.png",
 	"fontTexturePath" : "assets/textures/data/font.json",
 	"soundsPath" : "assets/textboxscene/sounds.json",
+	"numRows" : 3,
+	"numCols" : 2,
+	"selectionStrings" : [
+		"Items", "Spells & Skills",
+		"Equip", "Records",
+		"Status", "Misc."
+	],
 	"marginX" : 10,
 	"marginY" : 10
 }

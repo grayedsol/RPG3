@@ -41,7 +41,7 @@ set(SOURCES
 	src/scenes/ExampleScene.cpp
 	src/scenes/TilesetScene.cpp
 	src/scenes/TileMapScene.cpp
-	src/scenes/TileMapMenuScene.cpp
+	src/scenes/MenuScene.cpp
 	src/tile/TileMapRenderer.cpp
 	src/tile/TileMapCamera.cpp
 	src/tile/TileMapMovement.cpp
