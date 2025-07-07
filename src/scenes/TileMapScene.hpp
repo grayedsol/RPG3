@@ -18,7 +18,7 @@
 #include "TextBoxScene.hpp"
 #include "../tile/TileMapDialogueResource.hpp"
 #include "../tile/TileMapScriptResource.hpp"
-#include "MenuScene.hpp"
+#include "TileMapMenuScene.hpp"
 #include "SoundResource.hpp"
 
 class GRY_PixelGame;
@@ -122,7 +122,7 @@ namespace Tile {
 		 * @copybrief MapMenuScene
 		 * 
 		 */
-		MenuScene menuScene;
+		MapMenuScene menuScene;
 
 		MapSpeak tileMapSpeak;
 

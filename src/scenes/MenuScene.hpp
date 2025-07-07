@@ -14,18 +14,17 @@ struct SDL_Renderer;
 
 class MenuScene : public Scene {
 private:
-	struct MenuRenderInfo {
-		GRY_Texture boxTexture;
-		SDL_FRect boxTextureArea;
-		SDL_FRect textArea;
-		char** selectionStrings;
-		int numRows;
-		int numCols;
-	} renderInfo;
+	GRY_Texture boxTexture;
 
-	Scene* scene;
+	SDL_FRect boxTextureArea;
 
-	uint8_t selection;
+	SDL_FRect textArea;
+
+	char** selectionStrings;
+
+	uint16_t numRows;
+
+	uint16_t numCols;
 
 	SDL_Renderer* renderer;
 
@@ -43,7 +42,15 @@ private:
 
 	void setSelection(uint8_t selectionValue);
 
-	void renderMenu(const MenuRenderInfo& info);
+	void renderMenu();
+
+	virtual void makeSelection();
+protected:
+	Scene* scene;
+
+	MenuScene* subMenu = nullptr;
+
+	uint8_t selection;
 public:
 	MenuScene(GRY_PixelGame* pGame, const char* path, Scene* scene);
 
@@ -53,20 +60,22 @@ public:
 	 * @brief Initializes the scene.
 	 *
 	 */
-	void init() final;
+	void init() override;
 
 	/**
 	 * @copydoc Scene::process
 	 * 
 	 */
-	void process() final;
+	void process() override;
 
 	/**
 	 * @copydoc Scene::load
 	 */
-	bool load() final;
+	bool load() override;
 
 	void open();
 
 	void close();
+
+	bool isOpen() { return active; }
 };

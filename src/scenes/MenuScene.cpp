@@ -9,13 +9,6 @@ static const float TOP_MARGIN = 8.f;
 static const float LINE_SPACING = 2.f;
 static const float COLUMN_SPACING = 64.f;
 
-static const char* menuStrings[7] = {
-	" ",
-	" Item", " Spells & Skills",
-	" Equip", " Records",
-	" Status", " Misc."
-};
-
 void MenuScene::setControls() {
 	controls.mapCmd(GCmd::MenuOk, VirtualButton::GAME_A);
 	controls.mapCmd(GCmd::MenuBack, VirtualButton::GAME_B);
@@ -26,22 +19,22 @@ void MenuScene::setControls() {
 }
 
 void MenuScene::setSelection(uint8_t selectionValue) {
-	renderInfo.selectionStrings[selection][0] = ' ';
-	renderInfo.selectionStrings[selectionValue][0] = '>';
+	selectionStrings[selection][0] = ' ';
+	selectionStrings[selectionValue][0] = '>';
 	selection = selectionValue;
 }
 
-void MenuScene::renderMenu(const MenuRenderInfo& info) {
-	SDL_FRect boxDstRect = info.boxTextureArea;
+void MenuScene::renderMenu() {
+	SDL_FRect boxDstRect = boxTextureArea;
 	boxDstRect *= *pixelScaling;
-	SDL_RenderTexture(renderer, renderInfo.boxTexture.texture, NULL, &boxDstRect);
+	SDL_RenderTexture(renderer, boxTexture.texture, NULL, &boxDstRect);
 
-	float cursorX = info.textArea.x;
-	float cursorY = info.textArea.y;
+	float cursorX = textArea.x;
+	float cursorY = textArea.y;
 
-	for (int i = 0; i < info.numRows; i++) {
-		for (int j = 0; j < info.numCols; j++) {
-			for (char* c = info.selectionStrings[i * info.numCols + j]; *c; c++) {
+	for (int i = 0; i < numRows; i++) {
+		for (int j = 0; j < numCols; j++) {
+			for (char* c = selectionStrings[i * numCols + j]; *c; c++) {
 				const SDL_FRect* srcRect = font.getSourceRect(*c - ' ');
 				SDL_FRect dstRect { cursorX, cursorY, srcRect->w, srcRect->h };
 
@@ -50,11 +43,14 @@ void MenuScene::renderMenu(const MenuRenderInfo& info) {
 
 				cursorX += srcRect->w;
 			}
-			cursorX = info.textArea.x + COLUMN_SPACING;
+			cursorX = textArea.x + COLUMN_SPACING;
 		}
-		cursorX = info.textArea.x;
+		cursorX = textArea.x;
 		cursorY += font.charHeight + LINE_SPACING;
 	}
+}
+
+void MenuScene::makeSelection() {
 }
 
 MenuScene::MenuScene(GRY_PixelGame* pGame, const char* path, Scene* scene) :
@@ -65,10 +61,10 @@ MenuScene::MenuScene(GRY_PixelGame* pGame, const char* path, Scene* scene) :
 }
 
 MenuScene::~MenuScene() {
-	for (int i = 0; i < renderInfo.numRows * renderInfo.numCols; i++) {
-		delete[] renderInfo.selectionStrings[i];
+	for (int i = 0; i < numRows * numCols; i++) {
+		delete[] selectionStrings[i];
 	}
-	delete[] renderInfo.selectionStrings;
+	delete[] selectionStrings;
 }
 
 void MenuScene::init() {
@@ -76,59 +72,67 @@ void MenuScene::init() {
 	
 	float textureWidth;
 	float textureHeight;
-	SDL_GetTextureSize(renderInfo.boxTexture.texture, &textureWidth, &textureHeight);
+	SDL_GetTextureSize(boxTexture.texture, &boxTextureArea.w, &boxTextureArea.h);
 
-	float x = LEFT_MARGIN;
-	float y = TOP_MARGIN;
+	boxTextureArea.w = textureWidth;
+	boxTextureArea.h = textureHeight;
 
-	renderInfo.boxTextureArea = SDL_FRect { x, y, textureWidth, textureHeight };
-
-	/* Recall that renderInfo.textArea width and height have the margins stored in them right now */
-	renderInfo.textArea.x = (int)renderInfo.boxTextureArea.x + renderInfo.textArea.w;
-	renderInfo.textArea.y = (int)renderInfo.boxTextureArea.y + renderInfo.textArea.h;
+	/* Recall that textArea width and height have the margins stored in them right now */
+	textArea.x = (int)boxTextureArea.x + textArea.w;
+	textArea.y = (int)boxTextureArea.y + textArea.h;
 	/* Now we can set the actual width and height */
-	renderInfo.textArea.w = (int)renderInfo.boxTextureArea.w - (2 * renderInfo.textArea.w);
-	renderInfo.textArea.h = (int)renderInfo.boxTextureArea.h - (2 * renderInfo.textArea.h);
+	textArea.w = (int)boxTextureArea.w - (2 * textArea.w);
+	textArea.h = (int)boxTextureArea.h - (2 * textArea.h);
 }
 
 void MenuScene::process() {
 	if (!active) { return; }
+	if (subMenu) {
+		if (subMenu->isOpen()) {
+			renderMenu();
+			return;
+		}
+		else {
+			subMenu = nullptr;
+		}
+	}
 
 	int currentSelection = selection;
 	switch (readSingleInput()) {
 		case GCmd::MenuOk:
+			makeSelection();
 			break;
 		case GCmd::MenuBack:
 			close();
 			return;
 		case GCmd::MenuUp:
-			currentSelection -= renderInfo.numCols;
-			if (currentSelection < 0) { currentSelection += renderInfo.numRows * renderInfo.numCols; }
+			currentSelection -= numCols;
+			if (currentSelection < 0) { currentSelection += numRows * numCols; }
 			setSelection((uint8_t)currentSelection);
 			break;
 		case GCmd::MenuDown:
-			currentSelection += renderInfo.numCols;
-			if (currentSelection >= renderInfo.numRows * renderInfo.numCols) { currentSelection -= renderInfo.numRows * renderInfo.numCols; }
+			currentSelection += numCols;
+			if (currentSelection >= numRows * numCols) { currentSelection -= numRows * numCols; }
 			setSelection((uint8_t)currentSelection);
 			break;
 		case GCmd::MenuLeft:
-			currentSelection += currentSelection % renderInfo.numCols ? -1 : (renderInfo.numCols - 1);
+			currentSelection += currentSelection % numCols ? -1 : (numCols - 1);
 			setSelection(currentSelection);
 			break;
 		case GCmd::MenuRight:
-			currentSelection += (currentSelection + 1) % renderInfo.numCols ? 1 : -(renderInfo.numCols - 1);
+			currentSelection += (currentSelection + 1) % numCols ? 1 : -(numCols - 1);
 			setSelection((uint8_t)currentSelection);
 			break;
 		default:
 			break;
 	}
 
-	renderMenu(renderInfo);
+	renderMenu();
 }
 
 bool MenuScene::load() {
-	if (renderInfo.boxTexture.path && font.path) {
-		return renderInfo.boxTexture.load(game) && font.load(game);
+	if (boxTexture.path && font.path) {
+		return boxTexture.load(game) && font.load(game);
 	}
 
 	/* Open scene document */
@@ -136,31 +140,34 @@ bool MenuScene::load() {
 	GRY_JSON::loadDoc(sceneDoc, scenePath);
 
 	/* Initialize the box texture */
-	renderInfo.boxTexture.setPath(sceneDoc["boxTexturePath"].GetString());
+	boxTexture.setPath(sceneDoc["boxTexturePath"].GetString());
 	/* Initialize the font texture */
 	font.setPath(sceneDoc["fontTexturePath"].GetString());
 	/* Initialize row and column counts */
-	renderInfo.numRows = sceneDoc["numRows"].GetUint();
-	renderInfo.numCols = sceneDoc["numCols"].GetUint();
+	numRows = sceneDoc["numRows"].GetUint();
+	numCols = sceneDoc["numCols"].GetUint();
 	/* Initialize selection strings */
 	auto& strings = sceneDoc["selectionStrings"];
-	GRY_Assert(strings.GetArray().Size() == renderInfo.numCols * renderInfo.numRows,
+	GRY_Assert(strings.GetArray().Size() == numCols * numRows,
 		"[MenuScene] The number of selection strings must be equal to the product of the number of rows and columns.\n"
 	);
-	renderInfo.selectionStrings = new char*[strings.GetArray().Size()];
+	selectionStrings = new char*[strings.GetArray().Size()];
 	for (int i = 0; i < strings.GetArray().Size(); i++) {
 		const char* string = strings.GetArray()[i].GetString();
-		renderInfo.selectionStrings[i] = new char[strlen(string) + 2];
-		renderInfo.selectionStrings[i][0] = ' ';
+		selectionStrings[i] = new char[strlen(string) + 2];
+		selectionStrings[i][0] = ' ';
 		for (int j = 0; j < strlen(string); j++) {
-			renderInfo.selectionStrings[i][j+1] = string[j];
+			selectionStrings[i][j+1] = string[j];
 		}
-		renderInfo.selectionStrings[i][strlen(string)+1] = '\0';
+		selectionStrings[i][strlen(string)+1] = '\0';
 	}
-	renderInfo.selectionStrings[0][0] = '>';
-	/* Store margins in renderInfo.textArea for now */
-	renderInfo.textArea.w = sceneDoc["marginX"].GetUint();
-	renderInfo.textArea.h = sceneDoc["marginY"].GetUint();
+	selectionStrings[0][0] = '>';
+	/* Get position of the box */
+	boxTextureArea.x = sceneDoc["positionX"].GetUint();
+	boxTextureArea.y = sceneDoc["positionY"].GetUint();
+	/* Store margins in textArea for now */
+	textArea.w = sceneDoc["marginX"].GetUint();
+	textArea.h = sceneDoc["marginY"].GetUint();
 
 	return false;
 }

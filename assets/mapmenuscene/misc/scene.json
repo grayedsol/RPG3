@@ -2,15 +2,13 @@
 	"boxTexturePath" : "assets/textures/image/menubox.png",
 	"fontTexturePath" : "assets/textures/data/font.json",
 	"soundsPath" : "assets/textboxscene/sounds.json",
-	"numRows" : 3,
-	"numCols" : 2,
+	"numRows" : 2,
+	"numCols" : 1,
 	"selectionStrings" : [
-		"Items", "Spells & Skills",
-		"Equip", "Records",
-		"Status", "Misc."
+		"Beep", "Exit"
 	],
-	"positionX" : 8,
-	"positionY" : 8,
+	"positionX" : 32,
+	"positionY" : 32,
 	"marginX" : 10,
 	"marginY" : 10
 }
