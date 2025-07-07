@@ -50,7 +50,7 @@ protected:
 
 	MenuScene* subMenu = nullptr;
 
-	uint8_t selection;
+	uint8_t selection = 0;
 public:
 	MenuScene(GRY_PixelGame* pGame, const char* path, Scene* scene);
 

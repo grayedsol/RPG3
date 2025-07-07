@@ -72,7 +72,7 @@ void MenuScene::init() {
 	
 	float textureWidth;
 	float textureHeight;
-	SDL_GetTextureSize(boxTexture.texture, &boxTextureArea.w, &boxTextureArea.h);
+	SDL_GetTextureSize(boxTexture.texture, &textureWidth, &textureHeight);
 
 	boxTextureArea.w = textureWidth;
 	boxTextureArea.h = textureHeight;
