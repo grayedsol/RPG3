@@ -9,7 +9,7 @@
     },
 
     "GAME_X" : {
-        "Primary" : { "code": 20 }
+        "Primary" : { "code": 43 }
     },
 
     "GAME_Y" : {
@@ -33,14 +33,10 @@
     },
 
     "GAME_START" : {
-        "Primary" : { "code": 40 }
+        "Primary" : { "code": 41 }
     },
 
     "GAME_SELECT" : {
-        "Primary" : { "code": 49 }
-    },
-
-	"GAME_LT" : {
-		"Primary" : { "code": 43 }
-	}
+        "Primary" : { "code": 53 }
+    }
 }

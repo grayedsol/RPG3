@@ -1,7 +1,5 @@
 {
-	"boxTexturePath" : "assets/textures/image/menubox.png",
-	"fontTexturePath" : "assets/textures/data/font.json",
-	"soundsPath" : "assets/textboxscene/sounds.json",
+	"boxTexturePath" : "assets/textures/image/menumiscbox.png",
 	"numRows" : 2,
 	"numCols" : 1,
 	"selectionStrings" : [

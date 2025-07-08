@@ -13,14 +13,16 @@ class GRY_PixelGame;
 struct SDL_Renderer;
 
 class MenuScene : public Scene {
+protected:
+	Scene* parentScene;
 private:
+	char** selectionStrings;
+
 	GRY_Texture boxTexture;
 
 	SDL_FRect boxTextureArea;
 
 	SDL_FRect textArea;
-
-	char** selectionStrings;
 
 	uint16_t numRows;
 
@@ -40,8 +42,6 @@ private:
 
 	virtual void makeSelection(uint8_t selection) = 0;
 protected:
-	Scene* parentScene;
-
 	void renderMenu(const Fontset& font);
 
 	/**
