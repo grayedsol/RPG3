@@ -26,31 +26,31 @@ private:
 
 	uint16_t numCols;
 
-	SDL_Renderer* renderer;
+	uint8_t selection = 0;
 
-	const float* pixelScaling;
-
-	Fontset font;
+	bool active = false;
 
 	/**
 	 * @copybrief Scene::setControls
 	 * 
 	 */
-	void setControls();
+	void setControls() final;
 
 	void setSelection(uint8_t selectionValue);
 
-	void renderMenu();
-
-	virtual void makeSelection();
+	virtual void makeSelection(uint8_t selection) = 0;
 protected:
-	Scene* scene;
+	Scene* parentScene;
 
-	MenuScene* subMenu = nullptr;
+	void renderMenu(const Fontset& font);
 
-	bool active = false;
-
-	uint8_t selection = 0;
+	/**
+	 * @brief Select/confirm a menu option, or close the menu, based on input.
+	 * 
+	 * @return true if the menu was not closed.
+	 * @return false if the menu was closed.
+	 */
+	bool handleInput();
 public:
 	MenuScene(GRY_PixelGame* pGame, const char* path, Scene* scene);
 
@@ -66,7 +66,7 @@ public:
 	 * @copydoc Scene::process
 	 * 
 	 */
-	void process() override;
+	virtual void process() = 0;
 
 	/**
 	 * @copydoc Scene::load

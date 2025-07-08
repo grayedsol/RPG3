@@ -24,7 +24,10 @@ void MenuScene::setSelection(uint8_t selectionValue) {
 	selection = selectionValue;
 }
 
-void MenuScene::renderMenu() {
+void MenuScene::renderMenu(const Fontset& font) {
+	SDL_Renderer* renderer = getGame()->getVideo().getRenderer();
+	const float* pixelScaling = &((GRY_PixelGame*)game)->getPixelScalingRef();
+
 	SDL_FRect boxDstRect = boxTextureArea;
 	boxDstRect *= *pixelScaling;
 	SDL_RenderTexture(renderer, boxTexture.texture, NULL, &boxDstRect);
@@ -50,14 +53,9 @@ void MenuScene::renderMenu() {
 	}
 }
 
-void MenuScene::makeSelection() {
-}
-
 MenuScene::MenuScene(GRY_PixelGame* pGame, const char* path, Scene* scene) :
 	Scene((GRY_Game*)pGame, path),
-	scene(scene),
-	renderer(pGame->getVideo().getRenderer()),
-	pixelScaling(&pGame->getPixelScalingRef()) {
+	parentScene(scene) {
 }
 
 MenuScene::~MenuScene() {
@@ -85,54 +83,9 @@ void MenuScene::init() {
 	textArea.h = (int)boxTextureArea.h - (2 * textArea.h);
 }
 
-void MenuScene::process() {
-	if (!active) { return; }
-	if (subMenu) {
-		if (subMenu->isOpen()) {
-			renderMenu();
-			return;
-		}
-		else {
-			subMenu = nullptr;
-		}
-	}
-
-	int currentSelection = selection;
-	switch (readSingleInput()) {
-		case GCmd::MenuOk:
-			makeSelection();
-			break;
-		case GCmd::MenuBack:
-			close();
-			return;
-		case GCmd::MenuUp:
-			currentSelection -= numCols;
-			if (currentSelection < 0) { currentSelection += numRows * numCols; }
-			setSelection((uint8_t)currentSelection);
-			break;
-		case GCmd::MenuDown:
-			currentSelection += numCols;
-			if (currentSelection >= numRows * numCols) { currentSelection -= numRows * numCols; }
-			setSelection((uint8_t)currentSelection);
-			break;
-		case GCmd::MenuLeft:
-			currentSelection += currentSelection % numCols ? -1 : (numCols - 1);
-			setSelection((uint8_t)currentSelection);
-			break;
-		case GCmd::MenuRight:
-			currentSelection += (currentSelection + 1) % numCols ? 1 : -(numCols - 1);
-			setSelection((uint8_t)currentSelection);
-			break;
-		default:
-			break;
-	}
-
-	renderMenu();
-}
-
 bool MenuScene::load() {
-	if (boxTexture.path && font.path) {
-		return boxTexture.load(game) && font.load(game);
+	if (boxTexture.path) {
+		return boxTexture.load(game);
 	}
 
 	/* Open scene document */
@@ -141,8 +94,6 @@ bool MenuScene::load() {
 
 	/* Initialize the box texture */
 	boxTexture.setPath(sceneDoc["boxTexturePath"].GetString());
-	/* Initialize the font texture */
-	font.setPath(sceneDoc["fontTexturePath"].GetString());
 	/* Initialize row and column counts */
 	numRows = sceneDoc["numRows"].GetUint();
 	numCols = sceneDoc["numCols"].GetUint();
@@ -180,7 +131,40 @@ void MenuScene::open() {
 
 void MenuScene::close() {
 	GRY_Assert(active, "[MenuScene] close() called when the decision box was not open!");
-	scene->activateControlScheme();
+	parentScene->activateControlScheme();
 	active = false;
 	setSelection(0);
+}
+
+bool MenuScene::handleInput() {
+	int currentSelection = selection;
+	switch (readSingleInput()) {
+		case GCmd::MenuOk:
+			makeSelection(selection);
+			break;
+		case GCmd::MenuBack:
+			close();
+			return false;
+		case GCmd::MenuUp:
+			currentSelection -= numCols;
+			if (currentSelection < 0) { currentSelection += numRows * numCols; }
+			setSelection((uint8_t)currentSelection);
+			break;
+		case GCmd::MenuDown:
+			currentSelection += numCols;
+			if (currentSelection >= numRows * numCols) { currentSelection -= numRows * numCols; }
+			setSelection((uint8_t)currentSelection);
+			break;
+		case GCmd::MenuLeft:
+			currentSelection += currentSelection % numCols ? -1 : (numCols - 1);
+			setSelection((uint8_t)currentSelection);
+			break;
+		case GCmd::MenuRight:
+			currentSelection += (currentSelection + 1) % numCols ? 1 : -(numCols - 1);
+			setSelection((uint8_t)currentSelection);
+			break;
+		default:
+			break;
+	}
+	return true;
 }

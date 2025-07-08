@@ -1,8 +1,9 @@
 #include "TileMapMenuScene.hpp"
 #include "TileMapScene.hpp"
 #include "GRY_Game.hpp"
+#include "GRY_JSON.hpp"
 
-void Tile::MapMenuScene::makeSelection() {
+void Tile::MapMenuScene::makeSelection(uint8_t selection) {
 	switch (static_cast<Selection>(selection)) {
 		case Selection::Item:
 			break;
@@ -32,15 +33,38 @@ void Tile::MapMenuScene::init() {
 }
 
 void Tile::MapMenuScene::process() {
-	if (!active) { return; }
+	if (!isOpen()) { return; }
+
 	if (readSingleInput() != GCmd::NONE) {
-		MapScene* mapScene = (MapScene*)scene;
+		MapScene* mapScene = (MapScene*)parentScene;
 		mapScene->getGame()->getAudio().playSound(mapScene->getSoundResource().sounds.at(1));
 	}
-	MenuScene::process();
-	miscScene.process();
+
+	if (subMenu) {
+		if (subMenu->isOpen()) {
+			renderMenu(font);
+			subMenu->process();
+			return;
+		}
+		else { subMenu = nullptr; }
+	}
+
+	if (!handleInput()) { return; }
+
+	renderMenu(font);
 }
 
 bool Tile::MapMenuScene::load() {
-	return MenuScene::load() && miscScene.load();
+	if (font.path) {
+		return
+		MenuScene::load() && miscScene.load() &&
+		font.load(game);
+	}
+
+	GRY_JSON::Document sceneDoc;
+	GRY_JSON::loadDoc(sceneDoc, scenePath);
+
+	/* Initialize the font texture */
+	font.setPath(sceneDoc["fontTexturePath"].GetString());
+	return false;
 }

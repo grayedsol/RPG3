@@ -13,9 +13,13 @@ namespace Tile {
 			Status = 4, Misc = 5
 		};
 
+		Fontset font;
+
 		MapMenuMiscScene miscScene;
 
-		void makeSelection() final;
+		MenuScene* subMenu = nullptr;
+
+		void makeSelection(uint8_t selection) final;
 	public:
 		MapMenuScene(GRY_PixelGame* pGame, const char* path, MapScene* mapScene);
 
@@ -24,5 +28,7 @@ namespace Tile {
 		void process() final;
 
 		bool load() final;
+
+		const Fontset& getFont() { return font; }
 	};
 };
