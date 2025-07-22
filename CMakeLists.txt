@@ -60,6 +60,7 @@ set(SOURCES
 	src/textbox/TextBoxRenderer.cpp
 	src/scenes/TextDecisionScene.cpp
 	src/SoundResource.cpp
+	src/scenes/BattleScene.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
