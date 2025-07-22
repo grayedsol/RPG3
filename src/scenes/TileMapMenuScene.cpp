@@ -35,7 +35,7 @@ void Tile::MapMenuScene::init() {
 void Tile::MapMenuScene::process() {
 	if (!isOpen()) { return; }
 
-	if (readSingleInput() != GCmd::NONE) {
+	if (readSingleInput() != GCmd::GCMD_NONE) {
 		MapScene* mapScene = (MapScene*)parentScene;
 		mapScene->getGame()->getAudio().playSound(mapScene->getSoundResource().sounds.at(1));
 	}

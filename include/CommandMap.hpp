@@ -35,7 +35,7 @@ struct CommandMap {
      */
     void resetCmds() {
         for (int i = 0; i < VirtualButton::VIRTUAL_BUTTON_SIZE; i++) {
-			commands[i] = GCmd::NONE;
+			commands[i] = GCmd::GCMD_NONE;
 		}
         for (int i = 0; i < GCmd::GCMD_SIZE; i++) {
             buttons[i] = VirtualButton::GAME_NONE;
@@ -46,7 +46,7 @@ struct CommandMap {
      * @brief Constructor.
      * 
      * @details
-     * All GCmds are set to GCmd::NONE, and all
+     * All GCmds are set to GCmd::GCMD_NONE, and all
      * VirtualButtons are set to VirtualButton::GAME_NONE.
      * 
      */
@@ -56,15 +56,15 @@ struct CommandMap {
      * @brief Map a game command to a virtual button, and vice-versa.
      * 
      * @details
-     * Logs an error and does not update the mapping if GCmd::NONE or VirtualButton::GAME_NONE
+     * Logs an error and does not update the mapping if GCmd::GCMD_NONE or VirtualButton::GAME_NONE
      * are used in either parameter.
      * 
      * @param command GCmd to map to "button".
      * @param button VirtualButton to map to "command".
      */
 	void mapCmd(GCmd command, VirtualButton button) {
-        if (command == GCmd::NONE || button == VirtualButton::GAME_NONE) {
-            GRY_Log("[CommandMap] Cannot map GCmd::NONE or VirtualButton::GAME_NONE.\n");
+        if (command == GCmd::GCMD_NONE || button == VirtualButton::GAME_NONE) {
+            GRY_Log("[CommandMap] Cannot map GCmd::GCMD_NONE or VirtualButton::GAME_NONE.\n");
             return;
         }
         commands[button] = command;

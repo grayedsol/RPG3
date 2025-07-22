@@ -165,7 +165,7 @@ public:
      * @brief Get the latest active GCmd input.
      * 
      * @details
-     * Returns GCmd::NONE if there are no active inputs.
+     * Returns GCmd::GCMD_NONE if there are no active inputs.
      * 
      * @return A GCmd input.
      * 
@@ -178,7 +178,7 @@ public:
      * @brief Get the latest active GCmd input from the current frame only.
      * 
      * @details
-     * Returns GCmd::NONE if there are no active inputs from this frame.
+     * Returns GCmd::GCMD_NONE if there are no active inputs from this frame.
      * 
      * @return A GCmd input.
      * 

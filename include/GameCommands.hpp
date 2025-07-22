@@ -11,6 +11,8 @@
  * 
  */
 enum GCmd {
+	GCMD_NONE,
+	
 	GameMenu,
 	GameQuit,
 	GameUp,
@@ -37,6 +39,10 @@ enum GCmd {
 	MenuLeft,
 	MenuRight,
 
-	NONE,
+	BattleUp,
+	BattleDown,
+	BattleLeft,
+	BattleRight,
+
 	GCMD_SIZE
 };
