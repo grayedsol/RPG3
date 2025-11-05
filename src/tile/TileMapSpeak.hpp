@@ -24,7 +24,7 @@ namespace Tile {
 
 		void endSpeak();
 	public:
-		MapSpeak(MapScene* scene);
+		MapSpeak(MapScene* scene, TextBoxScene* textboxScene);
 
 		void process();
 

@@ -27,7 +27,7 @@ Tile::MapScene::MapScene(GRY_PixelGame *pGame, const char *tileMapPath, MapScene
 	tileSpriteAnimator(this),
 	tileMapInput(this),
 	textBoxScene(pGame, "assets/textboxscene/scene.json", this),
-	tileMapSpeak(this),
+	tileMapSpeak(this, &textBoxScene),
 	mapScripting(this),
 	menuScene(pGame, "assets/mapmenuscene/scene.json", this),
 	sceneInfo(sceneInfo) {
@@ -95,9 +95,7 @@ void Tile::MapScene::process() {
 	tileMapCamera.process();
 	tileMap.tileset.processAnimations(game->getDelta());
 	tileMapRenderer.process();
-	
-	tileMapMovement.postProcess();
-	
+		
 	textBoxScene.process();
 	menuScene.process();
 
@@ -137,14 +135,22 @@ bool Tile::MapScene::load() {
 	return false;
 }
 
-void Tile::MapScene::activateControls() {
+void Tile::MapScene::enablePlayerControls() {
 	setControls();
-	game->setControlScheme(controls);
+	if (!textBoxScene.isOpen() && !menuScene.isOpen()) {
+		game->setControlScheme(controls);
+	}
 }
 
-void Tile::MapScene::deactivateControls() {
+void Tile::MapScene::disablePlayerControls() {
 	controls.resetCmds();
-	game->setControlScheme(controls);
+	if (!textBoxScene.isOpen() && !menuScene.isOpen()) {
+		game->setControlScheme(controls);
+	}
+}
+
+void Tile::MapScene::playSound(unsigned soundId) {
+	game->getAudio().playSound(sounds.sounds.at(soundId));
 }
 
 std::vector<SDL_FRect> Tile::MapScene::queryTileCollisions(const SDL_FRect rect, std::size_t layer) const {

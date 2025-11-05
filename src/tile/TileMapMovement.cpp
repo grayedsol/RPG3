@@ -143,8 +143,8 @@ void Tile::MapMovement::process(double delta) {
 		/* Save the previous velocity for when we check for gliding */
 		Velocity2 prevVelocity = velocities->get(e);
 		
-		/* Update the velocity based on direction. If it's not moving, use the 0 vector */
-		velocities->get(e) = dirVecs[actors->get(e).movingDirection ? actors->get(e).direction : 0];
+		/* Update the velocity based on the direction it's moving. */
+		velocities->get(e) = dirVecs[actors->get(e).movingDirection];
 		
 		/* Try gliding */
 		glide(delta, prevVelocity, e);
@@ -185,11 +185,5 @@ void Tile::MapMovement::process(double delta) {
 			interaction.active = false;
 		}
 		interaction.beingPressed = false;
-	}
-}
-
-void Tile::MapMovement::postProcess() {
-	for (auto& actorData : actors->value) {
-		actorData.movingDirection = Direction::DirectionNone;
 	}
 }

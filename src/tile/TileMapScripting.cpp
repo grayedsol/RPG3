@@ -183,6 +183,7 @@ bool Tile::MapScripting::processActorSetDirection(TMC_ActorSetDirection& args) {
 }
 
 bool Tile::MapScripting::processActorWait(TMC_ActorWait& args, double delta) {
+	ecs->getComponent<Actor>().get(args.e).movingDirection = Direction::DirectionNone;
 	return (args.time -= delta) <= 0.f;
 }
 
@@ -199,13 +200,14 @@ bool Tile::MapScripting::processActorSpeak(TMC_ActorSpeak& args) {
 	auto& actors = ecs->getComponent<Actor>();
 	auto& players = ecs->getComponent<Player>();
 	if (actors.contains(args.e)) {
+		ecs->getComponent<Actor>().get(args.e).movingDirection = Direction::DirectionNone;
 		/* If the direction was specified use it, otherwise use the direction opposite the player's */
 		actors.get(args.e).direction = args.direction != Direction::DirectionNone ? 
 			args.direction :
 			invDirs[actors.get(players.getEntity(0)).direction];
 	}
 	players.get(players.getEntity(0)).speakingTo = args.e;
-	scene->getTileMapSpeak().speak(args.dialogueId);
+	scene->tileMapSpeak.speak(args.dialogueId);
 	return true;
 }
 
@@ -232,7 +234,7 @@ bool Tile::MapScripting::processSwitchMap(TMC_SwitchMap& args) {
 }
 
 bool Tile::MapScripting::processActivateScript(TMC_ActivateScript &args, double delta) {
-	currentScript = scene->getScriptResource().scripts.at(args.scriptIndex);
+	currentScript = scene->mapScripts.scripts.at(args.scriptIndex);
 	GRY_Assert(mode != CUTSCENE,
 		"[Tile::MapScripting] Tried to activate a cutscene while one was already playing.\n"
 	);
@@ -245,24 +247,24 @@ bool Tile::MapScripting::processActivateScript(TMC_ActivateScript &args, double 
 }
 
 bool Tile::MapScripting::processMoveCamera(TMC_MoveCamera &args, double delta) {
-	scene->getMapCamera().unlockCamera();
-	return scene->getMapCamera().moveCamera(args.position, args.speed, delta);
+	scene->tileMapCamera.unlockCamera();
+	return scene->tileMapCamera.moveCamera(args.position, args.speed, delta);
 }
 
 bool Tile::MapScripting::processMoveCameraToPlayer(TMC_MoveCameraToPlayer &args, double delta) {
-	if (scene->getMapCamera().moveCameraToPlayer(args.speed, delta)) {
-		scene->getMapCamera().lockCamera();
+	if (scene->tileMapCamera.moveCameraToPlayer(args.speed, delta)) {
+		scene->tileMapCamera.lockCamera();
 		return true;
 	}
 	return false;
 }
 
 bool Tile::MapScripting::processEnablePlayerControls(TMC_EnablePlayerControls &args) {
-	scene->activateControls();
+	scene->enablePlayerControls();
 	return true;
 }
 
 bool Tile::MapScripting::processDisablePlayerControls(TMC_DisablePlayerControls &args) {
-	scene->deactivateControls();
+	scene->disablePlayerControls();
 	return true;
 }

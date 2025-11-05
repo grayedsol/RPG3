@@ -46,13 +46,13 @@ namespace Tile {
 		float speed = 1.f;
 
 		/**
-		 * @brief Direction the actor is facing.
+		 * @brief Direction the actor is facing. Cannot be Direction::DirectionNone.
 		 *
 		 */
 		Direction direction = Direction::Down;
 
 		/**
-		 * @brief Direction the actor is moving.
+		 * @brief Direction the actor is moving, or Direction::DirectionNone if not moving.
 		 * 
 		 */
 		Direction movingDirection = Direction::DirectionNone;

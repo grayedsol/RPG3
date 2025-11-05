@@ -10,6 +10,8 @@
 				},
 				{
 					"commandSet" : [
+						{ "type" : "ActorWait", "e" : 1, "time" : 0.5 },
+						{ "type" : "ActorWait", "e" : 2, "time" : 0.5 },
 						{ "type" : "MoveCamera", "position" : [10, 4], "speed" : 60 },
 						{ "type" : "ActorSetDirection", "e" : 0, "direction" : 1 }
 					]

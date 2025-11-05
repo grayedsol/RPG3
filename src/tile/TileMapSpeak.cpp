@@ -19,7 +19,7 @@ void Tile::MapSpeak::endSpeak() {
 	currentDialogue = nullptr;
 }
 
-Tile::MapSpeak::MapSpeak(MapScene *scene) : scene(scene), textbox(&scene->getTextBox()) {
+Tile::MapSpeak::MapSpeak(MapScene* scene, TextBoxScene* textboxScene) : scene(scene), textbox(textboxScene) {
 }
 
 void Tile::MapSpeak::process() {

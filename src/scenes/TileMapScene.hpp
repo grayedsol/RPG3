@@ -39,21 +39,22 @@ namespace Tile {
 	 * GAME_LT: Quit
 	 */
 	class MapScene : public Scene {
+		friend class MapScripting;
 	private:
 		/**
-		 * @brief TileMap ECS structure.
+		 * @brief Tile Map ECS structure.
 		 *
 		 */
 		MapECS ecs;
 
 		/**
-		 * @brief TileMap that will be loaded.
+		 * @brief Tile::Map that will be loaded.
 		 *
 		 */
 		TileMap tileMap;
 
 		/**
-		 * @brief TileEntityMap that will be loaded.
+		 * @brief Tile::EntityMap that will be loaded.
 		 *
 		 */
 		EntityMap entityMap;
@@ -172,18 +173,18 @@ namespace Tile {
 		bool load() final;
 
 		/**
-		 * @brief Activates the controls after deactivateControls has been called.
+		 * @brief Sets the controls to normal while retaining the control scheme's activation state.
 		 * 
-		 * @sa deactivateControls
+		 * @sa disablePlayerControls
 		 */
-		void activateControls();
+		void enablePlayerControls();
 
 		/**
-		 * @brief Deactivates the controls, and persists even if activateControlScheme is called.
+		 * @brief Sets the controls to do nothing while retaining the control scheme's activation state.
 		 * 
-		 * @sa activateControls
+		 * @sa enablePlayerControls
 		 */
-		void deactivateControls();
+		void disablePlayerControls();
 
 		/**
 		 * @brief Get a pointer to the GRY_PixelGame.
@@ -227,19 +228,9 @@ namespace Tile {
 		 */
 		EntityMap& getTileEntityMap() { return entityMap; }
 
-		TextBoxScene& getTextBox() { return textBoxScene; }
-
-		MapSpeak& getTileMapSpeak() { return tileMapSpeak; }
-
-		MapCamera& getMapCamera() { return tileMapCamera; }
-
-		const MapScripting& getMapScripting() const { return mapScripting; }
-
 		const MapCamera& getMapCamera() const { return tileMapCamera; }
 
 		const MapDialogueResource& getDialogueResource() { return mapDialogues; }
-
-		const SoundResource& getSoundResource() const { return sounds; }
 
 		const MapScriptResource& getScriptResource() { return mapScripts; }
 
@@ -277,6 +268,8 @@ namespace Tile {
 		std::vector<SDL_FRect> queryTileCollisions(const SDL_FRect rect, std::size_t layer) const;
 
 		bool executeCommand(MapCommand& command);
+
+		void playSound(unsigned soundId);
 
 		void switchMap(const char* mapScenePath, MapSceneInfo sceneInfo = MapSceneInfo{});
 	};
