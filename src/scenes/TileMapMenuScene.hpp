@@ -1,6 +1,7 @@
 #pragma once
 #include "MenuScene.hpp"
 #include "MapMenuMiscScene.hpp"
+#include "SoundResource.hpp"
 
 namespace Tile {
 	class MapScene;
@@ -16,6 +17,8 @@ namespace Tile {
 		Fontset font;
 
 		MapMenuMiscScene miscScene;
+
+		SoundResource sounds;
 
 		MenuScene* subMenu = nullptr;
 

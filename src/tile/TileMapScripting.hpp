@@ -11,6 +11,7 @@
 
 namespace Tile {
 	class MapScene;
+	class MapQuadTrees;
 
 	/**
 	 * @brief Runs MapCommands during gameplay and cutscenes.
@@ -29,6 +30,8 @@ namespace Tile {
 		 * 
 		 */
 		MapECS* ecs;
+
+		MapQuadTrees* quadtrees;
 
 		/**
 		 * @brief A series of sets of MapCommands representing the running cutscene script.
@@ -56,7 +59,7 @@ namespace Tile {
 		 * 
 		 * @param scene Associated MapScene.
 		 */
-		MapScripting(MapScene* scene);
+		MapScripting(MapScene* scene, MapQuadTrees* quadtrees);
 
 		/**
 		 * @brief Process all MapCommands and either the Gameplay or Cutscene mode.

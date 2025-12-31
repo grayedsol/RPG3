@@ -5,7 +5,6 @@
  */
 #include "TileMapMovement.hpp"
 #include "../scenes/TileMapScene.hpp"
-#include "QuadTree.hpp"
 
 static const float INV_SQRT_TWO = 0.7071f;
 static const unsigned MAX_COLLISION_RESOLUTION_ATTEMPTS = 6;
@@ -79,7 +78,7 @@ static Velocity2 AABBMTV(const Hitbox& lhs, const Hitbox& rhs) {
 
 Hitbox Tile::MapMovement::handleEntityCollisions(Hitbox box, ECS::entity e, int layer, unsigned attempts) {
 	std::vector<Hitbox> eCollisions;
-	scene->getQuadTrees().at(layer).query(box, e, eCollisions);
+	quadtrees->getQuadTrees().at(layer).query(box, e, eCollisions);
 	if (eCollisions.empty()) { return box; }
 	Velocity2 resolutionVector = AABBMTV(box, eCollisions.back());
 	*((Position2*)&box) += resolutionVector;
@@ -103,7 +102,7 @@ Hitbox Tile::MapMovement::handleTileCollisions(Hitbox box, int layer) {
 
 void Tile::MapMovement::handleSoftEntityCollisions(Hitbox box, ECS::entity e, int layer) {
 	std::vector<entity> eCollisions;
-	scene->getSoftQuadTrees().at(layer).query(box, e, eCollisions);
+	quadtrees->getSoftQuadTrees().at(layer).query(box, e, eCollisions);
 	for (auto e : eCollisions) {
 		if (collisionInteractions->contains(e)) {
 			MapCollisionInteraction& interaction = collisionInteractions->get(e);
@@ -119,8 +118,9 @@ void Tile::MapMovement::handleSoftEntityCollisions(Hitbox box, ECS::entity e, in
 	}
 }
 
-Tile::MapMovement::MapMovement(MapScene *scene) :
+Tile::MapMovement::MapMovement(MapScene* scene, MapQuadTrees* quadtrees) :
 	scene(scene),
+	quadtrees(quadtrees),
 	positions(&scene->getECS().getComponent<Position2>()),
 	velocities(&scene->getECS().getComponent<Velocity2>()),
 	hitboxes(&scene->getECS().getComponent<Hitbox>()),
@@ -171,7 +171,7 @@ void Tile::MapMovement::process(double delta) {
 			 * However, this may produce collision inaccuracies that
 			 * last for one frame, especially for big/teleport movements.
 			 */
-			scene->updateQuadTree(oldBox, box, e, layer);
+			quadtrees->updateQuadTree(oldBox, box, e, layer);
 
 			EntityMap::sortLayer(&scene->getTileEntityMap(), layer);
 		}

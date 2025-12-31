@@ -34,9 +34,10 @@ static Tile::Direction vecToDir(Velocity2 vec) {
 	return vecDirs[(int)((vec[0]+1)*3+vec[1]+1)];
 }
 
-Tile::MapScripting::MapScripting(MapScene *scene) :
+Tile::MapScripting::MapScripting(MapScene* scene, MapQuadTrees* quadtrees) :
 	scene(scene),
-	ecs(&scene->getECS()) {
+	ecs(&scene->getECS()),
+	quadtrees(quadtrees) {
 }
 
 void Tile::MapScripting::process(double delta) {
@@ -166,7 +167,7 @@ bool Tile::MapScripting::processActorMovePos(TMC_ActorMovePos& args) {
 	}
 	box.x = pos.x;
 	box.y = pos.y;
-	scene->updateQuadTree(oldBox, box, args.e, ecs->getComponent<MapEntity>().get(args.e).layer);
+	quadtrees->updateQuadTree(oldBox, box, args.e, ecs->getComponent<MapEntity>().get(args.e).layer);
 
 	/* Set direction for the movement system to use */
 	Direction direction = vecToDir(vel);

@@ -10,6 +10,7 @@
 
 namespace Tile {
 	class MapScene;
+	class MapQuadTrees;
 
 	/**
 	 * @brief Processes input for a Tile::MapScene.
@@ -22,6 +23,8 @@ namespace Tile {
 		 * 
 		 */
 		MapScene* scene;
+
+		const MapQuadTrees* quadtrees;
 
 		/**
 		 * @brief Hitboxes of entities.
@@ -52,7 +55,7 @@ namespace Tile {
 		 * 
 		 * @param scene Associated Tile::MapScene class.
 		 */
-		MapInput(MapScene* scene);
+		MapInput(MapScene* scene, const MapQuadTrees* quadtrees);
 
 		/**
 		 * @brief Scan and process inputs.

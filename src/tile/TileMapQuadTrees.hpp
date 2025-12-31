@@ -31,9 +31,9 @@ namespace Tile {
 		 */
 		void init();
 
-		const std::vector<QuadTree>& getQuadTrees() { return quadtrees; }
+		const std::vector<QuadTree>& getQuadTrees() const { return quadtrees; }
 
-		const std::vector<QuadTree>& getSoftQuadTrees() { return softQuadtrees; }
+		const std::vector<QuadTree>& getSoftQuadTrees() const { return softQuadtrees; }
 
 		void updateQuadTree(Hitbox oldBox, Hitbox newBox, ECS::entity e, unsigned layer) {
 			quadtrees.at(layer).update(oldBox, newBox, e);

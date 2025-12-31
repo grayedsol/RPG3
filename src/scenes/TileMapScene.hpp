@@ -78,6 +78,12 @@ namespace Tile {
 		SoundResource sounds;
 
 		/**
+		 * @brief Stores quadtrees for the collision hitboxes of entities for each layer.
+		 * 
+		 */
+		MapQuadTrees tileMapQuadTrees;
+
+		/**
 		 * @brief Renderer for the tile map.
 		 *
 		 */
@@ -94,12 +100,6 @@ namespace Tile {
 		 *
 		 */
 		MapMovement tileMapMovement;
-
-		/**
-		 * @brief Stores quadtrees for the collision hitboxes of entities for each layer.
-		 * 
-		 */
-		MapQuadTrees tileMapQuadTrees;
 
 		/**
 		 * @brief Input system for the tile map.
@@ -137,7 +137,7 @@ namespace Tile {
 		 * @details
 		 * Normal tiles should have a square shape, typically 8x8, 16x16, etc.
 		 * Things such as character sprites may be rectangles, e.g., a 16x32 sprite,
-		 * and this a standard tile size is needed to interpret the size of the sprite
+		 * and this standard tile size is needed to interpret the size of the sprite
 		 * in terms of normal tiles.
 		 */
 		uint16_t normalTileSize = 0;
@@ -147,6 +147,8 @@ namespace Tile {
 		 *
 		 */
 		void setControls() final;
+
+		void switchMap(const char* mapScenePath, MapSceneInfo sceneInfo = MapSceneInfo{});
 	public:
 		/**
 		 * @brief Constructor.
@@ -185,6 +187,17 @@ namespace Tile {
 		 * @sa enablePlayerControls
 		 */
 		void disablePlayerControls();
+
+		/**
+		 * @copydoc MapScripting::executeCommand
+		 *  
+		 */
+		bool executeCommand(MapCommand& command);
+
+		/**
+		 * @copydoc MapRenderer::setOffset
+		 */
+		void setRenderOffset(float x, float y) { tileMapRenderer.setOffset(x,y); }
 
 		/**
 		 * @brief Get a pointer to the GRY_PixelGame.
@@ -228,12 +241,6 @@ namespace Tile {
 		 */
 		EntityMap& getTileEntityMap() { return entityMap; }
 
-		const MapCamera& getMapCamera() const { return tileMapCamera; }
-
-		const MapDialogueResource& getDialogueResource() { return mapDialogues; }
-
-		const MapScriptResource& getScriptResource() { return mapScripts; }
-
 		/**
 		 * @brief Get the width / height of a normal square tile, in pixels.
 		 *
@@ -242,21 +249,6 @@ namespace Tile {
 		 * @return The normal tile size in pixels.
 		 */
 		uint16_t getNormalTileSize() const { return normalTileSize; }
-
-		/**
-		 * @copydoc TileMapRenderer::setOffset
-		 */
-		void setRenderOffset(float x, float y) {
-			tileMapRenderer.setOffset(x,y);
-		}
-
-		const std::vector<QuadTree>& getQuadTrees() { return tileMapQuadTrees.getQuadTrees(); }
-
-		const std::vector<QuadTree>& getSoftQuadTrees() { return tileMapQuadTrees.getSoftQuadTrees(); }
-
-		void updateQuadTree(Hitbox oldBox, Hitbox newBox, ECS::entity e, unsigned layer) {
-			tileMapQuadTrees.updateQuadTree(oldBox, newBox, e, layer);
-		}
 		
 		/**
 		 * @brief Get a vector of collision rectangles that collide with `rect`.
@@ -266,11 +258,5 @@ namespace Tile {
 		 * @return Vector of rectangles colliding with `rect`
 		 */
 		std::vector<SDL_FRect> queryTileCollisions(const SDL_FRect rect, std::size_t layer) const;
-
-		bool executeCommand(MapCommand& command);
-
-		void playSound(unsigned soundId);
-
-		void switchMap(const char* mapScenePath, MapSceneInfo sceneInfo = MapSceneInfo{});
 	};
 };

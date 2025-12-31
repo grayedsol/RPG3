@@ -14,17 +14,19 @@ namespace Tile {
 
 	class MapSpeak {
 	private:
-		const MapDialogue* currentDialogue = nullptr;
-
+		MapScene* scene;
+		
 		TextBoxScene* textbox;
+
+		const MapDialogueResource* dialogueResource;
+
+		const MapDialogue* currentDialogue = nullptr;
 
 		unsigned index = 0;
 
-		MapScene* scene;
-
 		void endSpeak();
 	public:
-		MapSpeak(MapScene* scene, TextBoxScene* textboxScene);
+		MapSpeak(MapScene* scene, TextBoxScene* textboxScene, const MapDialogueResource* dialogueResource);
 
 		void process();
 

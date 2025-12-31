@@ -36,8 +36,7 @@ void Tile::MapMenuScene::process() {
 	if (!isOpen()) { return; }
 
 	if (readSingleInput() != GCmd::GCMD_NONE) {
-		MapScene* mapScene = (MapScene*)parentScene;
-		mapScene->playSound(1);
+		game->getAudio().playSound(sounds.sounds.at(1));
 	}
 
 	if (subMenu) {
@@ -55,10 +54,10 @@ void Tile::MapMenuScene::process() {
 }
 
 bool Tile::MapMenuScene::load() {
-	if (font.path) {
+	if (font.path && sounds.path) {
 		return
 		MenuScene::load() && miscScene.load() &&
-		font.load(game);
+		font.load(game) && sounds.load(game);
 	}
 
 	GRY_JSON::Document sceneDoc;
@@ -66,5 +65,7 @@ bool Tile::MapMenuScene::load() {
 
 	/* Initialize the font texture */
 	font.setPath(sceneDoc["fontTexturePath"].GetString());
+	/* Initialize the sound resource */
+	sounds.setPath(sceneDoc["soundsPath"].GetString());
 	return false;
 }

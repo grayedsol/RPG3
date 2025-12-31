@@ -20,15 +20,15 @@ void Tile::MapScene::setControls() {
 Tile::MapScene::MapScene(GRY_PixelGame *pGame, const char *tileMapPath, MapSceneInfo sceneInfo) :
 	Scene((GRY_Game *)pGame, tileMapPath),
 	entityMap(ecs),
+	tileMapQuadTrees(this),
 	tileMapRenderer(this),
 	tileMapCamera(this),
-	tileMapMovement(this),
-	tileMapQuadTrees(this),
+	tileMapMovement(this, &tileMapQuadTrees),
 	tileSpriteAnimator(this),
-	tileMapInput(this),
+	tileMapInput(this, &tileMapQuadTrees),
 	textBoxScene(pGame, "assets/textboxscene/scene.json", this),
-	tileMapSpeak(this, &textBoxScene),
-	mapScripting(this),
+	tileMapSpeak(this, &textBoxScene, &mapDialogues),
+	mapScripting(this, &tileMapQuadTrees),
 	menuScene(pGame, "assets/mapmenuscene/scene.json", this),
 	sceneInfo(sceneInfo) {
 }
@@ -147,10 +147,6 @@ void Tile::MapScene::disablePlayerControls() {
 	if (!textBoxScene.isOpen() && !menuScene.isOpen()) {
 		game->setControlScheme(controls);
 	}
-}
-
-void Tile::MapScene::playSound(unsigned soundId) {
-	game->getAudio().playSound(sounds.sounds.at(soundId));
 }
 
 std::vector<SDL_FRect> Tile::MapScene::queryTileCollisions(const SDL_FRect rect, std::size_t layer) const {

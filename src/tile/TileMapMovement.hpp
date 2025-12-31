@@ -6,11 +6,11 @@
  */
 #pragma once
 #include "TileEntityMap.hpp"
-#include "QuadTree.hpp"
 
 namespace Tile {
 	class MapScene;
-
+	class MapQuadTrees;
+	
 	/**
 	 * @brief Moves entities in a TileMap.
 	 * 
@@ -22,6 +22,12 @@ namespace Tile {
 		 * 
 		 */
 		MapScene* scene;
+
+		/**
+		 * @brief Quadtrees of the MapScene.
+		 * 
+		 */
+		MapQuadTrees* quadtrees;
 
 		/**
 		 * @brief Positions of entities, in game pixels.
@@ -100,7 +106,7 @@ namespace Tile {
 		 * 
 		 * @param scene Associated MapScene class.
 		 */
-		MapMovement(MapScene* scene);
+		MapMovement(MapScene* scene, MapQuadTrees* quadtrees);
 
 		/**
 		 * @brief Process the movement for all entities in the MapScene.

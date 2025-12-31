@@ -19,7 +19,10 @@ void Tile::MapSpeak::endSpeak() {
 	currentDialogue = nullptr;
 }
 
-Tile::MapSpeak::MapSpeak(MapScene* scene, TextBoxScene* textboxScene) : scene(scene), textbox(textboxScene) {
+Tile::MapSpeak::MapSpeak(MapScene* scene, TextBoxScene* textboxScene,  const MapDialogueResource* dialogueResource) :
+	scene(scene),
+	textbox(textboxScene),
+	dialogueResource(dialogueResource) {
 }
 
 void Tile::MapSpeak::process() {
@@ -31,7 +34,7 @@ void Tile::MapSpeak::process() {
 			else if (textbox->decisionIsMade()) {
 				textbox->closeDecisionBox();
 				unsigned int dialogueId = textbox->getDecision() == 1 ? currentDialogue->path1 : currentDialogue->path2;
-				currentDialogue = &scene->getDialogueResource().dialogues.at(dialogueId);
+				currentDialogue = &dialogueResource->dialogues.at(dialogueId);
 				index = 0;
 				if (!currentDialogue->lines.size()) { endSpeak(); }
 				else {
@@ -51,7 +54,7 @@ void Tile::MapSpeak::process() {
 }
 
 void Tile::MapSpeak::speak(unsigned dialogueId) {
-	currentDialogue = &scene->getDialogueResource().dialogues.at(dialogueId);
+	currentDialogue = &dialogueResource->dialogues.at(dialogueId);
 	if (textbox->isOpen()) { return; }
 	textbox->open();
 }
