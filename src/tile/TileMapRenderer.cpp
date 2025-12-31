@@ -9,11 +9,12 @@
 #include "SDL_RectOps.hpp"
 #include "SDL3/SDL_render.h"
 
-Tile::MapRenderer::MapRenderer(const MapScene *scene) :
+Tile::MapRenderer::MapRenderer(const MapScene *scene, const TileMap* tileMap, const EntityMap* entityMap, const MapRenderOffset* renderOffset) :
 	scene(scene),
 	renderer(scene->getGame()->getVideo().getRenderer()),
-	tileMap(&scene->getTileMap()),
-	entityMap(&scene->getTileEntityMap()),
+	tileMap(tileMap),
+	entityMap(entityMap),
+	renderOffset(renderOffset),
 	pixelScaling(&scene->getPixelGame()->getPixelScalingRef()),
 	positions(&scene->getECSReadOnly().getComponentReadOnly<Position2>()),
 	sprites(&scene->getECSReadOnly().getComponentReadOnly<ActorSprite>()),
@@ -24,13 +25,13 @@ void Tile::MapRenderer::renderTile(const Tileset &tileset, const TileId textureI
 	SDL_RenderTexture(renderer, tileset.texture, tileset.getSourceRect(textureIndex), dstRect);
 }
 
-void Tile::MapRenderer::renderSprite(ECS::entity e) {
+void Tile::MapRenderer::renderSprite(ECS::entity e, float offsetX, float offsetY, float scaling) {
 	const Tileset& tileset = entityMap->tilesets[sprites->get(e).tileset];
 	SDL_FRect dstRect {
-		floorf((positions->get(e)[0] + sprites->get(e).offsetX + offsetX) * *pixelScaling),
-		floorf((positions->get(e)[1] + sprites->get(e).offsetY + offsetY) * *pixelScaling),
-		tileset.tileWidth * *pixelScaling,
-		tileset.tileHeight * *pixelScaling
+		floorf((positions->get(e)[0] + sprites->get(e).offsetX + offsetX) * scaling),
+		floorf((positions->get(e)[1] + sprites->get(e).offsetY + offsetY) * scaling),
+		tileset.tileWidth * scaling,
+		tileset.tileHeight * scaling
 	};
 	SDL_RenderTexture(renderer, tileset.texture, tileset.getSourceRect(sprites->get(e).index), &dstRect);
 }
@@ -40,6 +41,9 @@ void Tile::MapRenderer::renderSprite(ECS::entity e) {
  * For efficiency, this renderer assumes the map uses only one tileset.
  */
 void Tile::MapRenderer::process() {
+	float offsetX = renderOffset->x;
+	float offsetY = renderOffset->y;
+	float scaling = *pixelScaling;
 	GRY_VecTD<uint32_t, 2, void> tileViewport{
 		scene->getPixelGame()->getScreenWidthPixels() / scene->getNormalTileSize() + 1,
 		scene->getPixelGame()->getScreenHeightPixels() / scene->getNormalTileSize() + 2
@@ -97,7 +101,7 @@ void Tile::MapRenderer::process() {
 					entityIndex++;
 					continue;
 				}
-				renderSprite(entityLayer[entityIndex]);
+				renderSprite(entityLayer[entityIndex], offsetX, offsetY, scaling);
 				entityIndex++;
 				if (entityIndex < entityLayer.size()) {
 					Hitbox box = hitboxes->get(entityLayer[entityIndex]);

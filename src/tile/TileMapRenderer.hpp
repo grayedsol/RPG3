@@ -12,6 +12,7 @@ struct SDL_Renderer;
 
 namespace Tile {
 	class MapScene;
+	struct MapRenderOffset;
 
 	/**
 	 * @brief Renders a tile map and tile entity map.
@@ -70,16 +71,10 @@ namespace Tile {
 		const ComponentSet<Hitbox>* hitboxes;
 
 		/**
-		 * @brief X component of rendering offset.
+		 * @copybrief MapRenderOffset
 		 * 
 		 */
-		float offsetX = 0.f;
-
-		/**
-		 * @brief Y component of rendering offset.
-		 * 
-		 */
-		float offsetY = 0.f;
+		const MapRenderOffset* renderOffset;
 
 		/**
 		 * @brief Render a tile on the screen.
@@ -95,30 +90,19 @@ namespace Tile {
 		 * 
 		 * @param e Id of the entity to render
 		 */
-		void renderSprite(ECS::entity e);
+		void renderSprite(ECS::entity e, float offsetX, float offsetY, float scaling);
 	public:
 		/**
 		 * @brief Constructor.
 		 * 
 		 * @param scene Associated MapScene class.
 		 */
-		MapRenderer(const MapScene* scene);
+		MapRenderer(const MapScene* scene, const TileMap* tileMap, const EntityMap* entityMap, const MapRenderOffset* renderOffset);
 
 		/**
 		 * @brief Render the TileMap and EntityMap.
 		 * 
 		 */
 		void process();
-
-		/**
-		 * @brief Set the rendering offset.
-		 * 
-		 * @param x X offset
-		 * @param y Y offset
-		 */
-		void setOffset(float x, float y) {
-			offsetX = x;
-			offsetY = y;
-		}
 	};
 };

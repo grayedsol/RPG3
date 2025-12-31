@@ -28,6 +28,15 @@ namespace Tile {
 		Position2 spawnPosition = Position2{ -1, -1 };
 		Direction spawnDirection = Direction::DirectionNone;
 	};
+
+	/**
+	 * @brief Rendering offset.
+	 * 
+	 */
+	struct MapRenderOffset {
+		float x;
+		float y;
+	};
 	/**
 	 * @brief Loads a TileMap and TileEntityMap into a playable scene.
 	 * 
@@ -82,6 +91,12 @@ namespace Tile {
 		 * 
 		 */
 		MapQuadTrees tileMapQuadTrees;
+
+		/**
+		 * @copybrief MapRenderOffset
+		 * 
+		 */
+		MapRenderOffset renderOffset;
 
 		/**
 		 * @brief Renderer for the tile map.
@@ -195,11 +210,6 @@ namespace Tile {
 		bool executeCommand(MapCommand& command);
 
 		/**
-		 * @copydoc MapRenderer::setOffset
-		 */
-		void setRenderOffset(float x, float y) { tileMapRenderer.setOffset(x,y); }
-
-		/**
 		 * @brief Get a pointer to the GRY_PixelGame.
 		 *
 		 * @return Pointer to the GRY_PixelGame.
@@ -219,27 +229,6 @@ namespace Tile {
 		 * @return `const` reference to the TileMapECS.
 		 */
 		const MapECS& getECSReadOnly() const { return ecs; }
-
-		/**
-		 * @brief Get a reference to the TileMap.
-		 *
-		 * @return `const` reference to the TileMap.
-		 */
-		const TileMap& getTileMap() const { return tileMap; }
-
-		/**
-		 * @brief Get a reference to the TileEntityMap.
-		 *
-		 * @return `const` reference to the TileEntityMap.
-		 */
-		const EntityMap& getTileEntityMap() const { return entityMap; }
-
-		/**
-		 * @brief Get a reference to the TileEntityMap.
-		 *
-		 * @return Reference to the TileEntityMap.
-		 */
-		EntityMap& getTileEntityMap() { return entityMap; }
 
 		/**
 		 * @brief Get the width / height of a normal square tile, in pixels.

@@ -17,6 +17,7 @@ class GRY_PixelGame;
 /**
  * @brief Displays an interactive text box at the bottom of the screen.
  * 
+ * @details
  * Controls:
  * GAME_A: Proceed
  */

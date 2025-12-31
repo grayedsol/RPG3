@@ -10,6 +10,7 @@
 
 namespace Tile {
 	class MapScene;
+	struct MapRenderOffset;
 
 	/**
 	 * @brief Adjusts a MapScene's rendering offset based on the player's position.
@@ -22,6 +23,8 @@ namespace Tile {
 		 * 
 		 */
 		MapScene* scene;
+
+		MapRenderOffset* renderOffset;
 
 		/**
 		 * @brief Scaling factor for the rendering offset.
@@ -62,7 +65,7 @@ namespace Tile {
 		 * 
 		 * @param scene Associated MapScene class.
 		 */
-		MapCamera(MapScene* scene);
+		MapCamera(MapScene* scene, MapRenderOffset* renderOffset);
 
 		/**
 		 * @brief Sets the rendering offset based on the player's position.

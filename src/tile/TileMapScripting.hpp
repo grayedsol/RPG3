@@ -11,6 +11,7 @@
 
 namespace Tile {
 	class MapScene;
+	class EntityMap;
 	class MapQuadTrees;
 
 	/**
@@ -30,6 +31,8 @@ namespace Tile {
 		 * 
 		 */
 		MapECS* ecs;
+
+		const EntityMap* entityMap;
 
 		MapQuadTrees* quadtrees;
 
@@ -59,7 +62,7 @@ namespace Tile {
 		 * 
 		 * @param scene Associated MapScene.
 		 */
-		MapScripting(MapScene* scene, MapQuadTrees* quadtrees);
+		MapScripting(MapScene* scene, const EntityMap* entityMap, MapQuadTrees* quadtrees);
 
 		/**
 		 * @brief Process all MapCommands and either the Gameplay or Cutscene mode.

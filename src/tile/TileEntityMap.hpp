@@ -45,6 +45,7 @@ namespace Tile {
 		bool load(GRY_Game* game) final override;
 
 		static void sortLayer(EntityMap* entityMap, unsigned layer);
+		static void sortLayers(EntityMap* entityMap);
 		static void updateLayers(EntityMap* entityMap);
 	};
 };

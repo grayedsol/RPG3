@@ -20,15 +20,15 @@ void Tile::MapScene::setControls() {
 Tile::MapScene::MapScene(GRY_PixelGame *pGame, const char *tileMapPath, MapSceneInfo sceneInfo) :
 	Scene((GRY_Game *)pGame, tileMapPath),
 	entityMap(ecs),
-	tileMapQuadTrees(this),
-	tileMapRenderer(this),
-	tileMapCamera(this),
+	tileMapQuadTrees(this, &entityMap),
+	tileMapRenderer(this, &tileMap, &entityMap, &renderOffset),
+	tileMapCamera(this, &renderOffset),
 	tileMapMovement(this, &tileMapQuadTrees),
 	tileSpriteAnimator(this),
 	tileMapInput(this, &tileMapQuadTrees),
 	textBoxScene(pGame, "assets/textboxscene/scene.json", this),
 	tileMapSpeak(this, &textBoxScene, &mapDialogues),
-	mapScripting(this, &tileMapQuadTrees),
+	mapScripting(this, &entityMap, &tileMapQuadTrees),
 	menuScene(pGame, "assets/mapmenuscene/scene.json", this),
 	sceneInfo(sceneInfo) {
 }
@@ -59,7 +59,7 @@ void Tile::MapScene::init() {
 		}
 	}
 
-	tileMapQuadTrees.init();
+	tileMapQuadTrees.init(tileMap.width, tileMap.height, entityMap.entityLayers.size());
 	textBoxScene.init();
 	menuScene.init();
 
@@ -90,6 +90,7 @@ void Tile::MapScene::process() {
 	mapScripting.process(game->getDelta());
 	tileMapSpeak.process();
 	tileMapMovement.process(game->getDelta());
+	EntityMap::sortLayers(&entityMap);
 	tileMapQuadTrees.process();
 	tileSpriteAnimator.process(game->getDelta());
 	tileMapCamera.process();

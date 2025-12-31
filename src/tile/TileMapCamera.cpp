@@ -7,7 +7,9 @@
 #include "../scenes/TileMapScene.hpp"
 #include "GRY_PixelGame.hpp"
 
-Tile::MapCamera::MapCamera(MapScene *scene) : scene(scene),
+Tile::MapCamera::MapCamera(MapScene* scene, MapRenderOffset* renderOffset) :
+	scene(scene),
+	renderOffset(renderOffset),
 	hitboxes(&scene->getECSReadOnly().getComponentReadOnly<Hitbox>()),
 	positions(&scene->getECSReadOnly().getComponentReadOnly<Position2>()),
 	players(&scene->getECSReadOnly().getComponentReadOnly<Player>()),
@@ -25,10 +27,8 @@ void Tile::MapCamera::process() {
 		};
 	}
 
-	scene->setRenderOffset(
-		(scene->getPixelGame()->getScreenWidthPixels() * 0.5f) - center.x,
-		(scene->getPixelGame()->getScreenHeightPixels() * 0.5f) - center.y
-	);
+	renderOffset->x = (scene->getPixelGame()->getScreenWidthPixels() * 0.5f) - center.x;
+	renderOffset->y = (scene->getPixelGame()->getScreenHeightPixels() * 0.5f) - center.y;
 }
 
 bool Tile::MapCamera::moveCamera(Position2 position, double speed, double delta) {

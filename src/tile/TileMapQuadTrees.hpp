@@ -12,24 +12,28 @@
 
 namespace Tile {
 	class MapScene;
+	class EntityMap;
 
 	class MapQuadTrees {
 	private:
 		std::vector<QuadTree> quadtrees;
 		std::vector<QuadTree> softQuadtrees;
 		MapScene* scene;
+		const EntityMap* entityMap;
 		const ComponentSet<Hitbox>* hitboxes;
 		const ComponentSet<Collides>* collides;
 	public:
-		MapQuadTrees(MapScene* scene);
+		MapQuadTrees(MapScene* scene, const EntityMap* entityMap);
 
 		void process();
 
 		/**
 		 * @brief Initializes the system. Must be called once before using `process`.
 		 * 
+		 * @param mapWidth Width of the map in tiles.
+		 * @param mapHeight Height of the map in tiles.
 		 */
-		void init();
+		void init(uint32_t mapWidth, uint32_t mapHeight, uint32_t numLayers);
 
 		const std::vector<QuadTree>& getQuadTrees() const { return quadtrees; }
 

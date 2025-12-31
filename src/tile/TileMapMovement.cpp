@@ -172,12 +172,9 @@ void Tile::MapMovement::process(double delta) {
 			 * last for one frame, especially for big/teleport movements.
 			 */
 			quadtrees->updateQuadTree(oldBox, box, e, layer);
-
-			EntityMap::sortLayer(&scene->getTileEntityMap(), layer);
 		}
 		else {
 			positions->get(e) += velocities->get(e) * actors->get(e).speed * (1 + actors->get(e).sprinting) * delta;
-			EntityMap::sortLayer(&scene->getTileEntityMap(), layer);
 		}
 	}
 	for (auto& interaction : collisionInteractions->value) {

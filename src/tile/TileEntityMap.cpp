@@ -76,8 +76,14 @@ bool Tile::EntityMap::load(GRY_Game *game) {
 	return doc["layers"].GetArray().Size() == 0;
 }
 
-void Tile::EntityMap::sortLayer(EntityMap *entityMap, unsigned layer) {
+void Tile::EntityMap::sortLayer(EntityMap* entityMap, unsigned layer) {
 	sortEntityLayer(entityMap->ecs->getComponent<Position2>(), entityMap->entityLayers.at(layer));
+}
+
+void Tile::EntityMap::sortLayers(EntityMap* entityMap) {
+	for (int layer = 0; layer < entityMap->entityLayers.size(); layer++) {
+		sortEntityLayer(entityMap->ecs->getComponent<Position2>(), entityMap->entityLayers.at(layer));
+	}
 }
 
 void Tile::EntityMap::updateLayers(EntityMap* entityMap) {

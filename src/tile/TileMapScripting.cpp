@@ -34,9 +34,10 @@ static Tile::Direction vecToDir(Velocity2 vec) {
 	return vecDirs[(int)((vec[0]+1)*3+vec[1]+1)];
 }
 
-Tile::MapScripting::MapScripting(MapScene* scene, MapQuadTrees* quadtrees) :
+Tile::MapScripting::MapScripting(MapScene* scene, const EntityMap* entityMap,  MapQuadTrees* quadtrees) :
 	scene(scene),
 	ecs(&scene->getECS()),
+	entityMap(entityMap),
 	quadtrees(quadtrees) {
 }
 
@@ -226,11 +227,11 @@ bool Tile::MapScripting::processSwitchMap(TMC_SwitchMap& args) {
 	MapSceneInfo mapSceneInfo;
 	mapSceneInfo.spawnPosition = args.spawnPosition;
 	mapSceneInfo.spawnDirection = args.spawnDirection;
-	GRY_Assert(args.mapScenePathIndex < scene->getTileEntityMap().paths.size(),
+	GRY_Assert(args.mapScenePathIndex < entityMap->paths.size(),
 		"[Tile::MapScripting] SwitchMap command's mapScenePathIndex (%d) was out of bounds.",
 		args.mapScenePathIndex
 	);
-	scene->switchMap(scene->getTileEntityMap().paths.at(args.mapScenePathIndex), mapSceneInfo);
+	scene->switchMap(entityMap->paths.at(args.mapScenePathIndex), mapSceneInfo);
 	return true;
 }
 
