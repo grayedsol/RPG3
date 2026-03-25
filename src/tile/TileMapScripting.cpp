@@ -166,6 +166,7 @@ bool Tile::MapScripting::processActorMovePos(TMC_ActorMovePos& args) {
 			pos[i] = args.targetPos[i];
 		}
 	}
+
 	box.x = pos.x;
 	box.y = pos.y;
 	quadtrees->updateQuadTree(oldBox, box, args.e, ecs->getComponent<MapEntity>().get(args.e).layer);

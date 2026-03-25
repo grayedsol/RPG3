@@ -61,6 +61,7 @@ set(SOURCES
 	src/scenes/TextDecisionScene.cpp
 	src/SoundResource.cpp
 	src/scenes/battle/BattleScene.cpp
+	src/battle/BattlePalette.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
