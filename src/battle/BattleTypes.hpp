@@ -2,6 +2,14 @@
 #include <stdint.h>
 
 namespace Battle {
+	enum FighterId : uint8_t {
+		Fighter0 = 0,
+		Fighter1 = 1,
+		Fighter2 = 2,
+		Fighter3 = 3,
+		MaxFighters = 4
+	};
+
 	enum PageId : uint8_t {
 		MainPage = 0,
 		ItemPage = 1,

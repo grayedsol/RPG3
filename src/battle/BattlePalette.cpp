@@ -1,41 +1,44 @@
 #include "BattlePalette.hpp"
 #include "../scenes/battle/BattleScene.hpp"
 
-Battle::BattlePalette::BattlePalette(BattleScene *scene, PageId &currentPage)
-	: scene(scene)
-	, currentPage(currentPage) {
+Battle::Palette::Palette(BattleScene* scene)
+	: scene(scene) {
 }
 
 Battle::InputId getInputId(GCmd cmd, Battle::PageId currentPage) {
-	using namespace Battle;
-	DirectionId direction = DirectionId::DirectionIdSize;
+	Battle::DirectionId direction = Battle::DirectionId::DirectionIdSize;
 	switch (cmd) {
 	case GCmd::BattleDown:
-		direction = DirectionId::Down;
+		direction = Battle::DirectionId::Down;
 		break;
 	case GCmd::BattleUp:
-		direction = DirectionId::Up;
+		direction = Battle::DirectionId::Up;
 		break;
 	case GCmd::BattleLeft:
-		direction = DirectionId::Left;
+		direction = Battle::DirectionId::Left;
 		break;
 	case GCmd::BattleRight:
-		direction = DirectionId::Right;
+		direction = Battle::DirectionId::Right;
 		break;
 	default:
 		break;
 	}
 
-	if (direction == DirectionId::DirectionIdSize) { return InputId::InputIdSize; }
+	if (direction == Battle::DirectionId::DirectionIdSize) { return Battle::InputId::InputIdSize; }
 
-	InputId input = static_cast<InputId>((currentPage << 2) + direction);
-	GRY_Assert(input < InputIdSize, "Invalid battle input state.");
+	Battle::InputId input = static_cast<Battle::InputId>((currentPage << 2) + direction);
+	GRY_Assert(input < Battle::InputId::InputIdSize, "Invalid battle input state.");
 
 	return input;
 }
 
-void Battle::BattlePalette::process() {
+void Battle::Palette::process() {
 	GCmd cmd = scene->readSingleInput();
+
+	if (cmd == GCmd::BattleSwitchFighter) {
+		switchFighters();
+		return;
+	}
 
 	InputId input = getInputId(cmd, currentPage);
 
@@ -61,12 +64,14 @@ void Battle::BattlePalette::process() {
 	}
 }
 
-void Battle::BattlePalette::goToMainPage() { currentPage = PageId::MainPage; }
+void Battle::Palette::goToMainPage() { currentPage = PageId::MainPage; }
 
-void Battle::BattlePalette::goToItemPage() { currentPage = PageId::ItemPage; }
+void Battle::Palette::goToItemPage() { currentPage = PageId::ItemPage; }
 
-void Battle::BattlePalette::goToSkillPage() { currentPage = PageId::SkillPage; }
+void Battle::Palette::goToSkillPage() { currentPage = PageId::SkillPage; }
 
-void Battle::BattlePalette::itemPageUp() {}
+void Battle::Palette::itemPageUp() {}
 
-void Battle::BattlePalette::itemPageDown() {}
+void Battle::Palette::itemPageDown() {}
+
+void Battle::Palette::switchFighters() {}

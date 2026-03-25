@@ -20,10 +20,7 @@ namespace Battle {
 	private:
 		BattleSceneInfo sceneInfo;
 
-		BattlePalette palette;
-
-		uint8_t currentCharacter = 0;
-		PageId currentPage = PageId::MainPage;
+		Palette palette;
 
 		void setControls() final;
 
@@ -46,8 +43,8 @@ namespace Battle {
 		 */
 		bool load() final;
 
-		uint8_t getCurrentCharacter() { return currentCharacter; }
+		FighterId getCurrentFighter() { return palette.getCurrentFighter(); }
 
-		PageId getCurrentPage() { return currentPage; }
+		PageId getCurrentPage() { return palette.getCurrentPage(); }
 	};
 }

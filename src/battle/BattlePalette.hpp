@@ -4,11 +4,12 @@
 namespace Battle {
 	class BattleScene;
 
-	class BattlePalette {
+	class Palette {
 	private:
 		BattleScene* scene;
 
-		PageId& currentPage;
+		FighterId currentFighter = FighterId::Fighter0;
+		PageId currentPage = PageId::MainPage;
 
 		void goToMainPage();
 		void goToItemPage();
@@ -16,9 +17,15 @@ namespace Battle {
 
 		void itemPageUp();
 		void itemPageDown();
+
+		void switchFighters();
 	public:
-		BattlePalette(BattleScene* scene, PageId& currentPage);
+		Palette(BattleScene* scene);
 
 		void process();
+
+		FighterId getCurrentFighter() { return currentFighter; }
+
+		PageId getCurrentPage() { return currentPage; }
 	};
 }

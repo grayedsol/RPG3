@@ -43,6 +43,7 @@ enum GCmd {
 	BattleDown,
 	BattleLeft,
 	BattleRight,
+	BattleSwitchFighter,
 
 	GCMD_SIZE
 };

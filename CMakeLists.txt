@@ -62,6 +62,7 @@ set(SOURCES
 	src/SoundResource.cpp
 	src/scenes/battle/BattleScene.cpp
 	src/battle/BattlePalette.cpp
+	src/battle/BattlePaletteRenderer.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
