@@ -38,7 +38,7 @@ void Battle::Palette::process() {
 	GCmd cmd = scene->readSingleInput();
 
 	if (cmd == GCmd::BattleSwitchFighter) {
-		switchFighters();
+		currentFighter = getNextIdleFighter();
 		return;
 	}
 
@@ -76,16 +76,13 @@ void Battle::Palette::itemPageUp() {}
 
 void Battle::Palette::itemPageDown() {}
 
-void Battle::Palette::switchFighters() {
+Battle::FighterId Battle::Palette::getNextIdleFighter() {
 	ActorFlags* flags = scene->getActors().flags;
 	FighterId nextFighter = static_cast<FighterId>(currentFighter + 1);
 	for (uint8_t i = 1; i < FighterId::MaxFighters; i++) {
 		if (nextFighter == FighterId::MaxFighters) { nextFighter = FighterId::Fighter0; }
-		if (flags[nextFighter] & (1 << ActorFlag::ACTOR_IDLE)) {
-			currentFighter = nextFighter;
-			return;
-		}
+		if (flags[nextFighter] & (1 << ActorFlag::ACTOR_IDLE)) { return nextFighter; }
 		nextFighter = static_cast<FighterId>(nextFighter + 1);
 	}
-	currentFighter = FighterId::MaxFighters;
+	return FighterId::MaxFighters;
 }

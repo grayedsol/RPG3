@@ -18,7 +18,12 @@ namespace Battle {
 		void itemPageUp();
 		void itemPageDown();
 
-		void switchFighters();
+		/**
+		 * @brief Get the next fighter that is in the idle state.
+		 * 
+		 * @return The next idle fighter, or FighterId::MaxFighters if there are no idle fighters.
+		 */
+		FighterId getNextIdleFighter();
 	public:
 		Palette(BattleScene* scene);
 
