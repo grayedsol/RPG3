@@ -64,6 +64,7 @@ set(SOURCES
 	src/battle/BattlePalette.cpp
 	src/battle/BattlePaletteRenderer.cpp
 	src/battle/BattleTimeFlow.cpp
+	src/battle/BattleActionExecutor.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

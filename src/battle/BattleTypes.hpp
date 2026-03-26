@@ -62,6 +62,14 @@ namespace Battle {
 		DirectionIdSize = 4
 	};
 
+	enum FighterMove : uint8_t {
+		FIGHTER_ATTACK = 0,
+		FIGHTER_SKILL1 = 1,
+		FIGHTER_SKILL2 = 2,
+		FIGHTER_SKILL3 = 3,
+		FIGHTER_NUM_MOVES = 4
+	};
+
 	enum ActorFlag : uint8_t {
 		ACTOR_EXISTS = 0,
 		ACTOR_ALIVE = 1,
@@ -79,13 +87,13 @@ namespace Battle {
 	enum ActionType : uint8_t {
 		NO_ACTION = 0,
 		WAIT_ACTION = 1,
-		ATTACK = 2,
-		HEAL = 3,
-		BUFF_DEBUFF = 4,
-		MULTI_ATTACK = 5,
-		MULTI_HEAL = 6,
-		MULTI_BUFF_DEBUFF = 7,
-		ANIMATION = 8
+		ATTACK_ACTION = 2,
+		HEAL_ACTION = 3,
+		BUFF_DEBUFF_ACTION = 4,
+		MULTI_ATTACK_ACTION = 5,
+		MULTI_HEAL_ACTION = 6,
+		MULTI_BUFF_DEBUFF_ACTION = 7,
+		ANIMATION_ACTION = 8
 	};
 
 	struct PowerFormula {};
@@ -107,7 +115,7 @@ namespace Battle {
 	};
 
 	struct AttackAction {
-		ActionType type = ActionType::ATTACK;
+		ActionType type = ActionType::ATTACK_ACTION;
 		ActorId source;
 		uint8_t stance;
 		BuffDebuffId buffDebuffId;
@@ -119,7 +127,7 @@ namespace Battle {
 	};
 
 	struct HealAction {
-		ActionType type = ActionType::HEAL;
+		ActionType type = ActionType::HEAL_ACTION;
 		ActorId source;
 		uint8_t stance;
 		BuffDebuffId buffDebuffId;
@@ -130,7 +138,7 @@ namespace Battle {
 	};
 
 	struct BuffDebuffAction {
-		ActionType type = ActionType::BUFF_DEBUFF;
+		ActionType type = ActionType::BUFF_DEBUFF_ACTION;
 		ActorId source;
 		uint8_t stance;
 		BuffDebuffId buffDebuffId;
@@ -140,7 +148,7 @@ namespace Battle {
 	};
 
 	struct MultiAttackAction {
-		ActionType type = ActionType::MULTI_ATTACK;
+		ActionType type = ActionType::MULTI_ATTACK_ACTION;
 		ActorId source;
 		uint8_t stance;
 		BuffDebuffId buffDebuffId;
@@ -152,7 +160,7 @@ namespace Battle {
 	};
 
 	struct MultiHealAction {
-		ActionType type = ActionType::MULTI_HEAL;
+		ActionType type = ActionType::MULTI_HEAL_ACTION;
 		ActorId source;
 		uint8_t stance;
 		BuffDebuffId buffDebuffId;
@@ -163,7 +171,7 @@ namespace Battle {
 	};
 
 	struct MultiBuffDebuffAction {
-		ActionType type = ActionType::MULTI_BUFF_DEBUFF;
+		ActionType type = ActionType::MULTI_BUFF_DEBUFF_ACTION;
 		ActorId source;
 		uint8_t stance;
 		BuffDebuffId buffDebuffId;
@@ -173,7 +181,7 @@ namespace Battle {
 	};
 
 	struct AnimationAction {
-		ActionType type = ActionType::ANIMATION;
+		ActionType type = ActionType::ANIMATION_ACTION;
 		ActorId source;
 		uint8_t stance;
 		BuffDebuffId buffDebuffId;
@@ -199,5 +207,9 @@ namespace Battle {
 		double timers[MAX_ACTORS] = { 0 };
 		Action executingActions[MAX_ACTORS];
 		std::vector<Action> actionLists[MAX_ACTORS]; /* The current Action of an actor is actionLists[actor].back(). */
+	};
+
+	struct Fighters {
+		std::vector<Action> moves[FighterId::MaxFighters][FighterMove::FIGHTER_NUM_MOVES];
 	};
 }
