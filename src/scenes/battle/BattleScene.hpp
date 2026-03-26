@@ -9,7 +9,8 @@
 #include "SoundResource.hpp"
 #include "../../battle/BattleTypes.hpp"
 #include "../../battle/BattlePalette.hpp"
-#include <stdint.h>
+#include "../../battle/BattlePaletteRenderer.hpp"
+#include "../../battle/BattleTimeFlow.hpp"
 
 class GRY_PixelGame;
 
@@ -22,7 +23,13 @@ namespace Battle {
 
 		Palette palette;
 
+		PaletteRenderer paletteRenderer;
+
+		TimeFlow timeFlow;
+
 		void setControls() final;
+
+		Actors actors;
 
 	public:
 		BattleScene(GRY_PixelGame* pGame, const char* scenePath, BattleSceneInfo sceneInfo);
@@ -46,5 +53,7 @@ namespace Battle {
 		FighterId getCurrentFighter() { return palette.getCurrentFighter(); }
 
 		PageId getCurrentPage() { return palette.getCurrentPage(); }
+
+		Actors& getActors() { return actors; }
 	};
 }

@@ -5,7 +5,7 @@ Battle::Palette::Palette(BattleScene* scene)
 	: scene(scene) {
 }
 
-Battle::InputId getInputId(GCmd cmd, Battle::PageId currentPage) {
+static Battle::InputId getInputId(GCmd cmd, Battle::PageId currentPage) {
 	Battle::DirectionId direction = Battle::DirectionId::DirectionIdSize;
 	switch (cmd) {
 	case GCmd::BattleDown:
@@ -33,6 +33,8 @@ Battle::InputId getInputId(GCmd cmd, Battle::PageId currentPage) {
 }
 
 void Battle::Palette::process() {
+	if (currentFighter == FighterId::MaxFighters) { return; }
+
 	GCmd cmd = scene->readSingleInput();
 
 	if (cmd == GCmd::BattleSwitchFighter) {
