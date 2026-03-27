@@ -31,6 +31,8 @@ namespace Battle {
 
 		Actors actors;
 
+		Fighters fighters;
+
 	public:
 		BattleScene(GRY_PixelGame* pGame, const char* scenePath, BattleSceneInfo sceneInfo);
 
@@ -55,5 +57,11 @@ namespace Battle {
 		PageId getCurrentPage() { return palette.getCurrentPage(); }
 
 		Actors& getActors() { return actors; }
+
+		Fighters& getFighters() { return fighters; }
+
+		void setActorFlag(ActorId actor, ActorFlag flag);
+
+		void unsetActorFlag(ActorId actor, ActorFlag flag);
 	};
 }

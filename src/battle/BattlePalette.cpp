@@ -33,55 +33,67 @@ static Battle::InputId getInputId(GCmd cmd, Battle::PageId currentPage) {
 }
 
 void Battle::Palette::process() {
-	if (currentFighter == FighterId::MaxFighters) { return; }
-
-	GCmd cmd = scene->readSingleInput();
-
-	if (cmd == GCmd::BattleSwitchFighter) {
-		currentFighter = getNextIdleFighter();
+	if (currentFighter == FighterId::MaxFighters) {
+		currentFighter = getNextIdleFighter(currentFighter);
 		return;
 	}
+
+	GCmd cmd = scene->readSingleInput();
 
 	InputId input = getInputId(cmd, currentPage);
 
 	switch (input) {
-	case InputId::Item:
-		goToItemPage();
+	case InputId::InputPass:
+		currentFighter = getNextIdleFighter(currentFighter);
 		break;
-	case InputId::Skill:
-		goToSkillPage();
+	case InputId::InputAttack:
+		beginMove(currentFighter, FighterMove::FIGHTER_ATTACK);
 		break;
-	case InputId::ItemDown:
+	case InputId::InputSkill1:
+		beginMove(currentFighter, FighterMove::FIGHTER_SKILL1);
+		break;
+	case InputId::InputSkill2:
+		beginMove(currentFighter, FighterMove::FIGHTER_SKILL2);
+		break;
+	case InputId::InputSkill3:
+		beginMove(currentFighter, FighterMove::FIGHTER_SKILL3);
+		break;
+	case InputId::InputItem:
+		switchPage(PageId::ItemPage);
+		break;
+	case InputId::InputSkillPage:
+		switchPage(PageId::SkillPage);
+		break;
+	case InputId::InputItemDown:
 		itemPageDown();
 		break;
-	case InputId::ItemUp:
+	case InputId::InputItemUp:
 		itemPageUp();
 		break;
-	case InputId::ItemToMain:
-	case InputId::SkillToMain:
-		goToMainPage();
+	case InputId::InputItemToMainPage:
+	case InputId::InputSkillToMainPage:
+		switchPage(PageId::MainPage);
 		break;
 	default:
 		break;
 	}
 }
 
-void Battle::Palette::goToMainPage() { currentPage = PageId::MainPage; }
-
-void Battle::Palette::goToItemPage() { currentPage = PageId::ItemPage; }
-
-void Battle::Palette::goToSkillPage() { currentPage = PageId::SkillPage; }
+void Battle::Palette::beginMove(FighterId fighter, FighterMove move) {
+	scene->getActors().actionLists[fighter] = scene->getFighters().moves[fighter][move];
+	scene->unsetActorFlag(fighter, ActorFlag::ACTOR_IDLE);
+}
 
 void Battle::Palette::itemPageUp() {}
 
 void Battle::Palette::itemPageDown() {}
 
-Battle::FighterId Battle::Palette::getNextIdleFighter() {
+Battle::FighterId Battle::Palette::getNextIdleFighter(FighterId afterFighter) {
 	ActorFlags* flags = scene->getActors().flags;
-	FighterId nextFighter = static_cast<FighterId>(currentFighter + 1);
-	for (uint8_t i = 1; i < FighterId::MaxFighters; i++) {
-		if (nextFighter == FighterId::MaxFighters) { nextFighter = FighterId::Fighter0; }
-		if (flags[nextFighter] & (1 << ActorFlag::ACTOR_IDLE)) { return nextFighter; }
+	FighterId nextFighter = static_cast<FighterId>(afterFighter + 1);
+	for (uint8_t i = 0; i < FighterId::MaxFighters; i++) {
+		if (nextFighter >= FighterId::MaxFighters) { nextFighter = FighterId::Fighter0; }
+		if (flags[nextFighter] & ActorFlag::ACTOR_IDLE) { return nextFighter; }
 		nextFighter = static_cast<FighterId>(nextFighter + 1);
 	}
 	return FighterId::MaxFighters;

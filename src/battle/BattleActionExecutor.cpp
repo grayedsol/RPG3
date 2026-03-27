@@ -9,20 +9,22 @@ void Battle::ActionExecutor::process() {
 
 	for (ActorId a = 0; a < MAX_ACTORS; a++) {
 		Action& action = actions[a];
-		switch (action.data.type) {
+		switch (action.common.data.type) {
 			case ActionType::NO_ACTION:
+				break;
+			case ActionType::WAIT_ACTION:
 				break;
 			case ActionType::ATTACK_ACTION:
 				break;
 			case ActionType::HEAL_ACTION:
 				break;
-			case ActionType::BUFF_DEBUFF_ACTION:
+			case ActionType::STATUS_EFFECT_ACTION:
 				break;
 			case ActionType::MULTI_ATTACK_ACTION:
 				break;
 			case ActionType::MULTI_HEAL_ACTION:
 				break;
-			case ActionType::MULTI_BUFF_DEBUFF_ACTION:
+			case ActionType::MULTI_STATUS_EFFECT_ACTION:
 				break;
 			case ActionType::ANIMATION_ACTION:
 				break;

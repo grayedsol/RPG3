@@ -5,7 +5,7 @@
 namespace Battle {
 	using ActorFlags = uint32_t;
 	using ActorId = uint8_t;
-	using BuffDebuffId = uint8_t;
+	using StatusEffectId = uint8_t;
 	using ActionAnimationId = uint16_t;
 
 	enum FighterId : uint8_t {
@@ -39,18 +39,18 @@ namespace Battle {
 	};
 
 	enum InputId : uint8_t {
-		Flee = 0,
-		Attack = 1,
-		Item = 2,
-		Skill = 3,
-		ItemDown = 4,
-		ItemUp = 5,
-		ItemSelect = 6,
-		ItemToMain = 7,
-		Skill3 = 8,
-		Skill1 = 9,
-		SkillToMain = 10,
-		Skill2 = 11,
+		InputPass = 0,
+		InputAttack = 1,
+		InputItem = 2,
+		InputSkillPage = 3,
+		InputItemDown = 4,
+		InputItemUp = 5,
+		InputItemSelect = 6,
+		InputItemToMainPage = 7,
+		InputSkill3 = 8,
+		InputSkill1 = 9,
+		InputSkillToMainPage = 10,
+		InputSkill2 = 11,
 		InputIdSize = 12
 	};
 
@@ -70,10 +70,10 @@ namespace Battle {
 		FIGHTER_NUM_MOVES = 4
 	};
 
-	enum ActorFlag : uint8_t {
-		ACTOR_EXISTS = 0,
-		ACTOR_ALIVE = 1,
-		ACTOR_IDLE = 2
+	enum ActorFlag : ActorFlags {
+		ACTOR_EXISTS = 1 << 0,
+		ACTOR_ALIVE = 1 << 1,
+		ACTOR_IDLE = 1 << 2
 	};
 
 	enum AttackElement : uint8_t {
@@ -89,37 +89,38 @@ namespace Battle {
 		WAIT_ACTION = 1,
 		ATTACK_ACTION = 2,
 		HEAL_ACTION = 3,
-		BUFF_DEBUFF_ACTION = 4,
+		STATUS_EFFECT_ACTION = 4,
 		MULTI_ATTACK_ACTION = 5,
 		MULTI_HEAL_ACTION = 6,
-		MULTI_BUFF_DEBUFF_ACTION = 7,
+		MULTI_STATUS_EFFECT_ACTION = 7,
 		ANIMATION_ACTION = 8
 	};
 
 	struct PowerFormula {};
 
-	struct NoAction {
+	struct StatusEffect {
+		double durationj = 0;
+		StatusEffectId id = 0;
+	};
+
+	struct CommonActionData {
 		ActionType type = ActionType::NO_ACTION;
 		ActorId source = 0;
 		uint8_t stance = 0;
-		BuffDebuffId buffDebuffId = 0;
+		StatusEffectId statusEffectId = 0;
 		double time = 0; /* Time until the action executes. */
 	};
 
+	struct NoAction {
+		CommonActionData data{ActionType::NO_ACTION};
+	};
+
 	struct WaitAction {
-		ActionType type = ActionType::WAIT_ACTION;
-		ActorId source;
-		uint8_t stance;
-		BuffDebuffId buffDebuffId;
-		double time;
+		CommonActionData data{ActionType::WAIT_ACTION};
 	};
 
 	struct AttackAction {
-		ActionType type = ActionType::ATTACK_ACTION;
-		ActorId source;
-		uint8_t stance;
-		BuffDebuffId buffDebuffId;
-		double time;
+		CommonActionData data{ActionType::ATTACK_ACTION};
 		ActorId target;
 		uint8_t power;
 		PowerFormula formula;
@@ -127,32 +128,20 @@ namespace Battle {
 	};
 
 	struct HealAction {
-		ActionType type = ActionType::HEAL_ACTION;
-		ActorId source;
-		uint8_t stance;
-		BuffDebuffId buffDebuffId;
-		double time;
+		CommonActionData data{ActionType::HEAL_ACTION};
 		ActorId target;
 		uint8_t power;
 		PowerFormula formula;
 	};
 
-	struct BuffDebuffAction {
-		ActionType type = ActionType::BUFF_DEBUFF_ACTION;
-		ActorId source;
-		uint8_t stance;
-		BuffDebuffId buffDebuffId;
-		double time;
+	struct StatusEffectAction {
+		CommonActionData data{ActionType::STATUS_EFFECT_ACTION};
 		ActorId target;
-		BuffDebuffId appliedBuffDebuffId;
+		StatusEffect appliedStatusEffect;
 	};
 
 	struct MultiAttackAction {
-		ActionType type = ActionType::MULTI_ATTACK_ACTION;
-		ActorId source;
-		uint8_t stance;
-		BuffDebuffId buffDebuffId;
-		double time;
+		CommonActionData data{ActionType::MULTI_ATTACK_ACTION};
 		ActorId targets[MAX_ACTORS];
 		uint8_t power;
 		PowerFormula formula;
@@ -160,45 +149,33 @@ namespace Battle {
 	};
 
 	struct MultiHealAction {
-		ActionType type = ActionType::MULTI_HEAL_ACTION;
-		ActorId source;
-		uint8_t stance;
-		BuffDebuffId buffDebuffId;
-		double time;
+		CommonActionData data{ActionType::MULTI_HEAL_ACTION};
 		ActorId targets[MAX_ACTORS];
 		uint8_t power;
 		PowerFormula formula;
 	};
 
-	struct MultiBuffDebuffAction {
-		ActionType type = ActionType::MULTI_BUFF_DEBUFF_ACTION;
-		ActorId source;
-		uint8_t stance;
-		BuffDebuffId buffDebuffId;
-		double time;
+	struct MultiStatusEffectAction {
+		CommonActionData data{ActionType::MULTI_STATUS_EFFECT_ACTION};
 		ActorId targets[MAX_ACTORS];
-		BuffDebuffId appliedBuffDebuffId;
+		StatusEffect appliedStatusEffect;
 	};
 
 	struct AnimationAction {
-		ActionType type = ActionType::ANIMATION_ACTION;
-		ActorId source;
-		uint8_t stance;
-		BuffDebuffId buffDebuffId;
-		double time;
+		CommonActionData data{ActionType::ANIMATION_ACTION};
 		ActorId target;
 		ActionAnimationId animationId;
 	};
 
 	union Action {
-		NoAction data = NoAction();
+		NoAction common = NoAction();
 		WaitAction waitAction;
 		AttackAction attackAction;
 		HealAction healAction;
-		BuffDebuffAction buffDebuffAction;
+		StatusEffectAction statusEffectAction;
 		MultiAttackAction multiAttackAction;
 		MultiHealAction multiHealAction;
-		MultiBuffDebuffAction multiBuffDebuffAction;
+		MultiStatusEffectAction multiStatusEffectAction;
 	};
 
 	struct Actors {
@@ -207,6 +184,8 @@ namespace Battle {
 		double timers[MAX_ACTORS] = { 0 };
 		Action executingActions[MAX_ACTORS];
 		std::vector<Action> actionLists[MAX_ACTORS]; /* The current Action of an actor is actionLists[actor].back(). */
+		std::vector<StatusEffect> statusEffects[MAX_ACTORS];
+		int healthPoints[MAX_ACTORS] = { 0 };
 	};
 
 	struct Fighters {
