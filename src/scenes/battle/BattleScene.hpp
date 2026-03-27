@@ -27,12 +27,13 @@ namespace Battle {
 
 		TimeFlow timeFlow;
 
-		void setControls() final;
-
 		Actors actors;
 
 		Fighters fighters;
 
+		void setControls() final;
+
+		void killActor(ActorId actor);
 	public:
 		BattleScene(GRY_PixelGame* pGame, const char* scenePath, BattleSceneInfo sceneInfo);
 

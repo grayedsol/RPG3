@@ -3,3 +3,6 @@
 
 Battle::StatusEffectSystem::StatusEffectSystem(BattleScene* scene) : scene(scene) {
 }
+
+void Battle::StatusEffectSystem::process() {
+}

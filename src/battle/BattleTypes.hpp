@@ -5,7 +5,6 @@
 namespace Battle {
 	using ActorFlags = uint32_t;
 	using ActorId = uint8_t;
-	using StatusEffectId = uint8_t;
 	using ActionAnimationId = uint16_t;
 
 	enum FighterId : uint8_t {
@@ -71,9 +70,9 @@ namespace Battle {
 	};
 
 	enum ActorFlag : ActorFlags {
-		ACTOR_EXISTS = 1 << 0,
-		ACTOR_ALIVE = 1 << 1,
-		ACTOR_IDLE = 1 << 2
+		ACTOR_EXISTS = 1 << 0, /* There is an actor using this ActorId. */
+		ACTOR_ALIVE = 1 << 1, /* The actor is alive. */
+		ACTOR_IDLE = 1 << 2 /* The actor is not currently in the middle of a move. */
 	};
 
 	enum AttackElement : uint8_t {
@@ -96,18 +95,22 @@ namespace Battle {
 		ANIMATION_ACTION = 8
 	};
 
+	enum StatusEffectId : uint8_t {
+		STATUS_EFFECT_NONE = 0
+	};
+
 	struct PowerFormula {};
 
 	struct StatusEffect {
-		double durationj = 0;
-		StatusEffectId id = 0;
+		double timer = 0;
+		StatusEffectId id = StatusEffectId::STATUS_EFFECT_NONE;
 	};
 
 	struct CommonActionData {
 		ActionType type = ActionType::NO_ACTION;
 		ActorId source = 0;
 		uint8_t stance = 0;
-		StatusEffectId statusEffectId = 0;
+		StatusEffectId statusEffectId = StatusEffectId::STATUS_EFFECT_NONE;
 		double time = 0; /* Time until the action executes. */
 	};
 

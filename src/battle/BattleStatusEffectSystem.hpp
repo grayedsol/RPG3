@@ -8,5 +8,7 @@ namespace Battle {
 		BattleScene* scene;
 	public:
 		StatusEffectSystem(BattleScene* scene);
+
+		void process();
 	};
 }

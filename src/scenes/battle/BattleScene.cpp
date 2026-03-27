@@ -21,16 +21,16 @@ void Battle::BattleScene::init() {}
 void Battle::BattleScene::process() {
 	double delta = game->getDelta();
 
-	/* Input */
 	palette.process();
-	/* Update */
 	timeFlow.process(delta);
-	/* Render */
+
+	for (ActorId a = 0; a < MAX_ACTORS; a++) { if (actors.healthPoints[a] = 0) { killActor(a); } }
+
 	paletteRenderer.process();
 }
 
 bool Battle::BattleScene::load() {
-	return false;
+	return true;
 }
 
 void Battle::BattleScene::setActorFlag(ActorId actor, ActorFlag flag) {
@@ -39,4 +39,12 @@ void Battle::BattleScene::setActorFlag(ActorId actor, ActorFlag flag) {
 
 void Battle::BattleScene::unsetActorFlag(ActorId actor, ActorFlag flag) {
 	actors.flags[actor] &= ~flag;
+}
+
+void Battle::BattleScene::killActor(ActorId actor) {
+	actors.flags[actor] &= ~(ActorFlag::ACTOR_ALIVE | ActorFlag::ACTOR_IDLE);
+	actors.healthPoints[actor] = 0; /* Redundant unless this is called before checking if health is 0 */
+	actors.timers[actor] = 0.0;
+	actors.statusEffects[actor].clear();
+	actors.actionLists[actor].clear();
 }
