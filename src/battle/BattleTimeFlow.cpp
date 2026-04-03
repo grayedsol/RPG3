@@ -26,6 +26,7 @@ void Battle::TimeFlow::process(double delta) {
 				actors.actionLists[a].pop_back();
 				/* Set the actor as idle if there are no more actions in the list */
 				if (actors.actionLists[a].empty()) { scene->setActorFlag(a, ActorFlag::ACTOR_IDLE); }
+				else { actors.timers[a] = actors.actionLists[a].back().common.data.time; }
 			}
 		}
 

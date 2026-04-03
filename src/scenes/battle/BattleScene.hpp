@@ -11,6 +11,9 @@
 #include "../../battle/BattlePalette.hpp"
 #include "../../battle/BattlePaletteRenderer.hpp"
 #include "../../battle/BattleTimeFlow.hpp"
+#include "../../battle/BattleFXResource.hpp"
+#include "../../battle/BattleFXAnimator.hpp"
+#include "../../battle/BattleActionExecutor.hpp"
 
 class GRY_PixelGame;
 
@@ -21,6 +24,8 @@ namespace Battle {
 	private:
 		BattleSceneInfo sceneInfo;
 
+		std::vector<FXResource> fxResources;
+
 		Palette palette;
 
 		PaletteRenderer paletteRenderer;
@@ -30,6 +35,10 @@ namespace Battle {
 		Actors actors;
 
 		Fighters fighters;
+
+		FXAnimator fxAnimator;
+
+		ActionExecutor actionExecutor;
 
 		void setControls() final;
 
@@ -53,6 +62,8 @@ namespace Battle {
 		 */
 		bool load() final;
 
+		GRY_PixelGame* getPixelGame() const { return (GRY_PixelGame*)game; }
+
 		FighterId getCurrentFighter() { return palette.getCurrentFighter(); }
 
 		PageId getCurrentPage() { return palette.getCurrentPage(); }
@@ -60,6 +71,8 @@ namespace Battle {
 		Actors& getActors() { return actors; }
 
 		Fighters& getFighters() { return fighters; }
+
+		FXResource& getFXResource(size_t index) { return fxResources.at(index); }
 
 		void setActorFlag(ActorId actor, ActorFlag flag);
 

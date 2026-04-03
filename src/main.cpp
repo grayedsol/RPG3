@@ -7,6 +7,7 @@
 #include "GRY_PixelGame.hpp"
 #include "scenes/TilesetScene.hpp"
 #include "scenes/TileMapScene.hpp"
+#include "scenes/battle/BattleScene.hpp"
 
 int WINDOW_WIDTH = 960;
 int WINDOW_HEIGHT = 540;
@@ -16,8 +17,10 @@ bool USE_VSYNC = true;
 static GRY_PixelGame game(WINDOW_WIDTH, WINDOW_HEIGHT, MAX_FPS, USE_VSYNC);
 
 const char* scenePath = "assets/tilemapscene/map02/scene.json";
+const char* battleScenePath = "assets/battlescene/scene.json";
 
 Tile::MapScene* scene = new Tile::MapScene(&game, scenePath);
+Battle::BattleScene* battleScene = new Battle::BattleScene(&game, battleScenePath, Battle::BattleSceneInfo());
 
 #ifdef _WIN32
 #ifndef NOMINMAX
@@ -32,7 +35,7 @@ _Use_decl_annotations_ int WINAPI WinMain(
 	int nCmdShow) {
 	
 	/* Add initial scene */
-	game.stackScene(scene);
+	game.stackScene(battleScene);
 
 	game.runGame();
 	
@@ -43,7 +46,7 @@ _Use_decl_annotations_ int WINAPI WinMain(
 int main(int argc, char* argv[]) {
 
 	/* Add initial scene */
-	game.stackScene(scene);
+	game.stackScene(battleScene);
 
 	game.runGame();
 

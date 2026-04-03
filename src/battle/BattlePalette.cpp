@@ -39,6 +39,7 @@ void Battle::Palette::process() {
 	}
 
 	GCmd cmd = scene->readSingleInput();
+	if (!cmd) { return; }
 
 	InputId input = getInputId(cmd, currentPage);
 
@@ -82,6 +83,7 @@ void Battle::Palette::process() {
 void Battle::Palette::beginMove(FighterId fighter, FighterMove move) {
 	scene->getActors().actionLists[fighter] = scene->getFighters().moves[fighter][move];
 	scene->unsetActorFlag(fighter, ActorFlag::ACTOR_IDLE);
+	currentFighter = getNextIdleFighter(currentFighter);
 }
 
 void Battle::Palette::itemPageUp() {}

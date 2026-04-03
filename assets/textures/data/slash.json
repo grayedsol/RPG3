@@ -1,0 +1,25 @@
+{ "columns":8,
+ "image":"..\/image\/slash.png",
+ "imageheight":64,
+ "imagewidth":512,
+ "margin":0,
+ "name":"slash",
+ "properties":[
+        {
+         "name":"duration",
+         "type":"float",
+         "value":0.125
+        }, 
+        {
+         "name":"imagePath",
+         "type":"string",
+         "value":"assets\/textures\/image\/slash.png"
+        }],
+ "spacing":0,
+ "tilecount":8,
+ "tiledversion":"1.10.2",
+ "tileheight":64,
+ "tilewidth":64,
+ "type":"tileset",
+ "version":"1.10"
+}

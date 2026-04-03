@@ -7,6 +7,32 @@ namespace Battle {
 	using ActorId = uint8_t;
 	using ActionAnimationId = uint16_t;
 
+	struct FX {
+		/**
+		 * @brief Index of the frame to render.
+		 * 
+		 */
+		uint32_t index = 0;
+
+		/**
+		 * @brief Index of the FXResource to use.
+		 *
+		 */
+		uint32_t fx = 0;
+
+		/**
+		 * @brief Time that each frame should be displayed for, in seconds. 0 indicates no FX.
+		 * 
+		 */
+		double duration = 0;
+
+		/**
+		 * @brief Time left until the next frame, in seconds.
+		 * 
+		 */
+		double timer = 0;
+	};
+
 	enum FighterId : uint8_t {
 		Fighter0 = 0,
 		Fighter1 = 1,
@@ -179,6 +205,7 @@ namespace Battle {
 		MultiAttackAction multiAttackAction;
 		MultiHealAction multiHealAction;
 		MultiStatusEffectAction multiStatusEffectAction;
+		AnimationAction animationAction;
 	};
 
 	struct Actors {
@@ -188,6 +215,7 @@ namespace Battle {
 		Action executingActions[MAX_ACTORS];
 		std::vector<Action> actionLists[MAX_ACTORS]; /* The current Action of an actor is actionLists[actor].back(). */
 		std::vector<StatusEffect> statusEffects[MAX_ACTORS];
+		FX fx[MAX_ACTORS];
 		int healthPoints[MAX_ACTORS] = { 0 };
 	};
 

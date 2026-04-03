@@ -39,7 +39,7 @@ Tile::MapScene::MapScene(GRY_PixelGame *pGame, const char *tileMapPath, MapScene
  */
 void Tile::MapScene::init() {
 	setControls();
-	
+
 	for (int i = 0; i < tileMap.collisionRects.size(); i++) {
 		auto& rectangleLayer = tileMap.collisionRects.at(i);
 		auto& tileLayer = tileMap.tileLayers.at(i);
