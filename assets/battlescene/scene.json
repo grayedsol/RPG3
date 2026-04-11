@@ -1,5 +1,12 @@
 {
 	"fxResources" : [
 		"assets\/textures\/data\/slash.json"
+	],
+	"textures" : [
+		"assets\/textures\/image\/BattleHudMain.png",
+		"assets\/textures\/image\/FighterTimer.png",
+		"assets\/textures\/image\/Reticle.png",
+		"assets\/textures\/image\/battlebox.png",
+		"assets\/textures\/image\/InfoBox.png"
 	]
 }

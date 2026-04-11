@@ -14,6 +14,7 @@ Battle::BattleScene::BattleScene(GRY_PixelGame *pGame, const char *scenePath, Ba
 	, sceneInfo(sceneInfo)
 	, palette(this)
 	, paletteRenderer(this)
+	, hud(this)
 	, timeFlow(this)
 	, fxAnimator(this, actors.fx, fxResources)
 	, actionExecutor(this) {
@@ -21,6 +22,8 @@ Battle::BattleScene::BattleScene(GRY_PixelGame *pGame, const char *scenePath, Ba
 
 void Battle::BattleScene::init() {
 	setControls();
+
+	hud.init();
 
 	setActorFlag(Fighter0, ActorFlag::ACTOR_EXISTS);
 	setActorFlag(Fighter0, ActorFlag::ACTOR_ALIVE);
@@ -51,14 +54,18 @@ void Battle::BattleScene::process() {
 	timeFlow.process(delta);
 	fxAnimator.process(delta);
 
+	hud.render();
 	paletteRenderer.process();
 	fxAnimator.render();
 }
 
 bool Battle::BattleScene::load() {
-	if (!fxResources.empty()) {
+	if (!fxResources.empty() || !textures.empty()) {
 		for (auto& fxResource : fxResources) {
 			if (!fxResource.load(game)) { return false; }
+		}
+		for (auto& texture : textures) {
+			if (!texture.load(game)) { return false; }
 		}
 		return true;
 	}
@@ -73,7 +80,13 @@ bool Battle::BattleScene::load() {
 		}
 	}
 
-	return sceneDoc["fxResources"].GetArray().Size() == 0;
+	if (sceneDoc["textures"].GetArray().Size() > 0) {
+		for (auto& texture : sceneDoc["textures"].GetArray()) {
+			textures.push_back(GRY_Texture(texture.GetString()));
+		}
+	}
+
+	return sceneDoc["fxResources"].GetArray().Size() == 0 && sceneDoc["textures"].GetArray().Size() == 0;
 }
 
 void Battle::BattleScene::setActorFlag(ActorId actor, ActorFlag flag) {

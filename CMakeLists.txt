@@ -68,6 +68,7 @@ set(SOURCES
 	src/battle/BattleStatusEffectSystem.cpp
 	src/battle/BattleFXResource.cpp
 	src/battle/BattleFXAnimator.cpp
+	src/battle/BattleHUD.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

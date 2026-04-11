@@ -7,6 +7,7 @@
 #pragma once
 #include "Scene.hpp"
 #include "SoundResource.hpp"
+#include "GRY_Texture.hpp"
 #include "../../battle/BattleTypes.hpp"
 #include "../../battle/BattlePalette.hpp"
 #include "../../battle/BattlePaletteRenderer.hpp"
@@ -14,11 +15,20 @@
 #include "../../battle/BattleFXResource.hpp"
 #include "../../battle/BattleFXAnimator.hpp"
 #include "../../battle/BattleActionExecutor.hpp"
+#include "../../battle/BattleHUD.hpp"
 
 class GRY_PixelGame;
 
 namespace Battle {
 	struct BattleSceneInfo {};
+
+	enum BattleSceneTextureIndex {
+		TEXTURE_INDEX_BATTLE_HUD_MAIN = 0,
+		TEXTURE_INDEX_FIGHTER_TIMER = 1,
+		TEXTURE_INDEX_RETICLE = 2,
+		TEXTURE_INDEX_PALETTE_BOX = 3,
+		TEXTURE_INDEX_INFO_BOX = 4
+	};
 
 	class BattleScene : public Scene {
 	private:
@@ -26,9 +36,13 @@ namespace Battle {
 
 		std::vector<FXResource> fxResources;
 
+		std::vector<GRY_Texture> textures;
+
 		Palette palette;
 
 		PaletteRenderer paletteRenderer;
+
+		BattleHUD hud;
 
 		TimeFlow timeFlow;
 
@@ -72,7 +86,9 @@ namespace Battle {
 
 		Fighters& getFighters() { return fighters; }
 
-		FXResource& getFXResource(size_t index) { return fxResources.at(index); }
+		const FXResource& getFXResource(size_t index) const { return fxResources.at(index); }
+
+		const GRY_Texture& getTexture(BattleSceneTextureIndex index) const { return textures.at(index); }
 
 		void setActorFlag(ActorId actor, ActorFlag flag);
 

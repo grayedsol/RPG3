@@ -6,6 +6,8 @@ namespace Battle {
 	class PaletteRenderer {
 	private:
 		BattleScene* scene;
+
+		const float* pixelScaling;
 	public:
 		PaletteRenderer(BattleScene* scene);
 
