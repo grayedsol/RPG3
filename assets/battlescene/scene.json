@@ -12,5 +12,6 @@
 	"paletteBox" : {
 		"renderX" : [ 109, 65, 153, 109 ],
 		"renderY" : [ 185, 212, 212, 239 ]
-	}
+	},
+	"fontPath" : "assets/textures/data/font.json"
 }

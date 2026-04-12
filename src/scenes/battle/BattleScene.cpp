@@ -61,14 +61,14 @@ void Battle::BattleScene::process() {
 }
 
 bool Battle::BattleScene::load() {
-	if (!fxResources.empty() || !textures.empty()) {
+	if (font.path) {
 		for (auto& fxResource : fxResources) {
 			if (!fxResource.load(game)) { return false; }
 		}
 		for (auto& texture : textures) {
 			if (!texture.load(game)) { return false; }
 		}
-		return true;
+		return font.load(game);
 	}
 
 	/* Open scene document */
@@ -92,6 +92,8 @@ bool Battle::BattleScene::load() {
 	for (int i = 0; i < renderXArray.Size(); i++) {
 		paletteRenderer.setRenderPos(i, renderXArray[i].GetFloat(), renderYArray[i].GetFloat());
 	}
+
+	font.setPath(sceneDoc["fontPath"].GetString());
 
 	return sceneDoc["fxResources"].GetArray().Size() == 0 && sceneDoc["textures"].GetArray().Size() == 0;
 }

@@ -16,6 +16,7 @@
 #include "../../battle/BattleFXAnimator.hpp"
 #include "../../battle/BattleActionExecutor.hpp"
 #include "../../battle/BattleHUD.hpp"
+#include "../../textbox/Fontset.hpp"
 
 class GRY_PixelGame;
 
@@ -37,6 +38,8 @@ namespace Battle {
 		std::vector<FXResource> fxResources;
 
 		std::vector<GRY_Texture> textures;
+
+		Fontset font;
 
 		Palette palette;
 
@@ -89,6 +92,8 @@ namespace Battle {
 		const FXResource& getFXResource(size_t index) const { return fxResources.at(index); }
 
 		const GRY_Texture& getTexture(BattleSceneTextureIndex index) const { return textures.at(index); }
+
+		const Fontset& getFont() { return font; }
 
 		void setActorFlag(ActorId actor, ActorFlag flag);
 

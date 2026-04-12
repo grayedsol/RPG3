@@ -92,6 +92,7 @@ namespace Battle {
 		FIGHTER_SKILL1 = 1,
 		FIGHTER_SKILL2 = 2,
 		FIGHTER_SKILL3 = 3,
+		FIGHTER_NUM_SKILLS = 3,
 		FIGHTER_NUM_MOVES = 4
 	};
 
@@ -221,5 +222,6 @@ namespace Battle {
 
 	struct Fighters {
 		std::vector<Action> moves[FighterId::MaxFighters][FighterMove::FIGHTER_NUM_MOVES];
+		std::vector<char> skillNames[FighterId::MaxFighters][FighterMove::FIGHTER_NUM_SKILLS];
 	};
 }

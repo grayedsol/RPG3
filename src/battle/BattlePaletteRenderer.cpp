@@ -4,6 +4,16 @@
 #include "SDL_RectOps.hpp"
 #include "SDL3/SDL_render.h"
 
+static const float textYOffset = 7.f;
+
+static const char* paletteBoxStrings[5] = {
+	"Attack",
+	"Item",
+	"Skill",
+	"Wait",
+	"Main"
+};
+
 Battle::PaletteRenderer::PaletteRenderer(BattleScene* scene)
 	: scene(scene)
 	, pixelScaling(&scene->getPixelGame()->getPixelScalingRef()) {
@@ -19,6 +29,33 @@ void Battle::PaletteRenderer::init() {
 void Battle::PaletteRenderer::process() {
 	if (scene->getCurrentFighter() == FighterId::MaxFighters) { return; }
 
+	const Fontset& font = scene->getFont();
+
+	const char* strings[numDirections] = { 0 };
+	float startX[numDirections] = { 0 };
+	switch (scene->getCurrentPage()) {
+	case PageId::MainPage:
+		for (int i = 0; i < numDirections; i++) { strings[i] = paletteBoxStrings[i]; }
+		break;
+	case PageId::ItemPage:
+		for (int i = 0; i < numDirections; i++) { strings[i] = "ItemTemp"; }
+		strings[2] = paletteBoxStrings[4];
+		break;
+	case PageId::SkillPage:
+	for (int i = 0; i < numDirections; i++) { strings[i] = "SkillTemp"; }
+		strings[1] = paletteBoxStrings[4];
+		break;
+	}
+
+	for (int i = 0; i < numDirections; i++) {
+		float wordWidthPixels = 0.f;
+		for (const char* c = strings[i]; *c; c++) {
+			const SDL_FRect* srcRect = font.getSourceRect(*c - ' ');
+			wordWidthPixels += srcRect->w;
+		}
+		startX[i] = SDL_ceilf((renderW - wordWidthPixels) * 0.5f);
+	}
+
 	for (int i = 0; i < numDirections; i++) {
 		SDL_FRect dstRect {
 			renderX[i], renderY[i], renderW, renderH
@@ -26,6 +63,20 @@ void Battle::PaletteRenderer::process() {
 		dstRect *= *pixelScaling;
 
 		SDL_RenderTexture(renderer, paletteBoxTexture->texture, NULL, &dstRect);
+	}
+
+	for (int i = 0; i < numDirections; i++) {
+		SDL_FRect dstRect {
+			(renderX[i] + startX[i]) * *pixelScaling,
+			(renderY[i] + textYOffset) * *pixelScaling
+		};
+		for (const char* c = strings[i]; *c; c++) {
+			const SDL_FRect* srcRect = font.getSourceRect(*c - ' ');
+			dstRect.w = srcRect->w * *pixelScaling;
+			dstRect.h = srcRect->h * *pixelScaling;
+			SDL_RenderTexture(renderer, font.texture, srcRect, &dstRect);
+			dstRect.x += dstRect.w;
+		}
 	}
 }
 
