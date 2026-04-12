@@ -29,7 +29,13 @@ void Battle::BattleScene::init() {
 	setActorFlag(Fighter0, ActorFlag::ACTOR_EXISTS);
 	setActorFlag(Fighter0, ActorFlag::ACTOR_ALIVE);
 	setActorFlag(Fighter0, ActorFlag::ACTOR_IDLE);
+
+	setActorFlag(Fighter1, ActorFlag::ACTOR_EXISTS);
+	setActorFlag(Fighter1, ActorFlag::ACTOR_ALIVE);
+	setActorFlag(Fighter1, ActorFlag::ACTOR_IDLE);
+
 	actors.names[Fighter0] = "Firo";
+	actors.names[Fighter1] = "Eva";
 	AnimationAction animationAction;
 	animationAction.data.source = Fighter0;
 	animationAction.data.time = 0;
@@ -41,9 +47,12 @@ void Battle::BattleScene::init() {
 	WaitAction waitAction;
 	waitAction.data.time = 1;
 	wait.waitAction = waitAction;
-	std::vector<Action> attack = { wait, action };
-	fighters.moves[Fighter0][FIGHTER_ATTACK] = attack;
+	fighters.moves[Fighter0][FIGHTER_ATTACK] = std::vector<Action>{ wait, action };
 	actors.healthPoints[Fighter0] = 10;
+	action.common.data.source = Fighter1;
+	wait.common.data.source= Fighter1;
+	fighters.moves[Fighter1][FIGHTER_ATTACK] = std::vector<Action>{ wait, action };
+	actors.healthPoints[Fighter1] = 10;
 }
 
 void Battle::BattleScene::process() {
