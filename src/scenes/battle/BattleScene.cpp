@@ -29,6 +29,7 @@ void Battle::BattleScene::init() {
 	setActorFlag(Fighter0, ActorFlag::ACTOR_EXISTS);
 	setActorFlag(Fighter0, ActorFlag::ACTOR_ALIVE);
 	setActorFlag(Fighter0, ActorFlag::ACTOR_IDLE);
+	actors.names[Fighter0] = "Firo";
 	AnimationAction animationAction;
 	animationAction.data.source = Fighter0;
 	animationAction.data.time = 0;

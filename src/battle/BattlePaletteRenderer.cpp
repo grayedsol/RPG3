@@ -33,25 +33,26 @@ void Battle::PaletteRenderer::process() {
 
 	const Fontset& font = scene->getFont();
 
-	const char* strings[numDirections] = { 0 };
-	float startX[numDirections] = { 0 };
+	const char* strings[numTexts] = { 0 };
+	float startX[numTexts] = { 0 };
 	/* Get text depending on which page we're on */
 	switch (scene->getCurrentPage()) {
 	case PageId::MainPage:
-		for (int i = 0; i < numDirections; i++) { strings[i] = paletteBoxStrings[i]; }
+		for (int i = 0; i < numBoxes; i++) { strings[i] = paletteBoxStrings[i]; }
 		break;
 	case PageId::ItemPage:
-		for (int i = 0; i < numDirections; i++) { strings[i] = "ItemTemp"; }
+		for (int i = 0; i < numBoxes; i++) { strings[i] = "ItemTemp"; }
 		strings[2] = paletteBoxStrings[4];
 		break;
 	case PageId::SkillPage:
-	for (int i = 0; i < numDirections; i++) { strings[i] = "SkillTemp"; }
+	for (int i = 0; i < numBoxes; i++) { strings[i] = "SkillTemp"; }
 		strings[1] = paletteBoxStrings[4];
 		break;
 	}
+	strings[numTexts - 1] = scene->getActors().names[scene->getCurrentFighter()];
 
 	/* Calculate the starting point of each text by finding the total width and centering */
-	for (int i = 0; i < numDirections; i++) {
+	for (int i = 0; i < numTexts; i++) {
 		float wordWidthPixels = 0.f;
 		for (const char* c = strings[i]; *c; c++) {
 			const SDL_FRect* srcRect = font.getSourceRect(*c - ' ');
@@ -62,7 +63,7 @@ void Battle::PaletteRenderer::process() {
 	}
 
 	/* Render the palette boxes */
-	for (int i = 0; i < numDirections; i++) {
+	for (int i = 0; i < numBoxes; i++) {
 		SDL_FRect dstRect {
 			renderX[i], renderY[i], renderW, renderH
 		};
@@ -72,7 +73,7 @@ void Battle::PaletteRenderer::process() {
 	}
 
 	/* Render the palette box text */
-	for (int i = 0; i < numDirections; i++) {
+	for (int i = 0; i < numTexts; i++) {
 		SDL_FRect dstRect {
 			(renderX[i] + startX[i]) * *pixelScaling,
 			(renderY[i] + textYOffset) * *pixelScaling

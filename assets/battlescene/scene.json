@@ -10,8 +10,8 @@
 		"assets\/textures\/image\/InfoBox.png"
 	],
 	"paletteBox" : {
-		"renderX" : [ 109, 65, 153, 109 ],
-		"renderY" : [ 185, 212, 212, 239 ]
+		"renderX" : [ 109, 65, 153, 109, 109 ],
+		"renderY" : [ 185, 212, 212, 239, 156 ]
 	},
 	"fontPath" : "assets/textures/data/font.json"
 }

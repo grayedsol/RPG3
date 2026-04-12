@@ -210,7 +210,7 @@ namespace Battle {
 	};
 
 	struct Actors {
-		char names[MAX_ACTORS][MAX_NAME_LENGTH] = { 0 };
+		const char* names[MAX_ACTORS] = { 0 };
 		ActorFlags flags[MAX_ACTORS] = { 0 };
 		double timers[MAX_ACTORS] = { 0 };
 		Action executingActions[MAX_ACTORS];

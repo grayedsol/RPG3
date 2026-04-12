@@ -16,9 +16,10 @@ namespace Battle {
 
 		const GRY_Texture* paletteBoxTexture = nullptr;
 
-		static const unsigned numDirections = 4;
-		float renderX[numDirections] = { 0 };
-		float renderY[numDirections] = { 0 };
+		static const unsigned numTexts = 5;
+		static const unsigned numBoxes = 4;
+		float renderX[numTexts] = { 0 };
+		float renderY[numTexts] = { 0 };
 		float renderW;
 		float renderH;
 
