@@ -23,6 +23,7 @@ Battle::BattleScene::BattleScene(GRY_PixelGame *pGame, const char *scenePath, Ba
 void Battle::BattleScene::init() {
 	setControls();
 
+	paletteRenderer.init();
 	hud.init();
 
 	setActorFlag(Fighter0, ActorFlag::ACTOR_EXISTS);
@@ -84,6 +85,12 @@ bool Battle::BattleScene::load() {
 		for (auto& texture : sceneDoc["textures"].GetArray()) {
 			textures.push_back(GRY_Texture(texture.GetString()));
 		}
+	}
+
+	const auto& renderXArray = sceneDoc["paletteBox"]["renderX"].GetArray();
+	const auto& renderYArray = sceneDoc["paletteBox"]["renderY"].GetArray();
+	for (int i = 0; i < renderXArray.Size(); i++) {
+		paletteRenderer.setRenderPos(i, renderXArray[i].GetFloat(), renderYArray[i].GetFloat());
 	}
 
 	return sceneDoc["fxResources"].GetArray().Size() == 0 && sceneDoc["textures"].GetArray().Size() == 0;

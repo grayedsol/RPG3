@@ -8,5 +8,9 @@
 		"assets\/textures\/image\/Reticle.png",
 		"assets\/textures\/image\/battlebox.png",
 		"assets\/textures\/image\/InfoBox.png"
-	]
+	],
+	"paletteBox" : {
+		"renderX" : [ 109, 65, 153, 109 ],
+		"renderY" : [ 185, 212, 212, 239 ]
+	}
 }
