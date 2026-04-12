@@ -46,6 +46,12 @@ struct Fontset : public FileResource {
 	float charHeight = 0.0f;
 
 	/**
+	 * @brief How far characters that go under the typing line (e.g. g, p, q) extend. Useful for centering.
+	 * 
+	 */
+	float underLineHeight = 0.0f;
+
+	/**
 	 * @brief Constructor.
 	 * 
 	 * @copydetails FileResource::FileResource

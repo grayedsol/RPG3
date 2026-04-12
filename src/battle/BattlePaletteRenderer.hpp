@@ -21,6 +21,8 @@ namespace Battle {
 		float renderY[numDirections] = { 0 };
 		float renderW;
 		float renderH;
+
+		float textYOffset = 0;
 	public:
 		PaletteRenderer(BattleScene* scene);
 

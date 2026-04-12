@@ -31,7 +31,13 @@ bool Fontset::load(GRY_Game *game) {
 	/* Read charHeight and emWidth */
 	charHeight = fontDoc["charHeight"].GetFloat();
 	emWidth = fontDoc["emWidth"].GetFloat();
-	GRY_Assert((charHeight > 0) && (emWidth > 0), "[Fontset] Invalid charHeight or emWidth.");
+	underLineHeight = fontDoc["underLineHeight"].GetFloat();
+	GRY_Assert(
+		(charHeight > 0) &&
+		(emWidth > 0) &&
+		(underLineHeight >= 0),
+		"[Fontset] Invalid charHeight, emWidth, or underLineHeight."
+	);
 
 	float textureWidth;
 	float textureHeight;

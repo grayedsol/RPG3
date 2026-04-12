@@ -4,8 +4,6 @@
 #include "SDL_RectOps.hpp"
 #include "SDL3/SDL_render.h"
 
-static const float textYOffset = 7.f;
-
 static const char* paletteBoxStrings[5] = {
 	"Attack",
 	"Item",
@@ -24,6 +22,10 @@ void Battle::PaletteRenderer::init() {
 	paletteBoxTexture = &scene->getTexture(BattleSceneTextureIndex::TEXTURE_INDEX_PALETTE_BOX);
 	renderW = paletteBoxTexture->texture->w;
 	renderH = paletteBoxTexture->texture->h;
+
+	const Fontset& font = scene->getFont();
+	
+	textYOffset = (renderH - font.charHeight + font.underLineHeight) * 0.5f;
 }
 
 void Battle::PaletteRenderer::process() {
@@ -33,6 +35,7 @@ void Battle::PaletteRenderer::process() {
 
 	const char* strings[numDirections] = { 0 };
 	float startX[numDirections] = { 0 };
+	/* Get text depending on which page we're on */
 	switch (scene->getCurrentPage()) {
 	case PageId::MainPage:
 		for (int i = 0; i < numDirections; i++) { strings[i] = paletteBoxStrings[i]; }
@@ -47,15 +50,18 @@ void Battle::PaletteRenderer::process() {
 		break;
 	}
 
+	/* Calculate the starting point of each text by finding the total width and centering */
 	for (int i = 0; i < numDirections; i++) {
 		float wordWidthPixels = 0.f;
 		for (const char* c = strings[i]; *c; c++) {
 			const SDL_FRect* srcRect = font.getSourceRect(*c - ' ');
 			wordWidthPixels += srcRect->w;
 		}
-		startX[i] = SDL_ceilf((renderW - wordWidthPixels) * 0.5f);
+		/* Add 1 here to account for extra ending width of last character */
+		startX[i] = SDL_ceilf((renderW - wordWidthPixels + 1) * 0.5f);
 	}
 
+	/* Render the palette boxes */
 	for (int i = 0; i < numDirections; i++) {
 		SDL_FRect dstRect {
 			renderX[i], renderY[i], renderW, renderH
@@ -65,6 +71,7 @@ void Battle::PaletteRenderer::process() {
 		SDL_RenderTexture(renderer, paletteBoxTexture->texture, NULL, &dstRect);
 	}
 
+	/* Render the palette box text */
 	for (int i = 0; i < numDirections; i++) {
 		SDL_FRect dstRect {
 			(renderX[i] + startX[i]) * *pixelScaling,

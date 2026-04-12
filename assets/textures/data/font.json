@@ -9,5 +9,6 @@
         7,8,8,8,8,8,7,11,8,8,8,7,4,7,10,9
     ],
     "emWidth" : 16,
-    "charHeight" : 14
+    "charHeight" : 14,
+	"underLineHeight" : 3
 }
