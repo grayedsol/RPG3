@@ -50,7 +50,7 @@ void Battle::BattleScene::init() {
 	fighters.moves[Fighter0][FIGHTER_ATTACK] = std::vector<Action>{ wait, action };
 	actors.healthPoints[Fighter0] = 10;
 	action.common.data.source = Fighter1;
-	wait.common.data.source= Fighter1;
+	wait.common.data.source = Fighter1;
 	fighters.moves[Fighter1][FIGHTER_ATTACK] = std::vector<Action>{ wait, action };
 	actors.healthPoints[Fighter1] = 10;
 }

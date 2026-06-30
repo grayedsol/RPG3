@@ -33,6 +33,10 @@ namespace Battle {
 		double timer = 0;
 	};
 
+	/**
+	 * @brief Index used for fighters.
+	 * 
+	 */
 	enum FighterId : uint8_t {
 		Fighter0 = 0,
 		Fighter1 = 1,
@@ -41,6 +45,10 @@ namespace Battle {
 		MaxFighters = 4
 	};
 
+	/**
+	 * @brief Index used for monsters.
+	 * 
+	 */
 	enum MonsterId : uint8_t {
 		Monster0 = 0,
 		Monster1 = 1,
@@ -53,6 +61,10 @@ namespace Battle {
 		MaxMonsters = 8
 	};
 
+	/**
+	 * @brief The total number of possible fighters and monsters.
+	 * 
+	 */
 	static const ActorId MAX_ACTORS = static_cast<uint8_t>(FighterId::MaxFighters) + static_cast<uint8_t>(MonsterId::MaxMonsters);
 	static const uint8_t MAX_NAME_LENGTH = 16;
 	static const uint8_t MAX_ACTIONS = 8;
@@ -87,6 +99,10 @@ namespace Battle {
 		DirectionIdSize = 4
 	};
 
+	/**
+	 * @brief Index used for fighter moves. A move is a list of actions.
+	 * 
+	 */
 	enum FighterMove : uint8_t {
 		FIGHTER_ATTACK = 0,
 		FIGHTER_SKILL1 = 1,
