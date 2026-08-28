@@ -7,7 +7,19 @@ namespace Battle {
 	using ActorId = uint8_t;
 	using ActionAnimationId = uint16_t;
 
-	struct MonsterSprite {
+	struct MonsterSpriteAnimation {
+		/**
+		 * @brief Time that each frame should be displayed for, in seconds.
+		 * 
+		 */
+		std::vector<double> durations;
+
+		/**
+		 * @brief Time left until the next frame, in seconds.
+		 * 
+		 */
+		double timer = 0;
+
 		/**
 		 * @brief Index of the frame to render.
 		 * 
@@ -19,7 +31,9 @@ namespace Battle {
 		 *
 		 */
 		uint32_t monsterIndex = 0;
+	};
 
+	struct FX {
 		/**
 		 * @brief Time that each frame should be displayed for, in seconds. 0 indicates no FX.
 		 * 
@@ -31,9 +45,7 @@ namespace Battle {
 		 * 
 		 */
 		double timer = 0;
-	};
 
-	struct FX {
 		/**
 		 * @brief Index of the frame to render.
 		 * 
@@ -45,18 +57,6 @@ namespace Battle {
 		 *
 		 */
 		uint32_t fxIndex = 0;
-
-		/**
-		 * @brief Time that each frame should be displayed for, in seconds. 0 indicates no FX.
-		 * 
-		 */
-		double duration = 0;
-
-		/**
-		 * @brief Time left until the next frame, in seconds.
-		 * 
-		 */
-		double timer = 0;
 	};
 
 	/**

@@ -82,7 +82,7 @@ bool Battle::BattleScene::load() {
 		for (auto& texture : textures) {
 			if (!texture.load(game)) { return false; }
 		}
-		return font.load(game);
+		return font.load(game) && monsterAnimationsResource.load(game);
 	}
 
 	/* Open scene document */
@@ -114,6 +114,7 @@ bool Battle::BattleScene::load() {
 	}
 
 	font.setPath(sceneDoc["fontPath"].GetString());
+	monsterAnimationsResource.setPath(sceneDoc["monsterAnimationsPath"].GetString());
 
 	return sceneDoc["fxResources"].GetArray().Size() == 0 && sceneDoc["textures"].GetArray().Size() == 0;
 }

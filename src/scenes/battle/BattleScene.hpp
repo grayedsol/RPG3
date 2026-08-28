@@ -13,6 +13,7 @@
 #include "../../battle/BattlePaletteRenderer.hpp"
 #include "../../battle/BattleTimeFlow.hpp"
 #include "../../battle/BattleSpriteResource.hpp"
+#include "../../battle/BattleMonsterAnimationsResource.hpp"
 #include "../../battle/BattleFXAnimator.hpp"
 #include "../../battle/BattleMonsterAnimator.hpp"
 #include "../../battle/BattleActionExecutor.hpp"
@@ -39,10 +40,12 @@ namespace Battle {
 		std::vector<SpriteResource> fxResources;
 		
 		std::vector<SpriteResource> monsterSpriteResources;
-
+		
 		std::vector<GRY_Texture> textures;
-
+		
 		Fontset font;
+		
+		MonsterAnimationsResource monsterAnimationsResource;
 
 		Palette palette;
 

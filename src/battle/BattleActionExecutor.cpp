@@ -28,7 +28,7 @@ void Battle::ActionExecutor::process() {
 				break;
 			case ActionType::ANIMATION_ACTION:
 				ActionAnimationId id = action.animationAction.animationId;
-				scene->getActors().fx[action.animationAction.data.source] = FX{0, id, 0.125, 0.125};
+				scene->getActors().fx[action.animationAction.data.source] = FX{0.125, 0.125, 0, id};
 				break;
 		}
 	}

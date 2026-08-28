@@ -9,12 +9,9 @@
 #include "FileResource.hpp"
 #include "SDL3/SDL_rect.h"
 
-// effect resource
 struct SDL_Texture;
 
 namespace Battle {
-	class BattleScene;
-
 	struct SpriteResource : public FileResource {
 		/**
 		 * @brief The texture of the effect.
