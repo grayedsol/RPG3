@@ -69,7 +69,7 @@ set(SOURCES
 	src/battle/BattleSpriteResource.cpp
 	src/battle/BattleFXAnimator.cpp
 	src/battle/BattleHUD.cpp
-	src/battle/BattleMonsterRenderer.cpp
+	src/battle/BattleMonsterAnimator.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

@@ -4,11 +4,11 @@
 namespace Battle {
 	class BattleScene;
 
-	class MonsterRenderer {
+	class MonsterAnimator {
 	private:
 		BattleScene* scene;
 	public:
-		MonsterRenderer(BattleScene* scene);
+		MonsterAnimator(BattleScene* scene);
 
 		void process(double delta);
 	};
