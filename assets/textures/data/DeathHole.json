@@ -1,0 +1,20 @@
+{ "columns":4,
+ "image":"..\/image\/DeathHole\/DeathHoleSpriteSheet.png",
+ "imageheight":144,
+ "imagewidth":232,
+ "margin":0,
+ "name":"DeathHole",
+ "properties":[
+        {
+         "name":"imagePath",
+         "type":"string",
+         "value":"assets\/textures\/image\/DeathHole\/DeathHoleSpriteSheet.png"
+        }],
+ "spacing":0,
+ "tilecount":8,
+ "tiledversion":"1.10.2",
+ "tileheight":72,
+ "tilewidth":58,
+ "type":"tileset",
+ "version":"1.10"
+}
