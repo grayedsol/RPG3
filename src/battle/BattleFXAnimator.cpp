@@ -23,7 +23,7 @@ void Battle::FXAnimator::process(double delta) {
 		fx[a].timer -= delta;
 		if (fx[a].timer < 0) {
 			fx[a].timer = fx[a].duration;
-			if (++fx[a].index >= fxResources.at(fx[a].fx).sourceRects.size()) {
+			if (++fx[a].frameIndex >= fxResources.at(fx[a].fxIndex).sourceRects.size()) {
 				fx[a] = FX();
 			}
 		}
@@ -35,8 +35,8 @@ void Battle::FXAnimator::render() {
 		if (!fx[a].duration) { continue; }
 		
 		SDL_Renderer* renderer = scene->getGame()->getVideo().getRenderer();
-		const SpriteResource& resource = fxResources.at(fx[a].fx);
-		const SDL_FRect* srcRect = &resource.sourceRects.at(fx[a].index);
+		const SpriteResource& resource = fxResources.at(fx[a].fxIndex);
+		const SDL_FRect* srcRect = &resource.sourceRects.at(fx[a].frameIndex);
 		SDL_FRect dstRect {
 			0, 0,
 			srcRect->w, srcRect->h

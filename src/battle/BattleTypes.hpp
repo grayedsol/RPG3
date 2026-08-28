@@ -7,18 +7,44 @@ namespace Battle {
 	using ActorId = uint8_t;
 	using ActionAnimationId = uint16_t;
 
-	struct FX {
+	struct MonsterSprite {
 		/**
 		 * @brief Index of the frame to render.
 		 * 
 		 */
-		uint32_t index = 0;
+		uint32_t frameIndex = 0;
 
 		/**
 		 * @brief Index of the SpriteResource to use.
 		 *
 		 */
-		uint32_t fx = 0;
+		uint32_t monsterIndex = 0;
+
+		/**
+		 * @brief Time that each frame should be displayed for, in seconds. 0 indicates no FX.
+		 * 
+		 */
+		double duration = 0;
+
+		/**
+		 * @brief Time left until the next frame, in seconds.
+		 * 
+		 */
+		double timer = 0;
+	};
+
+	struct FX {
+		/**
+		 * @brief Index of the frame to render.
+		 * 
+		 */
+		uint32_t frameIndex = 0;
+
+		/**
+		 * @brief Index of the SpriteResource to use.
+		 *
+		 */
+		uint32_t fxIndex = 0;
 
 		/**
 		 * @brief Time that each frame should be displayed for, in seconds. 0 indicates no FX.

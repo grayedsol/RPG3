@@ -14,6 +14,7 @@
 #include "../../battle/BattleTimeFlow.hpp"
 #include "../../battle/BattleSpriteResource.hpp"
 #include "../../battle/BattleFXAnimator.hpp"
+#include "../../battle/BattleMonsterAnimator.hpp"
 #include "../../battle/BattleActionExecutor.hpp"
 #include "../../battle/BattleHUD.hpp"
 #include "../../textbox/Fontset.hpp"
@@ -36,6 +37,8 @@ namespace Battle {
 		BattleSceneInfo sceneInfo;
 
 		std::vector<SpriteResource> fxResources;
+		
+		std::vector<SpriteResource> monsterSpriteResources;
 
 		std::vector<GRY_Texture> textures;
 
@@ -54,6 +57,8 @@ namespace Battle {
 		Fighters fighters;
 
 		FXAnimator fxAnimator;
+
+		MonsterAnimator monsterAnimator;
 
 		ActionExecutor actionExecutor;
 

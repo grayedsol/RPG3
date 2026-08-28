@@ -2,6 +2,9 @@
 	"fxResources" : [
 		"assets\/textures\/data\/slash.json"
 	],
+	"monsterSpriteResources" : [
+		"assets\/textures\/data\/Monsters\/DeathHole.json"
+	],
 	"textures" : [
 		"assets\/textures\/image\/BattleHudMain.png",
 		"assets\/textures\/image\/FighterTimer.png",

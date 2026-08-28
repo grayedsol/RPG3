@@ -17,6 +17,7 @@ Battle::BattleScene::BattleScene(GRY_PixelGame *pGame, const char *scenePath, Ba
 	, hud(this)
 	, timeFlow(this)
 	, fxAnimator(this, actors.fx, fxResources)
+	, monsterAnimator(this)
 	, actionExecutor(this) {
 }
 
@@ -75,6 +76,9 @@ bool Battle::BattleScene::load() {
 		for (auto& fxResource : fxResources) {
 			if (!fxResource.load(game)) { return false; }
 		}
+		for (auto& monsterSprite : monsterSpriteResources) {
+			if (!monsterSprite.load(game)) { return false; }
+		}
 		for (auto& texture : textures) {
 			if (!texture.load(game)) { return false; }
 		}
@@ -88,6 +92,12 @@ bool Battle::BattleScene::load() {
 	if (sceneDoc["fxResources"].GetArray().Size() > 0) {
 		for (auto& fxResource : sceneDoc["fxResources"].GetArray()) {
 			fxResources.push_back(SpriteResource(fxResource.GetString()));
+		}
+	}
+
+	if (sceneDoc["monsterSpriteResources"].GetArray().Size() > 0) {
+		for (auto& monsterSprite : sceneDoc["monsterSpriteResources"].GetArray()) {
+			monsterSpriteResources.push_back(SpriteResource(monsterSprite.GetString()));
 		}
 	}
 
