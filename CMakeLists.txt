@@ -66,9 +66,10 @@ set(SOURCES
 	src/battle/BattleTimeFlow.cpp
 	src/battle/BattleActionExecutor.cpp
 	src/battle/BattleStatusEffectSystem.cpp
-	src/battle/BattleFXResource.cpp
+	src/battle/BattleSpriteResource.cpp
 	src/battle/BattleFXAnimator.cpp
 	src/battle/BattleHUD.cpp
+	src/battle/BattleMonsterRenderer.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

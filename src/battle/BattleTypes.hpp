@@ -15,7 +15,7 @@ namespace Battle {
 		uint32_t index = 0;
 
 		/**
-		 * @brief Index of the FXResource to use.
+		 * @brief Index of the SpriteResource to use.
 		 *
 		 */
 		uint32_t fx = 0;

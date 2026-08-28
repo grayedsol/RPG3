@@ -87,7 +87,7 @@ bool Battle::BattleScene::load() {
 
 	if (sceneDoc["fxResources"].GetArray().Size() > 0) {
 		for (auto& fxResource : sceneDoc["fxResources"].GetArray()) {
-			fxResources.push_back(FXResource(fxResource.GetString()));
+			fxResources.push_back(SpriteResource(fxResource.GetString()));
 		}
 	}
 

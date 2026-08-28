@@ -1,14 +1,14 @@
-#include "BattleFXResource.hpp"
+#include "BattleSpriteResource.hpp"
 #include "GRY_Game.hpp"
 #include "GRY_Tiled.hpp"
 #include "SDL3/SDL_render.h"
 
-Battle::FXResource::~FXResource() {
+Battle::SpriteResource::~SpriteResource() {
 	SDL_DestroyTexture(texture);
 	texture = nullptr;
 }
 
-bool Battle::FXResource::load(GRY_Game *game) {
+bool Battle::SpriteResource::load(GRY_Game *game) {
 	if (frameWidth != 0.f) { return true; }
 
 	/* Open the tileset file */
@@ -24,7 +24,7 @@ bool Battle::FXResource::load(GRY_Game *game) {
 
 	frameWidth = tilesetDoc["tilewidth"].GetFloat();
 	frameHeight = tilesetDoc["tileheight"].GetFloat();
-	GRY_Assert((frameWidth > 0) && (frameHeight > 0), "[FXResource] Invalid tileWidth or tileHeight in tileset file.");
+	GRY_Assert((frameWidth > 0) && (frameHeight > 0), "[SpriteResource] Invalid tileWidth or tileHeight in tileset file.");
 
     float texture_width;
 	SDL_GetTextureSize(texture, &texture_width, NULL);

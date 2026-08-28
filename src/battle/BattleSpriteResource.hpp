@@ -1,5 +1,5 @@
 /**
- * @file BattleFXResource.hpp
+ * @file BattleSpriteResource.hpp
  * @author Grayedsol (grayedsol@gmail.com)
  * @brief @copybrief Battle::FX
  * @copyright Copyright (c) 2026
@@ -15,7 +15,7 @@ struct SDL_Texture;
 namespace Battle {
 	class BattleScene;
 
-	struct FXResource : public FileResource {
+	struct SpriteResource : public FileResource {
 		/**
 		 * @brief The texture of the effect.
 		 * 
@@ -39,16 +39,16 @@ namespace Battle {
 		 * 
 		 */
 		float frameHeight = 0.0f;
-		
-		FXResource() = default;
-		FXResource(const char* path) : FileResource(path) {}
 
-		~FXResource();
+		SpriteResource() = default;
+		SpriteResource(const char* path) : FileResource(path) {}
 
-		FXResource(const FXResource&) = delete;
-		FXResource& operator=(const FXResource&) = delete;
+		~SpriteResource();
 
-		friend void swap(FXResource& lhs, FXResource& rhs) {
+		SpriteResource(const SpriteResource&) = delete;
+		SpriteResource& operator=(const SpriteResource&) = delete;
+
+		friend void swap(SpriteResource& lhs, SpriteResource& rhs) {
 			using std::swap;
 			swap(static_cast<FileResource&>(lhs), static_cast<FileResource&>(rhs));
 			swap(lhs.texture, rhs.texture);
@@ -57,7 +57,7 @@ namespace Battle {
 			swap(lhs.frameHeight, rhs.frameHeight);
 		}
 
-		FXResource(FXResource&& other) noexcept { swap(*this, other); }
+		SpriteResource(SpriteResource&& other) noexcept { swap(*this, other); }
 
 		/**
 		 * @copydoc FileResource::load

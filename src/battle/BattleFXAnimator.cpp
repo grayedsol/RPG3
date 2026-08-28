@@ -9,7 +9,7 @@
 #include "SDL3/SDL_render.h"
 #include "SDL_RectOps.hpp"
 
-Battle::FXAnimator::FXAnimator(BattleScene* scene, FX* fx, const std::vector<FXResource>& fxResources)
+Battle::FXAnimator::FXAnimator(BattleScene* scene, FX* fx, const std::vector<SpriteResource>& fxResources)
 	: scene(scene)
 	, fx(fx)
 	, fxResources(fxResources)
@@ -35,7 +35,7 @@ void Battle::FXAnimator::render() {
 		if (!fx[a].duration) { continue; }
 		
 		SDL_Renderer* renderer = scene->getGame()->getVideo().getRenderer();
-		const FXResource& resource = fxResources.at(fx[a].fx);
+		const SpriteResource& resource = fxResources.at(fx[a].fx);
 		const SDL_FRect* srcRect = &resource.sourceRects.at(fx[a].index);
 		SDL_FRect dstRect {
 			0, 0,

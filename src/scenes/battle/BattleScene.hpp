@@ -12,7 +12,7 @@
 #include "../../battle/BattlePalette.hpp"
 #include "../../battle/BattlePaletteRenderer.hpp"
 #include "../../battle/BattleTimeFlow.hpp"
-#include "../../battle/BattleFXResource.hpp"
+#include "../../battle/BattleSpriteResource.hpp"
 #include "../../battle/BattleFXAnimator.hpp"
 #include "../../battle/BattleActionExecutor.hpp"
 #include "../../battle/BattleHUD.hpp"
@@ -35,7 +35,7 @@ namespace Battle {
 	private:
 		BattleSceneInfo sceneInfo;
 
-		std::vector<FXResource> fxResources;
+		std::vector<SpriteResource> fxResources;
 
 		std::vector<GRY_Texture> textures;
 
@@ -89,7 +89,7 @@ namespace Battle {
 
 		Fighters& getFighters() { return fighters; }
 
-		const FXResource& getFXResource(size_t index) const { return fxResources.at(index); }
+		const SpriteResource& getFXResource(size_t index) const { return fxResources.at(index); }
 
 		const GRY_Texture& getTexture(BattleSceneTextureIndex index) const { return textures.at(index); }
 

@@ -6,7 +6,7 @@
  */
 #pragma once
 #include "BattleTypes.hpp"
-#include "BattleFXResource.hpp"
+#include "BattleSpriteResource.hpp"
 
 namespace Battle {
 	class BattleScene;
@@ -21,7 +21,7 @@ namespace Battle {
 
 		FX* fx;
 
-		const std::vector<FXResource>& fxResources; 
+		const std::vector<SpriteResource>& fxResources; 
 
 		const float* pixelScaling;
 	public:
@@ -30,7 +30,7 @@ namespace Battle {
 		 * 
 		 * @param scene Associated BattleScene class.
 		 */
-		FXAnimator(BattleScene* scene, FX* fx, const std::vector<FXResource>& fxResources);
+		FXAnimator(BattleScene* scene, FX* fx, const std::vector<SpriteResource>& fxResources);
 
 		/**
 		 * @brief Animate current FX.
