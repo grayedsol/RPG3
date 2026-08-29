@@ -6,11 +6,6 @@
  "name":"DeathHole",
  "properties":[
         {
-         "name":"animationsPath",
-         "type":"string",
-         "value":"assets\/textures\/image\/data\/Monsters\/DeathHoleAnimation.json"
-        }, 
-        {
          "name":"imagePath",
          "type":"string",
          "value":"assets\/textures\/image\/DeathHole\/DeathHoleSpriteSheet.png"

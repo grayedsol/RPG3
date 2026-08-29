@@ -17,7 +17,7 @@ Battle::BattleScene::BattleScene(GRY_PixelGame *pGame, const char *scenePath, Ba
 	, hud(this)
 	, timeFlow(this)
 	, fxAnimator(this, actors.fx, fxResources)
-	, monsterAnimator(this)
+	, monsterAnimator(this, &monsters, monsterSpriteResources)
 	, actionExecutor(this) {
 }
 
@@ -54,6 +54,21 @@ void Battle::BattleScene::init() {
 	wait.common.data.source = Fighter1;
 	fighters.moves[Fighter1][FIGHTER_ATTACK] = std::vector<Action>{ wait, action };
 	actors.healthPoints[Fighter1] = 10;
+
+	setActorFlag(Monster0+4, ActorFlag::ACTOR_EXISTS);
+	setActorFlag(Monster0+4, ActorFlag::ACTOR_ALIVE);
+	setActorFlag(Monster0+4, ActorFlag::ACTOR_IDLE);
+
+	actors.names[Monster0+4] = "DeathHole";
+	actors.healthPoints[Monster0+4] = 10;
+	monsters.globalId[Monster0] = 1;
+	monsters.animations[Monster0] = MonsterSpriteAnimation(
+		monsterAnimationsResource.durations[monsters.globalId[Monster0]].at(0),
+		monsterAnimationsResource.indices[monsters.globalId[Monster0]].at(0),
+		monsterAnimationsResource.durations[monsters.globalId[Monster0]].at(0).at(0),
+		monsters.globalId[Monster0],
+		0
+	);
 }
 
 void Battle::BattleScene::process() {
@@ -64,10 +79,12 @@ void Battle::BattleScene::process() {
 	palette.process();
 	actionExecutor.process();
 	timeFlow.process(delta);
+	monsterAnimator.process(delta);
 	fxAnimator.process(delta);
 
 	hud.render();
 	paletteRenderer.process();
+	monsterAnimator.render();
 	fxAnimator.render();
 }
 
@@ -77,6 +94,7 @@ bool Battle::BattleScene::load() {
 			if (!fxResource.load(game)) { return false; }
 		}
 		for (auto& monsterSprite : monsterSpriteResources) {
+			if (!monsterSprite.path) { continue; }
 			if (!monsterSprite.load(game)) { return false; }
 		}
 		for (auto& texture : textures) {
@@ -94,6 +112,9 @@ bool Battle::BattleScene::load() {
 			fxResources.push_back(SpriteResource(fxResource.GetString()));
 		}
 	}
+
+	/* 1-index the monster sprite resources */
+	if (monsterSpriteResources.empty()) { monsterSpriteResources.push_back(SpriteResource()); }
 
 	if (sceneDoc["monsterSpriteResources"].GetArray().Size() > 0) {
 		for (auto& monsterSprite : sceneDoc["monsterSpriteResources"].GetArray()) {

@@ -11,7 +11,7 @@
 
 int WINDOW_WIDTH = 960;
 int WINDOW_HEIGHT = 540;
-int MAX_FPS = 120;
+int MAX_FPS = 144;
 bool USE_VSYNC = true;
 
 static GRY_PixelGame game(WINDOW_WIDTH, WINDOW_HEIGHT, MAX_FPS, USE_VSYNC);

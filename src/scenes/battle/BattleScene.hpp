@@ -38,13 +38,13 @@ namespace Battle {
 		BattleSceneInfo sceneInfo;
 
 		std::vector<SpriteResource> fxResources;
-		
-		std::vector<SpriteResource> monsterSpriteResources;
-		
+
+		std::vector<SpriteResource> monsterSpriteResources; /* 1-indexed */
+
 		std::vector<GRY_Texture> textures;
-		
+
 		Fontset font;
-		
+
 		MonsterAnimationsResource monsterAnimationsResource;
 
 		Palette palette;
@@ -58,6 +58,8 @@ namespace Battle {
 		Actors actors;
 
 		Fighters fighters;
+
+		Monsters monsters;
 
 		FXAnimator fxAnimator;
 

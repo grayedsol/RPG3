@@ -6,13 +6,21 @@ namespace Battle {
 	using ActorFlags = uint32_t;
 	using ActorId = uint8_t;
 	using ActionAnimationId = uint16_t;
+	using MonsterGlobalId = uint16_t; /* 1-indexed, 0 means no monster */
+	using MonsterTextureId = int16_t; /* < 0 means no texture */
 
 	struct MonsterSpriteAnimation {
 		/**
-		 * @brief Time that each frame should be displayed for, in seconds.
+		 * @brief Time that each frame should be displayed for, in seconds. Empty means no animation.
 		 * 
 		 */
 		std::vector<double> durations;
+
+		/**
+		 * @brief Texture index of each frame.
+		 * 
+		 */
+		std::vector<MonsterTextureId> indices;
 
 		/**
 		 * @brief Time left until the next frame, in seconds.
@@ -21,16 +29,16 @@ namespace Battle {
 		double timer = 0;
 
 		/**
-		 * @brief Index of the frame to render.
-		 * 
-		 */
-		uint32_t frameIndex = 0;
-
-		/**
 		 * @brief Index of the SpriteResource to use.
 		 *
 		 */
-		uint32_t monsterIndex = 0;
+		MonsterGlobalId monsterIndex = 0;
+
+		/**
+		 * @brief Index of the frame to render.
+		 * 
+		 */
+		uint32_t currentFrame = 0;
 	};
 
 	struct FX {
@@ -265,5 +273,11 @@ namespace Battle {
 	struct Fighters {
 		std::vector<Action> moves[FighterId::MaxFighters][FighterMove::FIGHTER_NUM_MOVES];
 		std::vector<char> skillNames[FighterId::MaxFighters][FighterMove::FIGHTER_NUM_SKILLS];
+	};
+
+	struct Monsters {
+		MonsterGlobalId globalId[MonsterId::MaxMonsters] = { 0 };
+		MonsterTextureId textureIndex[MonsterId::MaxMonsters] = { 0 };
+		MonsterSpriteAnimation animations[MonsterId::MaxMonsters];
 	};
 }

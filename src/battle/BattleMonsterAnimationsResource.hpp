@@ -12,7 +12,7 @@
 namespace Battle {
 	struct MonsterAnimationsResource : public FileResource {
 		using AnimationDurations = std::vector<double>;
-		using AnimationIndices = std::vector<uint16_t>;
+		using AnimationIndices = std::vector<MonsterTextureId>;
 		using MonsterAnimationsDurations = std::vector<AnimationDurations>;
 		using MonsterAnimationsIndices = std::vector<AnimationIndices>;
 
